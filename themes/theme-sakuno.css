@@ -1,0 +1,74 @@
+body.theme-sakuno {
+  --page-background: #fff8ec;
+  --surface-color: #ffffff;
+  --surface-subtle: #fff3dd;
+  --text-primary: #332b25;
+  --text-secondary: #73675c;
+  --border-color: #eadcc6;
+  --accent-color: #d17a35;
+  --accent-strong: #a65222;
+  --accent-soft: #ffead3;
+  --accent-text: #ffffff;
+  --focus-color: #b75c26;
+  --success-color: #4e7d4b;
+  --success-soft: #e8f2df;
+  --warning-color: #95651f;
+  --warning-soft: #fff0cc;
+}
+
+body.theme-sakuno .app-header {
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--page-background) 96%, #ffe5bf),
+      color-mix(in srgb, var(--page-background) 98%, #ffffff)
+    );
+}
+
+body.theme-sakuno .app-brand {
+  letter-spacing: 0.04em;
+}
+
+body.theme-sakuno .child-select-card-sakuno {
+  border-color: #ecd0aa;
+  background:
+    linear-gradient(
+      145deg,
+      #ffffff 0%,
+      #fff7e8 100%
+    );
+}
+
+body.theme-sakuno .child-select-card-sakuno .child-select-initial {
+  background: #ffe3bf;
+  color: #a65222;
+}
+
+body.theme-sakuno .mission-summary-card,
+body.theme-sakuno .task-card,
+body.theme-sakuno .form-section,
+body.theme-sakuno .review-form,
+body.theme-sakuno .saved-review-card {
+  box-shadow: 0 5px 18px rgba(128, 81, 37, 0.09);
+}
+
+body.theme-sakuno .task-card {
+  border-left: 4px solid var(--accent-color);
+}
+
+body.theme-sakuno .task-card.is-completed {
+  border-left-color: var(--success-color);
+}
+
+body.theme-sakuno .primary-button {
+  background:
+    linear-gradient(
+      135deg,
+      #a65222,
+      #d17a35
+    );
+}
+
+body.theme-sakuno .bottom-nav-button.is-active {
+  box-shadow: inset 0 0 0 1px rgba(166, 82, 34, 0.08);
+}

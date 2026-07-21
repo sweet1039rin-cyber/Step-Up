@@ -1,0 +1,74 @@
+body.theme-ichio {
+  --page-background: #f2f5f7;
+  --surface-color: #ffffff;
+  --surface-subtle: #edf1f4;
+  --text-primary: #1d2730;
+  --text-secondary: #5d6a73;
+  --border-color: #d5dde2;
+  --accent-color: #42657a;
+  --accent-strong: #294c61;
+  --accent-soft: #e1ebf0;
+  --accent-text: #ffffff;
+  --focus-color: #2d6280;
+  --success-color: #38705a;
+  --success-soft: #e3efe9;
+  --warning-color: #896329;
+  --warning-soft: #f4ecd9;
+}
+
+body.theme-ichio .app-header {
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--page-background) 96%, #dce7ed),
+      color-mix(in srgb, var(--page-background) 98%, #ffffff)
+    );
+}
+
+body.theme-ichio .app-brand {
+  letter-spacing: 0.08em;
+}
+
+body.theme-ichio .child-select-card-ichio {
+  border-color: #bdced8;
+  background:
+    linear-gradient(
+      145deg,
+      #ffffff 0%,
+      #f1f6f8 100%
+    );
+}
+
+body.theme-ichio .child-select-card-ichio .child-select-initial {
+  background: #dce8ee;
+  color: #294c61;
+}
+
+body.theme-ichio .mission-summary-card,
+body.theme-ichio .task-card,
+body.theme-ichio .form-section,
+body.theme-ichio .review-form,
+body.theme-ichio .saved-review-card {
+  box-shadow: 0 4px 18px rgba(36, 65, 82, 0.08);
+}
+
+body.theme-ichio .task-card {
+  border-left: 4px solid var(--accent-color);
+}
+
+body.theme-ichio .task-card.is-completed {
+  border-left-color: var(--success-color);
+}
+
+body.theme-ichio .primary-button {
+  background:
+    linear-gradient(
+      135deg,
+      #294c61,
+      #3d667d
+    );
+}
+
+body.theme-ichio .bottom-nav-button.is-active {
+  box-shadow: inset 0 0 0 1px rgba(41, 76, 97, 0.08);
+}
