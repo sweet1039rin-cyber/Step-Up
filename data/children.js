@@ -30,3 +30,44 @@ window.StepUpData.childCatalog = [
   {id: 'iori', name: '壱凰', themeClass: 'theme-ichio', themeName: 'Ichio', shortDescription: '今日の一歩を積み重ねる', initial: '壱'},
   {id: 'sakuya', name: '朔埜', themeClass: 'theme-sakuno', themeName: 'Sakuno', shortDescription: 'できたことを一つずつ増やす', initial: '朔'}
 ];
+
+window.StepUpData.assignments = {
+  iori: {
+    childName: '壱凰',
+    weekdayPolicy: {
+      priority: '主要5教科を優先する',
+      excluded: ['リコーダー', '家庭科']
+    },
+    items: [
+      {id: 'iori-essay', subject: '国語', title: '作文', status: 'completed', progress: '完了', remaining: 'なし', priority: 2, category: 'submission'},
+      {id: 'iori-japanese-research', subject: '国語', title: '国語新研究', status: 'in-progress', progress: '学習済み', remaining: '答え合わせ', priority: 1, category: 'school-homework'},
+      {id: 'iori-history-study', subject: '社会', title: '歴史の学習', status: 'completed', progress: '答え合わせまで完了', remaining: 'なし', priority: 1, category: 'school-homework'},
+      {id: 'iori-social-research', subject: '社会', title: '社会新研究', status: 'in-progress', progress: '学習済み', remaining: '答え合わせ', priority: 1, category: 'school-homework'},
+      {id: 'iori-kazutomo', subject: '数学', title: '数学の友', status: 'completed', progress: '答え合わせまで完了', remaining: 'なし', priority: 1, category: 'school-homework'},
+      {id: 'iori-science-research', subject: '理科', title: '理科新研究', status: 'completed', progress: '答え合わせまで完了', remaining: 'なし', priority: 1, category: 'school-homework'},
+      {id: 'iori-english-research', subject: '英語', title: '英語新研究', status: 'in-progress', progress: 'P86まで完了', remaining: 'P86以降', priority: 1, category: 'school-homework'},
+      {id: 'iori-integrated-study', subject: '総合', title: '総合', status: 'completed', progress: '完了', remaining: 'なし', priority: 2, category: 'submission'}
+    ]
+  },
+  sakuya: {
+    childName: '朔埜',
+    weekdayPolicy: {
+      priority: '主要教科を優先する',
+      weekendSupport: '副教科は休日に保護者と進める'
+    },
+    items: [
+      {id: 'sakuya-reading-report', subject: '国語', title: '読書感想文', status: 'completed', progress: '完了', remaining: 'なし', priority: 2, category: 'submission'},
+      {id: 'sakuya-word-order-training', subject: '英語', title: 'くり返し語順トレーニング', status: 'completed', progress: '完了', remaining: 'なし', priority: 1, category: 'school-homework'},
+      {id: 'sakuya-elementary-english-words', subject: '英語', title: '小学英単語', status: 'completed', progress: '完了', remaining: 'なし', priority: 1, category: 'school-homework'},
+      {id: 'sakuya-home-economics-handnote', subject: '家庭科', title: '家庭科ハンドノート', status: 'completed', progress: '完了', remaining: 'なし', priority: 3, category: 'school-homework'},
+      {id: 'sakuya-summer-math', subject: '数学', title: 'サマースクール数学', status: 'in-progress', progress: '残り9ページ', remaining: '9ページ', priority: 1, category: 'school-homework'},
+      {id: 'sakuya-japanese', subject: '国語', title: '国語', status: 'in-progress', progress: '残り10ページ', remaining: '10ページ', priority: 1, category: 'school-homework'},
+      {id: 'sakuya-kanji-skill', subject: '国語', title: '漢字スキル', status: 'in-progress', progress: '残り1ページ', remaining: '1ページ', priority: 1, category: 'school-homework'},
+      {id: 'sakuya-ima-dekiru', subject: '総合', title: '今の私に出来ること', status: 'not-started', progress: '未着手', remaining: '全体', priority: 2, category: 'submission'},
+      {id: 'sakuya-woodwork', subject: '技術', title: '木工作品', status: 'not-started', progress: '未着手', remaining: '全体', priority: 3, category: 'holiday-project'},
+      {id: 'sakuya-gagaku', subject: '音楽', title: '雅楽', status: 'not-started', progress: '未着手', remaining: '全体', priority: 3, category: 'holiday-project'},
+      {id: 'sakuya-keynote', subject: '技術', title: 'Keynote', status: 'not-started', progress: '未着手', remaining: '全体', priority: 3, category: 'holiday-project'},
+      {id: 'sakuya-disaster-report', subject: '総合', title: '防災レポート', status: 'not-started', progress: '未着手', remaining: '全体', priority: 2, category: 'submission'}
+    ]
+  }
+};
