@@ -2,6 +2,64 @@ const data=window.StepUpData.children;
 const testEvents=window.StepUpData.testEvents;
 const TODAY=new Date(2026,6,21);
 const PLAN_DATE='2026-07-21';
+const assignmentData=window.StepUpData.assignments;
+const assignmentProgressKey=id=>`stepup-assignment-progress-${id}`;
+const nextPlanKey=id=>`stepup-next-plan-${id}`;
+const assignmentStatusLabels={completed:'完了済み','in-progress':'進行中','not-started':'未着手'};
+
+function assignmentItems(id=current){
+ const source=assignmentData?.[id]?.items||[];
+ const saved=JSON.parse(localStorage.getItem(assignmentProgressKey(id))||'{}');
+ return source.map(item=>({...item,...(saved[item.id]||{})}));
+}
+function saveAssignmentItems(id,items){
+ const states={};
+ items.forEach(item=>{states[item.id]={status:item.status,progress:item.progress,remaining:item.remaining}});
+ localStorage.setItem(assignmentProgressKey(id),JSON.stringify(states));
+}
+function normalizeAssignmentText(text){return String(text||'').replace(/[\s・：:（）()]/g,'').toLowerCase()}
+function assignmentForTask(taskTitle,id=current){
+ const task=normalizeAssignmentText(taskTitle);
+ return assignmentItems(id).find(item=>{
+  const title=normalizeAssignmentText(item.title);
+  return title&& (task.includes(title)||title.includes(task));
+ });
+}
+function isWeekday(){return TODAY.getDay()>=1&&TODAY.getDay()<=5}
+function assignmentAllowedForPlan(item,id=current){
+ if(!isWeekday())return true;
+ if(id==='iori')return !['リコーダー','家庭科'].includes(item.subject);
+ if(id==='sakuya')return !['家庭科','技術','音楽','美術','保健体育','副教科'].includes(item.subject)&&item.category!=='holiday-project';
+ return true;
+}
+function assignmentPriority(item){
+ const ranks={submission:1,'school-homework':2,'test-study':3,'weak-point':4,'advanced-study':5};
+ return ranks[item.category]||5;
+}
+function createTomorrowPlan(id=current){
+ const items=assignmentItems(id).filter(item=>item.status!=='completed'&&assignmentAllowedForPlan(item,id));
+ return items.sort((a,b)=>assignmentPriority(a)-assignmentPriority(b)||a.priority-b.priority).map(item=>({
+  assignmentId:item.id,
+  subject:item.subject,
+  title:item.title,
+  status:item.status,
+  remaining:item.remaining,
+  priority:assignmentPriority(item),
+  category:item.category
+ }));
+}
+function saveTomorrowPlan(id=current){
+ const plan=createTomorrowPlan(id);
+ localStorage.setItem(nextPlanKey(id),JSON.stringify({date:PLAN_DATE,childName:assignmentData[id]?.childName,items:plan}));
+ return plan;
+}
+function assignmentStepText(id=current,completedItems=[],additionalProgress=''){
+ const names=completedItems.map(item=>item.title);
+ if(names.length)return `${names[0]}を進め、昨日より一歩前進した。`;
+ if(additionalProgress)return `${additionalProgress.slice(0,40)}を記録し、昨日より一歩進んだ。`;
+ const next=assignmentItems(id).find(item=>item.status!=='completed');
+ return next?`${next.title}に取り組む準備ができた。`:'今日できたことを一つ振り返った。';
+}
 
 const SYNC_META_KEY='stepup-sync-meta-v1';
 const SYNC_KEYS_PREFIX='stepup-';
@@ -97,7 +155,7 @@ function formatFocusTitle(text){
  if(parts.length<2)return escapeHtml(text);
  return parts.map(part=>`<span class="focus-phrase">${escapeHtml(part)}</span>`).join('<span class="focus-space" aria-hidden="true"> </span>');
 }
-function render(){const d=data[current];mission.classList.toggle('sakuya-theme',current==='sakuya');personName.textContent=d.name;focusTitle.innerHTML=formatFocusTitle(d.focus);focusSub.textContent=d.sub;priorityTitle.textContent=d.priority;priorityText.textContent=d.priorityText;renderMobileWelcome(d);renderCountdown();goals.innerHTML=d.goals.map(x=>`<li>${x}</li>`).join('');const saved=JSON.parse(localStorage.getItem(key())||'{}');const tasks=activeTasks();scheduleList.innerHTML=tasks.map((t,i)=>`<label class="task ${saved.checks?.[i]?'done':''}"><input type="checkbox" data-i="${i}" ${saved.checks?.[i]?'checked':''}><time>${t[0]}</time><span><strong>${t[1]}</strong><small>${t[2]}</small></span><span class="task-state">${saved.checks?.[i]?'完了 ✓':'タップで完了'}</span><span class="duration">${t[2]}</span></label>`).join('');stepInput.value=saved.step||'';bindChecks();update();renderPersonalCoach()}
+function render(){const d=data[current];mission.classList.toggle('sakuya-theme',current==='sakuya');personName.textContent=d.name;focusTitle.innerHTML=formatFocusTitle(d.focus);focusSub.textContent=d.sub;priorityTitle.textContent=d.priority;priorityText.textContent=d.priorityText;renderMobileWelcome(d);renderCountdown();goals.innerHTML=d.goals.map(x=>`<li>${x}</li>`).join('');const saved=JSON.parse(localStorage.getItem(key())||'{}');const tasks=activeTasks();scheduleList.innerHTML=tasks.map((t,i)=>{const assignment=assignmentForTask(t[1]);const assignmentText=assignment?`課題：${assignmentStatusLabels[assignment.status]}・${assignment.remaining}`:(saved.checks?.[i]?'完了 ✓':'タップで完了');return `<label class="task ${saved.checks?.[i]?'done':''}"><input type="checkbox" data-i="${i}" ${saved.checks?.[i]?'checked':''}><time>${t[0]}</time><span><strong>${t[1]}</strong><small>${t[2]}</small></span><span class="task-state">${assignmentText}</span><span class="duration">${t[2]}</span></label>`}).join('');stepInput.value=saved.step||'';bindChecks();update();renderPersonalCoach()}
 function renderMobileWelcome(d){
  const hour=new Date().getHours();
  const greeting=hour<11?'おはよう！':hour<18?'こんにちは！':'こんばんは！';
@@ -473,17 +531,61 @@ function analyzeVoiceReport(text){
  let nextAction=difficult?`${subject}を明日は10分だけ復習し、分からない所を一つ質問する。`:`明日は最初のミッションを一つ終えてから、次へ進む。`;
  return {response,stepUp,nextAction};
 }
+function applyAssignmentReport(id,currentText){
+ const saved=JSON.parse(localStorage.getItem(key())||'{}');
+ const tasks=activeTasks(),checks=saved.checks||{};
+ const items=assignmentItems(id),completedItems=[];
+ tasks.forEach((task,index)=>{
+  if(!checks[index])return;
+    const matchedAssignment=assignmentForTask(task[1],id);
+    const assignment=items.find(item=>item.id===matchedAssignment?.id);
+  if(assignment&&assignment.status!=='completed'){
+   assignment.status='completed';
+   assignment.progress='今日のチェックで完了';
+   assignment.remaining='なし';
+   completedItems.push(assignment);
+  }
+ });
+ const normalizedText=normalizeAssignmentText(currentText);
+ items.forEach(item=>{
+  const title=normalizeAssignmentText(item.title);
+  if(title&&normalizedText.includes(title)&&/(完了|終わ|進め|やった|できた)/.test(currentText)&&item.status!=='completed'){
+   item.status='completed';
+   item.progress='報告内容から完了を確認';
+   item.remaining='なし';
+   if(!completedItems.some(completed=>completed.id===item.id))completedItems.push(item);
+  }
+ });
+ saveAssignmentItems(id,items);
+ return {items,completedItems,checks:{...checks},tasks};
+}
+function saveAssignmentReport(id,text,report){
+ const reportKey=`stepup-assignment-report-${id}`;
+ localStorage.setItem(reportKey,JSON.stringify({
+  childName:assignmentData[id]?.childName,
+  transcript:text,
+    additionalProgress:text,
+  completedTaskIndices:Object.keys(report.checks).filter(index=>report.checks[index]),
+  completedAssignments:report.completedItems.map(item=>item.id),
+  savedAt:new Date().toISOString()
+ }));
+}
 function saveVoiceReport(){
  const text=voiceTranscript.value.trim();
  if(!text){voiceStatus.textContent='報告内容を話すか入力してください';voiceTranscript.focus();return}
  const result=analyzeVoiceReport(text);
- localStorage.setItem(voiceReportKey(),JSON.stringify({transcript:text,...result,savedAt:new Date().toISOString()}));
+ const assignmentReport=applyAssignmentReport(current,text);
+ const stepUp=assignmentStepText(current,assignmentReport.completedItems,text);
+ const tomorrowPlan=saveTomorrowPlan(current);
+ saveAssignmentReport(current,text,assignmentReport);
+ localStorage.setItem(voiceReportKey(),JSON.stringify({transcript:text,additionalProgress:text,...result,stepUp,completedAssignments:assignmentReport.completedItems.map(item=>item.id),tomorrowPlan:tomorrowPlan.map(item=>item.assignmentId),savedAt:new Date().toISOString()}));
  const saved=JSON.parse(localStorage.getItem(key())||'{}');
- saved.step=result.stepUp;
+ saved.step=stepUp;
  localStorage.setItem(key(),JSON.stringify(saved));
- stepInput.value=result.stepUp;stepMessage.textContent=result.stepUp;
- showVoiceResult(result.response,result.stepUp,result.nextAction);
+ stepInput.value=stepUp;stepMessage.textContent=stepUp;
+ showVoiceResult(result.response,stepUp,result.nextAction);
  voiceStatus.textContent='報告を保存しました';
+ render();
 }
 function setVoiceStatus(message,state=''){
  voiceStatus.textContent=message;
