@@ -1,3 +1,6 @@
+(function () {
+  window.StepUpData = window.StepUpData || {};
+
 function createDefaultTask({
   taskId,
   childId,
@@ -36,7 +39,7 @@ function createDefaultTask({
   };
 }
 
-export const DEFAULT_SCHEDULES = {
+const DEFAULT_SCHEDULES = {
   ichio: [
     createDefaultTask({
       taskId: "default-ichio-morning-english",
@@ -121,7 +124,7 @@ export const DEFAULT_SCHEDULES = {
   ]
 };
 
-export function getDefaultScheduleByChildId(childId) {
+function getDefaultScheduleByChildId(childId) {
   const schedule = DEFAULT_SCHEDULES[childId];
 
   if (!Array.isArray(schedule)) {
@@ -132,3 +135,9 @@ export function getDefaultScheduleByChildId(childId) {
     ...task
   }));
 }
+
+  window.StepUpData.defaultSchedules = {
+    items: DEFAULT_SCHEDULES,
+    getByChildId: getDefaultScheduleByChildId
+  };
+})();

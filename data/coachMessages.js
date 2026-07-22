@@ -1,4 +1,7 @@
-export const COACH_PROFILES = Object.freeze({
+(function () {
+  window.StepUpData = window.StepUpData || {};
+
+const COACH_PROFILES = Object.freeze({
   ichio: {
     type: "Support Coach",
     label: "SUPPORT COACH",
@@ -41,11 +44,11 @@ export const COACH_PROFILES = Object.freeze({
   }
 });
 
-export function getCoachProfile(childId) {
+function getCoachProfile(childId) {
   return COACH_PROFILES[childId] ?? COACH_PROFILES.ichio;
 }
 
-export function getCoachMessage(childId, completedCount, totalCount, dateKey = "") {
+function getCoachMessage(childId, completedCount, totalCount, dateKey = "") {
   const profile = getCoachProfile(childId);
   let group = profile.start;
 
@@ -61,3 +64,10 @@ export function getCoachMessage(childId, completedCount, totalCount, dateKey = "
 
   return group[seed % group.length];
 }
+
+  window.StepUpData.coachMessages = {
+    profiles: COACH_PROFILES,
+    getProfile: getCoachProfile,
+    getMessage: getCoachMessage
+  };
+})();
