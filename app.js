@@ -1,13 +1,65 @@
-const data={
- iori:{name:'壱凰 / IORI',focus:'7月21日 今日のミッション',sub:'午前は英語と数学、夜は課題テスト対策を一つずつ進める。',priority:'午前の予定を守り、夜は数学・社会・ことばのきまりを優先する',priorityText:'外出後は無理に詰め込まず、筋トレを挟んで集中を切り替える。丸付けまでできたら大きなStep Up。',goals:['英語 新研究とジョイフルワークを進める','どこスタ数学に1時間取り組む','夜に数学・社会・ことばのきまりを進める','丸付け・振り返りまで行う'],tasks:[['09:00','朝活：最重要不規則動詞','20分'],['09:20','英語 新研究','60分'],['10:30','ジョイフルワーク','60分'],['11:30','どこスタ数学','60分'],['13:00','昼食・外出','17:30まで'],['18:00','夕食・休憩','60分'],['19:00','筋トレ','20分'],['19:20','数学 新研究','60分'],['20:30','社会 新研究','60分'],['21:40','ことばのきまり','40分'],['22:20','国語・理科の丸付け／今日のStep Up','40分']]},
- sakuya:{name:'朔埜 / SAKUYA',focus:'読書感想文チャレンジ',sub:'楽しく進めて、今日のゴールを一つずつクリア。',priority:'読書感想文を3時間で仕上げる',priorityText:'最初に構成を作り、本文、見直しの順で進めよう。',goals:['読書感想文を完成させる','サマースクールの丸付け','国語3ページ・理科10ページ','数学3ページ'],tasks:[['08:00','朝活：サマースクール丸付け','30分'],['09:00','感想文：構成を作る','40分'],['09:50','感想文：本文を書く①','60分'],['11:00','感想文：本文を書く②','60分'],['13:30','感想文：見直し・清書','40分'],['14:30','理科 10ページ','50分'],['15:30','国語 3ページ','30分'],['16:10','数学 3ページ','30分']]}
-};
-const testEvents={
- iori:[{title:'5教科課題テスト①',date:'2026-08-25',subject:'国語・数学・社会'},{title:'5教科課題テスト②',date:'2026-08-26',subject:'理科・英語'},{title:'不規則動詞テスト',date:'2026-09-02',subject:'英語'},{title:'単元テスト',date:'2026-09-03',subject:'英語'}],
- sakuya:[{title:'確認テスト',date:'2026-08-28',subject:'国語・算数'},{title:'漢字テスト',date:'2026-08-05',subject:'国語'}]
-};
+const data=window.StepUpData.children;
+const testEvents=window.StepUpData.testEvents;
 const TODAY=new Date(2026,6,21);
 const PLAN_DATE='2026-07-21';
+const assignmentData=window.StepUpData.assignments;
+const assignmentProgressKey=id=>`stepup-assignment-progress-${id}`;
+const nextPlanKey=id=>`stepup-next-plan-${id}`;
+const assignmentStatusLabels={completed:'完了済み','in-progress':'進行中','not-started':'未着手'};
+
+function assignmentItems(id=current){
+ const source=assignmentData?.[id]?.items||[];
+ const saved=JSON.parse(localStorage.getItem(assignmentProgressKey(id))||'{}');
+ return source.map(item=>({...item,...(saved[item.id]||{})}));
+}
+function saveAssignmentItems(id,items){
+ const states={};
+ items.forEach(item=>{states[item.id]={status:item.status,progress:item.progress,remaining:item.remaining}});
+ localStorage.setItem(assignmentProgressKey(id),JSON.stringify(states));
+}
+function normalizeAssignmentText(text){return String(text||'').replace(/[\s・：:（）()]/g,'').toLowerCase()}
+function assignmentForTask(taskTitle,id=current){
+ const task=normalizeAssignmentText(taskTitle);
+ return assignmentItems(id).find(item=>{
+  const title=normalizeAssignmentText(item.title);
+  return title&& (task.includes(title)||title.includes(task));
+ });
+}
+function isWeekday(){return TODAY.getDay()>=1&&TODAY.getDay()<=5}
+function assignmentAllowedForPlan(item,id=current){
+ if(!isWeekday())return true;
+ if(id==='iori')return !['リコーダー','家庭科'].includes(item.subject);
+ if(id==='sakuya')return !['家庭科','技術','音楽','美術','保健体育','副教科'].includes(item.subject)&&item.category!=='holiday-project';
+ return true;
+}
+function assignmentPriority(item){
+ const ranks={submission:1,'school-homework':2,'test-study':3,'weak-point':4,'advanced-study':5};
+ return ranks[item.category]||5;
+}
+function createTomorrowPlan(id=current){
+ const items=assignmentItems(id).filter(item=>item.status!=='completed'&&assignmentAllowedForPlan(item,id));
+ return items.sort((a,b)=>assignmentPriority(a)-assignmentPriority(b)||a.priority-b.priority).map(item=>({
+  assignmentId:item.id,
+  subject:item.subject,
+  title:item.title,
+  status:item.status,
+  remaining:item.remaining,
+  priority:assignmentPriority(item),
+  category:item.category
+ }));
+}
+function saveTomorrowPlan(id=current){
+ const plan=createTomorrowPlan(id);
+ localStorage.setItem(nextPlanKey(id),JSON.stringify({date:PLAN_DATE,childName:assignmentData[id]?.childName,items:plan}));
+ return plan;
+}
+function assignmentStepText(id=current,completedItems=[],additionalProgress=''){
+ const names=completedItems.map(item=>item.title);
+ if(names.length)return `${names[0]}を進め、昨日より一歩前進した。`;
+ if(additionalProgress)return `${additionalProgress.slice(0,40)}を記録し、昨日より一歩進んだ。`;
+ const next=assignmentItems(id).find(item=>item.status!=='completed');
+ return next?`${next.title}に取り組む準備ができた。`:'今日できたことを一つ振り返った。';
+}
 
 const SYNC_META_KEY='stepup-sync-meta-v1';
 const SYNC_KEYS_PREFIX='stepup-';
@@ -103,7 +155,7 @@ function formatFocusTitle(text){
  if(parts.length<2)return escapeHtml(text);
  return parts.map(part=>`<span class="focus-phrase">${escapeHtml(part)}</span>`).join('<span class="focus-space" aria-hidden="true"> </span>');
 }
-function render(){const d=data[current];mission.classList.toggle('sakuya-theme',current==='sakuya');personName.textContent=d.name;focusTitle.innerHTML=formatFocusTitle(d.focus);focusSub.textContent=d.sub;priorityTitle.textContent=d.priority;priorityText.textContent=d.priorityText;renderMobileWelcome(d);renderCountdown();goals.innerHTML=d.goals.map(x=>`<li>${x}</li>`).join('');const saved=JSON.parse(localStorage.getItem(key())||'{}');const tasks=activeTasks();scheduleList.innerHTML=tasks.map((t,i)=>`<label class="task ${saved.checks?.[i]?'done':''}"><input type="checkbox" data-i="${i}" ${saved.checks?.[i]?'checked':''}><time>${t[0]}</time><span><strong>${t[1]}</strong><small>${t[2]}</small></span><span class="task-state">${saved.checks?.[i]?'完了 ✓':'タップで完了'}</span><span class="duration">${t[2]}</span></label>`).join('');stepInput.value=saved.step||'';bindChecks();update();renderPersonalCoach()}
+function render(){const d=data[current];mission.classList.toggle('sakuya-theme',current==='sakuya');personName.textContent=d.name;focusTitle.innerHTML=formatFocusTitle(d.focus);focusSub.textContent=d.sub;priorityTitle.textContent=d.priority;priorityText.textContent=d.priorityText;renderMobileWelcome(d);renderCountdown();goals.innerHTML=d.goals.map(x=>`<li>${x}</li>`).join('');const saved=JSON.parse(localStorage.getItem(key())||'{}');const tasks=activeTasks();scheduleList.innerHTML=tasks.map((t,i)=>{const assignment=assignmentForTask(t[1]);const assignmentText=assignment?`課題：${assignmentStatusLabels[assignment.status]}・${assignment.remaining}`:(saved.checks?.[i]?'完了 ✓':'タップで完了');return `<label class="task ${saved.checks?.[i]?'done':''}"><input type="checkbox" data-i="${i}" ${saved.checks?.[i]?'checked':''}><time>${t[0]}</time><span><strong>${t[1]}</strong><small>${t[2]}</small></span><span class="task-state">${assignmentText}</span><span class="duration">${t[2]}</span></label>`}).join('');stepInput.value=saved.step||'';bindChecks();update();renderPersonalCoach()}
 function renderMobileWelcome(d){
  const hour=new Date().getHours();
  const greeting=hour<11?'おはよう！':hour<18?'こんにちは！':'こんばんは！';
@@ -479,17 +531,61 @@ function analyzeVoiceReport(text){
  let nextAction=difficult?`${subject}を明日は10分だけ復習し、分からない所を一つ質問する。`:`明日は最初のミッションを一つ終えてから、次へ進む。`;
  return {response,stepUp,nextAction};
 }
+function applyAssignmentReport(id,currentText){
+ const saved=JSON.parse(localStorage.getItem(key())||'{}');
+ const tasks=activeTasks(),checks=saved.checks||{};
+ const items=assignmentItems(id),completedItems=[];
+ tasks.forEach((task,index)=>{
+  if(!checks[index])return;
+    const matchedAssignment=assignmentForTask(task[1],id);
+    const assignment=items.find(item=>item.id===matchedAssignment?.id);
+  if(assignment&&assignment.status!=='completed'){
+   assignment.status='completed';
+   assignment.progress='今日のチェックで完了';
+   assignment.remaining='なし';
+   completedItems.push(assignment);
+  }
+ });
+ const normalizedText=normalizeAssignmentText(currentText);
+ items.forEach(item=>{
+  const title=normalizeAssignmentText(item.title);
+  if(title&&normalizedText.includes(title)&&/(完了|終わ|進め|やった|できた)/.test(currentText)&&item.status!=='completed'){
+   item.status='completed';
+   item.progress='報告内容から完了を確認';
+   item.remaining='なし';
+   if(!completedItems.some(completed=>completed.id===item.id))completedItems.push(item);
+  }
+ });
+ saveAssignmentItems(id,items);
+ return {items,completedItems,checks:{...checks},tasks};
+}
+function saveAssignmentReport(id,text,report){
+ const reportKey=`stepup-assignment-report-${id}`;
+ localStorage.setItem(reportKey,JSON.stringify({
+  childName:assignmentData[id]?.childName,
+  transcript:text,
+    additionalProgress:text,
+  completedTaskIndices:Object.keys(report.checks).filter(index=>report.checks[index]),
+  completedAssignments:report.completedItems.map(item=>item.id),
+  savedAt:new Date().toISOString()
+ }));
+}
 function saveVoiceReport(){
  const text=voiceTranscript.value.trim();
  if(!text){voiceStatus.textContent='報告内容を話すか入力してください';voiceTranscript.focus();return}
  const result=analyzeVoiceReport(text);
- localStorage.setItem(voiceReportKey(),JSON.stringify({transcript:text,...result,savedAt:new Date().toISOString()}));
+ const assignmentReport=applyAssignmentReport(current,text);
+ const stepUp=assignmentStepText(current,assignmentReport.completedItems,text);
+ const tomorrowPlan=saveTomorrowPlan(current);
+ saveAssignmentReport(current,text,assignmentReport);
+ localStorage.setItem(voiceReportKey(),JSON.stringify({transcript:text,additionalProgress:text,...result,stepUp,completedAssignments:assignmentReport.completedItems.map(item=>item.id),tomorrowPlan:tomorrowPlan.map(item=>item.assignmentId),savedAt:new Date().toISOString()}));
  const saved=JSON.parse(localStorage.getItem(key())||'{}');
- saved.step=result.stepUp;
+ saved.step=stepUp;
  localStorage.setItem(key(),JSON.stringify(saved));
- stepInput.value=result.stepUp;stepMessage.textContent=result.stepUp;
- showVoiceResult(result.response,result.stepUp,result.nextAction);
+ stepInput.value=stepUp;stepMessage.textContent=stepUp;
+ showVoiceResult(result.response,stepUp,result.nextAction);
  voiceStatus.textContent='報告を保存しました';
+ render();
 }
 function setVoiceStatus(message,state=''){
  voiceStatus.textContent=message;

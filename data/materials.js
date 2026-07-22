@@ -1,4 +1,7 @@
-export const MATERIAL_CATEGORIES = [
+(function () {
+  window.StepUpData = window.StepUpData || {};
+
+const MATERIAL_CATEGORIES = [
   {
     id: "school-homework",
     name: "学校の宿題"
@@ -33,7 +36,7 @@ export const MATERIAL_CATEGORIES = [
   }
 ];
 
-export const SUBJECTS = [
+const SUBJECTS = [
   "国語",
   "数学",
   "英語",
@@ -54,7 +57,7 @@ export const SUBJECTS = [
   "その他"
 ];
 
-export const MATERIALS = [
+const MATERIALS = [
   {
     id: "ichio-kazutomo",
     childId: "ichio",
@@ -99,16 +102,26 @@ export const MATERIALS = [
   }
 ];
 
-export function getMaterialsByChildId(childId) {
+function getMaterialsByChildId(childId) {
   return MATERIALS.filter((material) => material.childId === childId);
 }
 
-export function getMaterialById(materialId) {
+function getMaterialById(materialId) {
   return MATERIALS.find((material) => material.id === materialId) ?? null;
 }
 
-export function getCategoryById(categoryId) {
+function getCategoryById(categoryId) {
   return (
     MATERIAL_CATEGORIES.find((category) => category.id === categoryId) ?? null
   );
 }
+
+  window.StepUpData.materials = {
+    categories: MATERIAL_CATEGORIES,
+    subjects: SUBJECTS,
+    items: MATERIALS,
+    getMaterialsByChildId,
+    getMaterialById,
+    getCategoryById
+  };
+})();
