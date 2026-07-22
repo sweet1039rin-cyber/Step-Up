@@ -195,6 +195,26 @@
  <nav><button class="active" data-nav="home">⌂<span>ホーム</span></button><button data-nav="calendar">▦<span>カレンダー</span></button><button data-nav="materials">▤<span>教材</span></button><button data-nav="growth">↗<span>成長</span></button></nav>
 </section>
 
+<section id="report" class="screen utility-page report-page">
+ <header class="appbar"><button id="reportBack">←</button><div><b>AI COACH REPORT</b><span id="reportPerson">今日の学習報告</span></div><span></span></header>
+ <main class="utility-wrap">
+  <section class="utility-hero report-hero"><small>AI COACH / DAILY REPORT</small><h1>今日の頑張りを、<br>明日の一歩につなぐ。</h1><p>できたことをチェックし、自由に書いて送ると、教材の進捗と明日の準備を自動で更新します。</p></section>
+  <section class="report-card">
+   <div class="card-title"><span>01</span><h2>今日できたこと</h2></div>
+   <div id="reportChecklist" class="report-checklist"></div>
+  </section>
+  <section class="report-card">
+   <div class="card-title"><span>02</span><h2>自由に報告する</h2></div>
+   <p class="report-hint">難しかったこと、進んだページ、明日やりたいことも書けます。</p>
+   <textarea id="reportTranscript" class="report-transcript" placeholder="例：数学 新研究をP50まで進めた。英語は難しかったけど、単語を覚えられた。"></textarea>
+   <div class="report-actions"><button id="reportOpenVoice" type="button">マイクで話す</button><button id="reportSubmit" type="button">AIコーチに報告</button></div>
+   <p id="reportStatus" class="report-status" aria-live="polite"></p>
+  </section>
+  <section id="reportResult" class="report-result hidden" aria-live="polite"></section>
+  <section class="report-card report-next-card"><div class="card-title"><span>03</span><h2>明日の準備</h2></div><div id="reportTomorrow" class="report-tomorrow">報告すると、明日の学習計画を準備します。</div></section>
+ </main>
+</section>
+
 <section id="calendar" class="screen calendar-page">
  <header class="appbar"><button id="calendarBack">←</button><div><b>CALENDAR</b><span id="calendarPerson">学習カレンダー</span></div><button id="todayBtn">今日</button></header>
  <main class="calendar-wrap">

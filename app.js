@@ -140,7 +140,7 @@ document.querySelector('#saveGrades')?.addEventListener('click',()=>{
 });
 window.addEventListener('load',initGradeInputs);
 
-const select=document.querySelector('#select'),mission=document.querySelector('#mission'),family=document.querySelector('#family'),materialsScreen=document.querySelector('#materials'),growthScreen=document.querySelector('#growth'),plannerScreen=document.querySelector('#planner');let current='iori';
+const select=document.querySelector('#select'),mission=document.querySelector('#mission'),family=document.querySelector('#family'),materialsScreen=document.querySelector('#materials'),growthScreen=document.querySelector('#growth'),plannerScreen=document.querySelector('#planner'),reportScreen=document.querySelector('#report');let current='iori';
 function show(el){document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));el.classList.add('active');scrollTo(0,0)}
 document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>{if(b.dataset.view==='family')openFamily();else{current=b.dataset.view;render();show(mission)}});
 back.onclick=()=>show(select);familyBack.onclick=()=>show(select);
@@ -230,7 +230,7 @@ if(useStepSuggestion)useStepSuggestion.onclick=()=>{const text=document.querySel
 themeToggle.onclick=()=>{if(current==='iori')mission.classList.toggle('dark')};
 
 function getCoachMessage(id){
- const saved=JSON.parse(localStorage.getItem('stepup-v3-'+id)||'{}');
+ const saved=JSON.parse(localStorage.getItem('stepup-v4-'+PLAN_DATE+'-'+id)||'{}');
  const tasks=saved.customTasks||data[id].tasks;
  const checks=saved.checks||{};
  const doneIndexes=tasks.map((_,i)=>i).filter(i=>checks[i]);
@@ -258,7 +258,7 @@ function renderPersonalCoach(){
  if(strategy)strategy.textContent=message.strategy;
  if(next)next.textContent=message.next;
 }
-function childSummary(id){const saved=JSON.parse(localStorage.getItem('stepup-v3-'+id)||'{}');const tasks=saved.customTasks||data[id].tasks;const total=tasks.length;const done=Object.values(saved.checks||{}).filter(Boolean).length;const rate=Math.round(done/total*100);const mins=tasks.reduce((sum,t,i)=>sum+((saved.checks||{})[i]?parseInt(t[2])||0:0),0);return {done,total,rate,mins,step:saved.step||'まだ記録なし'}}
+function childSummary(id){const saved=JSON.parse(localStorage.getItem('stepup-v4-'+PLAN_DATE+'-'+id)||'{}');const tasks=saved.customTasks||data[id].tasks;const total=tasks.length;const done=Object.values(saved.checks||{}).filter(Boolean).length;const rate=Math.round(done/total*100);const mins=tasks.reduce((sum,t,i)=>sum+((saved.checks||{})[i]?parseInt(t[2])||0:0),0);return {done,total,rate,mins,step:saved.step||'まだ記録なし'}}
 function renderFamily(){
  const a=childSummary('iori'),b=childSummary('sakuya'),allDone=a.done+b.done,allTotal=a.total+b.total,rate=Math.round(allDone/allTotal*100),mins=a.mins+b.mins;
  familyStats.innerHTML=`<div><b>${rate}%</b><span>今日の達成率</span></div><div><b>${Math.floor(mins/60)}h ${mins%60}m</b><span>完了した学習時間</span></div><div><b>${allTotal-allDone}</b><span>残りミッション</span></div>`;
@@ -515,6 +515,21 @@ function updateVoicePersonalization(){
  voiceTranscript.value=saved?.transcript||'';
  if(saved?.response){showVoiceResult(saved.response,saved.stepUp,saved.nextAction)}else{voiceResult.classList.add('hidden');voiceResult.innerHTML=''}
 }
+function renderReport(){
+ if(!reportScreen)return;
+ const saved=JSON.parse(localStorage.getItem(key())||'{}'),tasks=activeTasks(),checks=saved.checks||{};
+ const person=document.querySelector('#reportPerson'),list=document.querySelector('#reportChecklist'),input=document.querySelector('#reportTranscript'),result=document.querySelector('#reportResult'),tomorrow=document.querySelector('#reportTomorrow');
+ if(person)person.textContent=data[current].name+' / 今日の学習報告';
+ if(list)list.innerHTML=tasks.map((task,index)=>`<label class="report-check ${checks[index]?'done':''}"><input type="checkbox" data-report-index="${index}" ${checks[index]?'checked':''}><span><strong>${escapeHtml(task[1])}</strong><small>${escapeHtml(task[0])}・${escapeHtml(task[2])}</small></span><b>${checks[index]?'完了':'未完了'}</b></label>`).join('');
+ list?.querySelectorAll('[data-report-index]').forEach(box=>box.onchange=()=>{
+  const latest=JSON.parse(localStorage.getItem(key())||'{}');latest.checks=latest.checks||{};latest.checks[box.dataset.reportIndex]=box.checked;localStorage.setItem(key(),JSON.stringify(latest));renderReport();render();
+ });
+ const report=JSON.parse(localStorage.getItem(voiceReportKey())||'null');
+ if(input)input.value=report?.transcript||'';
+ if(result){if(report?.response){result.innerHTML=`<small>STEP UP AI</small><h3>${escapeHtml(report.response)}</h3><div><b>今日のStep Up</b><p>${escapeHtml(report.stepUp||'')}</p></div><div><b>明日の一歩</b><p>${escapeHtml(report.nextAction||'')}</p></div>`;result.classList.remove('hidden')}else{result.classList.add('hidden');result.innerHTML=''}}
+ const plan=JSON.parse(localStorage.getItem(nextPlanKey(current))||'null');
+ if(tomorrow)tomorrow.innerHTML=plan?.items?.length?`<strong>${plan.items.length}件の候補を準備しました。</strong><span>${plan.items.slice(0,3).map(item=>escapeHtml(item.title)).join(' / ')}${plan.items.length>3?' ほか':''}</span>`:'未完了の課題はありません。休息を優先する計画を準備します。';
+}
 function showVoiceResult(response,stepUp,nextAction){
  voiceResult.innerHTML=`<small>STEP UP AI</small><h3>${response}</h3><div><b>今日のStep Up</b><p>${stepUp}</p></div><div><b>明日の一歩</b><p>${nextAction}</p></div>`;
  voiceResult.classList.remove('hidden');
@@ -559,6 +574,28 @@ function applyAssignmentReport(id,currentText){
  saveAssignmentItems(id,items);
  return {items,completedItems,checks:{...checks},tasks};
 }
+function applyMaterialReport(id,report,text){
+ const materials=getMaterialsFor(id),normalized=normalizeAssignmentText(text);
+ report.tasks.forEach((task,index)=>{
+  if(!report.checks[index])return;
+  const title=normalizeAssignmentText(task[1]);
+  const material=materials.find(item=>title.includes(normalizeAssignmentText(item.name))||normalizeAssignmentText(item.name).includes(title));
+  if(material){
+   const total=Number(material.total||100),target=Number(material.todayTo||0);
+   material.current=Math.min(total,Math.max(Number(material.current||0),target||Number(material.current||0)+1));
+   material.done=material.current>=total;
+  }
+ });
+ materials.forEach(material=>{
+  const title=normalizeAssignmentText(material.name);
+  if(title&&normalized.includes(title)&&/(完了|終わ|進め|やった|できた|ページ|p\d+)/i.test(text)){
+   material.current=Math.min(Number(material.total||100),Math.max(Number(material.current||0),Number(material.todayTo||material.current||0)));
+   material.done=material.current>=Number(material.total||100);
+  }
+ });
+ saveMaterials(materials);
+ return materials;
+}
 function saveAssignmentReport(id,text,report){
  const reportKey=`stepup-assignment-report-${id}`;
  localStorage.setItem(reportKey,JSON.stringify({
@@ -575,16 +612,19 @@ function saveVoiceReport(){
  if(!text){voiceStatus.textContent='報告内容を話すか入力してください';voiceTranscript.focus();return}
  const result=analyzeVoiceReport(text);
  const assignmentReport=applyAssignmentReport(current,text);
+ const materialReport=applyMaterialReport(current,assignmentReport,text);
  const stepUp=assignmentStepText(current,assignmentReport.completedItems,text);
  const tomorrowPlan=saveTomorrowPlan(current);
  saveAssignmentReport(current,text,assignmentReport);
- localStorage.setItem(voiceReportKey(),JSON.stringify({transcript:text,additionalProgress:text,...result,stepUp,completedAssignments:assignmentReport.completedItems.map(item=>item.id),tomorrowPlan:tomorrowPlan.map(item=>item.assignmentId),savedAt:new Date().toISOString()}));
+ localStorage.setItem(voiceReportKey(),JSON.stringify({transcript:text,additionalProgress:text,...result,stepUp,completedAssignments:assignmentReport.completedItems.map(item=>item.id),updatedMaterials:materialReport.filter(item=>item.done).map(item=>item.name),tomorrowPlan:tomorrowPlan.map(item=>item.assignmentId),savedAt:new Date().toISOString()}));
  const saved=JSON.parse(localStorage.getItem(key())||'{}');
  saved.step=stepUp;
  localStorage.setItem(key(),JSON.stringify(saved));
  stepInput.value=stepUp;stepMessage.textContent=stepUp;
  showVoiceResult(result.response,stepUp,result.nextAction);
  voiceStatus.textContent='報告を保存しました';
+ const reportStatus=document.querySelector('#reportStatus');if(reportStatus)reportStatus.textContent='報告を保存しました。教材の進捗と明日の準備を更新しました。';
+ renderReport();
  render();
 }
 function setVoiceStatus(message,state=''){
@@ -688,7 +728,11 @@ async function runMicrophoneDiagnostic(){
 }
 micTestBtn.onclick=runMicrophoneDiagnostic;
 
-quickVoice.onclick=()=>{voiceCoach.scrollIntoView({behavior:'smooth',block:'start'});setTimeout(()=>voiceStart.focus(),350)};
+function openReport(){renderReport();show(reportScreen)}
+quickVoice.onclick=openReport;
+document.querySelector('#reportBack').onclick=()=>show(mission);
+document.querySelector('#reportOpenVoice').onclick=()=>{show(mission);voiceCoach.scrollIntoView({behavior:'smooth',block:'start'});setTimeout(()=>voiceStart.focus(),350)};
+document.querySelector('#reportSubmit').onclick=()=>{voiceTranscript.value=document.querySelector('#reportTranscript').value.trim();saveVoiceReport()};
 voiceStart.onclick=async()=>{
  if(!voiceRecognition){setVoiceStatus('音声入力に対応していないため、下の欄へ手入力してください','error');voiceTranscript.focus();return}
  if(voiceListening){voiceRecognition.stop();return}
@@ -715,4 +759,4 @@ updateVoiceEnvironment();
 
 // Refresh voice content whenever a player page is rendered.
 const sprint8Render=render;
-render=function(){sprint8Render();updateVoicePersonalization()};
+render=function(){sprint8Render();updateVoicePersonalization();if(reportScreen?.classList.contains('active'))renderReport()};
