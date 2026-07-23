@@ -22,6 +22,8 @@ function extractReportedPage(text,name){
  const normalizedName=normalizeAssignmentText(name),normalizedText=normalizeAssignmentText(text);
  const nameIndex=normalizedText.indexOf(normalizedName);
  const nearby=nameIndex>=0?normalizedText.slice(nameIndex+normalizedName.length,nameIndex+normalizedName.length+40):normalizedText;
+ const range=nearby.match(/(?:p|ページ)?(\d+)(?:〜|-|~|から)(\d+)/);
+ if(range)return Number(range[2]);
  const match=nearby.match(/(?:p|ページ)(\d+)|(?:p|ページまで|ページを)?(\d+)ページ/);
  return match?Number(match[1]||match[2]):null;
 }
@@ -555,7 +557,7 @@ function renderReport(){
  });
  const report=JSON.parse(localStorage.getItem(voiceReportKey())||'null');
  if(input)input.value=report?.transcript||'';
- if(result){if(report?.response){result.innerHTML=`<small>STEP UP AI</small><h3>${escapeHtml(report.response)}</h3><div><b>今日のStep Up</b><p>${escapeHtml(report.stepUp||'')}</p></div><div><b>明日の一歩</b><p>${escapeHtml(report.nextAction||'')}</p></div>`;result.classList.remove('hidden')}else{result.classList.add('hidden');result.innerHTML=''}}
+ if(result){if(report?.response){const summary=report.summary||{};const progressRows=(summary.materialChanges||[]).map(change=>`<p>✓ ${escapeHtml(change.name)} P${change.before} → P${change.after}</p>`).join('');result.innerHTML=`<small>STEP UP AI</small><h3>${escapeHtml(report.response)}</h3><div><b>保存しました！</b><p>更新内容</p><p>✓ チェック項目${summary.checkedCount?` (${summary.checkedCount}件)`:''}</p><p>✓ 自由記述</p><p>✓ 教材進捗</p>${progressRows}<p>✓ 課題・提出期限</p><p>✓ 今日のStep Up</p><p>✓ 明日の学習計画</p></div><div><b>今日のStep Up</b><p>${escapeHtml(report.stepUp||'')}</p></div><div><b>明日の一歩</b><p>${escapeHtml(report.nextAction||'')}</p></div>`;result.classList.remove('hidden')}else{result.classList.add('hidden');result.innerHTML=''}}
  const plan=JSON.parse(localStorage.getItem(nextPlanKey(current))||'null');
  if(tomorrow)tomorrow.innerHTML=plan?.items?.length?`<strong>${plan.items.length}件の候補を準備しました。</strong><span>${plan.items.slice(0,3).map(item=>escapeHtml(item.title)).join(' / ')}${plan.items.length>3?' ほか':''}</span>`:'未完了の課題はありません。休息を優先する計画を準備します。';
 }
@@ -654,14 +656,21 @@ function saveAssignmentReport(id,text,report){
 }
 function saveVoiceReport(){
  const text=voiceTranscript.value.trim();
- if(!text){voiceStatus.textContent='報告内容を話すか入力してください';voiceTranscript.focus();return}
+ const reportState=JSON.parse(localStorage.getItem(key())||'{}'),reportChecks=reportState.checks||{};
+ const checkedCount=Object.values(reportChecks).filter(Boolean).length;
+ if(!text&&!checkedCount){voiceStatus.textContent='チェック項目を選ぶか、報告内容を入力してください';voiceTranscript.focus();return}
+ const beforeMaterials=getMaterials().map(item=>({name:item.name,current:Number(item.current||0)}));
+ const beforeAssignments=getAssignments().map(item=>({name:item.name,current:Number(item.current||0)}));
  const result=analyzeVoiceReport(text);
  const assignmentReport=applyAssignmentReport(current,text);
  const materialReport=applyMaterialReport(current,assignmentReport,text);
  const stepUp=assignmentStepText(current,assignmentReport.completedItems,text);
  const tomorrowPlan=saveTomorrowPlan(current);
+ const materialChanges=materialReport.map(item=>{const before=beforeMaterials.find(entry=>normalizeAssignmentText(entry.name)===normalizeAssignmentText(item.name));const after=Number(item.current||0);return before&&before.current!==after?{name:item.subject?`${item.subject} ${item.name}`:item.name,before:before.current,after}:null}).filter(Boolean);
+ const assignmentChanges=getAssignments().filter(item=>{const before=beforeAssignments.find(entry=>normalizeAssignmentText(entry.name)===normalizeAssignmentText(item.name));return before&&before.current!==Number(item.current||0)});
+ const summary={checkedCount,materialChanges,assignmentChanged:assignmentChanges.length>0};
  saveAssignmentReport(current,text,assignmentReport);
- localStorage.setItem(voiceReportKey(),JSON.stringify({transcript:text,additionalProgress:text,...result,stepUp,completedAssignments:assignmentReport.completedItems.map(item=>item.id),updatedMaterials:materialReport.filter(item=>item.done).map(item=>item.name),tomorrowPlan:tomorrowPlan.map(item=>item.assignmentId),savedAt:new Date().toISOString()}));
+ localStorage.setItem(voiceReportKey(),JSON.stringify({transcript:text,additionalProgress:text,...result,stepUp,completedAssignments:assignmentReport.completedItems.map(item=>item.id),updatedMaterials:materialReport.filter(item=>item.done).map(item=>item.name),tomorrowPlan:tomorrowPlan.map(item=>item.assignmentId),summary,savedAt:new Date().toISOString()}));
  const saved=JSON.parse(localStorage.getItem(key())||'{}');
  saved.step=stepUp;
  localStorage.setItem(key(),JSON.stringify(saved));
@@ -671,6 +680,7 @@ function saveVoiceReport(){
  const reportStatus=document.querySelector('#reportStatus');if(reportStatus)reportStatus.textContent='報告を保存しました。教材の進捗と明日の準備を更新しました。';
  renderReport();
  render();
+ if(document.querySelector('#family')?.classList.contains('active'))renderFamily();
 }
 function setVoiceStatus(message,state=''){
  voiceStatus.textContent=message;
