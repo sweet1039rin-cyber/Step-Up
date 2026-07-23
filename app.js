@@ -519,6 +519,7 @@ const micDiagnosticResult=document.querySelector('#micDiagnosticResult');
 const voiceEnvironment=document.querySelector('#voiceEnvironment');
 let voiceRecognition=null;
 let voiceListening=false;
+let voiceSaveStatusTimer=null;
 
 
 function updateVoiceEnvironment(){
@@ -655,10 +656,13 @@ function saveAssignmentReport(id,text,report){
  }));
 }
 function saveVoiceReport(){
+ clearTimeout(window.voiceSaveStatusTimer);
+ voiceStatus.textContent='';
  const text=voiceTranscript.value.trim();
  const reportState=JSON.parse(localStorage.getItem(key())||'{}'),reportChecks=reportState.checks||{};
  const checkedCount=Object.values(reportChecks).filter(Boolean).length;
  if(!text&&!checkedCount){voiceStatus.textContent='チェック項目を選ぶか、報告内容を入力してください';voiceTranscript.focus();return}
+ try{
  const beforeMaterials=getMaterials().map(item=>({name:item.name,current:Number(item.current||0)}));
  const beforeAssignments=getAssignments().map(item=>({name:item.name,current:Number(item.current||0)}));
  const result=analyzeVoiceReport(text);
@@ -676,11 +680,30 @@ function saveVoiceReport(){
  localStorage.setItem(key(),JSON.stringify(saved));
  stepInput.value=stepUp;stepMessage.textContent=stepUp;
  showVoiceResult(result.response,stepUp,result.nextAction);
- voiceStatus.textContent='報告を保存しました';
- const reportStatus=document.querySelector('#reportStatus');if(reportStatus)reportStatus.textContent='報告を保存しました。教材の進捗と明日の準備を更新しました。';
- renderReport();
- render();
- if(document.querySelector('#family')?.classList.contains('active'))renderFamily();
+ showVoiceResult(result.response,stepUp,result.nextAction);
+renderReport();
+render();
+if(document.querySelector('#family')?.classList.contains('active'))renderFamily();
+
+const refreshedVoiceStatus=document.querySelector('#voiceStatus');
+if(refreshedVoiceStatus){
+refreshedVoiceStatus.textContent='保存完了しました';
+voiceSaveStatusTimer=setTimeout(()=>{
+const currentVoiceStatus=document.querySelector('#voiceStatus');
+if(currentVoiceStatus?.textContent==='保存完了しました'){
+currentVoiceStatus.textContent='';
+}
+},2500);
+}
+
+const refreshedReportStatus=document.querySelector('#reportStatus');
+if(refreshedReportStatus){
+refreshedReportStatus.textContent='報告を保存しました。教材の進捗と明日の準備を更新しました。';
+}
+ }catch(error){
+  voiceStatus.textContent='保存に失敗しました';
+  console.error('音声報告の保存に失敗しました',error);
+ }
 }
 function setVoiceStatus(message,state=''){
  voiceStatus.textContent=message;
