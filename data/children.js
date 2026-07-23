@@ -46,6 +46,7 @@ window.StepUpData.assignments = {
       {id: 'iori-kazutomo', subject: '数学', title: '数学の友', status: 'completed', progress: '答え合わせまで完了', remaining: 'なし', priority: 1, category: 'school-homework'},
       {id: 'iori-science-research', subject: '理科', title: '理科新研究', status: 'completed', progress: '答え合わせまで完了', remaining: 'なし', priority: 1, category: 'school-homework'},
       {id: 'iori-english-research', subject: '英語', title: '英語新研究', status: 'in-progress', progress: 'P86まで完了', remaining: 'P86以降', priority: 1, category: 'school-homework'},
+      {id: 'iori-joyful-work', subject: '英語', title: 'ジョイフルワーク', status: 'in-progress', progress: 'P8まで完了', remaining: 'P8以降', priority: 1, category: 'school-homework'},
       {id: 'iori-integrated-study', subject: '総合', title: '総合', status: 'completed', progress: '完了', remaining: 'なし', priority: 2, category: 'submission'}
     ]
   },
