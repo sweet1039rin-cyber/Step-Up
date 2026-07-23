@@ -14,10 +14,39 @@ function assignmentItems(id=current){
 }
 function saveAssignmentItems(id,items){
  const states={};
- items.forEach(item=>{states[item.id]={status:item.status,progress:item.progress,remaining:item.remaining}});
+ items.forEach(item=>{states[item.id]={status:item.status,progress:item.progress,remaining:item.remaining,current:item.current}});
  localStorage.setItem(assignmentProgressKey(id),JSON.stringify(states));
 }
 function normalizeAssignmentText(text){return String(text||'').replace(/[\s・：:（）()]/g,'').toLowerCase()}
+function extractReportedPage(text,name){
+ const normalizedName=normalizeAssignmentText(name),normalizedText=normalizeAssignmentText(text);
+ const nameIndex=normalizedText.indexOf(normalizedName);
+ const nearby=nameIndex>=0?normalizedText.slice(nameIndex+normalizedName.length,nameIndex+normalizedName.length+40):normalizedText;
+ const match=nearby.match(/(?:p|ページ)(\d+)|(?:p|ページまで|ページを)?(\d+)ページ/);
+ return match?Number(match[1]||match[2]):null;
+}
+function getAssignmentsForChild(id){
+ const saved=JSON.parse(localStorage.getItem(`stepup-assignments-${id}`)||'null');
+ return saved||defaultAssignments[id].map(item=>({...item}));
+}
+function syncLearningProgress(id,name,current,total){
+ const list=getAssignmentsForChild(id),normalizedName=normalizeAssignmentText(name);
+ const assignment=list.find(item=>normalizeAssignmentText(item.name)===normalizedName);
+ if(assignment){
+  assignment.current=Math.max(0,Math.min(Number(assignment.total||total||100),Number(current)||0));
+  saveAssignments(list);
+ }
+ const items=assignmentItems(id),item=items.find(entry=>normalizeAssignmentText(entry.title)===normalizedName);
+ if(item){
+  item.current=current;
+  item.status=Number(current)>=Number(total||100)?'completed':'in-progress';
+  item.progress=Number(current)>=Number(total||100)?'完了':`P${current}まで完了`;
+  item.remaining=Number(current)>=Number(total||100)?'なし':`P${current}以降`;
+  saveAssignmentItems(id,items);
+ }
+ const materials=getMaterials(id),material=materials.find(entry=>normalizeAssignmentText(entry.name)===normalizedName);
+ if(material){material.current=current;material.done=Number(current)>=Number(total||100);saveMaterials(materials)}
+}
 function assignmentForTask(taskTitle,id=current){
  const task=normalizeAssignmentText(taskTitle);
  return assignmentItems(id).find(item=>{
@@ -340,8 +369,8 @@ function saveMaterials(list){localStorage.setItem(materialKey(),JSON.stringify(l
 function renderMaterials(){
  const list=getMaterials();const filtered=materialFilter==='all'?list:list.filter(x=>x.priority===materialFilter);
  materialList.innerHTML=filtered.length?filtered.map(x=>{const total=Number(x.total||100),currentPage=Number(x.current||0),pct=Math.min(100,Math.round(currentPage/total*100));return `<article class="material-item ${x.priority} ${x.done?'done':''}"><div><small>${x.subject} / ${x.priority==='urgent'?'PRIORITY':x.priority==='school'?'SCHOOL':'REVIEW'}</small><h2>${x.name}</h2><p>${x.note||''}</p><div class="page-target"><span>今日 P${x.todayFrom||'-'}〜${x.todayTo||'-'}</span><b>現在 P${currentPage} / ${total}</b></div><div class="material-progress"><i style="width:${pct}%"></i></div><em>残り ${Math.max(0,total-currentPage)}ページ</em></div><div class="material-actions"><button data-progress-id="${x.id}">＋進捗</button><button data-material-id="${x.id}">${x.done?'戻す':'完了'}</button></div></article>`}).join(''):'<div class="empty-state">この条件の教材はありません。</div>';
- document.querySelectorAll('[data-material-id]').forEach(b=>b.onclick=()=>{const all=getMaterials();const item=all.find(x=>String(x.id)===b.dataset.materialId);if(item)item.done=!item.done;saveMaterials(all);renderMaterials()});
- document.querySelectorAll('[data-progress-id]').forEach(b=>b.onclick=()=>{const all=getMaterials();const item=all.find(x=>String(x.id)===b.dataset.progressId);if(!item)return;const next=prompt('現在のページを入力してください',item.current||0);if(next===null)return;item.current=Math.max(0,Math.min(Number(item.total||9999),Number(next)||0));saveMaterials(all);renderMaterials()});
+ document.querySelectorAll('[data-material-id]').forEach(b=>b.onclick=()=>{const all=getMaterials();const item=all.find(x=>String(x.id)===b.dataset.materialId);if(!item)return;item.done=!item.done;item.current=item.done?Number(item.total||100):0;saveMaterials(all);syncLearningProgress(current,item.name,item.current,item.total);renderMaterials()});
+ document.querySelectorAll('[data-progress-id]').forEach(b=>b.onclick=()=>{const all=getMaterials();const item=all.find(x=>String(x.id)===b.dataset.progressId);if(!item)return;const next=prompt('現在のページを入力してください',item.current||0);if(next===null)return;item.current=Math.max(0,Math.min(Number(item.total||9999),Number(next)||0));item.done=item.current>=Number(item.total||100);saveMaterials(all);syncLearningProgress(current,item.name,item.current,item.total);renderMaterials()});
 }
 function openMaterials(){materialsPerson.textContent=data[current].name+' / 教材';materialForm.classList.add('hidden');renderMaterials();show(materialsScreen)}
 materialsBack.onclick=()=>show(mission);
@@ -429,8 +458,8 @@ function renderAssignments(){
  const remaining=list.reduce((s,a)=>s+Math.max(0,a.total-a.current),0),urgent=list.filter(a=>daysLeft(a.deadline)<=7&&a.current<a.total).length,complete=list.filter(a=>a.current>=a.total).length;
  assignmentSummary.innerHTML=`<article><b>${list.length}</b><span>登録課題</span></article><article><b>${urgent}</b><span>7日以内の期限</span></article><article><b>${remaining}</b><span>残りページ・工程</span></article>`;
  assignmentList.innerHTML=list.map(a=>{const left=daysLeft(a.deadline),remain=Math.max(0,a.total-a.current),pct=Math.min(100,Math.round(a.current/a.total*100)),today=remain?dailyTarget(a):0;return `<article class="assignment-item ${left<=7&&remain?'urgent':''}"><div class="assignment-top"><div><small>${a.category}</small><h2>${a.name}</h2></div><b>${remain?'あと '+left+'日':'完了'}</b></div><div class="assignment-meta"><span>現在<strong>${a.current} / ${a.total}</strong></span><span>残り<strong>${remain}</strong></span><span>今日の目安<strong>${today}</strong></span></div><div class="assignment-progress"><i style="width:${pct}%"></i></div><div class="assignment-actions"><button data-assignment-progress="${a.id}">進捗を更新</button><button data-assignment-complete="${a.id}">${remain?'完了にする':'戻す'}</button></div></article>`}).join('');
- document.querySelectorAll('[data-assignment-progress]').forEach(b=>b.onclick=()=>{const all=getAssignments(),a=all.find(x=>String(x.id)===b.dataset.assignmentProgress);const v=prompt('現在のページ・工程を入力',a.current);if(v===null)return;a.current=Math.max(0,Math.min(a.total,Number(v)||0));saveAssignments(all);renderAssignments()});
- document.querySelectorAll('[data-assignment-complete]').forEach(b=>b.onclick=()=>{const all=getAssignments(),a=all.find(x=>String(x.id)===b.dataset.assignmentComplete);a.current=a.current>=a.total?0:a.total;saveAssignments(all);renderAssignments()});
+ document.querySelectorAll('[data-assignment-progress]').forEach(b=>b.onclick=()=>{const all=getAssignments(),a=all.find(x=>String(x.id)===b.dataset.assignmentProgress);const v=prompt('現在のページ・工程を入力',a.current);if(v===null)return;a.current=Math.max(0,Math.min(a.total,Number(v)||0));saveAssignments(all);syncLearningProgress(current,a.name,a.current,a.total);renderAssignments()});
+ document.querySelectorAll('[data-assignment-complete]').forEach(b=>b.onclick=()=>{const all=getAssignments(),a=all.find(x=>String(x.id)===b.dataset.assignmentComplete);a.current=a.current>=a.total?0:a.total;saveAssignments(all);syncLearningProgress(current,a.name,a.current,a.total);renderAssignments()});
 }
 function openAssignments(){assignmentForm.classList.add('hidden');renderAssignments();show(assignmentsScreen)}
 openAssignmentBtn.onclick=openAssignments;assignmentBack.onclick=()=>show(mission);addAssignmentBtn.onclick=()=>assignmentForm.classList.toggle('hidden');
@@ -552,23 +581,35 @@ function applyAssignmentReport(id,currentText){
  const items=assignmentItems(id),completedItems=[];
  tasks.forEach((task,index)=>{
   if(!checks[index])return;
-    const matchedAssignment=assignmentForTask(task[1],id);
-    const assignment=items.find(item=>item.id===matchedAssignment?.id);
-  if(assignment&&assignment.status!=='completed'){
+  const matchedAssignment=assignmentForTask(task[1],id);
+  const assignment=items.find(item=>item.id===matchedAssignment?.id);
+  if(assignment){
    assignment.status='completed';
    assignment.progress='今日のチェックで完了';
    assignment.remaining='なし';
-   completedItems.push(assignment);
+   assignment.current=Number(assignment.total||100);
+  syncLearningProgress(id,assignment.title,assignment.current,assignment.total);
+   if(!completedItems.some(completed=>completed.id===assignment.id))completedItems.push(assignment);
   }
  });
  const normalizedText=normalizeAssignmentText(currentText);
  items.forEach(item=>{
   const title=normalizeAssignmentText(item.title);
-  if(title&&normalizedText.includes(title)&&/(完了|終わ|進め|やった|できた)/.test(currentText)&&item.status!=='completed'){
-   item.status='completed';
-   item.progress='報告内容から完了を確認';
-   item.remaining='なし';
-   if(!completedItems.some(completed=>completed.id===item.id))completedItems.push(item);
+  const reportedPage=extractReportedPage(currentText,item.title);
+  if(title&&normalizedText.includes(title)&&/(完了|終わ|進め|やった|できた|ページ|p\d+)/i.test(currentText)){
+   if(reportedPage!==null){
+    item.current=Math.min(Number(item.total||100),Math.max(Number(item.current||0),reportedPage));
+    item.status=item.current>=Number(item.total||100)?'completed':'in-progress';
+    item.progress=`P${item.current}まで完了`;
+    item.remaining=item.current>=Number(item.total||100)?'なし':`P${item.current}以降`;
+   }else{
+    item.status='completed';
+    item.current=Number(item.total||100);
+    item.progress='報告内容から完了を確認';
+    item.remaining='なし';
+   }
+  syncLearningProgress(id,item.title,item.current,item.total);
+   if(item.status==='completed'&&!completedItems.some(completed=>completed.id===item.id))completedItems.push(item);
   }
  });
  saveAssignmentItems(id,items);
@@ -582,15 +623,19 @@ function applyMaterialReport(id,report,text){
   const material=materials.find(item=>title.includes(normalizeAssignmentText(item.name))||normalizeAssignmentText(item.name).includes(title));
   if(material){
    const total=Number(material.total||100),target=Number(material.todayTo||0);
-   material.current=Math.min(total,Math.max(Number(material.current||0),target||Number(material.current||0)+1));
+  material.current=total;
    material.done=material.current>=total;
+  syncLearningProgress(id,material.name,material.current,total);
   }
  });
  materials.forEach(material=>{
   const title=normalizeAssignmentText(material.name);
+  const reportedPage=extractReportedPage(text,material.name);
   if(title&&normalized.includes(title)&&/(完了|終わ|進め|やった|できた|ページ|p\d+)/i.test(text)){
-   material.current=Math.min(Number(material.total||100),Math.max(Number(material.current||0),Number(material.todayTo||material.current||0)));
+  const total=Number(material.total||100);
+  material.current=reportedPage===null?total:Math.min(total,Math.max(Number(material.current||0),reportedPage));
    material.done=material.current>=Number(material.total||100);
+  syncLearningProgress(id,material.name,material.current,total);
   }
  });
  saveMaterials(materials);
