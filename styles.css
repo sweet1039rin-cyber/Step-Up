@@ -382,13 +382,185 @@ button,input,select,textarea{touch-action:manipulation}
 .sakuya-theme .iori-academic-dashboard{display:none}
 .academic-head,.academic-panel-title{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}.academic-head small{color:#ff3655;font-weight:900;letter-spacing:.16em}.academic-head h2{margin:5px 0 0;font-size:clamp(22px,3vw,34px)}.academic-head>span{border:1px solid #ff3655;padding:6px 10px;font-size:12px;font-weight:900;color:#ff6680}
 .academic-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:18px 0}.academic-summary article{padding:15px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.035)}.academic-summary small,.academic-summary span{display:block;color:#aeb7c8}.academic-summary strong{display:block;margin:7px 0;font-size:17px}.academic-summary article:first-child strong{color:#ff506d}
-.academic-grid{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(280px,.8fr);gap:12px}.academic-panel{padding:16px;border:1px solid rgba(255,255,255,.12);background:#0c1018}.academic-panel-title{margin-bottom:12px}.academic-panel-title h3{margin:0;font-size:18px}.academic-panel-title p{margin:4px 0 0;color:#aeb7c8;font-size:13px}.academic-panel-title>span{font-size:12px;color:#ff607a;font-weight:900}.assignment-table-wrap{overflow:auto}.assignment-table{width:100%;border-collapse:collapse;font-size:13px}.assignment-table th,.assignment-table td{padding:9px 8px;border-bottom:1px solid rgba(255,255,255,.09);text-align:left;white-space:nowrap}.assignment-table th{color:#9ea9bb;font-size:11px}.assignment-table tr.urgent td:nth-child(3),.assignment-table tr.urgent td:nth-child(4){color:#ff526e;font-weight:900}.assignment-table tr.wait td:nth-child(4){color:#ffc857;font-weight:900}.assignment-table tr.done td:nth-child(3){color:#62e6a7;font-weight:900}.quality-note{margin:12px 0 0;padding:10px;border-left:3px solid #ffc857;background:rgba(255,200,87,.07);font-size:12px;line-height:1.6;color:#dce2ec}.deadline-card{display:flex;align-items:center;gap:12px;padding:12px;margin-bottom:9px;background:rgba(255,45,77,.08);border-left:3px solid #ff2d4d}.deadline-card time{min-width:54px;font-size:21px;font-weight:1000;color:#ff526e}.deadline-card small,.deadline-card strong{display:block}.deadline-card small{color:#aeb7c8}.deadline-card.pending{border-color:#ffc857;background:rgba(255,200,87,.07)}.deadline-card.pending time{font-size:12px;color:#ffc857}.deadlines-panel h4{margin:17px 0 8px}.practical-list{margin:0;padding-left:20px;color:#d9deea;font-size:13px;line-height:1.75}.grades-panel{margin-top:12px}.grades-panel .academic-panel-title>strong{font-size:26px;color:#ff526e}.grade-inputs{display:grid;grid-template-columns:repeat(9,1fr);gap:8px}.grade-inputs label{display:grid;gap:5px;text-align:center;font-size:11px;color:#aeb7c8}.grade-inputs input{width:100%;min-width:0;padding:9px 4px;text-align:center;border:1px solid rgba(255,255,255,.16);background:#070a10;color:#fff;font-size:16px;font-weight:900}.grades-panel button{margin-top:12px;padding:10px 18px;border:0;background:#ef1738;color:#fff;font-weight:900}.grades-panel #gradeSaveStatus{margin-left:10px;color:#62e6a7;font-size:12px}
+.academic-grid{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(280px,.8fr);gap:12px}.academic-panel{padding:16px;border:1px solid rgba(255,255,255,.12);background:#0c1018}.academic-panel-title{margin-bottom:12px}.academic-panel-title h3{margin:0;font-size:18px}.academic-panel-title p{margin:4px 0 0;color:#aeb7c8;font-size:13px}.academic-panel-title>span{font-size:12px;color:#ff607a;font-weight:900}.assignment-table-wrap{overflow:auto}.assignment-table{width:100%;border-collapse:collapse;font-size:13px}.assignment-table th,.assignment-table td{padding:9px 8px;border-bottom:1px solid rgba(255,255,255,.09);text-align:left;white-space:nowrap}.assignment-table th{color:#9ea9bb;font-size:11px}.assignment-table tr.urgent td:nth-child(3),.assignment-table tr.urgent td:nth-child(4){color:#ff526e;font-weight:900}.assignment-table tr.wait td:nth-child(4){color:#ffc857;font-weight:900}.assignment-table tr.done td:nth-child(3){color:#62e6a7;font-weight:900}.quality-note{margin:12px 0 0;padding:10px;border-left:3px solid #ffc857;background:rgba(255,200,87,.07);font-size:12px;line-height:1.6;color:#dce2ec}.submission-card{display:flex;align-items:center;gap:12px;padding:12px;margin-bottom:9px;background:rgba(255,45,77,.08);border-left:3px solid #ff2d4d}.submission-card time{min-width:54px;font-size:21px;font-weight:1000;color:#ff526e}.submission-card small,.submission-card strong{display:block}.submission-card small{color:#aeb7c8}.submission-card.pending{border-color:#ffc857;background:rgba(255,200,87,.07)}.submission-card.pending time{font-size:12px;color:#ffc857}.deadlines-panel h4{margin:17px 0 8px}.practical-list{margin:0;padding-left:20px;color:#d9deea;font-size:13px;line-height:1.75}.grades-panel{margin-top:12px}.grades-panel .academic-panel-title>strong{font-size:26px;color:#ff526e}.grade-inputs{display:grid;grid-template-columns:repeat(9,1fr);gap:8px}.grade-inputs label{display:grid;gap:5px;text-align:center;font-size:11px;color:#aeb7c8}.grade-inputs input{width:100%;min-width:0;padding:9px 4px;text-align:center;border:1px solid rgba(255,255,255,.16);background:#070a10;color:#fff;font-size:16px;font-weight:900}.grades-panel button{margin-top:12px;padding:10px 18px;border:0;background:#ef1738;color:#fff;font-weight:900}.grades-panel #gradeSaveStatus{margin-left:10px;color:#62e6a7;font-size:12px}
 .sports-card-copy strong{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}.sports-card-copy strong em{margin-left:0;line-height:1;transform:none}
 @media(max-width:800px){.academic-summary,.academic-grid{grid-template-columns:1fr}.grade-inputs{grid-template-columns:repeat(3,1fr)}.iori-academic-dashboard{padding:15px}.academic-head{align-items:flex-start}.academic-head>span{white-space:nowrap}}
 @media(max-width:560px){.sports-card-copy strong{display:block}.sports-card-copy strong em{display:block;margin-top:8px}.academic-summary{gap:7px}.assignment-table{font-size:12px}}
 
-.exam-hero{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:20px;margin:14px 0;border:1px solid rgba(255,55,80,.65);background:linear-gradient(135deg,rgba(180,0,30,.3),rgba(15,15,20,.95));border-radius:16px}.exam-hero small{letter-spacing:.18em;color:#ff6b7f}.exam-hero h3{margin:5px 0;font-size:clamp(20px,3vw,30px)}.exam-hero p{margin:0;color:#ddd}.exam-hero>strong{background:#d70725;padding:10px 14px;border-radius:999px;white-space:nowrap}.deadline-card.hot{border-color:#ff3652;box-shadow:0 0 0 1px rgba(255,54,82,.25)}.scope-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}.scope-grid article{padding:14px;border:1px solid rgba(255,255,255,.12);border-radius:12px;background:rgba(255,255,255,.035)}.scope-grid h4{margin:0 0 7px;color:#fff}.scope-grid p{margin:0;color:#c9c9cf;line-height:1.55;font-size:13px}@media(max-width:900px){.scope-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:560px){.exam-hero{align-items:flex-start;flex-direction:column}.scope-grid{grid-template-columns:1fr}.assignment-table{min-width:760px}}
+.exam-hero{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:20px;margin:14px 0;border:1px solid rgba(255,55,80,.65);background:linear-gradient(135deg,rgba(180,0,30,.3),rgba(15,15,20,.95));border-radius:16px}.exam-hero small{letter-spacing:.18em;color:#ff6b7f}.exam-hero h3{margin:5px 0;font-size:clamp(20px,3vw,30px)}.exam-hero p{margin:0;color:#ddd}.exam-hero>strong{background:#d70725;padding:10px 14px;border-radius:999px;white-space:nowrap}.submission-card.hot{border-color:#ff3652;box-shadow:0 0 0 1px rgba(255,54,82,.25)}.scope-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}.scope-grid article{padding:14px;border:1px solid rgba(255,255,255,.12);border-radius:12px;background:rgba(255,255,255,.035)}.scope-grid h4{margin:0 0 7px;color:#fff}.scope-grid p{margin:0;color:#c9c9cf;line-height:1.55;font-size:13px}@media(max-width:900px){.scope-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:560px){.exam-hero{align-items:flex-start;flex-direction:column}.scope-grid{grid-template-columns:1fr}.assignment-table{min-width:760px}}
 
 /* v6.4: July 21 daily mission */
 .welcome-date{display:inline-flex;margin:10px 0 0;padding:6px 10px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.07);font-size:12px;font-weight:900;letter-spacing:.04em;border-radius:999px;color:#fff}
 @media(max-width:720px){.welcome-date{font-size:11px}.schedule-list .task time{min-width:52px}.schedule-list .task strong{line-height:1.45}}
+
+/* ============================================
+   Sprint 12-3: 今日の学習報告カード
+   新規クラスのみ使用。既存のCSSルールは変更していません。
+   ============================================ */
+.daily-report-card{display:flex;flex-direction:column;gap:14px}
+.daily-report-field{display:block;font-weight:800;margin:0}
+.daily-report-field textarea,.daily-report-field input{width:100%;margin-top:8px;padding:12px;border:1px solid #bbb;font:inherit;border-radius:4px;box-sizing:border-box}
+.daily-report-field textarea{min-height:70px}
+.daily-report-card button{background:var(--accent,#1268ff);color:#fff;border:0;padding:13px 18px;font-weight:900;cursor:pointer}
+.daily-report-status{margin:0;font-size:13px;color:#166a3d;min-height:1.2em}
+.daily-report-input-row{display:flex;gap:8px;align-items:flex-start;margin-top:8px}
+.daily-report-input-row textarea{flex:1;margin-top:0}
+.daily-report-card .mic-inline-btn{flex-shrink:0;width:44px;height:44px;border-radius:50%;border:1px solid #bbb;background:#fff;color:#333;font-size:18px;padding:0;cursor:pointer}
+.daily-report-card .mic-inline-btn.listening{background:var(--accent,#1268ff);color:#fff;border-color:var(--accent,#1268ff)}
+.daily-report-card .mic-inline-btn:disabled{opacity:.4;cursor:not-allowed}
+
+/* ============================================
+   Sprint 15: 課題タブの集計表示を横1行の小型表示にする
+   （3枚の縦カードは廃止）
+   ============================================ */
+#assignmentSummary{display:block;background:none;margin-top:16px;padding:0}
+.assignment-summary-line{background:#eef2f7;color:#33405a;padding:10px 14px;font-weight:800;font-size:13px;line-height:1.4}
+@media(max-width:700px){.assignment-summary-line{font-size:12px;padding:9px 12px}}
+
+/* Sprint 15: テスト情報（旧・課題テスト提出物ダッシュボード）を
+   課題一覧より下へ移動し、開閉式・初期状態は閉じる形にする */
+.test-info-details{margin-top:22px}
+.test-info-details summary{cursor:pointer;list-style:none;background:#101722;color:#fff;padding:14px 18px;font-weight:900;letter-spacing:.04em;display:flex;align-items:center;gap:8px}
+.test-info-details summary::-webkit-details-marker{display:none}
+.test-info-details summary::before{content:'▶';font-size:11px;transition:transform .15s}
+.test-info-details[open] summary::before{transform:rotate(90deg)}
+.test-info-details .iori-academic-dashboard{margin-top:0;border-top:none}
+
+/* ============================================
+   Sprint 17: 課題ページの閲覧専用化
+   ============================================ */
+.assignment-readonly-note{margin:14px 0 0;font-size:12px;color:#6e7a8f;font-style:italic}
+
+/* ============================================
+   Sprint 18: 当日の計画チェックによる課題反映
+   ============================================ */
+.schedule-reflect-status{margin:10px 0 0;font-size:13px;font-weight:800;color:#146aff;min-height:1.2em}
+.today-assignment-check{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:13px;font-weight:800;color:#33405a}
+.today-assignment-check input{width:18px;height:18px}
+.assignment-updated-at{margin:6px 0 0;font-size:11px;color:#9aa5b5}
+
+/* ============================================
+   Sprint 20: ホーム画面の整理
+   ============================================ */
+
+/* スケジュールカードの操作ボタンを小さいアイコンに(目立たせない) */
+.schedule-actions .icon-only{min-width:0;width:40px;height:40px;padding:0;font-size:17px;display:inline-flex;align-items:center;justify-content:center;flex:none}
+
+/* AI VOICE COACHの「詳細設定」折りたたみ */
+.voice-advanced-details{margin-top:16px;border-top:1px solid #e5e5e5;padding-top:12px}
+.voice-advanced-details summary{cursor:pointer;list-style:none;font-size:12px;font-weight:900;color:#666;letter-spacing:.04em}
+.voice-advanced-details summary::-webkit-details-marker{display:none}
+.voice-advanced-details summary::before{content:'▶ ';font-size:10px}
+.voice-advanced-details[open] summary::before{content:'▼ '}
+
+/* TODAY'S FOCUS：480px以下では確実に縦積みにし、タイトルとリングが重ならないようにする */
+@media(max-width:480px){
+ .focus-hero{display:grid!important;grid-template-columns:1fr!important;grid-template-areas:"text" "ring";gap:14px!important;align-items:start!important;padding:22px 18px!important}
+ .focus-hero>div:first-child{grid-area:text;min-width:0}
+ .focus-hero h1{display:block!important;font-size:clamp(22px,7.5vw,30px)!important;line-height:1.3;white-space:normal;word-break:keep-all;overflow-wrap:anywhere;margin:8px 0 10px!important}
+ .focus-hero p{font-size:13px;line-height:1.6}
+ .focus-hero .ring{grid-area:ring;justify-self:end;width:64px!important;height:64px!important;border-width:7px!important;flex:none}
+ .focus-hero .ring strong{font-size:17px!important}
+ .focus-hero .ring span{font-size:7px!important}
+}
+
+/* ============================================
+   Sprint 24: 提出期限ページ カードレイアウト
+   （subm- という他と衝突しない名前空間を使用）
+   ============================================ */
+.deadline-group{margin-bottom:22px}
+.deadline-group-title{margin:0 0 10px;font-size:14px;font-weight:900;color:#33405a;letter-spacing:.03em}
+
+/* PC・タブレット：詳細（左）／編集（右）の2カラム */
+.subm-card{display:grid;grid-template-columns:1fr 1fr;gap:20px;background:#fff;border:1px solid #dde3ee;border-left:6px solid #ccc;border-radius:6px;padding:18px;margin-bottom:14px;box-sizing:border-box;max-width:100%}
+.subm-card.cat-overdue{border-left-color:#c0392b}
+.subm-card.cat-today{border-left-color:#d35400}
+.subm-card.cat-within3{border-left-color:#e08e0b}
+.subm-card.cat-within7{border-left-color:#c9a400}
+.subm-card.cat-later{border-left-color:#3a6bc9}
+.subm-card.cat-none{border-left-color:#9aa5b5}
+.subm-card.cat-done{border-left-color:#2f9e5c;opacity:.8}
+
+.subm-detail{min-width:0}
+.subm-title-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.subm-title{margin:0;font-size:18px;font-weight:900;min-width:0;flex:1 1 auto;word-break:normal;overflow-wrap:anywhere}
+.subm-subject-badge{font-size:12px;font-weight:800;color:#666;background:#f2f4f8;padding:3px 10px;border-radius:999px;white-space:nowrap;flex:none}
+
+.subm-deadline-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:12px}
+.subm-deadline-block{min-width:0}
+.subm-deadline-block small{display:block;font-size:11px;color:#8a95a8}
+.subm-deadline-block strong{display:block;font-size:15px;color:#263246;white-space:nowrap}
+.subm-days-badge{padding:6px 12px;border-radius:8px;background:#f2f4f8;text-align:center;flex:none}
+.subm-days-badge small{display:block;font-size:10px;color:#8a95a8}
+.subm-days-badge strong{display:block;font-size:14px;font-weight:900;white-space:nowrap}
+.subm-days-badge.cat-overdue{background:#fdecea;color:#a5291b}
+.subm-days-badge.cat-today{background:#fdece0;color:#a15400}
+.subm-days-badge.cat-within3{background:#fff4e0;color:#8a5b00}
+.subm-days-badge.cat-within7{background:#fdf8dd;color:#7a6600}
+.subm-days-badge.cat-later{background:#eaf1ff;color:#2451a3}
+.subm-days-badge.cat-none{background:#f2f4f8;color:#556}
+.subm-days-badge.cat-done{background:#e8f7ee;color:#1e6b3d}
+
+.subm-progress-card{margin-top:14px;padding:12px;background:#f7f9fc;border-radius:8px}
+.subm-progress-card>small{display:block;font-size:11px;color:#8a95a8;margin-bottom:6px}
+.subm-progress-bar{height:8px;background:#e3e8f0;border-radius:999px;overflow:hidden}
+.subm-progress-bar i{display:block;height:100%;background:#146aff}
+.subm-progress-pct{font-size:12px;font-weight:900;color:#146aff;margin-top:4px}
+.subm-progress-figures{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap}
+.subm-progress-figures>div{flex:1 1 80px;min-width:70px}
+.subm-progress-figures small{display:block;font-size:11px;color:#8a95a8}
+.subm-progress-figures strong{display:block;font-size:14px;color:#263246;white-space:nowrap}
+
+.subm-detail-list{margin-top:12px;display:flex;flex-direction:column;gap:6px}
+.subm-detail-row{display:flex;gap:10px;font-size:13px}
+.subm-detail-row span:first-child{color:#8a95a8;min-width:80px;flex:none}
+.subm-detail-row span:last-child{color:#333;min-width:0;overflow-wrap:anywhere}
+
+.subm-complete-check{display:flex;align-items:center;gap:8px;margin-top:14px;font-size:14px;font-weight:800;color:#263246}
+.subm-complete-check input{width:20px;height:20px;flex:none}
+.subm-save-hint{margin:4px 0 0;font-size:11px;color:#9aa5b5}
+.subm-edit-toggle-btn{margin-top:12px;font-size:13px;padding:8px 16px;border:1px solid #ccc;background:#fafafa;border-radius:4px;cursor:pointer}
+
+.subm-edit{min-width:0}
+.subm-edit h4{margin:0 0 10px;font-size:14px;color:#33405a}
+.subm-edit label{display:block;font-size:12px;font-weight:800;color:#555;margin-top:10px}
+.subm-edit label:first-of-type{margin-top:0}
+.subm-edit input,.subm-edit select{width:100%;max-width:100%;margin-top:4px;padding:9px;border:1px solid #bbb;border-radius:4px;font:inherit;box-sizing:border-box}
+.subm-edit-actions{display:flex;gap:8px;margin-top:14px}
+.subm-edit-actions button{flex:1;padding:11px 0;border:0;border-radius:4px;font-weight:800;cursor:pointer}
+.de-save{background:#146aff;color:#fff}
+.de-cancel{background:#eee;color:#333}
+
+.deadline-save-bar{position:sticky;bottom:72px;background:#fff;border-top:1px solid #ddd;padding:14px;margin-top:8px;display:flex;flex-direction:column;gap:6px;align-items:stretch;z-index:5}
+.deadline-save-btn{width:100%;background:#146aff;color:#fff;border:0;padding:16px 0;font-size:15px;font-weight:900;border-radius:6px;cursor:pointer;text-align:center}
+.deadline-save-status{margin:0;font-size:12px;color:#166a3d;text-align:center;min-height:1.2em}
+
+/* ホームの「提出期限が近い課題」ウィジェット（既存のまま） */
+.home-deadline-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #eee}
+.home-deadline-row:last-child{border-bottom:none}
+.home-deadline-title{font-size:13px;font-weight:800;color:#263246;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.deadline-tag{display:inline-block;font-size:12px;font-weight:900;padding:4px 10px;border-radius:999px;background:#eee;color:#444;white-space:nowrap;flex:none}
+.deadline-tag.cat-overdue{background:#fdecea;color:#a5291b}
+.deadline-tag.cat-today{background:#fdece0;color:#a15400}
+.deadline-tag.cat-within3{background:#fff4e0;color:#8a5b00}
+.deadline-tag.cat-within7{background:#fdf8dd;color:#7a6600}
+.deadline-tag.cat-later{background:#eaf1ff;color:#2451a3}
+.deadline-tag.cat-none{background:#f2f4f8;color:#556}
+.deadline-tag.cat-done{background:#e8f7ee;color:#1e6b3d}
+
+/* 追加フォームの進捗形式に応じた表示切替 */
+#newAssignmentNumericFields.hidden,#newAssignmentStatusField.hidden{display:none}
+
+/* スマートフォン：768px以下で縦1カラムに切替 */
+@media(max-width:768px){
+ .subm-card{grid-template-columns:1fr;gap:0}
+ .subm-edit{margin-top:18px;padding-top:18px;border-top:1px solid #eee}
+}
+@media(max-width:480px){
+ .subm-card{padding:14px}
+ .subm-title{font-size:16px}
+ .subm-progress-figures{flex-wrap:wrap}
+ .subm-progress-figures>div{flex:1 1 45%}
+ .subm-deadline-row{gap:8px}
+ .deadline-save-bar{bottom:72px;padding:12px}
+}
