@@ -1002,7 +1002,7 @@ html:not(.theme-champion-black) .rest-card{
    （盾＋赤黒縦ストライプ＋白縁＋星＋SU文字。実在クラブの模倣ではない） */
 .champion-emblem{
  display:inline-block;width:34px;height:40px;flex:none;
- background-color:transparent;
+ background-color:#f2f2f2;
  background-image:url("assets/hero-emblem-white-v2.webp");
  background-repeat:no-repeat;background-size:contain;background-position:center;
  vertical-align:middle;
@@ -1223,10 +1223,10 @@ html.theme-champion-black .focus-hero{
 /* エンブレムは、Champion Blackのみご提供いただいた画像ファイルに差し替える
    （White側は従来どおりCSS生成のSVGエンブレムのまま維持） */
 html.theme-champion-black .champion-emblem{
- background-color:transparent;border-radius:6px;
+ background-color:#0b0b0d;border-radius:6px;
  background-image:url("assets/hero-emblem-black-v2.webp");
  background-repeat:no-repeat;background-size:contain;background-position:center;
- box-shadow:none;
+ box-shadow:0 2px 6px rgba(0,0,0,.5);
 }
 
 /* Heroのブランド行：エンブレム(独立画像)とテキストを横並びに、左上へ配置 */
@@ -1298,7 +1298,7 @@ html.theme-champion-black .focus-hero{
 
 /* エンブレムをさらに一回り大きくし、黒背景となじむよう調整（Champion Blackのみ） */
 html.theme-champion-black .champion-emblem{
- background-color:transparent;
+ background-color:#0b0b0d;
 }
 html.theme-champion-black .champion-emblem.lg{
  width:80px;height:90px;
@@ -1377,8 +1377,8 @@ html.theme-champion-black .champion-emblem-line__line{
  width:8px;height:8px;background:var(--accent);transform:rotate(45deg);flex:none;
 }
 .champion-emblem-line__badge{
- width:48px;height:48px;flex:none;flex-shrink:0;
- background-color:transparent;
+ width:44px;height:50px;flex:none;
+ background-color:#f2f2f2;
  background-image:url("assets/line-emblem-v2.webp");
  background-repeat:no-repeat;background-size:contain;background-position:center;
 }
@@ -1428,21 +1428,5 @@ html:not(.theme-champion-black) .champion-emblem.lg{
 @media(max-width:480px){
  html:not(.theme-champion-black) .champion-emblem.lg{
   width:192px;height:215px;
- }
-}
-
-/* ============================================
-   Sprint 42: 表示仕上げ修正
-   （エンブレムの白い/黒い四角背景を除去、
-   　White Heroのサイズ調整、ライン用の視認性向上）
-   ============================================ */
-
-/* White Heroエンブレムの最終サイズ：スマホは145〜155px程度、PCは少し大きく */
-html:not(.theme-champion-black) .champion-emblem.lg{
- width:160px;height:160px;
-}
-@media(max-width:480px){
- html:not(.theme-champion-black) .champion-emblem.lg{
-  width:150px;height:150px;
  }
 }

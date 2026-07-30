@@ -13,19 +13,8 @@ function assignmentItems(id=current){
  return source.map(item=>({...item,...(saved[item.id]||{})}));
 }
 function saveAssignmentItems(id,items){
- const prev=JSON.parse(localStorage.getItem(assignmentProgressKey(id))||'{}');
  const states={};
- items.forEach(item=>{
-  const before=prev[item.id]||{};
-  const changed=before.status!==item.status||before.current!==item.current||before.progress!==item.progress||before.remaining!==item.remaining;
-  states[item.id]={
-   status:item.status,progress:item.progress,remaining:item.remaining,current:item.current,total:item.total,
-   deadline:item.deadline,done:item.done,updatedAt:changed?new Date().toISOString():(before.updatedAt||null),
-   title:item.title,subject:item.subject,note:item.note!=null?item.note:before.note,
-   progressType:item.progressType||before.progressType,unit:item.unit||before.unit,
-   completedAt:item.done?(item.completedAt||before.completedAt||new Date().toISOString()):null
-  };
- });
+ items.forEach(item=>{states[item.id]={status:item.status,progress:item.progress,remaining:item.remaining,current:item.current}});
  localStorage.setItem(assignmentProgressKey(id),JSON.stringify(states));
 }
 function normalizeAssignmentText(text){return String(text||'').replace(/[\s・：:（）()]/g,'').toLowerCase()}
@@ -39,17 +28,16 @@ function extractReportedPage(text,name){
  return match?Number(match[1]||match[2]):null;
 }
 function getAssignmentsForChild(id){
- return ProgressEngine.getAll(id).map(it=>({
-  id:it.id,name:it.title,
-  deadline:toIsoDeadlineOrDefault(it.deadline),
-  current:it.current!=null?it.current:(it.done?1:0),
-  total:it.total!=null?it.total:1,
-  category:it.categoryLabel,
-  updatedAt:it.updatedAt||null
- }));
+ const saved=JSON.parse(localStorage.getItem(`stepup-assignments-${id}`)||'null');
+ return saved||defaultAssignments[id].map(item=>({...item}));
 }
 function syncLearningProgress(id,name,current,total){
- const normalizedName=normalizeAssignmentText(name);
+ const list=getAssignmentsForChild(id),normalizedName=normalizeAssignmentText(name);
+ const assignment=list.find(item=>normalizeAssignmentText(item.name)===normalizedName);
+ if(assignment){
+  assignment.current=Math.max(0,Math.min(Number(assignment.total||total||100),Number(current)||0));
+  saveAssignments(list);
+ }
  const items=assignmentItems(id),item=items.find(entry=>normalizeAssignmentText(entry.title)===normalizedName);
  if(item){
   item.current=current;
@@ -96,291 +84,13 @@ function saveTomorrowPlan(id=current){
  localStorage.setItem(nextPlanKey(id),JSON.stringify({date:PLAN_DATE,childName:assignmentData[id]?.childName,items:plan}));
  return plan;
 }
-function assignmentStepText(id=current,additionalProgress=''){
- // Sprint 22: 課題名はgetTodayCheckedAssignmentTitles()だけを使う。
- // canonicalItems/assignmentItems()/教科名/次の課題などから推測しない。
- const titles=getTodayCheckedAssignmentTitles(id);
- if(titles.length)return `${titles.join('・')}に取り組み、${titles.length}個のミッションを進めました。`;
+function assignmentStepText(id=current,completedItems=[],additionalProgress=''){
+ const names=completedItems.map(item=>item.title);
+ if(names.length)return `${names[0]}を進め、昨日より一歩前進した。`;
  if(additionalProgress)return `${additionalProgress.slice(0,40)}を記録し、昨日より一歩進んだ。`;
- return '今日できたことを一つ振り返った。';
+ const next=assignmentItems(id).find(item=>item.status!=='completed');
+ return next?`${next.title}に取り組む準備ができた。`:'今日できたことを一つ振り返った。';
 }
-
-// ============================================================
-// Sprint 14: 共通進捗エンジン Ver.1
-// 「データは共通・表示は子どもごと」という方針で、
-// 既存の assignmentItems()/saveAssignmentItems()（＝window.StepUpData.assignments
-// をベースにした②の仕組み）をそのまま正のデータ源として使い、そこに乗らない
-// 項目だけを「カスタム項目」として別キーで補う。
-// 各画面（ホーム・課題・教材・成長・AIコーチ・学習報告）は、この
-// ProgressEngine.getAll(childId) / updateItem(childId, itemId, patch) を経由して
-// 同じデータを参照する。
-// ============================================================
-const ASSIGNMENT_CATEGORY_LABELS={
- 'submission':'提出期限','school-homework':'学校の宿題','test-study':'定期テスト対策',
- 'weak-point':'苦手単元','advanced-study':'発展学習','holiday-project':'長期休み課題'
-};
-function categoryLabel(category){return ASSIGNMENT_CATEGORY_LABELS[category]||category||'課題'}
-function customAssignmentKey(id){return 'stepup-assignment-custom-'+id}
-function getCustomAssignments(id){
- try{const list=JSON.parse(localStorage.getItem(customAssignmentKey(id))||'[]');return Array.isArray(list)?list:[]}
- catch(e){console.error('ProgressEngine: カスタム課題の読み込みに失敗しました',e);return []}
-}
-function saveCustomAssignments(id,list){
- try{localStorage.setItem(customAssignmentKey(id),JSON.stringify(list))}
- catch(e){console.error('ProgressEngine: カスタム課題の保存に失敗しました',e)}
-}
-function toIsoDeadlineOrDefault(deadline){
- if(deadline&&/^\d{4}-\d{2}-\d{2}$/.test(deadline))return deadline;
- return '2026-08-31';
-}
-
-// ============================================================
-// Sprint 23: 提出期限ページ 共通ロジック
-// 期限の判定・並び順・AI学習計画向けデータ取得は、すべてここに集約する。
-// ============================================================
-const DEADLINE_CATEGORY_LABELS={overdue:'期限切れ・未完了',today:'今日まで',within3:'3日以内',within7:'7日以内',later:'それ以降',none:'期限未設定',done:'完了済み'};
-const DEADLINE_GROUP_ORDER=['overdue','today','within3','within7','later','none','done'];
-const DEADLINE_PRIORITY_RANK={overdue:1,today:2,within3:3,within7:4,later:5,none:6,done:7};
-function todayDateOnly(){const d=new Date();return new Date(d.getFullYear(),d.getMonth(),d.getDate())}
-function parseDeadlineDateOnly(deadline){
- if(!deadline||!/^\d{4}-\d{2}-\d{2}$/.test(deadline))return null;
- const parts=deadline.split('-').map(Number);
- return new Date(parts[0],parts[1]-1,parts[2]);
-}
-function formatDeadlineMonthDay(dateObj){return `${dateObj.getMonth()+1}月${dateObj.getDate()}日`}
-// 日付の時刻部分を使わず、年月日だけで日数差を出す（1日ずれ防止）
-function deadlineInfo(deadline,done){
- if(done)return {category:'done',label:'完了',daysRemaining:null};
- const dl=parseDeadlineDateOnly(deadline);
- if(!dl)return {category:'none',label:'期限未設定',daysRemaining:null};
- const diffDays=Math.round((dl-todayDateOnly())/86400000);
- if(diffDays<0)return {category:'overdue',label:'期限切れ',daysRemaining:diffDays};
- if(diffDays===0)return {category:'today',label:'今日まで',daysRemaining:0};
- if(diffDays<=3)return {category:'within3',label:`あと${diffDays}日`,daysRemaining:diffDays};
- if(diffDays<=7)return {category:'within7',label:`あと${diffDays}日`,daysRemaining:diffDays};
- return {category:'later',label:formatDeadlineMonthDay(dl)+'まで',daysRemaining:diffDays};
-}
-function resolveProgressType(item){
- if(item.progressType)return item.progressType;
- if(item.total!=null)return 'numeric';
- if(item.progress||item.remaining)return 'status';
- return 'check';
-}
-// AI学習計画などが参照するための共通データ取得（今回は取得のみ。生成ロジックは変更しない）
-function getPendingDeadlineAssignments(childId){
- return ProgressEngine.getAll(childId)
-  .filter(a=>!a.done)
-  .map(a=>{
-   const info=deadlineInfo(a.deadline,a.done);
-   return {
-    assignmentId:a.id,
-    title:a.title,
-    subject:a.subject||'',
-    dueDate:a.deadline||null,
-    daysRemaining:info.daysRemaining,
-    progress:a.current!=null?a.current:null,
-    remaining:(a.total!=null&&a.current!=null)?Math.max(0,a.total-a.current):null,
-    status:a.progress||a.status||'',
-    category:info.category,
-    label:info.label,
-    priority:DEADLINE_PRIORITY_RANK[info.category]
-   };
-  })
-  .sort((a,b)=>a.priority-b.priority||((a.daysRemaining??999)-(b.daysRemaining??999)));
-}
-function formatUpdatedAt(iso){
- if(!iso)return'まだ更新されていません';
- const d=new Date(iso);
- if(isNaN(d.getTime()))return'まだ更新されていません';
- return `${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}更新`;
-}
-const PROGRESS_STATUS_RANK={'not-started':0,'in-progress':1,'completed':2};
-function mergeStatusRank(a,b){return (PROGRESS_STATUS_RANK[a]||0)>=(PROGRESS_STATUS_RANK[b]||0)?a:b}
-function mergeMaxNumber(a,b){
- const an=Number(a),bn=Number(b),av=Number.isFinite(an)?an:null,bv=Number.isFinite(bn)?bn:null;
- if(av===null)return bv;if(bv===null)return av;return Math.max(av,bv);
-}
-// 旧データのタイトル → canonicalの課題ID（自動一致では拾えない組み合わせのみ明示指定）
-const LEGACY_TITLE_TO_CANONICAL_ID={
- iori:{'社会 新研究':'iori-social-research','英語 新研究':'iori-english-research','ジョイフルワーク':'iori-joyful-work'},
- sakuya:{
-  '読書感想文':'sakuya-reading-report','作文、説明文または読書感想文':'sakuya-reading-report',
-  'くり返し語順トレーニング':'sakuya-word-order-training','繰り返し語順トレーニング':'sakuya-word-order-training',
-  '小学英単語':'sakuya-elementary-english-words',
-  '家庭科ハンドノート':'sakuya-home-economics-handnote','ハンドノート':'sakuya-home-economics-handnote',
-  'サマースクール':'sakuya-summer-math','数学の友':'sakuya-summer-math',
-  '国語ワーク':'sakuya-japanese','国語語句学習':'sakuya-japanese',
-  '漢字スキル':'sakuya-kanji-skill',
-  '今の私にできること':'sakuya-ima-dekiru','今の私に出来ること':'sakuya-ima-dekiru',
-  '木工作品':'sakuya-woodwork','木工作品 アイデアスケッチ':'sakuya-woodwork',
-  '雅楽':'sakuya-gagaku','雅楽について調べる':'sakuya-gagaku',
-  'Keynote':'sakuya-keynote','Keynote下書き':'sakuya-keynote',
-  '防災レポート':'sakuya-disaster-report'
- }
-};
-function resolveCanonicalIdByTitle(childId,title){
- const map=LEGACY_TITLE_TO_CANONICAL_ID[childId]||{};
- if(map[title])return map[title];
- const norm=normalizeAssignmentText(title);
- if(!norm)return null;
- const items=(assignmentData?.[childId]?.items)||[];
- const found=items.find(it=>{const n=normalizeAssignmentText(it.title);return n&&(n.includes(norm)||norm.includes(n))});
- return found?found.id:null;
-}
-function progressMigratedKey(id){return 'stepup-progress-migrated-'+id+'-v2'}
-function progressBackupKey(id){return 'stepup-progress-backup-'+id}
-function migrateProgressIfNeeded(id){
- if(localStorage.getItem(progressMigratedKey(id)))return;
- try{
-  const backup={
-   migratedAt:new Date().toISOString(),
-   legacy1_assignments:localStorage.getItem('stepup-assignments-'+id),
-   legacy2_progress:localStorage.getItem(assignmentProgressKey(id)),
-   legacy3_summerAssignments:id==='sakuya'?localStorage.getItem('stepup-summer-assignments-sakuya'):null
-  };
-  localStorage.setItem(progressBackupKey(id),JSON.stringify(backup));
- }catch(e){console.error('ProgressEngine: バックアップの保存に失敗しました',e)}
-
- const items=assignmentItems(id);
- const customs=getCustomAssignments(id);
-
- function upsertCanonical(canonicalId,patch){
-  const item=items.find(it=>it.id===canonicalId);
-  if(!item)return false;
-  item.status=mergeStatusRank(item.status,patch.status||'not-started');
-  item.current=mergeMaxNumber(item.current,patch.current);
-  item.total=item.total!=null?item.total:patch.total;
-  item.deadline=item.deadline||patch.deadline||null;
-  if(patch.progress)item.progress=patch.progress;
-  if(patch.remaining)item.remaining=patch.remaining;
-  if(item.status==='completed'){
-   if(item.total!=null)item.current=item.total;
-   if(!patch.progress&&(!item.progress||item.progress==='未着手'))item.progress='完了';
-   item.remaining='なし';
-  }
-  item.done=item.status==='completed';
-  return true;
- }
- function upsertCustom(sourceId,title,patch){
-  const customId=id+'-custom-'+sourceId;
-  const exists=customs.find(c=>c.id===customId);
-  if(exists){
-   exists.status=mergeStatusRank(exists.status,patch.status||'not-started');
-   exists.current=mergeMaxNumber(exists.current,patch.current);
-   exists.total=exists.total!=null?exists.total:patch.total;
-   exists.done=exists.status==='completed';
-  }else{
-   customs.push({
-    id:customId,subject:patch.subject||'',title,scope:patch.scope||'',
-    deadline:patch.deadline||'',category:patch.category||'',
-    status:patch.status||'not-started',current:patch.current??null,total:patch.total??null,
-    progress:patch.progress||'',remaining:patch.remaining||'',done:(patch.status||'not-started')==='completed',
-    source:'sprint13-14-migration'
-   });
-  }
- }
-
- // 旧①（stepup-assignments-{id}、ページ数ベース）を統合
- try{
-  const legacy1=JSON.parse(localStorage.getItem('stepup-assignments-'+id)||'[]');
-  legacy1.forEach(entry=>{
-   const total=Number(entry.total)||null,cur=Number(entry.current)||0;
-   const status=total&&cur>=total?'completed':(cur>0?'in-progress':'not-started');
-   const canonicalId=resolveCanonicalIdByTitle(id,entry.name);
-   const patch={status,current:cur,total,deadline:entry.deadline,category:entry.category};
-   if(!canonicalId||!upsertCanonical(canonicalId,patch)){
-    upsertCustom('legacy1-'+entry.id,entry.name,patch);
-   }
-  });
- }catch(e){console.error('ProgressEngine: 旧①の統合に失敗しました',e)}
-
- // 旧③（sakuyaの夏休み課題、自由記述＋完了チェック）を統合
- if(id==='sakuya'){
-  try{
-   const legacy3=JSON.parse(localStorage.getItem('stepup-summer-assignments-sakuya')||'[]');
-   legacy3.forEach(entry=>{
-    const status=entry.done?'completed':(entry.progress&&entry.progress.trim()?'in-progress':'not-started');
-    const canonicalId=resolveCanonicalIdByTitle('sakuya',entry.name);
-    const patch={status,progress:entry.progress,deadline:entry.deadline,subject:entry.subject,scope:entry.scope};
-    if(!canonicalId||!upsertCanonical(canonicalId,patch)){
-     upsertCustom('legacy3-'+entry.id,entry.name,patch);
-    }
-   });
-  }catch(e){console.error('ProgressEngine: 旧③の統合に失敗しました',e)}
- }
-
- saveAssignmentItems(id,items);
- saveCustomAssignments(id,customs);
- localStorage.setItem(progressMigratedKey(id),'true');
- console.log(`ProgressEngine: ${id} の移行が完了しました`,{items,customs});
-}
-const IORI_TUTOR_PHYSICS_TOTAL_DAYS=14;
-function tutorPhysicsItemId(day){return `iori-custom-tutor-physics-day-${String(day).padStart(2,'0')}`}
-function ensureIoriTutorPhysicsItems(){
- const customs=getCustomAssignments('iori');
- let changed=false;
- for(let day=1;day<=IORI_TUTOR_PHYSICS_TOTAL_DAYS;day++){
-  const id=tutorPhysicsItemId(day);
-  if(!customs.some(c=>c.id===id)){
-   customs.push({
-    id,subject:'理科',title:`家庭教師 物理 Day${day}`,scope:'',deadline:'',
-    category:'school-homework',status:'not-started',current:null,total:null,
-    progress:'',remaining:'',done:false,source:'sprint15-tutor-physics'
-   });
-   changed=true;
-  }
- }
- if(changed)saveCustomAssignments('iori',customs);
-}
-const ProgressEngine={
- getAll(id){
-  migrateProgressIfNeeded(id);
-  if(id==='iori')ensureIoriTutorPhysicsItems();
-  const canonical=assignmentItems(id).map(it=>({
-   id:it.id,childId:id,subject:it.subject,title:it.title,category:it.category,
-   categoryLabel:categoryLabel(it.category),priority:it.priority,status:it.status,
-   done:it.done!=null?it.done:it.status==='completed',
-   progress:it.progress||'',remaining:it.remaining||'',
-   current:it.current!=null?it.current:null,total:it.total!=null?it.total:null,
-   deadline:it.deadline||null,updatedAt:it.updatedAt||null,
-   note:it.note||'',progressType:it.progressType||null,unit:it.unit||null,
-   completedAt:it.completedAt||null,isCustom:false
-  }));
-  const customs=getCustomAssignments(id).map(c=>({
-   id:c.id,childId:id,subject:c.subject||'',title:c.title,category:c.category||'',
-   categoryLabel:categoryLabel(c.category),priority:c.priority||5,status:c.status||'not-started',
-   done:c.done!=null?c.done:c.status==='completed',
-   progress:c.progress||'',remaining:c.remaining||'',
-   current:c.current!=null?c.current:null,total:c.total!=null?c.total:null,
-   deadline:c.deadline||null,updatedAt:c.updatedAt||null,
-   note:c.note||'',progressType:c.progressType||null,unit:c.unit||null,
-   completedAt:c.completedAt||null,scope:c.scope||'',isCustom:true
-  }));
-  return canonical.concat(customs);
- },
- updateItem(id,itemId,patch){
-  if(String(itemId).includes('-custom-')){
-   const customs=getCustomAssignments(id);
-   const item=customs.find(c=>c.id===itemId);
-   if(item){
-    Object.assign(item,patch);
-    if(patch.status||patch.done!=null)item.done=patch.done!=null?patch.done:item.status==='completed';
-    item.completedAt=item.done?(item.completedAt||new Date().toISOString()):null;
-    item.updatedAt=new Date().toISOString();
-    saveCustomAssignments(id,customs);
-   }
-   return;
-  }
-  const items=assignmentItems(id);
-  const item=items.find(it=>it.id===itemId);
-  if(item){
-   Object.assign(item,patch);
-   if(patch.status||patch.done!=null)item.done=patch.done!=null?patch.done:item.status==='completed';
-   item.completedAt=item.done?(item.completedAt||new Date().toISOString()):null;
-   saveAssignmentItems(id,items);
-  }
- }
-};
 
 const SYNC_META_KEY='stepup-sync-meta-v1';
 const SYNC_KEYS_PREFIX='stepup-';
@@ -469,74 +179,52 @@ document.querySelector('#viewTodayPlan')?.addEventListener('click',()=>document.
 function openFamily(){renderFamily();show(family)}
 document.querySelectorAll('[data-family-nav]').forEach(button=>button.onclick=()=>{const destination=button.dataset.familyNav;if(destination==='family'){document.querySelectorAll('[data-family-nav]').forEach(x=>x.classList.toggle('active',x===button));return}current=destination;render();show(mission)});
 function key(){return 'stepup-v4-'+PLAN_DATE+'-'+current}
-// Sprint 18: 当日の計画（チェック項目）と課題IDの明示的な対応表。
-// 実行時の文字列検索は行わず、あらかじめ決めた1:1の対応のみを使う。
-// 対応表に無いタイトルはassignmentId=nullとなり、課題へは一切反映されない。
-const TASK_ASSIGNMENT_MAP={
- iori:{
-  '英語 新研究':'iori-english-research',
-  'ジョイフルワーク':'iori-joyful-work',
-  '社会 新研究':'iori-social-research',
-  '数学 新研究':'iori-custom-legacy1-6101',
-  'ことばのきまり':'iori-custom-legacy1-6103'
- },
- sakuya:{}
-};
-function taskAssignmentId(title,childId=current){return (TASK_ASSIGNMENT_MAP[childId]||{})[title]||null}
-function activeTasks(){
- const saved=JSON.parse(localStorage.getItem(key())||'{}');
- const base=saved.customTasks||data[current].tasks;
- return base.map(t=>t.length>=4?t:[t[0],t[1],t[2],taskAssignmentId(t[1])]);
-}
+function activeTasks(){const saved=JSON.parse(localStorage.getItem(key())||'{}');return saved.customTasks||data[current].tasks}
 function escapeHtml(text){return String(text).replace(/[&<>\"]/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[ch]))}
 function formatFocusTitle(text){
  const parts=String(text).trim().split(/\s+/).filter(Boolean);
  if(parts.length<2)return escapeHtml(text);
  return parts.map(part=>`<span class="focus-phrase">${escapeHtml(part)}</span>`).join('<span class="focus-space" aria-hidden="true"> </span>');
 }
-function render(){const d=data[current];mission.classList.toggle('sakuya-theme',current==='sakuya');personName.textContent=d.name;focusTitle.innerHTML=formatFocusTitle(d.focus);focusSub.textContent=d.sub;priorityTitle.textContent=d.priority;priorityText.textContent=d.priorityText;renderMobileWelcome(d);renderCountdown();goals.innerHTML=d.goals.map(x=>`<li>${x}</li>`).join('');const saved=JSON.parse(localStorage.getItem(key())||'{}');const tasks=activeTasks();const linkedItems=ProgressEngine.getAll(current);scheduleList.innerHTML=tasks.map((t,i)=>{const assignment=t[3]?linkedItems.find(x=>x.id===t[3]):null;const assignmentText=assignment?`課題：${assignment.done?'完了済み':assignment.status==='in-progress'?'進行中':'未着手'}${assignment.total!=null?`・${assignment.current}/${assignment.total}`:''}`:(saved.checks?.[i]?'完了 ✓':'タップで完了');return `<label class="task ${saved.checks?.[i]?'done':''}"><input type="checkbox" data-i="${i}" data-assignment-id="${t[3]||''}" ${saved.checks?.[i]?'checked':''}><time>${t[0]}</time><span><strong>${t[1]}</strong><small>${t[2]}</small></span><span class="task-state">${assignmentText}</span><span class="duration">${t[2]}</span></label>`}).join('');stepMessage.textContent=saved.step||'今日の記録はまだありません。「まとめて保存」を押すと、ここに表示されます。';bindChecks();update();renderPersonalCoach();renderHomeDeadlineCard();loadDailyReportCard()}
-// Sprint 12-3/12-4: 今日の学習報告カード（提出物・課題データとは別のlocalStorageキーで管理）
+function render(){const d=data[current];mission.classList.toggle('sakuya-theme',current==='sakuya');personName.textContent=d.name;focusTitle.innerHTML=formatFocusTitle(d.focus);focusSub.textContent=d.sub;priorityTitle.textContent=d.priority;priorityText.textContent=d.priorityText;renderMobileWelcome(d);renderCountdown();goals.innerHTML=d.goals.map(x=>`<li>${x}</li>`).join('');const saved=JSON.parse(localStorage.getItem(key())||'{}');const tasks=activeTasks();scheduleList.innerHTML=tasks.map((t,i)=>{const assignment=assignmentForTask(t[1]);const assignmentText=assignment?`課題：${assignmentStatusLabels[assignment.status]}・${assignment.remaining}`:(saved.checks?.[i]?'完了 ✓':'タップで完了');return `<label class="task ${saved.checks?.[i]?'done':''}"><input type="checkbox" data-i="${i}" ${saved.checks?.[i]?'checked':''}><time>${t[0]}</time><span><strong>${t[1]}</strong><small>${t[2]}</small></span><span class="task-state">${assignmentText}</span><span class="duration">${t[2]}</span></label>`}).join('');stepInput.value=saved.step||'';bindChecks();update();renderPersonalCoach();renderTodayAssignmentsCard();loadDailyReportCard()}
+// Sprint 12-3: 今日の学習報告カード（提出物・課題データとは別のlocalStorageキーで管理）
 function dailyReportKey(date){return `stepup_daily_report_${date}_${current}`}
 function loadDailyReportCard(){
  const doneEl=document.querySelector('#dailyReportDone');
+ const minutesEl=document.querySelector('#dailyReportMinutes');
  const stepUpEl=document.querySelector('#dailyReportStepUp');
  const statusEl=document.querySelector('#dailyReportStatus');
- if(!doneEl||!stepUpEl)return;
+ if(!doneEl||!minutesEl||!stepUpEl)return;
  const date=dateKey(new Date());
  let saved=null;
  try{saved=JSON.parse(localStorage.getItem(dailyReportKey(date))||'null')}catch(e){console.error('学習報告の読み込みに失敗しました',e)}
  doneEl.value=saved?.done||'';
+ minutesEl.value=(saved&&saved.minutes!=null)?saved.minutes:'';
  stepUpEl.value=saved?.stepUp||'';
  if(statusEl)statusEl.textContent='';
 }
-function autoStepUpFromChecklist(){
- const boxes=[...document.querySelectorAll('#scheduleList .task input[type="checkbox"]')];
- if(!boxes.length)return'';
- const checked=boxes.filter(b=>b.checked);
- if(!checked.length)return'';
- const titles=checked
-  .map(b=>b.closest('.task')?.querySelector('strong')?.textContent.trim())
-  .filter(Boolean);
- if(!titles.length)return'';
- let text=titles.join('・');
- if(checked.length===boxes.length)text+='。今日のミッションを全部達成！';
- return text;
-}
 function saveDailyReportCard(){
  const doneEl=document.querySelector('#dailyReportDone');
+ const minutesEl=document.querySelector('#dailyReportMinutes');
  const stepUpEl=document.querySelector('#dailyReportStepUp');
  const statusEl=document.querySelector('#dailyReportStatus');
- if(!doneEl||!stepUpEl)return;
+ if(!doneEl||!minutesEl||!stepUpEl)return;
  const done=doneEl.value.trim();
- const manualStepUp=stepUpEl.value.trim();
- const stepUp=manualStepUp||autoStepUpFromChecklist();
- if(!done&&!stepUp){
+ const stepUp=stepUpEl.value.trim();
+ const minutesRaw=minutesEl.value.trim();
+ if(!done&&!stepUp&&!minutesRaw){
   if(statusEl)statusEl.textContent='記録する内容を1つ入力してください。';
   return;
  }
+ let minutes=null;
+ if(minutesRaw!==''){
+  const n=Number(minutesRaw);
+  minutes=(Number.isFinite(n)&&n>=0)?Math.floor(n):0;
+  minutesEl.value=minutes;
+ }
  const date=dateKey(new Date());
  try{
-  localStorage.setItem(dailyReportKey(date),JSON.stringify({date,done,stepUp}));
+  localStorage.setItem(dailyReportKey(date),JSON.stringify({date,done,minutes,stepUp}));
   if(statusEl)statusEl.textContent='今日の記録を保存しました。';
  }catch(e){
   console.error('学習報告の保存に失敗しました',e);
@@ -544,56 +232,14 @@ function saveDailyReportCard(){
  }
 }
 document.querySelector('#dailyReportSave')?.addEventListener('click',saveDailyReportCard);
-function wireDailyReportMic(){
- const btn=document.querySelector('#dailyReportMic');
- const target=document.querySelector('#dailyReportDone');
- if(!btn||!target)return;
- const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
- if(!SR){btn.disabled=true;btn.title='この端末では音声入力が使えません';return}
- const recognition=new SR();recognition.lang='ja-JP';recognition.interimResults=false;
- let listening=false;
- btn.onclick=()=>{if(listening)return;listening=true;btn.classList.add('listening');recognition.start()};
- recognition.onresult=(e)=>{const text=e.results[0][0].transcript;target.value=target.value?target.value+'\n'+text:text};
- recognition.onend=()=>{listening=false;btn.classList.remove('listening')};
- recognition.onerror=()=>{listening=false;btn.classList.remove('listening')};
-}
-wireDailyReportMic();
-function renderHomeDeadlineCard(){
- const list=document.querySelector('#homeDeadlineList');
- if(!list)return;
- const near=getPendingDeadlineAssignments(current).filter(a=>['overdue','today','within3','within7'].includes(a.category)).slice(0,3);
- list.innerHTML=near.length
-  ?near.map(a=>`<div class="home-deadline-row"><span class="home-deadline-title">${escapeHtml(a.title)}</span><span class="deadline-tag cat-${a.category}">${escapeHtml(a.label)}</span></div>`).join('')
-  :'<div class="empty-state">今週、期限が近い提出物はありません</div>';
-}
-document.querySelector('#goToDeadlinePage')?.addEventListener('click',openAssignments);
-function collapseSeriesForHomeCard(list){
- const physicsPrefix='家庭教師 物理';
- const physicsItems=list.filter(a=>a.name.startsWith(physicsPrefix));
- const others=list.filter(a=>!a.name.startsWith(physicsPrefix));
- if(!physicsItems.length)return others;
- const dayNumber=name=>Number((name.match(/Day(\d+)/)||[])[1])||0;
- const next=physicsItems.sort((a,b)=>dayNumber(a.name)-dayNumber(b.name))[0];
- return others.concat([next]);
-}
 function renderTodayAssignmentsCard(){
  const list=document.querySelector('#todayAssignmentsList');
  if(!list)return;
- const saved=JSON.parse(localStorage.getItem(key())||'{}');
- const homeChecks=saved.homeAssignmentChecks||{};
- const items=collapseSeriesForHomeCard(getAssignments().filter(a=>a.current<a.total)).sort((a,b)=>daysLeft(a.deadline)-daysLeft(b.deadline)).slice(0,3);
+ const items=getAssignments().filter(a=>a.current<a.total).sort((a,b)=>daysLeft(a.deadline)-daysLeft(b.deadline)).slice(0,3);
  list.innerHTML=items.length?items.map(a=>{
   const left=daysLeft(a.deadline),remain=Math.max(0,a.total-a.current),pct=Math.min(100,Math.round(a.current/a.total*100)),today=remain?dailyTarget(a):0;
-  return `<article class="assignment-item ${left<=7?'urgent':''}"><div class="assignment-top"><div><small>${a.category}</small><h2>${a.name}</h2></div><b>あと ${left}日</b></div><div class="assignment-meta"><span>現在<strong>${a.current} / ${a.total}</strong></span><span>残り<strong>${remain}</strong></span><span>今日の目安<strong>${today}</strong></span></div><div class="assignment-progress"><i style="width:${pct}%"></i></div><label class="today-assignment-check"><input type="checkbox" data-home-assignment-id="${a.id}" ${homeChecks[a.id]?'checked':''}> 今日ここまで進めたらチェック（保存で課題へ反映）</label></article>`;
+  return `<article class="assignment-item ${left<=7?'urgent':''}"><div class="assignment-top"><div><small>${a.category}</small><h2>${a.name}</h2></div><b>あと ${left}日</b></div><div class="assignment-meta"><span>現在<strong>${a.current} / ${a.total}</strong></span><span>残り<strong>${remain}</strong></span><span>今日の目安<strong>${today}</strong></span></div><div class="assignment-progress"><i style="width:${pct}%"></i></div></article>`;
  }).join(''):'<div class="empty-state">今日取り組む課題はありません。</div>';
- document.querySelectorAll('[data-home-assignment-id]').forEach(cb=>{
-  cb.onchange=()=>{
-   const s=JSON.parse(localStorage.getItem(key())||'{}');
-   s.homeAssignmentChecks=s.homeAssignmentChecks||{};
-   s.homeAssignmentChecks[cb.dataset.homeAssignmentId]=cb.checked;
-   localStorage.setItem(key(),JSON.stringify(s));
-  };
- });
 }
 document.querySelector('#todayAssignmentsMore')?.addEventListener('click',()=>openAssignments());
 function renderMobileWelcome(d){
@@ -614,104 +260,7 @@ function renderCountdown(){
  const events=testEvents[current]||[];
  countdownStrip.innerHTML=events.map(e=>{const target=new Date(e.date+'T00:00:00');const days=Math.max(0,Math.ceil((target-TODAY)/86400000));return `<article><small>${e.subject}</small><strong>${e.title}</strong><b>あと ${days}日</b><span>${target.getMonth()+1}/${target.getDate()}</span></article>`}).join('');
 }
-// Sprint 18: 当日の計画のチェックだけを、明示的なIDで課題進捗へ反映する。
-// 自由記述や課題名の文字列検索は一切使わない。
-function reflectTaskCheckToAssignment(assignmentId,checked,snapshotKey){
- if(!assignmentId)return{message:null,changed:false};
- const items=ProgressEngine.getAll(current);
- const item=items.find(x=>x.id===assignmentId);
- if(!item)return{message:'対応する課題が見つかりませんでした。',changed:false};
- const saved=JSON.parse(localStorage.getItem(key())||'{}');
- saved.assignmentSnapshots=saved.assignmentSnapshots||{};
- const isBinary=item.total==null;
- const key_=String(snapshotKey??assignmentId);
- if(checked){
-  if(item.done)return{message:`${item.title}はすでに完了として反映済みです。`,changed:false};
-  // チェックを外した時に正確に戻せるよう、チェック前の状態を保存しておく
-  saved.assignmentSnapshots[key_]={id:assignmentId,current:item.current,total:item.total,status:item.status,done:item.done};
-  localStorage.setItem(key(),JSON.stringify(saved));
-  if(isBinary){
-   ProgressEngine.updateItem(current,assignmentId,{status:'completed',done:true});
-   return{message:`${item.title}を完了として反映しました`,changed:true};
-  }
-  const deadlineIso=toIsoDeadlineOrDefault(item.deadline);
-  const remainDays=Math.max(1,daysLeft(deadlineIso));
-  const increment=Math.max(1,Math.ceil((item.total-item.current)/remainDays));
-  const after=Math.min(item.total,item.current+increment);
-  const done=after>=item.total;
-  ProgressEngine.updateItem(current,assignmentId,{current:after,status:done?'completed':'in-progress',done});
-  return{message:done?`${item.title}を完了として反映しました`:`${item.title}を${after}/${item.total}まで反映しました`,changed:true};
- }
- // チェックを外した場合：直前のスナップショットがあれば、その値へ正確に戻す（実績を0にリセットしない）
- const snapshot=saved.assignmentSnapshots[key_];
- if(snapshot&&snapshot.id===assignmentId){
-  ProgressEngine.updateItem(current,assignmentId,{current:snapshot.current,total:snapshot.total,status:snapshot.status,done:snapshot.done});
-  delete saved.assignmentSnapshots[key_];
-  localStorage.setItem(key(),JSON.stringify(saved));
-  return{message:`${item.title}のチェックを外したため、今日の分を取り消しました`,changed:true};
- }
- return{message:'課題進捗への変更はありませんでした。',changed:false};
-}
-// Sprint 19: 「保存＝今日の記録を確定」。
-// チェック(スケジュール・今日の学習カード)は記録として保持するだけで、
-// ここで初めて、チェック済みのassignmentIdをまとめて課題へ反映する。
-// 同じ内容で繰り返し保存しても、既に反映済みのIDはスキップするため二重更新しない。
-function collectTodayCheckedAssignmentIds(){
- const saved=JSON.parse(localStorage.getItem(key())||'{}');
- const tasks=activeTasks();
- const checks=saved.checks||{};
- const homeChecks=saved.homeAssignmentChecks||{};
- const ids=new Set();
- tasks.forEach((t,i)=>{if(checks[i]&&t[3])ids.add(t[3])});
- Object.keys(homeChecks).forEach(id=>{if(homeChecks[id])ids.add(id)});
- return ids;
-}
-// Sprint 22: 課題名の取得処理をここ1か所だけに共通化する。
-// AI VOICE COACH・TODAY'S STEP UP・保存通知・成長タブAIコーチは、
-// すべてこの2つの関数を経由して課題名を取得する（推測・別ルートでの取得は行わない）。
-function getTodayCheckedAssignmentItems(id=current){
- const checkedIds=collectTodayCheckedAssignmentIds();
- const allItems=ProgressEngine.getAll(id);
- return [...checkedIds].map(cid=>allItems.find(item=>item.id===cid)).filter(Boolean);
-}
-function getTodayCheckedAssignmentTitles(id=current){
- return getTodayCheckedAssignmentItems(id).map(item=>item.title).filter(Boolean);
-}
-function commitTodayCheckedAssignments(){
- const checkedIds=collectTodayCheckedAssignmentIds();
- let saved=JSON.parse(localStorage.getItem(key())||'{}');
- saved.reflectedAssignments=saved.reflectedAssignments||{};
- const toApply=[...checkedIds].filter(id=>!saved.reflectedAssignments[id]);
- const toRevert=Object.keys(saved.reflectedAssignments).filter(id=>saved.reflectedAssignments[id]&&!checkedIds.has(id));
- const messages=[];
- toApply.forEach(id=>{
-  const result=reflectTaskCheckToAssignment(id,true,'commit-'+id);
-  if(result&&result.message)messages.push(result.message);
-  saved=JSON.parse(localStorage.getItem(key())||'{}');
-  saved.reflectedAssignments=saved.reflectedAssignments||{};
-  saved.reflectedAssignments[id]=true;
-  localStorage.setItem(key(),JSON.stringify(saved));
- });
- toRevert.forEach(id=>{
-  const result=reflectTaskCheckToAssignment(id,false,'commit-'+id);
-  if(result&&result.message)messages.push(result.message);
-  saved=JSON.parse(localStorage.getItem(key())||'{}');
-  saved.reflectedAssignments=saved.reflectedAssignments||{};
-  delete saved.reflectedAssignments[id];
-  localStorage.setItem(key(),JSON.stringify(saved));
- });
- if(!messages.length)messages.push('課題進捗への変更はありませんでした。');
- return messages;
-}
-function showScheduleReflectStatus(result){
- const el=document.querySelector('#scheduleReflectStatus');
- if(!el)return;
- const message=result&&result.message?result.message:'課題進捗への変更はありませんでした。';
- el.textContent=message;
- clearTimeout(window.scheduleReflectStatusTimer);
- window.scheduleReflectStatusTimer=setTimeout(()=>{if(el.textContent===message)el.textContent=''},4000);
-}
-function bindChecks(){document.querySelectorAll('.task input').forEach(c=>c.onchange=()=>{const saved=JSON.parse(localStorage.getItem(key())||'{}');saved.checks=saved.checks||{};saved.checks[c.dataset.i]=c.checked;if(c.checked&&saved.activeTaskIndex===Number(c.dataset.i))saved.activeTaskIndex=null;localStorage.setItem(key(),JSON.stringify(saved));const task=c.closest('.task');task.classList.toggle('done',c.checked);const state=task.querySelector('.task-state');if(state)state.textContent=c.checked?(c.dataset.assignmentId?'記録済み（保存で課題へ反映）':'完了 ✓'):'タップで完了';update()})}
+function bindChecks(){document.querySelectorAll('.task input').forEach(c=>c.onchange=()=>{const saved=JSON.parse(localStorage.getItem(key())||'{}');saved.checks=saved.checks||{};saved.checks[c.dataset.i]=c.checked;if(c.checked&&saved.activeTaskIndex===Number(c.dataset.i))saved.activeTaskIndex=null;localStorage.setItem(key(),JSON.stringify(saved));const task=c.closest('.task');task.classList.toggle('done',c.checked);const state=task.querySelector('.task-state');if(state)state.textContent=c.checked?'完了 ✓':'タップで完了';update()})}
 function stepSuggestion(done,total,tasks,checks){
  if(!done)return '今日の計画を確認し、最初のミッションに挑戦した。';
  if(done===total)return `予定していた${total}個のミッションを最後までやり切った。`;
@@ -737,8 +286,8 @@ function updateMobileMission(tasks,checks,done){
  if(duration)duration.textContent=isActive?`予定時間 ${tasks[next][2]}・集中して進めよう`:`予定時間 ${tasks[next][2]}`;
  if(button){button.textContent=isActive?'完了する ✓':'開始する';button.disabled=false;button.dataset.taskIndex=String(next);button.dataset.action=isActive?'complete':'start';}
 }
-function update(){const cs=[...document.querySelectorAll('.task input')],done=cs.filter(x=>x.checked).length,p=cs.length?Math.round(done/cs.length*100):0;percent.textContent=p+'%';doneCount.textContent=done;totalCount.textContent=cs.length;bar.style.width=p+'%';const tasks=activeTasks(),checks=cs.map(x=>x.checked);updateMobileMission(tasks,checks,done);renderPersonalCoach();}
-
+function update(){const cs=[...document.querySelectorAll('.task input')],done=cs.filter(x=>x.checked).length,p=cs.length?Math.round(done/cs.length*100):0;percent.textContent=p+'%';doneCount.textContent=done;totalCount.textContent=cs.length;bar.style.width=p+'%';stepMessage.textContent=p===100?'MISSION COMPLETE！今日も一歩進んだ。':done?`あと${cs.length-done}個。昨日の自分より一歩前へ。`:'まず一つ、チェックを付けよう。';const tasks=activeTasks(),checks=cs.map(x=>x.checked);updateMobileMission(tasks,checks,done);const suggestion=stepSuggestion(done,cs.length,tasks,checks);const suggestionText=document.querySelector('#stepSuggestionText');if(suggestionText)suggestionText.textContent=suggestion;renderPersonalCoach();}
+saveStep.onclick=()=>{const saved=JSON.parse(localStorage.getItem(key())||'{}');saved.step=stepInput.value;localStorage.setItem(key(),JSON.stringify(saved));stepMessage.textContent=stepInput.value||'今日のStep Upを保存しました。'};
 function showMissionCelebration(taskTitle,allDone){
  const box=document.querySelector('#missionCelebration'),title=document.querySelector('#celebrationTitle'),text=document.querySelector('#celebrationText');
  if(!box)return;
@@ -761,55 +310,10 @@ if(completeCurrentMission)completeCurrentMission.onclick=()=>{
  const allDone=[...document.querySelectorAll('.task input')].every(x=>x.checked);
  showMissionCelebration(taskTitle,allDone);
 };
+const useStepSuggestion=document.querySelector('#useStepSuggestion');
+if(useStepSuggestion)useStepSuggestion.onclick=()=>{const text=document.querySelector('#stepSuggestionText')?.textContent||'';stepInput.value=text;stepInput.focus();};
 
-
-// Sprint 25: Champion Edition テーマ（既存のthemeToggleボタンを流用し、全画面・永続化に拡張）
-const THEME_STORAGE_KEY='stepup-theme';
-function applyTheme(themeName){
- document.documentElement.classList.toggle('theme-champion-black',themeName==='black');
-}
-function initTheme(){
- let saved='white';
- try{saved=localStorage.getItem(THEME_STORAGE_KEY)||'white'}catch(e){}
- applyTheme(saved);
-}
-initTheme();
-// Sprint 26: Heroエリアへ「Step Up / CHAMPION EDITION」ブランド表示を一度だけ挿入する。
-// 既存の動的なTODAY'S FOCUS(進捗リング・フォーカスタイトル)は一切変更しない。
-(function insertChampionHeroBrand(){
- const hero=document.querySelector('.focus-hero');
- const textBlock=hero?.querySelector(':scope>div:first-child');
- if(!textBlock||textBlock.querySelector('.champion-hero-brand'))return;
- textBlock.insertAdjacentHTML('afterbegin','<div class="champion-hero-brand" aria-hidden="true"><span class="champion-emblem lg" aria-hidden="true"></span><span class="champion-hero-brand-text"><span class="champion-hero-brand-main">Step Up</span><span class="champion-hero-brand-edition">CHAMPION EDITION</span><span class="champion-hero-brand-sub">今日も勝利への一歩。</span></span></div>');
-})();
-// Sprint 39: 重要な見出しにだけ「エンブレムライン」(線+ダイヤ+エンブレム+ダイヤ+線)を一度だけ配置する(表示のみ)。
-function championEmblemLineHTML(){
- return '<div class="champion-emblem-line" aria-hidden="true"><span class="champion-emblem-line__line"></span><span class="champion-emblem-line__diamond"></span><span class="champion-emblem champion-emblem-line__badge" aria-hidden="true"></span><span class="champion-emblem-line__diamond"></span><span class="champion-emblem-line__line"></span></div>';
-}
-(function insertChampionPageEmblems(){
- document.querySelectorAll('.growth-hero h1,.report-hero h1,.assignment-hero h1').forEach(h1=>{
-  if(h1.parentElement.querySelector('.champion-emblem-line'))return;
-  h1.insertAdjacentHTML('beforebegin',championEmblemLineHTML());
- });
- const stepHeading=document.querySelector('.step-card small');
- if(stepHeading&&!stepHeading.parentElement.querySelector('.champion-emblem-line')){
-  stepHeading.insertAdjacentHTML('beforebegin',championEmblemLineHTML());
- }
- const voiceHeading=document.querySelector('#voiceCoach .voice-heading');
- if(voiceHeading&&!voiceHeading.querySelector('.champion-emblem-line')){
-  voiceHeading.insertAdjacentHTML('afterbegin',championEmblemLineHTML());
- }
- const restHeading=document.querySelector('.rest-card small')||document.querySelector('.rest-card .card-title');
- if(restHeading&&!restHeading.parentElement.querySelector('.champion-emblem-line')){
-  restHeading.insertAdjacentHTML('beforebegin',championEmblemLineHTML());
- }
-})();
-themeToggle.onclick=()=>{
- const isBlack=document.documentElement.classList.contains('theme-champion-black');
- const next=isBlack?'white':'black';
- applyTheme(next);
- try{localStorage.setItem(THEME_STORAGE_KEY,next)}catch(e){console.error('テーマの保存に失敗しました',e)}
-};
+themeToggle.onclick=()=>{if(current==='iori')mission.classList.toggle('dark')};
 
 function getCoachMessage(id){
  const saved=JSON.parse(localStorage.getItem('stepup-v4-'+PLAN_DATE+'-'+id)||'{}');
@@ -826,13 +330,9 @@ function getCoachMessage(id){
   name:'朔埜',strength:'一つずつ順番に進め、文章や課題を形にする力',strategy:'算数や理科は、長く続けるより「10分＋丸付け」を1セットにすると、苦手を見つけやすいよ。',fallback:'最初の10分だけ始めよう。始められたことが今日の一歩。'
  };
  let good;
- const checkedTitles=getTodayCheckedAssignmentTitles(id);
  if(rate===100)good=`今日の${total}個のミッションを最後までやり切れたね。${profile.strength}がしっかり出ています。`;
- else if(checkedTitles.length)good=`${checkedTitles.join('・')}に取り組めたね。${done}個を完了できたことが、今日の確かなStep Upです。`;
  else if(done>0)good=`${lastDone}まで進められたね。${done}個を完了できたことが、今日の確かなStep Upです。`;
  else good=`今日の目標を確認できたことが最初の一歩。${profile.strength}を生かして、一つだけ始めよう。`;
- const completedAssignments=ProgressEngine.getAll(id).filter(a=>a.done).length;
- if(completedAssignments)good+=` 課題も${completedAssignments}件終わらせられているね。`;
  const next=nextTask?`${nextTask}を、まず20分だけ進めよう。終わったら休憩して、できた所にチェックを付けよう。`: '今日の計画は完了です。今日できたことを一つ書いて、睡眠と休養を優先しよう。';
  return {name:profile.name,good,strategy:profile.strategy,next:nextTask?next:profile.fallback,rate,done,total};
 }
@@ -937,7 +437,7 @@ materialFilters.querySelectorAll('button').forEach(b=>b.onclick=()=>{materialFil
 saveMaterialBtn.onclick=()=>{const name=newMaterialName.value.trim();if(!name)return;const list=getMaterials();list.push({id:Date.now(),name,subject:newMaterialSubject.value,priority:newMaterialPriority.value,note:'追加した教材',current:0,total:100,todayFrom:1,todayTo:5,done:false});saveMaterials(list);newMaterialName.value='';materialForm.classList.add('hidden');renderMaterials()};
 
 // Growth
-function openGrowth(){renderGrowth();renderPersonalCoach();show(growthScreen)}
+function openGrowth(){renderGrowth();show(growthScreen)}
 function renderGrowth(){
  growthPerson.textContent=data[current].name+' / 成長記録';
  const saved=JSON.parse(localStorage.getItem(key())||'{}');const checks=saved.checks||{};const total=activeTasks().length;const done=Object.values(checks).filter(Boolean).length;const rate=Math.round(done/total*100);
@@ -945,12 +445,6 @@ function renderGrowth(){
  const base=current==='iori'?[42,58,35,71,64,50,rate]:[30,45,52,40,68,55,rate];const days=['月','火','水','木','金','土','今日'];
  weekBars.innerHTML=base.map((v,i)=>`<div class="week-bar ${i===6?'today':''}"><span>${v}%</span><i style="height:${Math.max(v,4)}%"></i><b>${days[i]}</b></div>`).join('');
  const achievements=[];if(done)achievements.push(`${done}個のミッションを完了できた`);if(rate>=50)achievements.push('予定の半分以上を進めた');if(saved.step)achievements.push('今日のStep Upを自分の言葉で残した');
- const completedAssignments=ProgressEngine.getAll(current).filter(a=>a.done).length;
- if(completedAssignments)achievements.push(`${completedAssignments}件の課題を完了できた`);
- if(current==='iori'){
-  const physicsDone=ProgressEngine.getAll('iori').filter(a=>a.title.startsWith('家庭教師 物理')&&a.done).length;
-  achievements.push(`家庭教師 物理　${physicsDone}／${IORI_TUTOR_PHYSICS_TOTAL_DAYS}日完了`);
- }
  achievementList.innerHTML=achievements.length?achievements.map(x=>`<div class="achievement"><i>✓</i><strong>${x}</strong></div>`).join(''):'<div class="empty-state">最初のミッションを完了すると、ここに成長が表示されます。</div>';
 }
 growthBack.onclick=()=>show(mission);
@@ -995,7 +489,6 @@ const openAssignmentBtn=document.querySelector('#openAssignmentBtn');
 const assignmentBack=document.querySelector('#assignmentBack');
 const addAssignmentBtn=document.querySelector('#addAssignmentBtn');
 const assignmentForm=document.querySelector('#assignmentForm');
-
 const defaultAssignments={
  iori:[
   {id:6101,name:'数学 新研究',deadline:'2026-08-31',current:42,total:180,category:'提出期限'},
@@ -1013,256 +506,29 @@ const defaultAssignments={
  ]
 };
 function assignmentKey(){return 'stepup-assignments-'+current}
-function getAssignments(){return getAssignmentsForChild(current)}
-function saveAssignments(list){
- list.forEach(item=>{
-  const done=Number(item.current)>=Number(item.total);
-  ProgressEngine.updateItem(current,item.id,{
-   current:item.current,total:item.total,deadline:item.deadline,
-   status:done?'completed':(Number(item.current)>0?'in-progress':'not-started'),
-   done
-  });
- });
-}
+function getAssignments(){return JSON.parse(localStorage.getItem(assignmentKey())||'null')||defaultAssignments[current].map(x=>({...x}))}
+function saveAssignments(list){localStorage.setItem(assignmentKey(),JSON.stringify(list))}
 function daysLeft(date){return Math.max(1,Math.ceil((new Date(date+'T23:59:59')-TODAY)/86400000))}
 function dailyTarget(a){return Math.max(0,Math.ceil((Number(a.total)-Number(a.current))/daysLeft(a.deadline)))}
-// Sprint 23: 提出期限ページ本体。壱凰・朔埜とも同じ関数で描画し、
-// ProgressEngine.getAll()だけをデータ源にする(別データを作らない)。
-let pendingDeadlineChecks={}; // {assignmentId: true/false} 「変更を保存」を押すまでは確定しない
 function renderAssignments(){
- assignmentPerson.textContent=(data[current]?.name||'')+' / 提出期限';
- pendingDeadlineChecks={};
- const list=ProgressEngine.getAll(current);
- const groups={};
- DEADLINE_GROUP_ORDER.forEach(cat=>groups[cat]=[]);
- list.forEach(item=>{
-  const info=deadlineInfo(item.deadline,item.done);
-  groups[info.category].push({item,info});
- });
- Object.keys(groups).forEach(cat=>{
-  groups[cat].sort((a,b)=>{
-   const da=parseDeadlineDateOnly(a.item.deadline),db=parseDeadlineDateOnly(b.item.deadline);
-   if(da&&db)return da-db;
-   if(da)return -1;
-   if(db)return 1;
-   return 0;
-  });
- });
- const totalCount=list.length,doneCount=list.filter(a=>a.done).length;
- const urgentCount=groups.overdue.length+groups.today.length+groups.within3.length;
- assignmentSummary.innerHTML=`<div class="assignment-summary-line">登録 ${totalCount}件　｜　期限間近 ${urgentCount}件　｜　完了 ${doneCount}件</div>`;
-
- if(!list.length){
-  assignmentList.innerHTML='<div class="empty-state">提出物はまだ登録されていません。<br>学校から課題が出たら、「提出物を追加」から登録しましょう。</div>';
- }else{
-  assignmentList.innerHTML=DEADLINE_GROUP_ORDER.filter(cat=>groups[cat].length).map(cat=>{
-   const rows=groups[cat].map(({item,info})=>renderDeadlineCard(item,info)).join('');
-   return `<div class="deadline-group"><h3 class="deadline-group-title">${DEADLINE_CATEGORY_LABELS[cat]}</h3>${rows}</div>`;
-  }).join('');
- }
- wireDeadlineCardEvents();
+ assignmentPerson.textContent=data[current].name+' / 夏休み課題';
+ const list=getAssignments().sort((a,b)=>new Date(a.deadline)-new Date(b.deadline));
+ const remaining=list.reduce((s,a)=>s+Math.max(0,a.total-a.current),0),urgent=list.filter(a=>daysLeft(a.deadline)<=7&&a.current<a.total).length,complete=list.filter(a=>a.current>=a.total).length;
+ assignmentSummary.innerHTML=`<article><b>${list.length}</b><span>登録課題</span></article><article><b>${urgent}</b><span>7日以内の期限</span></article><article><b>${remaining}</b><span>残りページ・工程</span></article>`;
+ assignmentList.innerHTML=list.map(a=>{const left=daysLeft(a.deadline),remain=Math.max(0,a.total-a.current),pct=Math.min(100,Math.round(a.current/a.total*100)),today=remain?dailyTarget(a):0;return `<article class="assignment-item ${left<=7&&remain?'urgent':''}"><div class="assignment-top"><div><small>${a.category}</small><h2>${a.name}</h2></div><b>${remain?'あと '+left+'日':'完了'}</b></div><div class="assignment-meta"><span>現在<strong>${a.current} / ${a.total}</strong></span><span>残り<strong>${remain}</strong></span><span>今日の目安<strong>${today}</strong></span></div><div class="assignment-progress"><i style="width:${pct}%"></i></div><div class="assignment-actions"><button data-assignment-progress="${a.id}">進捗を更新</button><button data-assignment-complete="${a.id}">${remain?'完了にする':'戻す'}</button></div></article>`}).join('');
+ document.querySelectorAll('[data-assignment-progress]').forEach(b=>b.onclick=()=>{const all=getAssignments(),a=all.find(x=>String(x.id)===b.dataset.assignmentProgress);const v=prompt('現在のページ・工程を入力',a.current);if(v===null)return;a.current=Math.max(0,Math.min(a.total,Number(v)||0));saveAssignments(all);syncLearningProgress(current,a.name,a.current,a.total);renderAssignments()});
+ document.querySelectorAll('[data-assignment-complete]').forEach(b=>b.onclick=()=>{const all=getAssignments(),a=all.find(x=>String(x.id)===b.dataset.assignmentComplete);a.current=a.current>=a.total?0:a.total;saveAssignments(all);syncLearningProgress(current,a.name,a.current,a.total);renderAssignments()});
 }
-function formatDeadlineJapanese(deadline){
- const dl=parseDeadlineDateOnly(deadline);
- if(!dl)return'未設定';
- const w=['日','月','火','水','木','金','土'][dl.getDay()];
- return `${dl.getFullYear()}/${String(dl.getMonth()+1).padStart(2,'0')}/${String(dl.getDate()).padStart(2,'0')}（${w}）`;
-}
-function renderDeadlineCard(item,info){
- const type=resolveProgressType(item);
- const unit=item.unit||'ページ';
- const typeLabel=type==='numeric'?'ページ・回数型':type==='status'?'状態型':'完了チェック型';
- let progressBlock='';
- if(type==='numeric'&&item.total!=null){
-  const cur=item.current||0,total=item.total,remain=Math.max(0,total-cur),pct=Math.min(100,Math.round(cur/total*100));
-  progressBlock=`<div class="subm-progress-card">
-   <small>進捗状況</small>
-   <div class="subm-progress-bar"><i style="width:${pct}%"></i></div>
-   <div class="subm-progress-pct">${pct}%</div>
-   <div class="subm-progress-figures">
-    <div><small>現在値</small><strong>${cur}${unit}</strong></div>
-    <div><small>目標値</small><strong>${total}${unit}</strong></div>
-    <div><small>残り</small><strong>${remain}${unit}</strong></div>
-   </div>
-  </div>`;
- }else if(type==='status'){
-  progressBlock=`<div class="subm-progress-card"><small>状態</small><strong>${escapeHtml(item.progress||'未着手')}</strong></div>`;
- }
- const detailRows=[
-  ['進捗形式',typeLabel],
-  type==='numeric'?['単位',escapeHtml(unit)]:null,
-  item.subject?['教科',escapeHtml(item.subject)]:null,
-  ['メモ',item.note?escapeHtml(item.note):'なし']
- ].filter(Boolean).map(([k,v])=>`<div class="subm-detail-row"><span>${k}</span><span>${v}</span></div>`).join('');
- return `<article class="subm-card cat-${info.category}" data-assignment-id="${item.id}">
-  <div class="subm-detail">
-   <div class="subm-title-row"><h3 class="subm-title">${escapeHtml(item.title)}</h3>${item.subject?`<span class="subm-subject-badge">${escapeHtml(item.subject)}</span>`:''}</div>
-   <div class="subm-deadline-row">
-    <div class="subm-deadline-block"><small>提出期限</small><strong>${formatDeadlineJapanese(item.deadline)}</strong></div>
-    <div class="subm-days-badge cat-${info.category}"><small>期限まで</small><strong>${info.label}</strong></div>
-   </div>
-   ${progressBlock}
-   <div class="subm-detail-list">${detailRows}</div>
-   <label class="subm-complete-check"><input type="checkbox" data-deadline-check="${item.id}" ${item.done?'checked':''}> 完了済みにする</label>
-   <p class="subm-save-hint">チェック内容は「変更を保存」を押すまで反映されません</p>
-   <button type="button" data-deadline-edit="${item.id}" class="subm-edit-toggle-btn">編集</button>
-  </div>
-  <div id="deadlineEdit-${item.id}" class="subm-edit hidden">
-   <h4>編集</h4>
-   ${renderDeadlineEditForm(item)}
-  </div>
- </article>`;
-}
-function renderDeadlineEditForm(item){
- const type=resolveProgressType(item);
- return `
-  <label>提出物名<input type="text" class="de-name" value="${escapeHtml(item.title)}"></label>
-  <label>教科<input type="text" class="de-subject" value="${escapeHtml(item.subject||'')}"></label>
-  <label>提出期限<input type="date" class="de-deadline" value="${item.deadline&&/^\d{4}-\d{2}-\d{2}$/.test(item.deadline)?item.deadline:''}"></label>
-  <label>進捗形式
-   <select class="de-type">
-    <option value="numeric" ${type==='numeric'?'selected':''}>ページ・回数型</option>
-    <option value="status" ${type==='status'?'selected':''}>状態型</option>
-    <option value="check" ${type==='check'?'selected':''}>完了チェック型</option>
-   </select>
-  </label>
-  <label>現在値<input type="number" class="de-current" value="${item.current!=null?item.current:0}" min="0"></label>
-  <label>目標値<input type="number" class="de-total" value="${item.total!=null?item.total:10}" min="1"></label>
-  <label>単位<input type="text" class="de-unit" value="${escapeHtml(item.unit||'ページ')}"></label>
-  <label>状態<input type="text" class="de-status" value="${escapeHtml(item.progress||'')}" placeholder="例：下書き中"></label>
-  <label>メモ<input type="text" class="de-note" value="${escapeHtml(item.note||'')}"></label>
-  <div class="subm-edit-actions"><button type="button" class="de-save" data-de-save="${item.id}">保存する</button><button type="button" class="de-cancel" data-de-cancel="${item.id}">キャンセル</button></div>
- `;
-}
-function wireDeadlineCardEvents(){
- document.querySelectorAll('[data-deadline-check]').forEach(cb=>{
-  cb.onchange=()=>{pendingDeadlineChecks[cb.dataset.deadlineCheck]=cb.checked};
- });
- document.querySelectorAll('[data-deadline-edit]').forEach(btn=>{
-  btn.onclick=()=>{
-   const form=document.querySelector(`#deadlineEdit-${CSS.escape(btn.dataset.deadlineEdit)}`);
-   form?.classList.toggle('hidden');
-  };
- });
- document.querySelectorAll('[data-de-cancel]').forEach(btn=>{
-  btn.onclick=()=>{document.querySelector(`#deadlineEdit-${CSS.escape(btn.dataset.deCancel)}`)?.classList.add('hidden')};
- });
- document.querySelectorAll('[data-de-save]').forEach(btn=>{
-  btn.onclick=()=>{
-   const id=btn.dataset.deSave;
-   const card=btn.closest('.subm-edit');
-   if(!card)return;
-   const patch={
-    title:card.querySelector('.de-name')?.value.trim()||'名称未設定',
-    subject:card.querySelector('.de-subject')?.value.trim()||'',
-    deadline:card.querySelector('.de-deadline')?.value||null,
-    progressType:card.querySelector('.de-type')?.value||'check',
-    current:Number(card.querySelector('.de-current')?.value)||0,
-    total:Math.max(1,Number(card.querySelector('.de-total')?.value)||1),
-    unit:card.querySelector('.de-unit')?.value.trim()||'ページ',
-    progress:card.querySelector('.de-status')?.value.trim()||'',
-    note:card.querySelector('.de-note')?.value.trim()||''
-   };
-   ProgressEngine.updateItem(current,id,patch);
-   showDeadlineSaveStatus(`${patch.title}を更新しました`);
-   renderAssignments();
-   render();
-  };
- });
-}
-function showDeadlineSaveStatus(message){
- const el=document.querySelector('#deadlineSaveStatus');
- if(!el)return;
- el.textContent=message;
- clearTimeout(window.deadlineSaveStatusTimer);
- window.deadlineSaveStatusTimer=setTimeout(()=>{if(el.textContent===message)el.textContent=''},3000);
-}
-document.querySelector('#saveDeadlineChangesBtn')?.addEventListener('click',()=>{
- const ids=Object.keys(pendingDeadlineChecks);
- if(!ids.length){showDeadlineSaveStatus('変更はありません');return}
- let lastTitle='',count=0;
- ids.forEach(id=>{
-  const checked=pendingDeadlineChecks[id];
-  const item=ProgressEngine.getAll(current).find(x=>x.id===id);
-  if(!item||item.done===checked)return;
-  ProgressEngine.updateItem(current,id,{done:checked,status:checked?'completed':'not-started'});
-  lastTitle=item.title;count++;
- });
- pendingDeadlineChecks={};
- if(count===1)showDeadlineSaveStatus(`${lastTitle}を完了にしました`);
- else if(count>1)showDeadlineSaveStatus(`${count}件を更新しました`);
- else showDeadlineSaveStatus('変更はありません');
- renderAssignments();
- render();
-});
 function openAssignments(){assignmentForm.classList.add('hidden');renderAssignments();show(assignmentsScreen)}
 openAssignmentBtn.onclick=openAssignments;assignmentBack.onclick=()=>show(mission);addAssignmentBtn.onclick=()=>assignmentForm.classList.toggle('hidden');
-document.querySelector('#newAssignmentType')?.addEventListener('change',(e)=>{
- const numericFields=document.querySelector('#newAssignmentNumericFields');
- const statusField=document.querySelector('#newAssignmentStatusField');
- const isNumeric=e.target.value==='numeric',isStatus=e.target.value==='status';
- numericFields?.classList.toggle('hidden',!isNumeric);
- statusField?.classList.toggle('hidden',!isStatus);
-});
 
-// Sprint 13: 朔埜の夏休み課題（初期データ。移行処理でcustomItemsに反映済み）
-const sakuyaSummerDefaults=[
- {id:7001,subject:'国語',name:'国語語句学習',scope:'P41〜55（○つけ直しまで）',deadline:'9月2日',progress:'',done:false},
- {id:7002,subject:'国語',name:'作文、説明文または読書感想文',scope:'',deadline:'別紙参照',progress:'',done:false},
- {id:7003,subject:'国語',name:'漢字スキル・漢字ノート',scope:'漢字スキル P20まで、漢字ノート10ページ',deadline:'9月最初の授業',progress:'',done:false},
- {id:7004,subject:'国語',name:'習字（自由参加）',scope:'',deadline:'',progress:'',done:false},
- {id:7005,subject:'数学',name:'数学の友',scope:'P32〜47、P146〜147',deadline:'8月25日',progress:'',done:false},
- {id:7006,subject:'理科',name:'自由研究',scope:'',deadline:'8月25日',progress:'',done:false},
- {id:7007,subject:'英語',name:'繰り返し語順トレーニング',scope:'P10〜14',deadline:'8月25日',progress:'',done:false},
- {id:7008,subject:'英語',name:'小学英単語',scope:'P5〜16',deadline:'8月25日',progress:'',done:false},
- {id:7009,subject:'家庭科',name:'ハンドノート',scope:'P4〜9、P30〜35',deadline:'7月30日',progress:'',done:false},
- {id:7010,subject:'家庭科',name:'今の私にできること',scope:'プリント片面1枚',deadline:'8月25日',progress:'',done:false},
- {id:7011,subject:'技術',name:'木工作品 アイデアスケッチ',scope:'',deadline:'2学期最初の授業',progress:'',done:false},
- {id:7012,subject:'音楽',name:'雅楽について調べる',scope:'A4レポート1枚',deadline:'9月1日',progress:'',done:false},
- {id:7013,subject:'音楽',name:'アルトリコーダー「喜びの歌」の練習',scope:'',deadline:'',progress:'',done:false},
- {id:7014,subject:'音楽',name:'合唱コンクール曲を5回聴く',scope:'自分のクラスの曲',deadline:'',progress:'',done:false},
- {id:7015,subject:'総合',name:'Keynote下書き',scope:'',deadline:'7月30日',progress:'',done:false},
- {id:7016,subject:'総合',name:'防災レポート',scope:'',deadline:'8月25日',progress:'',done:false}
-];
-
-// Sprint 7: always-visible navigation shortcuts (Sprint 20でホームのquick-actionsは削除。要素が無ければ何もしない)
-document.querySelector('#quickPlanner')?.addEventListener('click',openPlanner);
-document.querySelector('#quickAssignments')?.addEventListener('click',openAssignments);
-document.querySelector('#quickMaterials')?.addEventListener('click',openMaterials);
-document.querySelector('#quickGrowth')?.addEventListener('click',openGrowth);
-document.querySelector('#quickCalendar')?.addEventListener('click',openCalendar);
-saveAssignmentBtn.onclick=()=>{
- const name=document.querySelector('#newAssignmentName')?.value.trim();
- if(!name)return;
- const type=document.querySelector('#newAssignmentType')?.value||'check';
- const subject=document.querySelector('#newAssignmentSubject')?.value.trim()||'';
- const deadlineRaw=document.querySelector('#newAssignmentDeadline')?.value||'';
- const note=document.querySelector('#newAssignmentNote')?.value.trim()||'';
- const customs=getCustomAssignments(current);
- const newId=`${current}-custom-manual-${Date.now()}`;
- const entry={
-  id:newId,subject,title:name,scope:'',deadline:deadlineRaw||'',category:'',
-  status:'not-started',done:false,progress:'',remaining:'',note,progressType:type,
-  source:'manual'
- };
- if(type==='numeric'){
-  entry.current=Number(document.querySelector('#newAssignmentCurrent')?.value)||0;
-  entry.total=Math.max(1,Number(document.querySelector('#newAssignmentTotal')?.value)||1);
-  entry.unit=document.querySelector('#newAssignmentUnit')?.value.trim()||'ページ';
- }else if(type==='status'){
-  entry.progress=document.querySelector('#newAssignmentStatus')?.value||'未着手';
- }
- customs.push(entry);
- saveCustomAssignments(current,customs);
- document.querySelector('#newAssignmentName').value='';
- document.querySelector('#newAssignmentSubject').value='';
- document.querySelector('#newAssignmentDeadline').value='';
- document.querySelector('#newAssignmentNote').value='';
- assignmentForm.classList.add('hidden');
- showDeadlineSaveStatus('提出物を追加しました');
- renderAssignments();
- render();
-};
+// Sprint 7: always-visible navigation shortcuts
+quickPlanner.onclick=openPlanner;
+quickAssignments.onclick=openAssignments;
+quickMaterials.onclick=openMaterials;
+quickGrowth.onclick=openGrowth;
+quickCalendar.onclick=openCalendar;
+saveAssignmentBtn.onclick=()=>{const name=newAssignmentName.value.trim();if(!name)return;const list=getAssignments();list.push({id:Date.now(),name,deadline:newAssignmentDeadline.value,current:Number(newAssignmentCurrent.value)||0,total:Math.max(1,Number(newAssignmentTotal.value)||1),category:'提出期限'});saveAssignments(list);newAssignmentName.value='';assignmentForm.classList.add('hidden');renderAssignments()};
 
 function autoStepMessage(){
  const saved=JSON.parse(localStorage.getItem(key())||'{}'),tasks=activeTasks(),checks=saved.checks||{},done=Object.values(checks).filter(Boolean).length;
@@ -1271,6 +537,8 @@ function autoStepMessage(){
  const completed=tasks.find((t,i)=>checks[i]);
  return completed?`${completed[1]}に取り組み、今日の一歩を進めた。`:`${done}個のミッションを完了した。`;
 }
+const originalSaveStep=saveStep.onclick;
+saveStep.onclick=()=>{if(!stepInput.value.trim())stepInput.value=autoStepMessage();originalSaveStep()};
 
 // Replace the Sprint 5 generator with deadline-aware planning.
 generatePlanBtn.onclick=()=>{
@@ -1327,9 +595,8 @@ function voiceReportKey(){return 'stepup-voice-report-'+current}
 function updateVoicePersonalization(){
  const recommended=current==='sakuya';
  const badge=voiceCoach.querySelector('.voice-badge');
- if(badge)badge.textContent=recommended?'朔埜おすすめ':'音声でも記録OK';
- const guide=document.querySelector('#voiceGuide');
- if(guide)guide.textContent=recommended
+ badge.textContent=recommended?'朔埜おすすめ':'音声でも記録OK';
+ document.querySelector('#voiceGuide').textContent=recommended
   ?'「今日は何をしたか」「難しかったこと」「明日やりたいこと」を自由に話してね。'
   :'今日できたことや難しかったことを、短く話してください。';
  const saved=JSON.parse(localStorage.getItem(voiceReportKey())||'null');
@@ -1368,17 +635,44 @@ function analyzeVoiceReport(text){
  return {response,stepUp,nextAction};
 }
 function applyAssignmentReport(id,currentText){
- // Sprint 18/21: 課題進捗は「当日の計画」のチェック(reflectTaskCheckToAssignment)でのみ更新する。
- // ここでは課題データを一切変更せず、AIコーチ用のコメント生成に使う情報だけを組み立てて返す。
- // completedItemsは、今回チェックされているassignmentId(collectTodayCheckedAssignmentIds)を基準にし、
- // canonical・customItemsの区別なくProgressEngine.getAll()から正式な表示名(title)を取得する。
- // これにより、チェックしていない別の課題が誤って混ざることを防ぐ。
  const saved=JSON.parse(localStorage.getItem(key())||'{}');
  const tasks=activeTasks(),checks=saved.checks||{};
- const allItems=ProgressEngine.getAll(id);
- const checkedIds=collectTodayCheckedAssignmentIds();
- const completedItems=[...checkedIds].map(cid=>allItems.find(it=>it.id===cid)).filter(Boolean);
- return {items:allItems,completedItems,checks:{...checks},tasks,matchedByCheck:completedItems.length,matchedByText:0,unmatchedFreeText:false};
+ const items=assignmentItems(id),completedItems=[];
+ tasks.forEach((task,index)=>{
+  if(!checks[index])return;
+  const matchedAssignment=assignmentForTask(task[1],id);
+  const assignment=items.find(item=>item.id===matchedAssignment?.id);
+  if(assignment){
+   assignment.status='completed';
+   assignment.progress='今日のチェックで完了';
+   assignment.remaining='なし';
+   assignment.current=Number(assignment.total||100);
+  syncLearningProgress(id,assignment.title,assignment.current,assignment.total);
+   if(!completedItems.some(completed=>completed.id===assignment.id))completedItems.push(assignment);
+  }
+ });
+ const normalizedText=normalizeAssignmentText(currentText);
+ items.forEach(item=>{
+  const title=normalizeAssignmentText(item.title);
+  const reportedPage=extractReportedPage(currentText,item.title);
+  if(title&&normalizedText.includes(title)&&/(完了|終わ|進め|やった|できた|ページ|p\d+)/i.test(currentText)){
+   if(reportedPage!==null){
+    item.current=Math.min(Number(item.total||100),Math.max(Number(item.current||0),reportedPage));
+    item.status=item.current>=Number(item.total||100)?'completed':'in-progress';
+    item.progress=`P${item.current}まで完了`;
+    item.remaining=item.current>=Number(item.total||100)?'なし':`P${item.current}以降`;
+   }else{
+    item.status='completed';
+    item.current=Number(item.total||100);
+    item.progress='報告内容から完了を確認';
+    item.remaining='なし';
+   }
+  syncLearningProgress(id,item.title,item.current,item.total);
+   if(item.status==='completed'&&!completedItems.some(completed=>completed.id===item.id))completedItems.push(item);
+  }
+ });
+ saveAssignmentItems(id,items);
+ return {items,completedItems,checks:{...checks},tasks};
 }
 function applyMaterialReport(id,report,text){
  const materials=getMaterialsFor(id),normalized=normalizeAssignmentText(text);
@@ -1423,15 +717,14 @@ function saveVoiceReport(){
  const text=voiceTranscript.value.trim();
  const reportState=JSON.parse(localStorage.getItem(key())||'{}'),reportChecks=reportState.checks||{};
  const checkedCount=Object.values(reportChecks).filter(Boolean).length;
- if(!text&&!checkedCount){voiceStatus.textContent='完了した項目にチェックするか、今日の記録を入力してください。';voiceTranscript.focus();return}
+ if(!text&&!checkedCount){voiceStatus.textContent='チェック項目を選ぶか、報告内容を入力してください';voiceTranscript.focus();return}
  try{
  const beforeMaterials=getMaterials().map(item=>({name:item.name,current:Number(item.current||0)}));
  const beforeAssignments=getAssignments().map(item=>({name:item.name,current:Number(item.current||0)}));
- const commitMessages=commitTodayCheckedAssignments();
  const result=analyzeVoiceReport(text);
  const assignmentReport=applyAssignmentReport(current,text);
  const materialReport=applyMaterialReport(current,assignmentReport,text);
- const stepUp=assignmentStepText(current,text);
+ const stepUp=assignmentStepText(current,assignmentReport.completedItems,text);
  const tomorrowPlan=saveTomorrowPlan(current);
  const materialChanges=materialReport.map(item=>{const before=beforeMaterials.find(entry=>normalizeAssignmentText(entry.name)===normalizeAssignmentText(item.name));const after=Number(item.current||0);return before&&before.current!==after?{name:item.subject?`${item.subject} ${item.name}`:item.name,before:before.current,after}:null}).filter(Boolean);
  const assignmentChanges=getAssignments().filter(item=>{const before=beforeAssignments.find(entry=>normalizeAssignmentText(entry.name)===normalizeAssignmentText(item.name));return before&&before.current!==Number(item.current||0)});
@@ -1441,12 +734,8 @@ function saveVoiceReport(){
  const saved=JSON.parse(localStorage.getItem(key())||'{}');
  saved.step=stepUp;
  localStorage.setItem(key(),JSON.stringify(saved));
- {
-  const stepSaved=JSON.parse(localStorage.getItem(key())||'{}');
-  stepSaved.step=stepUp;
-  localStorage.setItem(key(),JSON.stringify(stepSaved));
- }
- stepMessage.textContent=stepUp;
+ stepInput.value=stepUp;stepMessage.textContent=stepUp;
+ showVoiceResult(result.response,stepUp,result.nextAction);
  showVoiceResult(result.response,stepUp,result.nextAction);
 renderReport();
 render();
@@ -1465,7 +754,7 @@ currentVoiceStatus.textContent='';
 
 const refreshedReportStatus=document.querySelector('#reportStatus');
 if(refreshedReportStatus){
-refreshedReportStatus.textContent=`報告を保存しました。${commitMessages.join(' ')}`;
+refreshedReportStatus.textContent='報告を保存しました。教材の進捗と明日の準備を更新しました。';
 }
  }catch(error){
   voiceStatus.textContent='保存に失敗しました';
@@ -1574,7 +863,7 @@ async function runMicrophoneDiagnostic(){
 micTestBtn.onclick=runMicrophoneDiagnostic;
 
 function openReport(){renderReport();show(reportScreen)}
-if(quickVoice)quickVoice.onclick=openReport;
+quickVoice.onclick=openReport;
 document.querySelector('#reportBack').onclick=()=>show(mission);
 document.querySelector('#reportOpenVoice').onclick=()=>{show(mission);voiceCoach.scrollIntoView({behavior:'smooth',block:'start'});setTimeout(()=>voiceStart.focus(),350)};
 document.querySelector('#reportSubmit').onclick=()=>{voiceTranscript.value=document.querySelector('#reportTranscript').value.trim();saveVoiceReport()};

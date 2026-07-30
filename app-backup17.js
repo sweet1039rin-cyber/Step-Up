@@ -763,53 +763,7 @@ if(completeCurrentMission)completeCurrentMission.onclick=()=>{
 };
 
 
-// Sprint 25: Champion Edition テーマ（既存のthemeToggleボタンを流用し、全画面・永続化に拡張）
-const THEME_STORAGE_KEY='stepup-theme';
-function applyTheme(themeName){
- document.documentElement.classList.toggle('theme-champion-black',themeName==='black');
-}
-function initTheme(){
- let saved='white';
- try{saved=localStorage.getItem(THEME_STORAGE_KEY)||'white'}catch(e){}
- applyTheme(saved);
-}
-initTheme();
-// Sprint 26: Heroエリアへ「Step Up / CHAMPION EDITION」ブランド表示を一度だけ挿入する。
-// 既存の動的なTODAY'S FOCUS(進捗リング・フォーカスタイトル)は一切変更しない。
-(function insertChampionHeroBrand(){
- const hero=document.querySelector('.focus-hero');
- const textBlock=hero?.querySelector(':scope>div:first-child');
- if(!textBlock||textBlock.querySelector('.champion-hero-brand'))return;
- textBlock.insertAdjacentHTML('afterbegin','<div class="champion-hero-brand" aria-hidden="true"><span class="champion-emblem lg" aria-hidden="true"></span><span class="champion-hero-brand-text"><span class="champion-hero-brand-main">Step Up</span><span class="champion-hero-brand-edition">CHAMPION EDITION</span><span class="champion-hero-brand-sub">今日も勝利への一歩。</span></span></div>');
-})();
-// Sprint 39: 重要な見出しにだけ「エンブレムライン」(線+ダイヤ+エンブレム+ダイヤ+線)を一度だけ配置する(表示のみ)。
-function championEmblemLineHTML(){
- return '<div class="champion-emblem-line" aria-hidden="true"><span class="champion-emblem-line__line"></span><span class="champion-emblem-line__diamond"></span><span class="champion-emblem champion-emblem-line__badge" aria-hidden="true"></span><span class="champion-emblem-line__diamond"></span><span class="champion-emblem-line__line"></span></div>';
-}
-(function insertChampionPageEmblems(){
- document.querySelectorAll('.growth-hero h1,.report-hero h1,.assignment-hero h1').forEach(h1=>{
-  if(h1.parentElement.querySelector('.champion-emblem-line'))return;
-  h1.insertAdjacentHTML('beforebegin',championEmblemLineHTML());
- });
- const stepHeading=document.querySelector('.step-card small');
- if(stepHeading&&!stepHeading.parentElement.querySelector('.champion-emblem-line')){
-  stepHeading.insertAdjacentHTML('beforebegin',championEmblemLineHTML());
- }
- const voiceHeading=document.querySelector('#voiceCoach .voice-heading');
- if(voiceHeading&&!voiceHeading.querySelector('.champion-emblem-line')){
-  voiceHeading.insertAdjacentHTML('afterbegin',championEmblemLineHTML());
- }
- const restHeading=document.querySelector('.rest-card small')||document.querySelector('.rest-card .card-title');
- if(restHeading&&!restHeading.parentElement.querySelector('.champion-emblem-line')){
-  restHeading.insertAdjacentHTML('beforebegin',championEmblemLineHTML());
- }
-})();
-themeToggle.onclick=()=>{
- const isBlack=document.documentElement.classList.contains('theme-champion-black');
- const next=isBlack?'white':'black';
- applyTheme(next);
- try{localStorage.setItem(THEME_STORAGE_KEY,next)}catch(e){console.error('テーマの保存に失敗しました',e)}
-};
+themeToggle.onclick=()=>{if(current==='iori')mission.classList.toggle('dark')};
 
 function getCoachMessage(id){
  const saved=JSON.parse(localStorage.getItem('stepup-v4-'+PLAN_DATE+'-'+id)||'{}');
@@ -1062,55 +1016,28 @@ function renderAssignments(){
  }
  wireDeadlineCardEvents();
 }
-function formatDeadlineJapanese(deadline){
- const dl=parseDeadlineDateOnly(deadline);
- if(!dl)return'未設定';
- const w=['日','月','火','水','木','金','土'][dl.getDay()];
- return `${dl.getFullYear()}/${String(dl.getMonth()+1).padStart(2,'0')}/${String(dl.getDate()).padStart(2,'0')}（${w}）`;
-}
 function renderDeadlineCard(item,info){
  const type=resolveProgressType(item);
  const unit=item.unit||'ページ';
- const typeLabel=type==='numeric'?'ページ・回数型':type==='status'?'状態型':'完了チェック型';
- let progressBlock='';
+ let progressLine='';
  if(type==='numeric'&&item.total!=null){
-  const cur=item.current||0,total=item.total,remain=Math.max(0,total-cur),pct=Math.min(100,Math.round(cur/total*100));
-  progressBlock=`<div class="subm-progress-card">
-   <small>進捗状況</small>
-   <div class="subm-progress-bar"><i style="width:${pct}%"></i></div>
-   <div class="subm-progress-pct">${pct}%</div>
-   <div class="subm-progress-figures">
-    <div><small>現在値</small><strong>${cur}${unit}</strong></div>
-    <div><small>目標値</small><strong>${total}${unit}</strong></div>
-    <div><small>残り</small><strong>${remain}${unit}</strong></div>
-   </div>
-  </div>`;
+  const cur=item.current||0,remain=Math.max(0,item.total-cur);
+  progressLine=`<div class="deadline-progress-line">進捗：${cur} / ${item.total}${unit}</div><div class="deadline-remain-line">残り${remain}${unit}</div>`;
  }else if(type==='status'){
-  progressBlock=`<div class="subm-progress-card"><small>状態</small><strong>${escapeHtml(item.progress||'未着手')}</strong></div>`;
+  progressLine=`<div class="deadline-progress-line">状態：${escapeHtml(item.progress||'未着手')}</div>`;
  }
- const detailRows=[
-  ['進捗形式',typeLabel],
-  type==='numeric'?['単位',escapeHtml(unit)]:null,
-  item.subject?['教科',escapeHtml(item.subject)]:null,
-  ['メモ',item.note?escapeHtml(item.note):'なし']
- ].filter(Boolean).map(([k,v])=>`<div class="subm-detail-row"><span>${k}</span><span>${v}</span></div>`).join('');
- return `<article class="subm-card cat-${info.category}" data-assignment-id="${item.id}">
-  <div class="subm-detail">
-   <div class="subm-title-row"><h3 class="subm-title">${escapeHtml(item.title)}</h3>${item.subject?`<span class="subm-subject-badge">${escapeHtml(item.subject)}</span>`:''}</div>
-   <div class="subm-deadline-row">
-    <div class="subm-deadline-block"><small>提出期限</small><strong>${formatDeadlineJapanese(item.deadline)}</strong></div>
-    <div class="subm-days-badge cat-${info.category}"><small>期限まで</small><strong>${info.label}</strong></div>
-   </div>
-   ${progressBlock}
-   <div class="subm-detail-list">${detailRows}</div>
-   <label class="subm-complete-check"><input type="checkbox" data-deadline-check="${item.id}" ${item.done?'checked':''}> 完了済みにする</label>
-   <p class="subm-save-hint">チェック内容は「変更を保存」を押すまで反映されません</p>
-   <button type="button" data-deadline-edit="${item.id}" class="subm-edit-toggle-btn">編集</button>
+ const dueText=item.deadline?escapeHtml(item.deadline):'未設定';
+ return `<article class="submission-card cat-${info.category}" data-assignment-id="${item.id}">
+  <div class="submission-card-head"><h3>${escapeHtml(item.title)}</h3>${item.subject?`<span class="deadline-subject">${escapeHtml(item.subject)}</span>`:''}</div>
+  <div class="deadline-due">提出期限：${dueText}</div>
+  ${progressLine}
+  ${item.note?`<div class="deadline-note">${escapeHtml(item.note)}</div>`:''}
+  <div class="deadline-tag-row"><span class="deadline-tag cat-${info.category}">${info.label}</span><span class="deadline-updated">${formatUpdatedAt(item.updatedAt)}</span></div>
+  <div class="deadline-actions">
+   <label class="deadline-complete-check"><input type="checkbox" data-deadline-check="${item.id}" ${item.done?'checked':''}> 完了</label>
+   <button type="button" data-deadline-edit="${item.id}" class="deadline-edit-btn">編集</button>
   </div>
-  <div id="deadlineEdit-${item.id}" class="subm-edit hidden">
-   <h4>編集</h4>
-   ${renderDeadlineEditForm(item)}
-  </div>
+  <div id="deadlineEdit-${item.id}" class="deadline-edit-form hidden">${renderDeadlineEditForm(item)}</div>
  </article>`;
 }
 function renderDeadlineEditForm(item){
@@ -1131,7 +1058,7 @@ function renderDeadlineEditForm(item){
   <label>単位<input type="text" class="de-unit" value="${escapeHtml(item.unit||'ページ')}"></label>
   <label>状態<input type="text" class="de-status" value="${escapeHtml(item.progress||'')}" placeholder="例：下書き中"></label>
   <label>メモ<input type="text" class="de-note" value="${escapeHtml(item.note||'')}"></label>
-  <div class="subm-edit-actions"><button type="button" class="de-save" data-de-save="${item.id}">保存する</button><button type="button" class="de-cancel" data-de-cancel="${item.id}">キャンセル</button></div>
+  <div class="deadline-edit-actions"><button type="button" class="de-save" data-de-save="${item.id}">保存する</button><button type="button" class="de-cancel" data-de-cancel="${item.id}">キャンセル</button></div>
  `;
 }
 function wireDeadlineCardEvents(){
@@ -1150,7 +1077,7 @@ function wireDeadlineCardEvents(){
  document.querySelectorAll('[data-de-save]').forEach(btn=>{
   btn.onclick=()=>{
    const id=btn.dataset.deSave;
-   const card=btn.closest('.subm-edit');
+   const card=btn.closest('.deadline-edit-form');
    if(!card)return;
    const patch={
     title:card.querySelector('.de-name')?.value.trim()||'名称未設定',

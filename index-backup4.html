@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#05070b">
 <title>Step Up v6.4 IORI Daily Mission</title>
-<link rel="stylesheet" href="styles.css?v=69">
+<link rel="stylesheet" href="styles.css?v=64">
 </head>
 <body>
 <div id="app">
@@ -73,6 +73,7 @@
 <section id="mission" class="screen mission-page">
  <header class="appbar"><button id="back">←</button><div><b>STEP UP</b><span id="personName"></span></div><button id="themeToggle">◐</button></header>
  <main class="mission-wrap">
+  <section id="todayAssignmentsCard" class="card today-assignments"><div class="card-title"><span>📌</span><h2>今日の学習</h2><div class="schedule-actions"><button id="todayAssignmentsMore" class="plan-edit-btn ghost" type="button">課題をすべて見る</button></div></div><div id="todayAssignmentsList" class="assignment-list"></div></section>
   <section id="mobileWelcome" class="mobile-welcome" aria-label="今日の案内">
    <small>STEP UP / TODAY</small>
    <time id="welcomeDate" class="welcome-date">2026年7月21日（火）</time>
@@ -85,8 +86,66 @@
    <button id="viewTodayPlan" type="button">今日の計画を見る <b>↓</b></button>
    <p class="welcome-note">目標・詳細スケジュール・休憩・今日のStep Upは、これまでどおりすべて表示されます。</p>
   </section>
-  <section class="focus-hero"><div><small>TODAY'S ミッション</small><h1 id="focusTitle"></h1><p id="focusSub"></p></div><div class="ring"><strong id="percent">0%</strong><span>COMPLETE</span></div></section>
-  
+  <section class="focus-hero"><div><small>TODAY'S FOCUS</small><h1 id="focusTitle"></h1><p id="focusSub"></p></div><div class="ring"><strong id="percent">0%</strong><span>COMPLETE</span></div></section>
+  <section id="ioriAcademicDashboard" class="iori-academic-dashboard" aria-label="壱凰の学習状況">
+   <div class="academic-head"><div><small>IORI / SCHOOL RECORD</small><h2>課題テスト・提出物ダッシュボード</h2></div><span>講師共有用</span></div>
+   <section class="exam-hero">
+    <div><small>NEXT EXAM</small><h3>8月25日・26日　5教科課題テスト</h3><p>8/25：国語・数学・社会　／　8/26：理科・英語</p></div>
+    <strong>最優先</strong>
+   </section>
+   <div class="academic-summary">
+    <article><small>提出課題</small><strong>8/25・26に集中</strong><span>提出日とテスト範囲を一緒に管理</span></article>
+    <article><small>現在の重点</small><strong>数学・英語・社会</strong><span>未着手教材を先に進める</span></article>
+    <article><small>提出物の質</small><strong>途中式・丸付け・解き直し</strong><span>完成だけでなく、評価される仕上げへ</span></article>
+   </div>
+   <div class="academic-grid">
+    <section class="academic-panel assignment-panel">
+     <div class="academic-panel-title"><h3>課題・提出期限</h3><span>学校プリント確認済み</span></div>
+     <div class="assignment-table-wrap"><table class="assignment-table">
+      <thead><tr><th>教科・教材</th><th>範囲</th><th>現在</th><th>提出</th></tr></thead>
+      <tbody>
+       <tr class="done"><td>国語 作文</td><td>別紙</td><td>完了</td><td>7/30</td></tr>
+       <tr><td>国語 ことばのきまり</td><td>P14〜20</td><td>要確認</td><td>8/25</td></tr>
+       <tr class="wait"><td>国語 新研究</td><td>P106〜135</td><td>学習済・丸付け未</td><td>8/25</td></tr>
+       <tr class="urgent"><td>社会 歴史の学習</td><td>本誌P80〜91／ノートP41〜46</td><td>未着手</td><td>8/25</td></tr>
+       <tr class="urgent"><td>社会 新研究</td><td>P90〜125</td><td>未着手</td><td>8/26</td></tr>
+       <tr class="wait"><td>数学 数学の友</td><td>P59まで</td><td>P59まで・丸付け未</td><td>8/25</td></tr>
+       <tr class="urgent"><td>数学 新研究</td><td>P78〜111</td><td>未着手</td><td>8/25</td></tr>
+       <tr class="wait"><td>理科 新研究</td><td>P78〜113</td><td>学習済・丸付け未</td><td>8/25</td></tr>
+       <tr class="urgent"><td>英語 ジョイフルワーク</td><td>P30〜42</td><td>未着手</td><td>8/25</td></tr>
+       <tr class="urgent"><td>英語 新研究</td><td>P76〜105</td><td>未着手</td><td>8/26</td></tr>
+       <tr class="urgent"><td>英語 最重要不規則動詞</td><td>プリント</td><td>未着手</td><td>9/2または9/3</td></tr>
+      </tbody>
+     </table></div>
+     <p class="quality-note">提出前に「答えを写しただけになっていないか」「途中式・丸付け・解き直しがあるか」を確認します。</p>
+    </section>
+    <section class="academic-panel deadlines-panel">
+     <div class="academic-panel-title"><h3>学校予定・テスト</h3><span>重要</span></div>
+     <div class="deadline-card hot"><time>8/25</time><div><small>課題点検・課題テスト</small><strong>国語・数学・社会</strong></div></div>
+     <div class="deadline-card hot"><time>8/26</time><div><small>課題テスト</small><strong>理科・英語</strong></div></div>
+     <div class="deadline-card"><time>9/1</time><div><small>学校行事</small><strong>始業式</strong></div></div>
+     <div class="deadline-card"><time>9/2</time><div><small>英語</small><strong>不規則動詞テスト</strong></div></div>
+     <div class="deadline-card"><time>9/3</time><div><small>英語</small><strong>単元テスト</strong></div></div>
+     <h4>実技・総合</h4>
+     <ul class="practical-list"><li>音楽：ムソルグスキー A4レポート（9/1）</li><li>音楽：リコーダー「きらきら星」（2学期最初の授業でテスト）</li><li>音楽：合唱曲を5回以上聴く</li><li>技術：オリジナル製品アイデア（最初の授業）</li><li>家庭科：幼児と遊ぶおもちゃ設計図（7/30）</li><li>総合：SDGs探究プリント（9/1）</li></ul>
+    </section>
+   </div>
+   <section class="academic-panel exam-scope-panel">
+    <div class="academic-panel-title"><div><h3>5教科課題テスト 出題ポイント</h3><p>学校配布のチェック表を、学習計画の優先順位に反映します。</p></div><span>8/25・26</span></div>
+    <div class="scope-grid">
+     <article><h4>国語</h4><p>論説文、言語事項、小説、古文、古代〜近世、近代史、地理総合・世界地理</p></article>
+     <article><h4>社会</h4><p>日本・世界の地理、古代〜近世、近代〜現代史、資料・グラフの読み取り</p></article>
+     <article><h4>数学</h4><p>正負の数、文字式、方程式、比例・反比例、関数、平面・空間図形、合同</p></article>
+     <article><h4>理科</h4><p>物質・状態変化、化学変化、生物、地層・火山、天気、電流、力と運動</p></article>
+     <article><h4>英語</h4><p>読解、英作文、文法、語句、不定詞、接続詞、現在完了、長文・対話文</p></article>
+    </div>
+   </section>
+   <section class="academic-panel grades-panel">
+    <div class="academic-panel-title"><div><h3>現在の内申点</h3><p>通知表の数字を入力すると合計が自動表示されます。</p></div><strong id="gradeTotal">未入力</strong></div>
+    <div id="gradeInputs" class="grade-inputs"></div>
+    <button id="saveGrades" type="button">内申点を保存</button><span id="gradeSaveStatus" aria-live="polite"></span>
+   </section>
+  </section>
   <section id="mobileCurrentMission" class="mobile-current-mission" aria-live="polite">
    <div class="current-mission-head"><small id="mobileMissionLabel">今やること</small><span id="mobileMissionCount">0 / 0 完了</span></div>
    <div class="current-mission-body"><time id="mobileMissionTime">--:--</time><div><strong id="mobileMissionTitle">今日の計画を確認しよう</strong><p id="mobileMissionDuration">一つずつ進めれば大丈夫。</p></div></div>
@@ -100,33 +159,45 @@
   </div>
   <section class="priority"><small>TODAY'S PRIORITY</small><h2 id="priorityTitle"></h2><p id="priorityText"></p></section>
   <section class="countdown-strip" id="countdownStrip"></section>
+  <section class="quick-actions" aria-label="学習メニュー">
+   <button id="quickPlanner"><span>01</span><small>SMART PLAN</small><strong>学習計画</strong><em>今日の時間割を作る →</em></button>
+   <button id="quickAssignments"><span>02</span><small>DEADLINE</small><strong>課題管理</strong><em>期限と残りを確認 →</em></button>
+   <button id="quickMaterials"><span>03</span><small>MATERIALS</small><strong>教材</strong><em>ページ進捗を更新 →</em></button>
+   <button id="quickGrowth"><span>04</span><small>GROWTH</small><strong>成長記録</strong><em>今日の一歩を確認 →</em></button>
+   <button id="quickCalendar"><span>05</span><small>CALENDAR</small><strong>カレンダー</strong><em>予定を見る →</em></button>
+   <button id="quickVoice"><span>06</span><small>AI COACH</small><strong>マイクで報告</strong><em>今日の頑張りを話す →</em></button>
+  </section>
   <div class="two-grid"><section class="card goals"><div class="card-title"><span>01</span><h2>今日の目標</h2></div><ul id="goals"></ul></section><section class="card stats"><div class="card-title"><span>02</span><h2>Mission Progress</h2></div><div class="bar"><i id="bar"></i></div><p><b id="doneCount">0</b> / <span id="totalCount">0</span> 完了</p></section></div>
-  <section class="card home-deadline-card"><div class="card-title"><span>03</span><h2>提出期限が近い課題</h2></div><div id="homeDeadlineList"></div><button id="goToDeadlinePage" type="button" class="plan-edit-btn ghost">提出期限を見る</button></section>
-  <section class="card schedule"><div class="card-title"><span>03</span><h2>詳細スケジュール</h2><div class="schedule-actions"><button id="openAssignmentBtn" class="plan-edit-btn ghost icon-only" title="課題管理" aria-label="課題管理">📋</button><button id="openPlannerBtn" class="plan-edit-btn icon-only" title="計画を調整" aria-label="計画を調整">⚙</button></div></div><div id="scheduleList"></div><p id="scheduleReflectStatus" class="schedule-reflect-status" aria-live="polite"></p></section>
+  <section class="card schedule"><div class="card-title"><span>03</span><h2>詳細スケジュール</h2><div class="schedule-actions"><button id="openAssignmentBtn" class="plan-edit-btn ghost">課題管理</button><button id="openPlannerBtn" class="plan-edit-btn">計画を調整</button></div></div><div id="scheduleList"></div></section>
+  <section id="personalCoach" class="personal-coach-card" aria-live="polite">
+   <div class="personal-coach-heading"><div><small>PERSONAL AI COACH</small><h2>AIコーチからのメッセージ</h2></div><span id="coachChildName" class="coach-child-name"></span></div>
+   <div class="coach-message-grid">
+    <article><span class="coach-icon">🌟</span><div><small>今日の良かったところ</small><p id="coachGood"></p></div></article>
+    <article><span class="coach-icon">💡</span><div><small>苦手克服の攻略ポイント</small><p id="coachStrategy"></p></div></article>
+    <article><span class="coach-icon">🎯</span><div><small>次の一歩</small><p id="coachNext"></p></div></article>
+   </div>
+  </section>
   <section id="voiceCoach" class="voice-coach-card">
-   <div class="voice-heading"><small>AI VOICE COACH</small><h2>今日の頑張りを記録</h2></div>
+   <div class="voice-heading"><div><small>AI VOICE COACH</small><h2>今日の頑張りを、マイクで報告</h2><p id="voiceGuide">「今日は数学を3ページ進めた。英語は難しかった」のように話してください。</p></div><span class="voice-badge">朔埜おすすめ</span></div>
+   <div id="voiceEnvironment" class="voice-environment" aria-live="polite"></div>
    <button id="voiceStart" class="voice-start" type="button"><span class="mic-icon">●</span><strong>タップして話す</strong><small id="voiceStatus">マイク待機中</small></button>
-   <textarea id="voiceTranscript" placeholder="例：数学を3ページ進めた。英語は難しかった。（音声でも手入力でもOK）"></textarea>
+   <section class="mic-diagnostic" aria-label="マイク診断">
+    <div><small>MICROPHONE CHECK</small><strong>マイクが動かない時は、先に診断</strong></div>
+    <button id="micTestBtn" type="button">マイク診断を開始</button>
+    <div id="micDiagnosticResult" class="mic-diagnostic-result" aria-live="polite"><p>まだ診断していません。</p></div>
+   </section>
+   <textarea id="voiceTranscript" placeholder="音声の文字起こし、または手入力でも報告できます。"></textarea>
   <div class="voice-actions"><button id="voiceClear" type="button">クリア</button><button id="voiceAnalyze" type="button">まとめて保存</button></div>
    <div id="voiceResult" class="voice-result hidden" aria-live="polite"></div>
-   <details class="voice-advanced-details">
-    <summary>詳細設定</summary>
-    <div id="voiceEnvironment" class="voice-environment" aria-live="polite"></div>
-    <section class="mic-diagnostic" aria-label="マイク診断">
-     <div><small>MICROPHONE CHECK</small><strong>マイクが動かない時は、先に診断</strong></div>
-     <button id="micTestBtn" type="button">マイク診断を開始</button>
-     <div id="micDiagnosticResult" class="mic-diagnostic-result" aria-live="polite"><p>まだ診断していません。</p></div>
-    </section>
-   </details>
   </section>
-  <section class="step-card"><small>TODAY'S STEP UP</small><h2 id="stepMessage">今日の記録はまだありません。「まとめて保存」を押すと、ここに表示されます。</h2></section>
+  <section class="step-card"><small>TODAY'S STEP UP</small><h2 id="stepMessage">まず一つ、チェックを付けよう。</h2><div id="stepSuggestion" class="step-suggestion"><span>今日のStep Up候補</span><button id="useStepSuggestion" type="button">候補を使う</button><p id="stepSuggestionText">最初のミッションに挑戦した。</p></div><textarea id="stepInput" placeholder="今日できた小さな成長を記録"></textarea><button id="saveStep">今日のStep Upを保存</button></section>
   <section class="rest-card"><small>REST & RECOVERY</small><h2>頑張った後は、しっかり整える。</h2><div><span>水分補給</span><span>ストレッチ</span><span>入浴</span><span>睡眠</span></div></section>
  </main>
  <nav><button class="active" data-nav="home">⌂<span>ホーム</span></button><button data-nav="calendar">▦<span>カレンダー</span></button><button data-nav="assignments">📋<span>課題</span></button><button data-nav="materials">▤<span>教材</span></button><button data-nav="growth">↗<span>成長</span></button></nav>
 </section>
 
 <section id="report" class="screen utility-page report-page">
- <header class="appbar"><button id="reportBack">←</button><div><b>🏆 AI COACH</b><span id="reportPerson">今日の学習報告</span></div><span></span></header>
+ <header class="appbar"><button id="reportBack">←</button><div><b>AI COACH REPORT</b><span id="reportPerson">今日の学習報告</span></div><span></span></header>
  <main class="utility-wrap">
   <section class="utility-hero report-hero"><small>AI COACH / DAILY REPORT</small><h1>今日の頑張りを、<br>明日の一歩につなぐ。</h1><p>できたことをチェックし、自由に書いて送ると、教材の進捗と明日の準備を自動で更新します。</p></section>
   <section class="report-card">
@@ -203,14 +274,6 @@
  <main class="utility-wrap">
   <section class="utility-hero growth-hero"><small>YOUR PROGRESS</small><h1>昨日の自分より、<br>一歩前へ。</h1><p>点数だけではなく、続けたこと・挑戦したことを記録します。</p></section>
   <section class="growth-summary"><article><b id="growthRate">0%</b><span>今日の達成率</span></article><article><b id="growthDone">0</b><span>完了ミッション</span></article><article><b id="growthStreak">1日</b><span>継続日数</span></article></section>
-  <section id="personalCoach" class="personal-coach-card" aria-live="polite">
-   <div class="personal-coach-heading"><div><small>PERSONAL AI COACH</small><h2>AIコーチからのメッセージ</h2></div><span id="coachChildName" class="coach-child-name"></span></div>
-   <div class="coach-message-grid">
-    <article><span class="coach-icon">🌟</span><div><small>今日の良かったところ</small><p id="coachGood"></p></div></article>
-    <article><span class="coach-icon">💡</span><div><small>苦手克服の攻略ポイント</small><p id="coachStrategy"></p></div></article>
-    <article><span class="coach-icon">🎯</span><div><small>次の一歩</small><p id="coachNext"></p></div></article>
-   </div>
-  </section>
   <section class="utility-card"><div class="card-title"><span>01</span><h2>今週の積み重ね</h2></div><div id="weekBars" class="week-bars"></div></section>
   <section class="utility-card"><div class="card-title"><span>02</span><h2>今日のStep Up</h2></div><div id="growthStep" class="growth-step">まだ記録がありません。小さな成長を一つ残そう。</div></section>
   <section class="utility-card"><div class="card-title"><span>03</span><h2>できたこと</h2></div><div id="achievementList" class="achievement-list"></div></section>
@@ -248,97 +311,12 @@
   <section class="utility-hero assignment-hero"><small>DEADLINE MANAGER</small><h1>残り日数から、<br>今日やる量を決める。</h1><p>提出期限と残量をもとに、無理のない一日分を自動計算します。</p></section>
   <section id="assignmentSummary" class="growth-summary assignment-summary"></section>
   <section id="assignmentList" class="assignment-list"></section>
-  <div class="deadline-save-bar"><button id="saveDeadlineChangesBtn" type="button" class="deadline-save-btn">変更を保存</button><p id="deadlineSaveStatus" class="deadline-save-status" aria-live="polite"></p></div>
-  <details id="testInfoDetails" class="test-info-details">
-   <summary>テスト情報を表示</summary>
-   <section id="ioriAcademicDashboard" class="iori-academic-dashboard" aria-label="壱凰の学習状況">
-   <div class="academic-head"><div><small>IORI / SCHOOL RECORD</small><h2>課題テスト・提出物ダッシュボード</h2></div><span>講師共有用</span></div>
-   <section class="exam-hero">
-    <div><small>NEXT EXAM</small><h3>8月25日・26日　5教科課題テスト</h3><p>8/25：国語・数学・社会　／　8/26：理科・英語</p></div>
-    <strong>最優先</strong>
-   </section>
-   <div class="academic-summary">
-    <article><small>提出課題</small><strong>8/25・26に集中</strong><span>提出日とテスト範囲を一緒に管理</span></article>
-    <article><small>現在の重点</small><strong>数学・英語・社会</strong><span>未着手教材を先に進める</span></article>
-    <article><small>提出物の質</small><strong>途中式・丸付け・解き直し</strong><span>完成だけでなく、評価される仕上げへ</span></article>
-   </div>
-   <div class="academic-grid">
-    <section class="academic-panel assignment-panel">
-     <div class="academic-panel-title"><h3>課題・提出期限</h3><span>学校プリント確認済み</span></div>
-     <div class="assignment-table-wrap"><table class="assignment-table">
-      <thead><tr><th>教科・教材</th><th>範囲</th><th>現在</th><th>提出</th></tr></thead>
-      <tbody>
-       <tr class="done"><td>国語 作文</td><td>別紙</td><td>完了</td><td>7/30</td></tr>
-       <tr><td>国語 ことばのきまり</td><td>P14〜20</td><td>要確認</td><td>8/25</td></tr>
-       <tr class="wait"><td>国語 新研究</td><td>P106〜135</td><td>学習済・丸付け未</td><td>8/25</td></tr>
-       <tr class="urgent"><td>社会 歴史の学習</td><td>本誌P80〜91／ノートP41〜46</td><td>未着手</td><td>8/25</td></tr>
-       <tr class="urgent"><td>社会 新研究</td><td>P90〜125</td><td>未着手</td><td>8/26</td></tr>
-       <tr class="wait"><td>数学 数学の友</td><td>P59まで</td><td>P59まで・丸付け未</td><td>8/25</td></tr>
-       <tr class="urgent"><td>数学 新研究</td><td>P78〜111</td><td>未着手</td><td>8/25</td></tr>
-       <tr class="wait"><td>理科 新研究</td><td>P78〜113</td><td>学習済・丸付け未</td><td>8/25</td></tr>
-       <tr class="urgent"><td>英語 ジョイフルワーク</td><td>P30〜42</td><td>未着手</td><td>8/25</td></tr>
-       <tr class="urgent"><td>英語 新研究</td><td>P76〜105</td><td>未着手</td><td>8/26</td></tr>
-       <tr class="urgent"><td>英語 最重要不規則動詞</td><td>プリント</td><td>未着手</td><td>9/2または9/3</td></tr>
-      </tbody>
-     </table></div>
-     <p class="quality-note">提出前に「答えを写しただけになっていないか」「途中式・丸付け・解き直しがあるか」を確認します。</p>
-    </section>
-    <section class="academic-panel deadlines-panel">
-     <div class="academic-panel-title"><h3>学校予定・テスト</h3><span>重要</span></div>
-     <div class="deadline-card hot"><time>8/25</time><div><small>課題点検・課題テスト</small><strong>国語・数学・社会</strong></div></div>
-     <div class="deadline-card hot"><time>8/26</time><div><small>課題テスト</small><strong>理科・英語</strong></div></div>
-     <div class="deadline-card"><time>9/1</time><div><small>学校行事</small><strong>始業式</strong></div></div>
-     <div class="deadline-card"><time>9/2</time><div><small>英語</small><strong>不規則動詞テスト</strong></div></div>
-     <div class="deadline-card"><time>9/3</time><div><small>英語</small><strong>単元テスト</strong></div></div>
-     <h4>実技・総合</h4>
-     <ul class="practical-list"><li>音楽：ムソルグスキー A4レポート（9/1）</li><li>音楽：リコーダー「きらきら星」（2学期最初の授業でテスト）</li><li>音楽：合唱曲を5回以上聴く</li><li>技術：オリジナル製品アイデア（最初の授業）</li><li>家庭科：幼児と遊ぶおもちゃ設計図（7/30）</li><li>総合：SDGs探究プリント（9/1）</li></ul>
-    </section>
-   </div>
-   <section class="academic-panel exam-scope-panel">
-    <div class="academic-panel-title"><div><h3>5教科課題テスト 出題ポイント</h3><p>学校配布のチェック表を、学習計画の優先順位に反映します。</p></div><span>8/25・26</span></div>
-    <div class="scope-grid">
-     <article><h4>国語</h4><p>論説文、言語事項、小説、古文、古代〜近世、近代史、地理総合・世界地理</p></article>
-     <article><h4>社会</h4><p>日本・世界の地理、古代〜近世、近代〜現代史、資料・グラフの読み取り</p></article>
-     <article><h4>数学</h4><p>正負の数、文字式、方程式、比例・反比例、関数、平面・空間図形、合同</p></article>
-     <article><h4>理科</h4><p>物質・状態変化、化学変化、生物、地層・火山、天気、電流、力と運動</p></article>
-     <article><h4>英語</h4><p>読解、英作文、文法、語句、不定詞、接続詞、現在完了、長文・対話文</p></article>
-    </div>
-   </section>
-   <section class="academic-panel grades-panel">
-    <div class="academic-panel-title"><div><h3>現在の内申点</h3><p>通知表の数字を入力すると合計が自動表示されます。</p></div><strong id="gradeTotal">未入力</strong></div>
-    <div id="gradeInputs" class="grade-inputs"></div>
-    <button id="saveGrades" type="button">内申点を保存</button><span id="gradeSaveStatus" aria-live="polite"></span>
-   </section>
-  </section>
-  </details>
-
-  <section id="assignmentForm" class="utility-card material-form hidden"><div class="card-title"><span>＋</span><h2>提出物を追加</h2></div>
-   <label>提出物名（必須）<input id="newAssignmentName" placeholder="例：数学 新研究"></label>
-   <label>教科<input id="newAssignmentSubject" placeholder="例：数学"></label>
-   <label>提出期限（任意）<input id="newAssignmentDeadline" type="date"></label>
-   <label>進捗形式
-    <select id="newAssignmentType">
-     <option value="numeric">ページ・回数型（現在値／目標値）</option>
-     <option value="status">状態型（未着手・取り組み中など）</option>
-     <option value="check">完了チェック型（未完了／完了のみ）</option>
-    </select>
-   </label>
-   <div id="newAssignmentNumericFields">
-    <label>現在値<input id="newAssignmentCurrent" type="number" value="0" min="0"></label>
-    <label>目標値<input id="newAssignmentTotal" type="number" value="10" min="1"></label>
-    <label>単位<input id="newAssignmentUnit" placeholder="例：ページ" value="ページ"></label>
-   </div>
-   <label id="newAssignmentStatusField" class="hidden">状態
-    <select id="newAssignmentStatus">
-     <option value="未着手">未着手</option>
-     <option value="取り組み中">取り組み中</option>
-     <option value="下書き中">下書き中</option>
-     <option value="清書中">清書中</option>
-     <option value="完成">完成</option>
-    </select>
-   </label>
-   <label>メモ<input id="newAssignmentNote" placeholder="任意"></label>
-   <button id="saveAssignmentBtn">提出物を保存</button>
+  <section id="assignmentForm" class="utility-card material-form hidden"><div class="card-title"><span>＋</span><h2>課題を追加</h2></div>
+   <label>課題名<input id="newAssignmentName" placeholder="例：数学 新研究"></label>
+   <label>提出期限<input id="newAssignmentDeadline" type="date" value="2026-08-31"></label>
+   <label>現在<input id="newAssignmentCurrent" type="number" value="0" min="0"></label>
+   <label>全体<input id="newAssignmentTotal" type="number" value="100" min="1"></label>
+   <button id="saveAssignmentBtn">課題を保存</button>
   </section>
  </main>
  <nav><button data-nav="home">⌂<span>ホーム</span></button><button data-nav="calendar">▦<span>カレンダー</span></button><button class="active" data-nav="assignments">📋<span>課題</span></button><button data-nav="materials">▤<span>教材</span></button><button data-nav="growth">↗<span>成長</span></button></nav>
@@ -359,6 +337,6 @@
 <script src="data/defaultSchedules.js?v=1"></script>
 <script src="data/coachMessages.js?v=1"></script>
 <script src="data/teacherComments.js?v=1"></script>
-<script src="app.js?v=67"></script>
+<script src="app.js?v=55"></script>
 </body>
 </html>

@@ -780,29 +780,7 @@ initTheme();
  const hero=document.querySelector('.focus-hero');
  const textBlock=hero?.querySelector(':scope>div:first-child');
  if(!textBlock||textBlock.querySelector('.champion-hero-brand'))return;
- textBlock.insertAdjacentHTML('afterbegin','<div class="champion-hero-brand" aria-hidden="true"><span class="champion-emblem lg" aria-hidden="true"></span><span class="champion-hero-brand-text"><span class="champion-hero-brand-main">Step Up</span><span class="champion-hero-brand-edition">CHAMPION EDITION</span><span class="champion-hero-brand-sub">今日も勝利への一歩。</span></span></div>');
-})();
-// Sprint 39: 重要な見出しにだけ「エンブレムライン」(線+ダイヤ+エンブレム+ダイヤ+線)を一度だけ配置する(表示のみ)。
-function championEmblemLineHTML(){
- return '<div class="champion-emblem-line" aria-hidden="true"><span class="champion-emblem-line__line"></span><span class="champion-emblem-line__diamond"></span><span class="champion-emblem champion-emblem-line__badge" aria-hidden="true"></span><span class="champion-emblem-line__diamond"></span><span class="champion-emblem-line__line"></span></div>';
-}
-(function insertChampionPageEmblems(){
- document.querySelectorAll('.growth-hero h1,.report-hero h1,.assignment-hero h1').forEach(h1=>{
-  if(h1.parentElement.querySelector('.champion-emblem-line'))return;
-  h1.insertAdjacentHTML('beforebegin',championEmblemLineHTML());
- });
- const stepHeading=document.querySelector('.step-card small');
- if(stepHeading&&!stepHeading.parentElement.querySelector('.champion-emblem-line')){
-  stepHeading.insertAdjacentHTML('beforebegin',championEmblemLineHTML());
- }
- const voiceHeading=document.querySelector('#voiceCoach .voice-heading');
- if(voiceHeading&&!voiceHeading.querySelector('.champion-emblem-line')){
-  voiceHeading.insertAdjacentHTML('afterbegin',championEmblemLineHTML());
- }
- const restHeading=document.querySelector('.rest-card small')||document.querySelector('.rest-card .card-title');
- if(restHeading&&!restHeading.parentElement.querySelector('.champion-emblem-line')){
-  restHeading.insertAdjacentHTML('beforebegin',championEmblemLineHTML());
- }
+ textBlock.insertAdjacentHTML('afterbegin','<div class="champion-hero-brand" aria-hidden="true"><span class="champion-hero-brand-main">Step Up</span><span class="champion-hero-brand-edition">CHAMPION EDITION</span><span class="champion-hero-brand-sub">今日も勝利への一歩。</span></div>');
 })();
 themeToggle.onclick=()=>{
  const isBlack=document.documentElement.classList.contains('theme-champion-black');

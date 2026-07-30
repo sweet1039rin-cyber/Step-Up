@@ -571,10 +571,10 @@ button,input,select,textarea{touch-action:manipulation}
    　全画面に適用するレイヤーとして追加する）
    ============================================ */
 :root{
- /* Champion Edition 基本パレット（仕様書のカラールールに準拠） */
- --champion-black:#0d0d0d;--champion-charcoal:#18181c;
- --champion-red:#e60012;--champion-red-dark:#a1000c;--champion-red-bright:#e60012;
- --champion-white:#ffffff;--champion-light:#f2f2f2;--champion-gray:#d7d7dc;--champion-muted:#74747d;
+ /* Champion Edition 基本パレット */
+ --champion-black:#0b0b0d;--champion-charcoal:#18181c;
+ --champion-red:#d10a10;--champion-red-dark:#8f0509;--champion-red-bright:#ef1b24;
+ --champion-white:#ffffff;--champion-light:#f4f4f6;--champion-gray:#d7d7dc;--champion-muted:#74747d;
 
  --bg:var(--champion-light);--surface:var(--champion-white);--surface-strong:#fff4f4;
  --text:#161616;--text-muted:var(--champion-muted);--border:rgba(0,0,0,.12);
@@ -588,7 +588,7 @@ button,input,select,textarea{touch-action:manipulation}
  --dark-text:#ffffff;--dark-text-muted:#c7cbd3;--dark-border:rgba(255,255,255,.14);
 }
 html.theme-champion-black{
- --bg:#f2f2f2;
+ --bg:#f4f4f6;
  /* カードは黒背景＋白文字（Primary Dark Card）。ページ背景・カード間の余白は白系のまま */
  --surface:var(--champion-black);--surface-strong:#1c1c20;
  --text:#ffffff;--text-muted:#c7cbd3;--border:rgba(255,255,255,.22);
@@ -909,24 +909,49 @@ html.theme-champion-black .bar{
 }
 
 /* ============================================
-   Sprint 29→39: Champion Edition クラブ感の強化
-   （点々ストライプは廃止し、エンブレムライン／細い赤ラインに統一する。
-   　可読性を最優先し、装飾は控えめに留める）
+   Sprint 29: Champion Edition クラブ感の強化
+   （赤・黒・白＋ストライプ。CSSのみ、HTML/JSは無変更。
+   　可読性を最優先し、ストライプは細く控えめに留める）
    ============================================ */
 
-/* 各ページの見出し（Hero）：ストライプ背景は使わず、暗いグラデーションのみ */
+/* 各ページの見出し（Hero）に、上端の赤黒ストライプを追加 */
 .utility-hero,.report-hero,.growth-hero,.calendar-hero,.planner-hero{
- background-image:linear-gradient(150deg,#14161b,#1d1416 70%);
- background-size:100% 100%;
- background-position:top left;
- background-repeat:no-repeat;
+ background-image:
+  repeating-linear-gradient(45deg,var(--accent) 0 8px,#0a0a0a 8px 16px),
+  linear-gradient(150deg,#14161b,#1d1416 70%);
+ background-size:100% 6px,100% 100%;
+ background-position:top left,top left;
+ background-repeat:no-repeat,no-repeat;
  padding-top:38px;
 }
 .utility-hero small,.report-hero small,.growth-hero small,.calendar-hero small,.planner-hero small{
  display:inline-flex;align-items:center;gap:8px;
 }
+.utility-hero small::before,.report-hero small::before,.growth-hero small::before,
+.calendar-hero small::before,.planner-hero small::before{
+ content:"";display:inline-block;width:20px;height:4px;flex:none;
+ background:repeating-linear-gradient(90deg,var(--accent) 0 5px,#0a0a0a 5px 10px);
+}
+html.theme-champion-black .focus-hero{
+ background-image:
+  repeating-linear-gradient(45deg,var(--accent) 0 8px,#0a0a0a 8px 16px),
+  linear-gradient(160deg,#0c0c0e,#1a1a1d 55%,#241012 100%);
+ background-size:100% 6px,100% 100%;
+ background-position:top left,top left;
+ background-repeat:no-repeat,no-repeat;
+ padding-top:40px;
+}
+html:not(.theme-champion-black) .focus-hero{
+ background-image:
+  repeating-linear-gradient(45deg,var(--accent) 0 8px,#0a0a0a 8px 16px),
+  linear-gradient(160deg,#ffffff,#f2f2f3 55%,#fbe8ea 100%);
+ background-size:100% 6px,100% 100%;
+ background-position:top left,top left;
+ background-repeat:no-repeat,no-repeat;
+ padding-top:40px;
+}
 
-/* card-titleの丸数字を、背番号のような赤バッジに（ストライプではなく単色） */
+/* card-titleの丸数字を、背番号のような赤バッジに */
 .card-title{gap:12px}
 .card-title span{
  display:inline-flex;align-items:center;justify-content:center;
@@ -936,9 +961,15 @@ html.theme-champion-black .bar{
 }
 .utility-card .card-title span{background:var(--accent);color:#fff;border-radius:8px}
 
+/* 主要カード上端に、控えめな赤黒ストライプの縁取り */
 .card,.step-card,.rest-card,.utility-card,.subm-card,.family-card{
  border-radius:14px;
  position:relative;
+}
+.card::before,.step-card::before,.rest-card::before,.utility-card::before,.subm-card::before{
+ content:"";position:absolute;top:0;left:14px;right:14px;height:3px;
+ background:repeating-linear-gradient(90deg,var(--accent) 0 10px,transparent 10px 20px);
+ opacity:.8;pointer-events:none;
 }
 
 /* 主要ボタン：深い赤・立体感・押しやすさ */
@@ -955,12 +986,12 @@ html.theme-champion-black .bar{
  box-shadow:0 1px 0 var(--accent-strong),0 3px 8px rgba(0,0,0,.18);
 }
 
-/* 下部ナビ：選択中タブの上だけ細い赤ライン(タブ幅の約50%、中央揃え) */
+/* 下部ナビ：選択中タブに赤い上部インジケーターを追加 */
 nav{border-top:1px solid rgba(255,255,255,.06)}
 nav button{position:relative}
 nav .active::before{
  content:"";position:absolute;top:-1px;left:50%;transform:translateX(-50%);
- width:50%;max-width:36px;height:3px;background:var(--accent);border-radius:0 0 3px 3px;
+ width:28px;height:3px;background:var(--accent);border-radius:0 0 3px 3px;
 }
 
 /* Primary Light Card：通常カードは黒テーマでも白背景・黒文字を維持する
@@ -990,6 +1021,7 @@ html:not(.theme-champion-black) .rest-card{
 
 @media(max-width:480px){
  .utility-hero,.report-hero,.growth-hero,.calendar-hero,.planner-hero,.focus-hero{padding-top:30px}
+ .card::before,.step-card::before,.rest-card::before,.utility-card::before,.subm-card::before{left:10px;right:10px}
 }
 
 /* ============================================
@@ -1002,8 +1034,7 @@ html:not(.theme-champion-black) .rest-card{
    （盾＋赤黒縦ストライプ＋白縁＋星＋SU文字。実在クラブの模倣ではない） */
 .champion-emblem{
  display:inline-block;width:34px;height:40px;flex:none;
- background-color:transparent;
- background-image:url("assets/hero-emblem-white-v2.webp");
+ background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20120%20140%27%3E%0A%3Cdefs%3E%0A%3CclipPath%20id%3D%27su-shield-clip-w%27%3E%3Cpath%20d%3D%27M60%2020%20L100%2030%20V66%20C100%2092%2084%20110%2060%20122%20C36%20110%2020%2092%2020%2066%20V30%20Z%27%2F%3E%3C%2FclipPath%3E%0A%3ClinearGradient%20id%3D%27su-silver%27%20x1%3D%270%27%20y1%3D%270%27%20x2%3D%271%27%20y2%3D%271%27%3E%0A%3Cstop%20offset%3D%270%27%20stop-color%3D%27%23ffffff%27%2F%3E%0A%3Cstop%20offset%3D%270.5%27%20stop-color%3D%27%23d8d9dd%27%2F%3E%0A%3Cstop%20offset%3D%271%27%20stop-color%3D%27%239a9ca3%27%2F%3E%0A%3C%2FlinearGradient%3E%0A%3ClinearGradient%20id%3D%27su-metal-w%27%20x1%3D%270%27%20y1%3D%270%27%20x2%3D%270%27%20y2%3D%271%27%3E%0A%3Cstop%20offset%3D%270%27%20stop-color%3D%27%23ffffff%27%20stop-opacity%3D%270.35%27%2F%3E%0A%3Cstop%20offset%3D%270.45%27%20stop-color%3D%27%23ffffff%27%20stop-opacity%3D%270%27%2F%3E%0A%3Cstop%20offset%3D%271%27%20stop-color%3D%27%23000000%27%20stop-opacity%3D%270.25%27%2F%3E%0A%3C%2FlinearGradient%3E%0A%3C%2Fdefs%3E%0A%3Cg%20fill%3D%27%23c7c9cf%27%20opacity%3D%270.85%27%3E%0A%3Cpath%20d%3D%27M18%2062%20C11%2068%209%2078%2012%2089%20C15%2082%2018%2077%2022%2074%20C18%2071%2018%2067%2018%2062%20Z%27%2F%3E%0A%3Cpath%20d%3D%27M102%2062%20C109%2068%20111%2078%20108%2089%20C105%2082%20102%2077%2098%2074%20C102%2071%20102%2067%20102%2062%20Z%27%2F%3E%0A%3C%2Fg%3E%0A%3Cpath%20d%3D%27M60%2016%20L104%2027%20V66%20C104%2094%2086%20114%2060%20127%20C34%20114%2016%2094%2016%2066%20V27%20Z%27%20fill%3D%27url%28%23su-silver%29%27%2F%3E%0A%3Cpath%20d%3D%27M60%2021%20L99%2031%20V66%20C99%2091%2082%20109%2060%20121%20C38%20109%2021%2091%2021%2066%20V31%20Z%27%20fill%3D%27%23111113%27%2F%3E%0A%3Cg%20clip-path%3D%27url%28%23su-shield-clip-w%29%27%3E%0A%3Crect%20x%3D%2720%27%20y%3D%2716%27%20width%3D%2712%27%20height%3D%27120%27%20fill%3D%27%23d10a10%27%2F%3E%0A%3Crect%20x%3D%2744%27%20y%3D%2716%27%20width%3D%2712%27%20height%3D%27120%27%20fill%3D%27%230b0b0d%27%2F%3E%0A%3Crect%20x%3D%2768%27%20y%3D%2716%27%20width%3D%2712%27%20height%3D%27120%27%20fill%3D%27%23d10a10%27%2F%3E%0A%3Crect%20x%3D%2792%27%20y%3D%2716%27%20width%3D%2712%27%20height%3D%27120%27%20fill%3D%27%230b0b0d%27%2F%3E%0A%3Crect%20x%3D%2720%27%20y%3D%2716%27%20width%3D%2780%27%20height%3D%27120%27%20fill%3D%27url%28%23su-metal-w%29%27%2F%3E%0A%3C%2Fg%3E%0A%3Cpath%20d%3D%27M60%2020%20L100%2030%20V66%20C100%2092%2084%20110%2060%20122%20C36%20110%2020%2092%2020%2066%20V30%20Z%27%20fill%3D%27none%27%20stroke%3D%27%23ffffff%27%20stroke-width%3D%273.5%27%2F%3E%0A%3Cpath%20d%3D%27M60%2016%20L104%2027%20V66%20C104%2094%2086%20114%2060%20127%20C34%20114%2016%2094%2016%2066%20V27%20Z%27%20fill%3D%27none%27%20stroke%3D%27%238f9198%27%20stroke-width%3D%272%27%2F%3E%0A%3Cpolygon%20points%3D%2760%2C33%2062.6%2C40.2%2070%2C40.2%2064%2C44.8%2066.2%2C52%2060%2C47.6%2053.8%2C52%2056%2C44.8%2050%2C40.2%2057.4%2C40.2%27%20fill%3D%27%23ffffff%27%2F%3E%0A%3Ctext%20x%3D%2760%27%20y%3D%2795%27%20font-family%3D%27Arial%2C%20sans-serif%27%20font-size%3D%2733%27%20font-weight%3D%27900%27%20fill%3D%27%23ffffff%27%20stroke%3D%27%23000000%27%20stroke-opacity%3D%270.3%27%20stroke-width%3D%270.5%27%20text-anchor%3D%27middle%27%3ESU%3C%2Ftext%3E%0A%3Ctext%20x%3D%2760%27%20y%3D%27111%27%20font-family%3D%27Arial%2C%20sans-serif%27%20font-size%3D%279%27%20font-weight%3D%27700%27%20letter-spacing%3D%272%27%20fill%3D%27%23f2f2f5%27%20text-anchor%3D%27middle%27%3ESTEP%20UP%3C%2Ftext%3E%0A%3C%2Fsvg%3E");
  background-repeat:no-repeat;background-size:contain;background-position:center;
  vertical-align:middle;
 }
@@ -1032,6 +1063,28 @@ nav .active span{color:var(--accent)}
  --text:var(--dark-text);--text-muted:var(--dark-text-muted);
 }
 
+/* 赤黒ストライプをHero右側にも面として配置（斜線だけで終わらせない） */
+.focus-hero{
+ background-image:
+  linear-gradient(100deg, transparent 62%, var(--accent) 62% 68%, #0a0a0a 68% 74%, var(--accent) 74% 80%, #0a0a0a 80% 86%),
+  repeating-linear-gradient(45deg,var(--accent) 0 8px,#0a0a0a 8px 16px),
+  linear-gradient(160deg,#0c0c0e,#1a1a1d 55%,#241012 100%);
+ background-size:100% 100%,100% 6px,100% 100%;
+ background-position:top left,top left,top left;
+ background-repeat:no-repeat,no-repeat,no-repeat;
+}
+/* Hero・各ページ見出しは、テーマに関わらず常にPrimary Darkカード（黒背景・白文字） */
+html:not(.theme-champion-black) .focus-hero,
+html.theme-champion-black .focus-hero{
+ background-image:
+  linear-gradient(100deg, transparent 62%, var(--accent) 62% 68%, #0a0a0a 68% 74%, var(--accent) 74% 80%, #0a0a0a 80% 86%),
+  repeating-linear-gradient(45deg,var(--accent) 0 8px,#0a0a0a 8px 16px),
+  linear-gradient(160deg,#0c0c0e,#1a1a1d 55%,#241012 100%);
+ background-size:100% 100%,100% 6px,100% 100%;
+ background-position:top left,top left,top left;
+ background-repeat:no-repeat,no-repeat,no-repeat;
+ color:#ffffff;
+}
 @media(prefers-reduced-motion:reduce){
  .step-card button,.family-card button,.plan-edit-btn,.deadline-save-btn,
  #saveAssignmentBtn,.de-save,.primary-action,.material-form>button{
@@ -1062,7 +1115,14 @@ html.theme-champion-black .subm-card,html.theme-champion-black .family-card{
  box-shadow:var(--shadow);
 }
 
-/* 主要カードの左端に赤ラインを表示（ブラックテーマ） */
+/* 赤黒ストライプを、単なる飾り線ではなくブランド要素として強調（カード上端・左端） */
+html.theme-champion-black .card::before,html.theme-champion-black .step-card::before,
+html.theme-champion-black .rest-card::before,html.theme-champion-black .utility-card::before,
+html.theme-champion-black .subm-card::before{
+ height:4px;
+ background:repeating-linear-gradient(90deg,var(--accent) 0 14px,var(--accent-strong) 14px 20px,transparent 20px 26px);
+ opacity:1;
+}
 html.theme-champion-black .card,html.theme-champion-black .subm-card{
  border-left:4px solid var(--accent);
 }
@@ -1163,6 +1223,13 @@ html.theme-champion-black .focus-hero p{
  font-size:16px;line-height:1.7;font-weight:500;color:#f2f2f5;max-width:56%;
 }
 
+/* カード上端の細いストライプを削除（エンブレム内のストライプのみで十分なため） */
+html.theme-champion-black .card::before,html.theme-champion-black .step-card::before,
+html.theme-champion-black .rest-card::before,html.theme-champion-black .utility-card::before,
+html.theme-champion-black .subm-card::before{
+ display:none;
+}
+
 /* Hero直下カードの質感をHeroに合わせる（弱いグラデーション・上端の光沢・角のハイライト・自然な影） */
 html.theme-champion-black .card,html.theme-champion-black .step-card,
 html.theme-champion-black .rest-card,html.theme-champion-black .utility-card,
@@ -1223,10 +1290,10 @@ html.theme-champion-black .focus-hero{
 /* エンブレムは、Champion Blackのみご提供いただいた画像ファイルに差し替える
    （White側は従来どおりCSS生成のSVGエンブレムのまま維持） */
 html.theme-champion-black .champion-emblem{
- background-color:transparent;border-radius:6px;
- background-image:url("assets/hero-emblem-black-v2.webp");
+ background-color:#0b0b0d;border-radius:6px;
+ background-image:url("assets/champion-emblem-gold.webp");
  background-repeat:no-repeat;background-size:contain;background-position:center;
- box-shadow:none;
+ box-shadow:0 2px 6px rgba(0,0,0,.5);
 }
 
 /* Heroのブランド行：エンブレム(独立画像)とテキストを横並びに、左上へ配置 */
@@ -1298,7 +1365,7 @@ html.theme-champion-black .focus-hero{
 
 /* エンブレムをさらに一回り大きくし、黒背景となじむよう調整（Champion Blackのみ） */
 html.theme-champion-black .champion-emblem{
- background-color:transparent;
+ background-color:#0b0b0d;
 }
 html.theme-champion-black .champion-emblem.lg{
  width:80px;height:90px;
@@ -1352,97 +1419,5 @@ html:not(.theme-champion-black) .champion-emblem.lg{
 @media(max-width:480px){
  html:not(.theme-champion-black) .champion-emblem.lg{
   width:134px;height:150px;
- }
-}
-
-/* ============================================
-   Sprint 39: Champion Edition アクセント最終実装
-   （点々ストライプを廃止し、重要な見出しだけに
-   　エンブレムラインを使用。その他は細い赤ラインのみ）
-   ============================================ */
-
-/* エンブレムライン：細いバー → 赤ダイヤ → ラインエンブレム → 赤ダイヤ → 細いバー */
-.champion-emblem-line{
- display:flex;align-items:center;justify-content:center;gap:18px;
- margin:0 0 16px;
-}
-.champion-emblem-line__line{
- flex:1 1 auto;max-width:90px;height:2px;border-radius:2px;
- background:#e8e8e8;
-}
-html.theme-champion-black .champion-emblem-line__line{
- background:#ffffff;
-}
-.champion-emblem-line__diamond{
- width:8px;height:8px;background:var(--accent);transform:rotate(45deg);flex:none;
-}
-.champion-emblem-line__badge{
- width:48px;height:48px;flex:none;flex-shrink:0;
- background-color:transparent;
- background-image:url("assets/line-emblem-v2.webp");
- background-repeat:no-repeat;background-size:contain;background-position:center;
-}
-/* バーは常に薄いグレー/白のみ。赤やゴールドのグラデーション、丸い装飾、太いバーは使用しない。 */
-
-/* Hero見出しの上部の余白を、エンブレムラインの分だけ少し確保 */
-.utility-hero .champion-emblem-line,.report-hero .champion-emblem-line,
-.growth-hero .champion-emblem-line{margin-bottom:14px}
-.voice-heading .champion-emblem-line,.step-card .champion-emblem-line,
-.rest-card .champion-emblem-line{margin-bottom:10px}
-
-@media(max-width:480px){
- .champion-emblem-line__line{max-width:56px}
-}
-
-/* 情報量の多いページ・個別カードは、エンブレムを使わず細い赤ラインのみにする */
-.material-item,.calendar-card,.utility-card{
- border-top:2px solid var(--accent);
-}
-
-/* ============================================
-   Sprint 40: Hero用エンブレムをWhite・Black両方で
-   さらに大きく、豪華に見えるサイズへ最終調整
-   ============================================ */
-html:not(.theme-champion-black) .champion-emblem.lg,
-html.theme-champion-black .champion-emblem.lg{
- width:112px;height:126px;
-}
-@media(max-width:480px){
- html:not(.theme-champion-black) .champion-emblem.lg,
- html.theme-champion-black .champion-emblem.lg{
-  width:150px;height:168px;
- }
-}
-
-/* ============================================
-   Sprint 41: Champion Edition デザイン統一
-   （ラインエンブレムの拡大・共通アクセント構造・
-   　White Hero用エンブレムのさらなる拡大。
-   　Black Hero用エンブレムのサイズは変更しない）
-   ============================================ */
-
-/* White Hero用エンブレムを現状からさらに約28%拡大する（Blackは変更しない） */
-html:not(.theme-champion-black) .champion-emblem.lg{
- width:143px;height:161px;
-}
-@media(max-width:480px){
- html:not(.theme-champion-black) .champion-emblem.lg{
-  width:192px;height:215px;
- }
-}
-
-/* ============================================
-   Sprint 42: 表示仕上げ修正
-   （エンブレムの白い/黒い四角背景を除去、
-   　White Heroのサイズ調整、ライン用の視認性向上）
-   ============================================ */
-
-/* White Heroエンブレムの最終サイズ：スマホは145〜155px程度、PCは少し大きく */
-html:not(.theme-champion-black) .champion-emblem.lg{
- width:160px;height:160px;
-}
-@media(max-width:480px){
- html:not(.theme-champion-black) .champion-emblem.lg{
-  width:150px;height:150px;
  }
 }
