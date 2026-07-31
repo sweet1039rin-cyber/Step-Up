@@ -1,7 +1,11 @@
 const data=window.StepUpData.children;
 const testEvents=window.StepUpData.testEvents;
-const TODAY=new Date(2026,6,21);
-const PLAN_DATE='2026-07-21';
+// Sprint 47: 固定日付を廃止し、端末の現在日付を基準にする。
+// 日付キーはローカル時刻のYYYY-MM-DD形式で統一する。
+function computeTodayDateOnly(){const d=new Date();return new Date(d.getFullYear(),d.getMonth(),d.getDate())}
+function formatDateKey(d){const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');return `${y}-${m}-${day}`}
+const TODAY=computeTodayDateOnly();
+const PLAN_DATE=formatDateKey(TODAY);
 const assignmentData=window.StepUpData.assignments;
 const assignmentProgressKey=id=>`stepup-assignment-progress-${id}`;
 const nextPlanKey=id=>`stepup-next-plan-${id}`;
@@ -141,7 +145,7 @@ function toIsoDeadlineOrDefault(deadline){
 const DEADLINE_CATEGORY_LABELS={overdue:'期限切れ・未完了',today:'今日まで',within3:'3日以内',within7:'7日以内',later:'それ以降',none:'期限未設定',done:'完了済み'};
 const DEADLINE_GROUP_ORDER=['overdue','today','within3','within7','later','none','done'];
 const DEADLINE_PRIORITY_RANK={overdue:1,today:2,within3:3,within7:4,later:5,none:6,done:7};
-function todayDateOnly(){const d=new Date();return new Date(d.getFullYear(),d.getMonth(),d.getDate())}
+function todayDateOnly(){return new Date(TODAY)}
 function parseDeadlineDateOnly(deadline){
  if(!deadline||!/^\d{4}-\d{2}-\d{2}$/.test(deadline))return null;
  const parts=deadline.split('-').map(Number);
@@ -924,31 +928,34 @@ const monthTitle=document.querySelector('#monthTitle');
 const agendaTitle=document.querySelector('#agendaTitle');
 const agendaList=document.querySelector('#agendaList');
 const calendarPerson=document.querySelector('#calendarPerson');
-let calendarDate=new Date(2026,6,1);
-let selectedDate=new Date(2026,6,19);
-const calendarEvents={
- '2026-07-19':[
-  ['08:00','朝活：英単語','30分'],['08:40','数学 新研究','90分'],['10:25','社会 新研究','80分'],['13:00','ことばのきまり','60分'],['14:15','英語 新研究','60分'],['15:30','歴史の学習','45分'],['16:30','ジョイフルワーク','45分']
- ],
- '2026-07-20':[['09:00','夏休み課題の続き','60分']],
- '2026-07-21':[['10:00','どこでもスタディ','45分']]
-};
+let calendarDate=new Date(TODAY.getFullYear(),TODAY.getMonth(),1);
+let selectedDate=new Date(TODAY);
+// Sprint 47: 固定日付のダミー予定(calendarEvents)は廃止。
+// 日付・子どもごとに保存された実際の予定(customTasks)、
+// 「今日」でまだ保存されていなければ既定のスケジュールを表示する。
 function dateKey(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
+function tasksForDate(d,id=current){
+ const k='stepup-v4-'+dateKey(d)+'-'+id;
+ const saved=JSON.parse(localStorage.getItem(k)||'{}');
+ if(saved.customTasks)return saved.customTasks;
+ if(dateKey(d)===dateKey(TODAY))return data[id].tasks;
+ return [];
+}
 function renderCalendar(){
  const y=calendarDate.getFullYear(),m=calendarDate.getMonth();
  monthTitle.textContent=`${y}年${m+1}月`;
  const first=new Date(y,m,1),start=new Date(y,m,1-first.getDay());
  calendarGrid.innerHTML='';
  for(let i=0;i<42;i++){
-  const d=new Date(start);d.setDate(start.getDate()+i);const k=dateKey(d);const ev=calendarEvents[k]||[];
-  const b=document.createElement('button');b.className='day'+(d.getMonth()!==m?' muted':'')+(k===dateKey(selectedDate)?' selected':'')+(k==='2026-07-19'?' today':'');
+  const d=new Date(start);d.setDate(start.getDate()+i);const k=dateKey(d);const ev=tasksForDate(d);
+  const b=document.createElement('button');b.className='day'+(d.getMonth()!==m?' muted':'')+(k===dateKey(selectedDate)?' selected':'')+(k===dateKey(TODAY)?' today':'');
   b.innerHTML=`<span class="day-number">${d.getDate()}</span>${ev.length?'<i class="day-dot"></i><span class="day-label">'+ev[0][1]+'</span>':''}`;
   b.onclick=()=>{selectedDate=d;renderCalendar();renderAgenda()};calendarGrid.appendChild(b);
  }
  renderAgenda();
 }
 function renderAgenda(){
- const k=dateKey(selectedDate),ev=calendarEvents[k]||[];
+ const ev=tasksForDate(selectedDate);
  agendaTitle.textContent=`${selectedDate.getMonth()+1}月${selectedDate.getDate()}日の予定`;
  agendaList.innerHTML=ev.length?ev.map(x=>`<div class="agenda-item"><time>${x[0]}</time><span><strong>${x[1]}</strong><small>学習ミッション</small></span><em>${x[2]}</em></div>`).join(''):'<div class="empty-agenda">予定はありません。休息や振り返りの時間にしましょう。</div>';
 }
@@ -964,7 +971,7 @@ document.querySelectorAll('[data-nav]').forEach(btn=>btn.addEventListener('click
 document.querySelector('#calendarBack').onclick=()=>show(mission);
 document.querySelector('#prevMonth').onclick=()=>{calendarDate=new Date(calendarDate.getFullYear(),calendarDate.getMonth()-1,1);renderCalendar()};
 document.querySelector('#nextMonth').onclick=()=>{calendarDate=new Date(calendarDate.getFullYear(),calendarDate.getMonth()+1,1);renderCalendar()};
-document.querySelector('#todayBtn').onclick=()=>{calendarDate=new Date(2026,6,1);selectedDate=new Date(2026,6,19);renderCalendar()};
+document.querySelector('#todayBtn').onclick=()=>{calendarDate=new Date(TODAY.getFullYear(),TODAY.getMonth(),1);selectedDate=new Date(TODAY);renderCalendar()};
 
 
 // Materials
