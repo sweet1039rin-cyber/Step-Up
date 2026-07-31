@@ -400,49 +400,14 @@ function setSyncStatus(text,state=''){
  if(el)el.textContent=text;
  if(panel){panel.classList.toggle('is-online',state==='online');panel.classList.toggle('is-offline',state==='offline')}
 }
+// Sprint 46: GitHub Pagesには /api/state のバックエンドが存在しないため、
+// サーバー同期機能(familySync)は完全に無効化し、常にlocalStorageのみで動作させる。
+// 呼び出しループ(2.5秒ごとの再試行)と、/api/stateへの通信自体を停止する。
+// 既存の課題進捗・マイルールカード・ホーム画面連動はすべてlocalStorage経由のため、影響しない。
 async function familySync(){
- if(syncBusy||location.protocol==='file:')return;
- syncBusy=true;
- try{
-  const meta=getSyncMeta(),now=Date.now(),changes={};
-  for(const key of syncEligibleKeys()){
-   const value=localStorage.getItem(key)??'';
-   const hash=value;
-   if(!meta[key])meta[key]={updatedAt:now,hash};
-   else if(meta[key].hash!==hash){meta[key]={updatedAt:now,hash};changes[key]={value,updatedAt:now}}
-  }
-  if(Object.keys(changes).length){
-   await fetch('/api/state',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({values:changes})});
-  }
-  const response=await fetch('/api/state',{cache:'no-store'});
-  if(!response.ok)throw new Error('sync');
-  const remote=await response.json(),values=remote.values||{};
-  let changed=false;
-  for(const [key,item] of Object.entries(values)){
-   if(!key.startsWith(SYNC_KEYS_PREFIX)||key===SYNC_META_KEY)continue;
-   const localStamp=meta[key]?.updatedAt||0;
-   if((item.updatedAt||0)>localStamp){
-    localStorage.setItem(key,item.value??'');
-    meta[key]={updatedAt:item.updatedAt||now,hash:item.value??''};
-    changed=true;
-   }
-  }
-  // First connection: publish local values that the server does not have yet.
-  const missing={};
-  for(const key of syncEligibleKeys())if(!values[key]){
-   const value=localStorage.getItem(key)??'',updatedAt=meta[key]?.updatedAt||now;
-   missing[key]={value,updatedAt};meta[key]={updatedAt,hash:value};
-  }
-  if(Object.keys(missing).length)await fetch('/api/state',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({values:missing})});
-  setSyncMeta(meta);setSyncStatus('PC・スマホの学習記録を同期中','online');
-  if(changed){
-   try{render()}catch{}
-   if(document.querySelector('#family')?.classList.contains('active'))try{renderFamily()}catch{}
-  }
- }catch(e){setSyncStatus('この端末内に保存中（サーバー接続なし）','offline')}
- finally{syncBusy=false}
+ setSyncStatus('この端末内に保存中（サーバー同期は無効）','offline');
 }
-window.addEventListener('load',()=>{familySync();setInterval(familySync,2500)});
+window.addEventListener('load',()=>{familySync()});
 
 const gradeSubjects=['国語','数学','英語','理科','社会','音楽','美術','保体','技家'];
 function initGradeInputs(){
@@ -494,9 +459,109 @@ function formatFocusTitle(text){
  if(parts.length<2)return escapeHtml(text);
  return parts.map(part=>`<span class="focus-phrase">${escapeHtml(part)}</span>`).join('<span class="focus-space" aria-hidden="true"> </span>');
 }
-function render(){const d=data[current];mission.classList.toggle('sakuya-theme',current==='sakuya');personName.textContent=d.name;focusTitle.innerHTML=formatFocusTitle(d.focus);focusSub.textContent=d.sub;priorityTitle.textContent=d.priority;priorityText.textContent=d.priorityText;renderMobileWelcome(d);renderCountdown();goals.innerHTML=d.goals.map(x=>`<li>${x}</li>`).join('');const saved=JSON.parse(localStorage.getItem(key())||'{}');const tasks=activeTasks();const linkedItems=ProgressEngine.getAll(current);scheduleList.innerHTML=tasks.map((t,i)=>{const assignment=t[3]?linkedItems.find(x=>x.id===t[3]):null;const assignmentText=assignment?`課題：${assignment.done?'完了済み':assignment.status==='in-progress'?'進行中':'未着手'}${assignment.total!=null?`・${assignment.current}/${assignment.total}`:''}`:(saved.checks?.[i]?'完了 ✓':'タップで完了');return `<label class="task ${saved.checks?.[i]?'done':''}"><input type="checkbox" data-i="${i}" data-assignment-id="${t[3]||''}" ${saved.checks?.[i]?'checked':''}><time>${t[0]}</time><span><strong>${t[1]}</strong><small>${t[2]}</small></span><span class="task-state">${assignmentText}</span><span class="duration">${t[2]}</span></label>`}).join('');stepMessage.textContent=saved.step||'今日の記録はまだありません。「まとめて保存」を押すと、ここに表示されます。';bindChecks();update();renderPersonalCoach();renderHomeDeadlineCard();loadDailyReportCard()}
+function render(){const d=data[current];mission.classList.toggle('sakuya-theme',current==='sakuya');personName.textContent=d.name;if(current==='sakuya'){const focusInfo=sakuyaFocusDisplay();focusTitle.innerHTML=formatFocusTitle(focusInfo.title);focusSub.textContent=focusInfo.sub;priorityTitle.textContent=focusInfo.priorityTitle;priorityText.textContent=focusInfo.priorityText;}else{focusTitle.innerHTML=formatFocusTitle(d.focus);focusSub.textContent=d.sub;priorityTitle.textContent=d.priority;priorityText.textContent=d.priorityText;}renderMobileWelcome(d);renderCountdown();goals.innerHTML=d.goals.map(x=>`<li>${x}</li>`).join('');const saved=JSON.parse(localStorage.getItem(key())||'{}');const tasks=activeTasks();const linkedItems=ProgressEngine.getAll(current);scheduleList.innerHTML=tasks.map((t,i)=>{const assignment=t[3]?linkedItems.find(x=>x.id===t[3]):null;const assignmentText=assignment?`課題：${assignment.done?'完了済み':assignment.status==='in-progress'?'進行中':'未着手'}${assignment.total!=null?`・${assignment.current}/${assignment.total}`:''}`:(saved.checks?.[i]?'完了 ✓':'タップで完了');return `<label class="task ${saved.checks?.[i]?'done':''}"><input type="checkbox" data-i="${i}" data-assignment-id="${t[3]||''}" ${saved.checks?.[i]?'checked':''}><time>${t[0]}</time><span><strong>${t[1]}</strong><small>${t[2]}</small></span><span class="task-state">${assignmentText}</span><span class="duration">${t[2]}</span></label>`}).join('');stepMessage.textContent=saved.step||'今日の記録はまだありません。「まとめて保存」を押すと、ここに表示されます。';bindChecks();update();renderPersonalCoach();renderHomeDeadlineCard();loadDailyReportCard();renderSakuyaTestRulesCard()}
 // Sprint 12-3/12-4: 今日の学習報告カード（提出物・課題データとは別のlocalStorageキーで管理）
 function dailyReportKey(date){return `stepup_daily_report_${date}_${current}`}
+// Sprint 43: さくや専用「課題テストのマイルール」カード。
+// 教科別トラッカーは既存の課題進捗(ProgressEngine)とは別のlocalStorageキーで管理し、
+// 既存データを一切変更しない。保存時は既存の「今日のStep Up」(saved.step)の仕組みをそのまま利用する。
+function sakuyaTestRulesKey(){return 'stepup-sakuya-test-rules-v1'}
+function getSakuyaTestRulesData(){
+ try{return JSON.parse(localStorage.getItem(sakuyaTestRulesKey())||'{}')}catch(e){return{}}
+}
+function saveSakuyaTestRulesData(data){
+ localStorage.setItem(sakuyaTestRulesKey(),JSON.stringify(data));
+}
+function renderSakuyaTestRulesCard(){
+ const card=document.querySelector('#sakuyaTestRulesCard');
+ if(!card)return;
+ const isSakuya=current==='sakuya';
+ card.classList.toggle('hidden',!isSakuya);
+ if(!isSakuya)return;
+ const data=getSakuyaTestRulesData();
+ card.querySelectorAll('.sakuya-subject-row').forEach(row=>{
+  const subject=row.dataset.subject;
+  const entry=data[subject]||{};
+  const pageInput=row.querySelector('.sakuya-subject-page');
+  const scoreInput=row.querySelector('.sakuya-subject-score');
+  const statusEl=row.querySelector('.sakuya-subject-status');
+  if(pageInput&&entry.currentPage!=null&&document.activeElement!==pageInput)pageInput.value=entry.currentPage;
+  if(scoreInput&&entry.testScore!=null&&document.activeElement!==scoreInput)scoreInput.value=entry.testScore;
+  if(statusEl){
+   statusEl.textContent=entry.status?(entry.status==='clear'?'達成 ◎':'やり直し'):'';
+   statusEl.classList.toggle('is-clear',entry.status==='clear');
+   statusEl.classList.toggle('is-retry',entry.status==='retry');
+  }
+ });
+}
+document.querySelector('#sakuyaTestRulesSave')?.addEventListener('click',()=>{
+ if(current!=='sakuya')return;
+ const card=document.querySelector('#sakuyaTestRulesCard');
+ const data=getSakuyaTestRulesData();
+ card.querySelectorAll('.sakuya-subject-row').forEach(row=>{
+  const subject=row.dataset.subject;
+  const max=Number(row.dataset.max);
+  const pageInput=row.querySelector('.sakuya-subject-page');
+  const scoreInput=row.querySelector('.sakuya-subject-score');
+  const pageVal=pageInput.value.trim()===''?null:Math.max(0,Math.min(max,Number(pageInput.value)));
+  const scoreVal=scoreInput.value.trim()===''?null:Math.max(0,Math.min(10,Number(scoreInput.value)));
+  data[subject]={
+   currentPage:pageVal,
+   testScore:scoreVal,
+   status:scoreVal==null?null:(scoreVal>=8?'clear':'retry')
+  };
+ });
+ saveSakuyaTestRulesData(data);
+ renderSakuyaTestRulesCard();
+
+ // 「今日のStep Up」へ保存(既存の仕組みをそのまま利用。既存データは壊さず、stepフィールドだけ更新)
+ const saved=JSON.parse(localStorage.getItem(key())||'{}');
+ saved.step='課題テストに向けて、自分で勉強方法とルールを決めることができた。';
+ saved.growthTags=['自分で計画を立てた','考える力','自己管理'];
+ localStorage.setItem(key(),JSON.stringify(saved));
+ if(typeof stepMessage!=='undefined'&&stepMessage)stepMessage.textContent=saved.step;
+
+ const statusEl=document.querySelector('#sakuyaTestRulesStatus');
+ if(statusEl){
+  statusEl.textContent='記録を保存しました';
+  clearTimeout(window.sakuyaTestRulesStatusTimer);
+  window.sakuyaTestRulesStatusTimer=setTimeout(()=>{if(statusEl.textContent==='記録を保存しました')statusEl.textContent=''},2500);
+ }
+});
+// Sprint 44: さくや専用「今日の計画」の自動連動。
+// children.jsの静的なfocus/subの代わりに、実際の課題進捗(ProgressEngine)から
+// 「まだ終わっていない課題」を優先順で探し、完了した課題は自動的に計画から外れる。
+// 壱凰には一切適用しない。
+function getSakuyaNextFocusTask(){
+ const priorityOrder=['sakuya-kanji-skill','sakuya-japanese'];
+ const all=ProgressEngine.getAll('sakuya');
+ for(const id of priorityOrder){
+  const item=all.find(it=>it.id===id);
+  if(item&&!item.done)return item;
+ }
+ const notStarted=all.filter(it=>!it.done&&it.status==='not-started')
+  .sort((a,b)=>(a.priority||9)-(b.priority||9));
+ if(notStarted.length)return notStarted[0];
+ const anyRemaining=all.filter(it=>!it.done).sort((a,b)=>(a.priority||9)-(b.priority||9));
+ if(anyRemaining.length)return anyRemaining[0];
+ return null;
+}
+function sakuyaFocusDisplay(){
+ const task=getSakuyaNextFocusTask();
+ if(!task){
+  return {
+   title:'今日の課題はすべて完了', sub:'よく頑張りました。次の目標をお家の人と確認しましょう。',
+   priorityTitle:'今日の課題はすべて完了しました', priorityText:'新しい目標が決まったら、また一緒に計画を立てよう。'
+  };
+ }
+ const remainText=(task.remaining&&task.remaining!=='なし')?`残り${task.remaining}`:(task.progress&&task.progress!=='未着手'?task.progress:'');
+ return {
+  title:task.title,
+  sub:remainText?`${remainText}。今日はここを進めよう。`:'今日はここから進めよう。',
+  priorityTitle:remainText?`${task.title}（${remainText}）を進める`:`${task.title}を進める`,
+  priorityText:'できたら「今日のStep Up」に記録しよう。'
+ };
+}
 function loadDailyReportCard(){
  const doneEl=document.querySelector('#dailyReportDone');
  const stepUpEl=document.querySelector('#dailyReportStepUp');
@@ -787,7 +852,7 @@ function championEmblemLineHTML(){
  return '<div class="champion-emblem-line" aria-hidden="true"><span class="champion-emblem-line__line"></span><span class="champion-emblem-line__diamond"></span><span class="champion-emblem champion-emblem-line__badge" aria-hidden="true"></span><span class="champion-emblem-line__diamond"></span><span class="champion-emblem-line__line"></span></div>';
 }
 (function insertChampionPageEmblems(){
- document.querySelectorAll('.growth-hero h1,.report-hero h1,.assignment-hero h1').forEach(h1=>{
+ document.querySelectorAll('.utility-hero h1,.calendar-hero h1').forEach(h1=>{
   if(h1.parentElement.querySelector('.champion-emblem-line'))return;
   h1.insertAdjacentHTML('beforebegin',championEmblemLineHTML());
  });

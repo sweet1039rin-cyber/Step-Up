@@ -121,6 +121,41 @@
   </section>
   <section class="step-card"><small>TODAY'S STEP UP</small><h2 id="stepMessage">今日の記録はまだありません。「まとめて保存」を押すと、ここに表示されます。</h2></section>
   <section class="rest-card"><small>REST & RECOVERY</small><h2>頑張った後は、しっかり整える。</h2><div><span>水分補給</span><span>ストレッチ</span><span>入浴</span><span>睡眠</span></div></section>
+  <section id="sakuyaTestRulesCard" class="card sakuya-test-rules-card hidden">
+   <div class="card-title"><span>★</span><h2>課題テストのマイルール</h2></div>
+   <p class="sakuya-test-rules-sub">サマースクール</p>
+   <ul class="sakuya-test-rules-list">
+    <li>1日1ページずつ、全教科を進める</li>
+    <li>夜に全教科10問ずつテストする</li>
+    <li>夜のテストで8点以上を目指す</li>
+    <li>テストは夜9時〜9時30分までに行う</li>
+    <li>8点未満だった教科は、次の日に同じページと次のページを勉強する</li>
+    <li>勉強時間は最低1時間30分</li>
+    <li>1時間30分以上勉強したときは、お母さんは追加で言わない</li>
+   </ul>
+   <div class="sakuya-subject-tracker">
+    <div class="sakuya-subject-row" data-subject="math" data-max="25">
+     <h3>数学<span class="sakuya-subject-range">全25ページ</span></h3>
+     <label>現在のページ<input type="number" class="sakuya-subject-page" min="0" max="25" placeholder="未入力"></label>
+     <label>今日のテスト結果(点)<input type="number" class="sakuya-subject-score" min="0" max="10" placeholder="未入力"></label>
+     <span class="sakuya-subject-status"></span>
+    </div>
+    <div class="sakuya-subject-row" data-subject="social" data-max="18">
+     <h3>社会<span class="sakuya-subject-range">全18ページ</span></h3>
+     <label>現在のページ<input type="number" class="sakuya-subject-page" min="0" max="18" placeholder="未入力"></label>
+     <label>今日のテスト結果(点)<input type="number" class="sakuya-subject-score" min="0" max="10" placeholder="未入力"></label>
+     <span class="sakuya-subject-status"></span>
+    </div>
+    <div class="sakuya-subject-row" data-subject="english" data-max="22">
+     <h3>英語<span class="sakuya-subject-range">全22ページ</span></h3>
+     <label>現在のページ<input type="number" class="sakuya-subject-page" min="0" max="22" placeholder="未入力"></label>
+     <label>今日のテスト結果(点)<input type="number" class="sakuya-subject-score" min="0" max="10" placeholder="未入力"></label>
+     <span class="sakuya-subject-status"></span>
+    </div>
+   </div>
+   <button id="sakuyaTestRulesSave" type="button">記録を保存</button>
+   <p id="sakuyaTestRulesStatus" class="sakuya-test-rules-save-status" aria-live="polite"></p>
+  </section>
  </main>
  <nav><button class="active" data-nav="home">⌂<span>ホーム</span></button><button data-nav="calendar">▦<span>カレンダー</span></button><button data-nav="assignments">📋<span>課題</span></button><button data-nav="materials">▤<span>教材</span></button><button data-nav="growth">↗<span>成長</span></button></nav>
 </section>
@@ -359,6 +394,6 @@
 <script src="data/defaultSchedules.js?v=1"></script>
 <script src="data/coachMessages.js?v=1"></script>
 <script src="data/teacherComments.js?v=1"></script>
-<script src="app.js?v=67"></script>
+<script src="app.js?v=69"></script>
 </body>
 </html>
