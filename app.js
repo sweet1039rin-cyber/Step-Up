@@ -208,7 +208,6 @@ function mergeMaxNumber(a,b){
 const LEGACY_TITLE_TO_CANONICAL_ID={
  iori:{'社会 新研究':'iori-social-research','英語 新研究':'iori-english-research','ジョイフルワーク':'iori-joyful-work'},
  sakuya:{
-  '読書感想文':'sakuya-reading-report','作文、説明文または読書感想文':'sakuya-reading-report',
   'くり返し語順トレーニング':'sakuya-word-order-training','繰り返し語順トレーニング':'sakuya-word-order-training',
   '小学英単語':'sakuya-elementary-english-words',
   '家庭科ハンドノート':'sakuya-home-economics-handnote','ハンドノート':'sakuya-home-economics-handnote',
@@ -561,30 +560,33 @@ document.querySelector('#sakuyaTestRulesSave')?.addEventListener('click',()=>{
 // children.jsの静的なfocus/subの代わりに、実際の課題進捗(ProgressEngine)から
 // 「まだ終わっていない課題」を優先順で探し、完了した課題は自動的に計画から外れる。
 // 壱凰には一切適用しない。
-function getSakuyaNextFocusTask(){
+// 判定ロジックは1か所だけにまとめる：優先順位に沿った「未完了課題の並び」を返す共通関数。
+// priorityTitleと#goalsは、この同じ関数の結果を使って表示する(重複ロジックを作らない)。
+function sakuyaIncompleteQueue(){
  const priorityOrder=['sakuya-kanji-skill','sakuya-japanese'];
- const all=ProgressEngine.getAll('sakuya');
- for(const id of priorityOrder){
-  const item=all.find(it=>it.id===id);
-  if(item&&!item.done)return item;
- }
- const notStarted=all.filter(it=>!it.done&&it.status==='not-started')
-  .sort((a,b)=>(a.priority||9)-(b.priority||9));
- if(notStarted.length)return notStarted[0];
- const anyRemaining=all.filter(it=>!it.done).sort((a,b)=>(a.priority||9)-(b.priority||9));
- if(anyRemaining.length)return anyRemaining[0];
- return null;
-}
-// Sprint 50: 「今日の目標」欄(goals)も、さくやの場合は固定文言ではなく
-// 実際の課題進捗から動的に生成する(完了済みの項目は表示しない)。
-function sakuyaDynamicGoals(){
  const all=ProgressEngine.getAll('sakuya').filter(it=>!it.done);
- if(!all.length)return['今日の課題はすべて完了しました。よく頑張りました。'];
- return all.slice(0,4).map(it=>{
+ const ordered=[];
+ priorityOrder.forEach(id=>{
+  const item=all.find(it=>it.id===id);
+  if(item)ordered.push(item);
+ });
+ const rest=all.filter(it=>!ordered.includes(it))
+  .sort((a,b)=>(a.status==='not-started'?1:0)-(b.status==='not-started'?1:0)||(a.priority||9)-(b.priority||9));
+ return [...ordered,...rest];
+}
+function getSakuyaNextFocusTask(){
+ const queue=sakuyaIncompleteQueue();
+ return queue.length?queue[0]:null;
+}
+function sakuyaDynamicGoals(){
+ const queue=sakuyaIncompleteQueue();
+ if(!queue.length)return['今日の課題はすべて完了しました。よく頑張りました。'];
+ return queue.slice(0,4).map(it=>{
   const remain=(it.remaining&&it.remaining!=='なし')?`残り${it.remaining}`:(it.progress&&it.progress!=='未着手'?it.progress:'未着手');
   return `${it.title}（${remain}）`;
  });
 }
+
 function sakuyaFocusDisplay(){
  const task=getSakuyaNextFocusTask();
  if(!task){
@@ -719,7 +721,7 @@ function renderMobileWelcome(d){
  if(dateEl)dateEl.textContent=`${TODAY.getFullYear()}年${TODAY.getMonth()+1}月${TODAY.getDate()}日（${['日','月','火','水','木','金','土'][TODAY.getDay()]}）`;
  if(greetingEl)greetingEl.textContent=greeting;
  if(nameEl)nameEl.textContent=`${shortName}、今日も一歩ずつ進もう。`;
- if(targetEl)targetEl.textContent=d.priority;
+ if(targetEl)targetEl.textContent=current==='sakuya'?sakuyaFocusDisplay().priorityTitle:d.priority;
 }
 
 function renderCountdown(){
@@ -1332,7 +1334,6 @@ const defaultAssignments={
   {id:6105,name:'ジョイフルワーク',deadline:'2026-08-31',current:8,total:60,category:'学校の宿題'}
  ],
  sakuya:[
-  {id:6201,name:'読書感想文',deadline:'2026-07-22',current:0,total:4,category:'提出期限'},
   {id:6202,name:'サマースクール',deadline:'2026-08-31',current:18,total:40,category:'学校の宿題'},
   {id:6203,name:'国語ワーク',deadline:'2026-08-31',current:10,total:60,category:'学校の宿題'},
   {id:6204,name:'理科ワーク',deadline:'2026-08-31',current:15,total:70,category:'学校の宿題'},
@@ -1535,7 +1536,7 @@ document.querySelector('#newAssignmentType')?.addEventListener('change',(e)=>{
 // Sprint 13: 朔埜の夏休み課題（初期データ。移行処理でcustomItemsに反映済み）
 const sakuyaSummerDefaults=[
  {id:7001,subject:'国語',name:'国語語句学習',scope:'P41〜55（○つけ直しまで）',deadline:'9月2日',progress:'',done:false},
- {id:7002,subject:'国語',name:'作文、説明文または読書感想文',scope:'',deadline:'別紙参照',progress:'',done:false},
+ {id:7002,subject:'国語',name:'作文または説明文',scope:'',deadline:'別紙参照',progress:'',done:false},
  {id:7003,subject:'国語',name:'漢字スキル・漢字ノート',scope:'漢字スキル P20まで、漢字ノート10ページ',deadline:'9月最初の授業',progress:'',done:false},
  {id:7004,subject:'国語',name:'習字（自由参加）',scope:'',deadline:'',progress:'',done:false},
  {id:7005,subject:'数学',name:'数学の友',scope:'P32〜47、P146〜147',deadline:'8月25日',progress:'',done:false},
