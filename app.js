@@ -463,7 +463,7 @@ function formatFocusTitle(text){
  if(parts.length<2)return escapeHtml(text);
  return parts.map(part=>`<span class="focus-phrase">${escapeHtml(part)}</span>`).join('<span class="focus-space" aria-hidden="true"> </span>');
 }
-function render(){const d=data[current];mission.classList.toggle('sakuya-theme',current==='sakuya');personName.textContent=d.name;if(current==='sakuya'){const focusInfo=sakuyaFocusDisplay();focusTitle.innerHTML=formatFocusTitle(focusInfo.title);focusSub.textContent=focusInfo.sub;priorityTitle.textContent=focusInfo.priorityTitle;priorityText.textContent=focusInfo.priorityText;}else{focusTitle.innerHTML=formatFocusTitle(d.focus);focusSub.textContent=d.sub;priorityTitle.textContent=d.priority;priorityText.textContent=d.priorityText;}renderMobileWelcome(d);renderCountdown();goals.innerHTML=d.goals.map(x=>`<li>${x}</li>`).join('');const saved=JSON.parse(localStorage.getItem(key())||'{}');const tasks=activeTasks();const linkedItems=ProgressEngine.getAll(current);scheduleList.innerHTML=tasks.map((t,i)=>{const assignment=t[3]?linkedItems.find(x=>x.id===t[3]):null;const assignmentText=assignment?`課題：${assignment.done?'完了済み':assignment.status==='in-progress'?'進行中':'未着手'}${assignment.total!=null?`・${assignment.current}/${assignment.total}`:''}`:(saved.checks?.[i]?'完了 ✓':'タップで完了');return `<label class="task ${saved.checks?.[i]?'done':''}"><input type="checkbox" data-i="${i}" data-assignment-id="${t[3]||''}" ${saved.checks?.[i]?'checked':''}><time>${t[0]}</time><span><strong>${t[1]}</strong><small>${t[2]}</small></span><span class="task-state">${assignmentText}</span><span class="duration">${t[2]}</span></label>`}).join('');stepMessage.textContent=saved.step||'今日の記録はまだありません。「まとめて保存」を押すと、ここに表示されます。';bindChecks();update();renderPersonalCoach();renderHomeDeadlineCard();loadDailyReportCard();renderSakuyaTestRulesCard()}
+function render(){const d=data[current];mission.classList.toggle('sakuya-theme',current==='sakuya');personName.textContent=d.name;if(current==='sakuya'){const focusInfo=sakuyaFocusDisplay();focusTitle.innerHTML=formatFocusTitle(dynamicFocusText(focusInfo.title));focusSub.textContent=focusInfo.sub;priorityTitle.textContent=focusInfo.priorityTitle;priorityText.textContent=focusInfo.priorityText;}else{focusTitle.innerHTML=formatFocusTitle(dynamicFocusText(d.focus));focusSub.textContent=d.sub;priorityTitle.textContent=d.priority;priorityText.textContent=d.priorityText;}renderMobileWelcome(d);renderCountdown();goals.innerHTML=d.goals.map(x=>`<li>${x}</li>`).join('');const saved=JSON.parse(localStorage.getItem(key())||'{}');const tasks=activeTasks();const linkedItems=ProgressEngine.getAll(current);scheduleList.innerHTML=tasks.map((t,i)=>{const assignment=t[3]?linkedItems.find(x=>x.id===t[3]):null;const assignmentText=assignment?`課題：${assignment.done?'完了済み':assignment.status==='in-progress'?'進行中':'未着手'}${assignment.total!=null?`・${assignment.current}/${assignment.total}`:''}`:(saved.checks?.[i]?'完了 ✓':'タップで完了');return `<label class="task ${saved.checks?.[i]?'done':''}"><input type="checkbox" data-i="${i}" data-assignment-id="${t[3]||''}" ${saved.checks?.[i]?'checked':''}><time>${t[0]}</time><span><strong>${t[1]}</strong><small>${t[2]}</small></span><span class="task-state">${assignmentText}</span><span class="duration">${t[2]}</span></label>`}).join('');stepMessage.textContent=saved.step||'今日の記録はまだありません。「まとめて保存」を押すと、ここに表示されます。';bindChecks();update();renderPersonalCoach();renderHomeDeadlineCard();loadDailyReportCard();renderSakuyaTestRulesCard()}
 // Sprint 12-3/12-4: 今日の学習報告カード（提出物・課題データとは別のlocalStorageキーで管理）
 function dailyReportKey(date){return `stepup_daily_report_${date}_${current}`}
 // Sprint 43: さくや専用「課題テストのマイルール」カード。
@@ -496,6 +496,17 @@ function renderSakuyaTestRulesCard(){
    statusEl.classList.toggle('is-clear',entry.status==='clear');
    statusEl.classList.toggle('is-retry',entry.status==='retry');
   }
+  let retryNote=row.querySelector('.sakuya-subject-retry-note');
+  if(entry.status==='retry'){
+   if(!retryNote){
+    retryNote=document.createElement('p');
+    retryNote.className='sakuya-subject-retry-note';
+    row.appendChild(retryNote);
+   }
+   retryNote.textContent='明日は同じページを復習し、次のページも進めよう';
+  }else if(retryNote){
+   retryNote.remove();
+  }
  });
 }
 document.querySelector('#sakuyaTestRulesSave')?.addEventListener('click',()=>{
@@ -504,10 +515,12 @@ document.querySelector('#sakuyaTestRulesSave')?.addEventListener('click',()=>{
  const data=getSakuyaTestRulesData();
  card.querySelectorAll('.sakuya-subject-row').forEach(row=>{
   const subject=row.dataset.subject;
-  const max=Number(row.dataset.max);
+  const hasMax=row.dataset.max!=null&&row.dataset.max!=='';
+  const max=hasMax?Number(row.dataset.max):null;
   const pageInput=row.querySelector('.sakuya-subject-page');
   const scoreInput=row.querySelector('.sakuya-subject-score');
-  const pageVal=pageInput.value.trim()===''?null:Math.max(0,Math.min(max,Number(pageInput.value)));
+  const rawPage=pageInput.value.trim()===''?null:Math.max(0,Number(pageInput.value));
+  const pageVal=(rawPage!=null&&max!=null)?Math.min(max,rawPage):rawPage;
   const scoreVal=scoreInput.value.trim()===''?null:Math.max(0,Math.min(10,Number(scoreInput.value)));
   data[subject]={
    currentPage:pageVal,
@@ -565,6 +578,14 @@ function sakuyaFocusDisplay(){
   priorityTitle:remainText?`${task.title}（${remainText}）を進める`:`${task.title}を進める`,
   priorityText:'できたら「今日のStep Up」に記録しよう。'
  };
+}
+// Sprint 48: ホーム画面上部の日付表示を、カレンダーと同じTODAY基準に統一する。
+// children.js内に埋め込まれた固定の日付文字列(例：「7月21日」)を、動的な今日の日付に差し替える。
+// 新機能・デザイン変更はせず、日付部分の文字列だけを差し替える。
+function todayMonthDayLabel(){return `${TODAY.getMonth()+1}月${TODAY.getDate()}日`}
+function dynamicFocusText(rawText){
+ const stripped=String(rawText).replace(/^\d{1,2}月\d{1,2}日\s*/,'');
+ return stripped?`${todayMonthDayLabel()} ${stripped}`:todayMonthDayLabel();
 }
 function loadDailyReportCard(){
  const doneEl=document.querySelector('#dailyReportDone');
@@ -673,7 +694,7 @@ function renderMobileWelcome(d){
  const nameEl=document.querySelector('#welcomeName');
  const targetEl=document.querySelector('#welcomeTarget');
  const dateEl=document.querySelector('#welcomeDate');
- if(dateEl)dateEl.textContent='2026年7月21日（火）';
+ if(dateEl)dateEl.textContent=`${TODAY.getFullYear()}年${TODAY.getMonth()+1}月${TODAY.getDate()}日（${['日','月','火','水','木','金','土'][TODAY.getDay()]}）`;
  if(greetingEl)greetingEl.textContent=greeting;
  if(nameEl)nameEl.textContent=`${shortName}、今日も一歩ずつ進もう。`;
  if(targetEl)targetEl.textContent=d.priority;
@@ -994,13 +1015,22 @@ const defaultMaterials={
 };
 let materialFilter='all';
 function materialKey(){return 'stepup-materials-'+current}
-function getMaterials(){const saved=JSON.parse(localStorage.getItem(materialKey())||'null');return saved||defaultMaterials[current].map((x,i)=>({...x,id:Date.now()+i,done:false}))}
+function getMaterials(){
+ const saved=JSON.parse(localStorage.getItem(materialKey())||'null');
+ if(saved)return saved;
+ // Sprint 49: 初回はDate.now()ベースの不安定なIDで生成せず、
+ // 生成した時点で即座に保存し、以降は同じ安定したIDを使い続ける。
+ // （これにより「描画時のID」と「クリック時に再取得したID」が一致するようになる）
+ const list=defaultMaterials[current].map((x,i)=>({...x,id:`${current}-material-${i}`,done:false}));
+ saveMaterials(list);
+ return list;
+}
 function saveMaterials(list){localStorage.setItem(materialKey(),JSON.stringify(list))}
 function renderMaterials(){
  const list=getMaterials();const filtered=materialFilter==='all'?list:list.filter(x=>x.priority===materialFilter);
  materialList.innerHTML=filtered.length?filtered.map(x=>{const total=Number(x.total||100),currentPage=Number(x.current||0),pct=Math.min(100,Math.round(currentPage/total*100));return `<article class="material-item ${x.priority} ${x.done?'done':''}"><div><small>${x.subject} / ${x.priority==='urgent'?'PRIORITY':x.priority==='school'?'SCHOOL':'REVIEW'}</small><h2>${x.name}</h2><p>${x.note||''}</p><div class="page-target"><span>今日 P${x.todayFrom||'-'}〜${x.todayTo||'-'}</span><b>現在 P${currentPage} / ${total}</b></div><div class="material-progress"><i style="width:${pct}%"></i></div><em>残り ${Math.max(0,total-currentPage)}ページ</em></div><div class="material-actions"><button data-progress-id="${x.id}">＋進捗</button><button data-material-id="${x.id}">${x.done?'戻す':'完了'}</button></div></article>`}).join(''):'<div class="empty-state">この条件の教材はありません。</div>';
  document.querySelectorAll('[data-material-id]').forEach(b=>b.onclick=()=>{const all=getMaterials();const item=all.find(x=>String(x.id)===b.dataset.materialId);if(!item)return;item.done=!item.done;item.current=item.done?Number(item.total||100):0;saveMaterials(all);syncLearningProgress(current,item.name,item.current,item.total);renderMaterials()});
- document.querySelectorAll('[data-progress-id]').forEach(b=>b.onclick=()=>{const all=getMaterials();const item=all.find(x=>String(x.id)===b.dataset.progressId);if(!item)return;const next=prompt('現在のページを入力してください',item.current||0);if(next===null)return;item.current=Math.max(0,Math.min(Number(item.total||9999),Number(next)||0));item.done=item.current>=Number(item.total||100);saveMaterials(all);syncLearningProgress(current,item.name,item.current,item.total);renderMaterials()});
+ document.querySelectorAll('[data-progress-id]').forEach(b=>b.onclick=()=>{const all=getMaterials();const item=all.find(x=>String(x.id)===b.dataset.progressId);if(!item)return;const total=Number(item.total||9999);item.current=Math.max(0,Math.min(total,Number(item.current||0)+1));item.done=item.current>=total;saveMaterials(all);syncLearningProgress(current,item.name,item.current,item.total);renderMaterials()});
 }
 function openMaterials(){materialsPerson.textContent=data[current].name+' / 教材';materialForm.classList.add('hidden');renderMaterials();show(materialsScreen)}
 materialsBack.onclick=()=>show(mission);
@@ -1362,7 +1392,13 @@ generatePlanBtn.onclick=()=>{
 
 const oldRenderFamily=renderFamily;
 renderFamily=function(){oldRenderFamily();const a=childSummary('iori'),b=childSummary('sakuya');const am=getMaterialsFor('iori'),bm=getMaterialsFor('sakuya');const ca=getCoachMessage('iori'),cb=getCoachMessage('sakuya');familyInsights.innerHTML=`<article><small>壱凰・今週の積み重ね</small><b>${a.done?3:1}日</b><p>本人の昨日までの積み重ねを表示しています。</p></article><article><small>朔埜・今週の積み重ね</small><b>${b.done?3:1}日</b><p>本人の昨日までの積み重ねを表示しています。</p></article><article><small>今日完了した教材・ミッション</small><b>${am.filter(x=>x.done).length+a.done}件 / ${bm.filter(x=>x.done).length+b.done}件</b><p>壱凰 / 朔埜。それぞれの進み具合です。</p></article><section class="family-ai-report"><small>PARENT AI REPORT</small><h3>保護者へのAIレポート</h3><div class="parent-coach-grid"><article><b>壱凰</b><p>${ca.good}<br>声かけ：『次は${ca.next.replace('を、まず20分だけ進めよう。終わったら休憩して、できた所にチェックを付けよう。','から始めよう')}』</p></article><article><b>朔埜</b><p>${cb.good}<br>声かけ：『次は${cb.next.replace('を、まず20分だけ進めよう。終わったら休憩して、できた所にチェックを付けよう。','から始めよう')}』</p></article></div></section>`};
-function getMaterialsFor(id){const saved=JSON.parse(localStorage.getItem('stepup-materials-'+id)||'null');return saved||defaultMaterials[id].map((x,i)=>({...x,id:Date.now()+i,done:false}))}
+function getMaterialsFor(id){
+ const saved=JSON.parse(localStorage.getItem('stepup-materials-'+id)||'null');
+ if(saved)return saved;
+ const list=defaultMaterials[id].map((x,i)=>({...x,id:`${id}-material-${i}`,done:false}));
+ localStorage.setItem('stepup-materials-'+id,JSON.stringify(list));
+ return list;
+}
 
 
 // Sprint 8: microphone report and local AI coach
