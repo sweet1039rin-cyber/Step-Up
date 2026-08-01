@@ -455,7 +455,13 @@ function taskAssignmentId(title,childId=current){return (TASK_ASSIGNMENT_MAP[chi
 function activeTasks(){
  const saved=JSON.parse(localStorage.getItem(key())||'{}');
  const base=saved.customTasks||data[current].tasks;
- return base.map(t=>t.length>=4?t:[t[0],t[1],t[2],taskAssignmentId(t[1])]);
+ const studyTasks=base.map(t=>t.length>=4?t:[t[0],t[1],t[2],taskAssignmentId(t[1])]);
+ // Sprint 50: 固定予定(部活・外出など)を、今日の予定として学習予定と時系列でマージする。
+ const dk=dateKey(TODAY);
+ const events=getEventsForDate(dk,current).map(e=>[e.startTime||'',e.title,e.endTime&&e.startTime?`${e.startTime}〜${e.endTime}`:'',null,EVENT_CATEGORY_LABELS[e.category]||'予定',e.id]);
+ const merged=[...studyTasks.map(t=>[t[0],t[1],t[2],t[3],null,null]),...events];
+ merged.sort((a,b)=>(a[0]||'99:99').localeCompare(b[0]||'99:99'));
+ return merged;
 }
 function escapeHtml(text){return String(text).replace(/[&<>\"]/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[ch]))}
 function formatFocusTitle(text){
@@ -463,7 +469,13 @@ function formatFocusTitle(text){
  if(parts.length<2)return escapeHtml(text);
  return parts.map(part=>`<span class="focus-phrase">${escapeHtml(part)}</span>`).join('<span class="focus-space" aria-hidden="true"> </span>');
 }
-function render(){const d=data[current];mission.classList.toggle('sakuya-theme',current==='sakuya');personName.textContent=d.name;if(current==='sakuya'){const focusInfo=sakuyaFocusDisplay();focusTitle.innerHTML=formatFocusTitle(dynamicFocusText(focusInfo.title));focusSub.textContent=focusInfo.sub;priorityTitle.textContent=focusInfo.priorityTitle;priorityText.textContent=focusInfo.priorityText;}else{focusTitle.innerHTML=formatFocusTitle(dynamicFocusText(d.focus));focusSub.textContent=d.sub;priorityTitle.textContent=d.priority;priorityText.textContent=d.priorityText;}renderMobileWelcome(d);renderCountdown();goals.innerHTML=d.goals.map(x=>`<li>${x}</li>`).join('');const saved=JSON.parse(localStorage.getItem(key())||'{}');const tasks=activeTasks();const linkedItems=ProgressEngine.getAll(current);scheduleList.innerHTML=tasks.map((t,i)=>{const assignment=t[3]?linkedItems.find(x=>x.id===t[3]):null;const assignmentText=assignment?`課題：${assignment.done?'完了済み':assignment.status==='in-progress'?'進行中':'未着手'}${assignment.total!=null?`・${assignment.current}/${assignment.total}`:''}`:(saved.checks?.[i]?'完了 ✓':'タップで完了');return `<label class="task ${saved.checks?.[i]?'done':''}"><input type="checkbox" data-i="${i}" data-assignment-id="${t[3]||''}" ${saved.checks?.[i]?'checked':''}><time>${t[0]}</time><span><strong>${t[1]}</strong><small>${t[2]}</small></span><span class="task-state">${assignmentText}</span><span class="duration">${t[2]}</span></label>`}).join('');stepMessage.textContent=saved.step||'今日の記録はまだありません。「まとめて保存」を押すと、ここに表示されます。';bindChecks();update();renderPersonalCoach();renderHomeDeadlineCard();loadDailyReportCard();renderSakuyaTestRulesCard()}
+function render(){const d=data[current];mission.classList.toggle('sakuya-theme',current==='sakuya');personName.textContent=d.name;if(current==='sakuya'){const focusInfo=sakuyaFocusDisplay();focusTitle.innerHTML=formatFocusTitle(dynamicFocusText(focusInfo.title));focusSub.textContent=focusInfo.sub;priorityTitle.textContent=focusInfo.priorityTitle;priorityText.textContent=focusInfo.priorityText;}else{focusTitle.innerHTML=formatFocusTitle(dynamicFocusText(d.focus));focusSub.textContent=d.sub;priorityTitle.textContent=d.priority;priorityText.textContent=d.priorityText;}renderMobileWelcome(d);renderCountdown();goals.innerHTML=(current==='sakuya'?sakuyaDynamicGoals():d.goals).map(x=>`<li>${x}</li>`).join('');const saved=JSON.parse(localStorage.getItem(key())||'{}');const tasks=activeTasks();const linkedItems=ProgressEngine.getAll(current);scheduleList.innerHTML=tasks.map((t,i)=>{
+if(t[5]){
+ // Sprint 50: 固定予定は表示専用行。チェックボックスを持たせず、完了数・進捗率には含めない。
+ return `<div class="task task--event"><time>${t[0]}</time><span><strong>${t[1]}</strong><small>${t[4]||'予定'}</small></span><span class="task-state">${t[2]}</span></div>`;
+}
+const assignment=t[3]?linkedItems.find(x=>x.id===t[3]):null;const assignmentText=assignment?`課題：${assignment.done?'完了済み':assignment.status==='in-progress'?'進行中':'未着手'}${assignment.total!=null?`・${assignment.current}/${assignment.total}`:''}`:(saved.checks?.[i]?'完了 ✓':'タップで完了');return `<label class="task ${saved.checks?.[i]?'done':''}"><input type="checkbox" data-i="${i}" data-assignment-id="${t[3]||''}" ${saved.checks?.[i]?'checked':''}><time>${t[0]}</time><span><strong>${t[1]}</strong><small>${t[2]}</small></span><span class="task-state">${assignmentText}</span><span class="duration">${t[2]}</span></label>`;
+}).join('');stepMessage.textContent=saved.step||'今日の記録はまだありません。「まとめて保存」を押すと、ここに表示されます。';bindChecks();update();renderPersonalCoach();renderHomeDeadlineCard();loadDailyReportCard();renderSakuyaTestRulesCard()}
 // Sprint 12-3/12-4: 今日の学習報告カード（提出物・課題データとは別のlocalStorageキーで管理）
 function dailyReportKey(date){return `stepup_daily_report_${date}_${current}`}
 // Sprint 43: さくや専用「課題テストのマイルール」カード。
@@ -562,6 +574,16 @@ function getSakuyaNextFocusTask(){
  const anyRemaining=all.filter(it=>!it.done).sort((a,b)=>(a.priority||9)-(b.priority||9));
  if(anyRemaining.length)return anyRemaining[0];
  return null;
+}
+// Sprint 50: 「今日の目標」欄(goals)も、さくやの場合は固定文言ではなく
+// 実際の課題進捗から動的に生成する(完了済みの項目は表示しない)。
+function sakuyaDynamicGoals(){
+ const all=ProgressEngine.getAll('sakuya').filter(it=>!it.done);
+ if(!all.length)return['今日の課題はすべて完了しました。よく頑張りました。'];
+ return all.slice(0,4).map(it=>{
+  const remain=(it.remaining&&it.remaining!=='なし')?`残り${it.remaining}`:(it.progress&&it.progress!=='未着手'?it.progress:'未着手');
+  return `${it.title}（${remain}）`;
+ });
 }
 function sakuyaFocusDisplay(){
  const task=getSakuyaNextFocusTask();
@@ -955,12 +977,53 @@ let selectedDate=new Date(TODAY);
 // 日付・子どもごとに保存された実際の予定(customTasks)、
 // 「今日」でまだ保存されていなければ既定のスケジュールを表示する。
 function dateKey(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
+
+// Sprint 50: 固定予定(部活・外出・オンライン家庭教師など)の保存構造。
+// 学習予定(customTasks)とは完全に別のキーで管理し、既存データと競合しない。
+const EVENT_CATEGORY_LABELS={club:'部活',outing:'外出',tutor:'オンライン家庭教師',school:'学校',hospital:'通院',family:'家族の予定',commute:'移動',meal:'食事',rest:'休憩',other:'その他'};
+function eventsKey(dateStr,childId){return `stepup-events-${dateStr}-${childId}`}
+function getEventsRaw(dateStr,childId){try{const v=JSON.parse(localStorage.getItem(eventsKey(dateStr,childId))||'[]');return Array.isArray(v)?v:[]}catch(e){return[]}}
+function saveEventsRaw(dateStr,childId,list){localStorage.setItem(eventsKey(dateStr,childId),JSON.stringify(list))}
+// 指定した日・子どもの固定予定を取得する(本人分＋共通(family)分をまとめて返す)
+function getEventsForDate(dateStr,childId){
+ const own=getEventsRaw(dateStr,childId);
+ const family=getEventsRaw(dateStr,'family');
+ return [...own,...family].sort((a,b)=>(a.startTime||'99:99').localeCompare(b.startTime||'99:99'));
+}
+function toMinutesSafe(t){if(!t)return null;const[h,m]=String(t).split(':').map(Number);return h*60+(m||0)}
+// 固定予定の時間帯を分単位のperiod配列にし、重なりを統合(和集合)する
+function mergedBusyPeriods(dateStr,childId){
+ const events=getEventsForDate(dateStr,childId).filter(e=>e.startTime&&e.endTime);
+ const periods=events.map(e=>[toMinutesSafe(e.startTime),toMinutesSafe(e.endTime)]).sort((a,b)=>a[0]-b[0]);
+ const merged=[];
+ for(const p of periods){
+  if(merged.length&&p[0]<=merged[merged.length-1][1]){merged[merged.length-1][1]=Math.max(merged[merged.length-1][1],p[1])}
+  else merged.push([...p]);
+ }
+ return merged;
+}
+// 指定した開始時刻・所要時間が、固定予定の使用不可時間と重なる場合、重ならない次の時刻まで進める
+function avoidBusyPeriods(startMin,durationMin,busyPeriods){
+ let t=startMin;
+ let moved=true;
+ while(moved){
+  moved=false;
+  for(const[bStart,bEnd]of busyPeriods){
+   if(t<bEnd&&(t+durationMin)>bStart){t=bEnd;moved=true;}
+  }
+ }
+ return t;
+}
+
 function tasksForDate(d,id=current){
- const k='stepup-v4-'+dateKey(d)+'-'+id;
+ const dk=dateKey(d);
+ const k='stepup-v4-'+dk+'-'+id;
  const saved=JSON.parse(localStorage.getItem(k)||'{}');
- if(saved.customTasks)return saved.customTasks;
- if(dateKey(d)===dateKey(TODAY))return data[id].tasks;
- return [];
+ const studyTasks=(saved.customTasks?saved.customTasks:(dk===dateKey(TODAY)?data[id].tasks:[])).map(t=>t.length>=4?t:[t[0],t[1],t[2],t[3]||null]);
+ const events=getEventsForDate(dk,id).map(e=>[e.startTime||'',`${e.title}`,e.endTime&&e.startTime?`${e.startTime}〜${e.endTime}`:'',null,EVENT_CATEGORY_LABELS[e.category]||'予定',e.id]);
+ const merged=[...studyTasks.map(t=>[t[0],t[1],t[2],t[3],null,null]),...events];
+ merged.sort((a,b)=>(a[0]||'99:99').localeCompare(b[0]||'99:99'));
+ return merged;
 }
 function renderCalendar(){
  const y=calendarDate.getFullYear(),m=calendarDate.getMonth();
@@ -974,11 +1037,18 @@ function renderCalendar(){
   b.onclick=()=>{selectedDate=d;renderCalendar();renderAgenda()};calendarGrid.appendChild(b);
  }
  renderAgenda();
+ if(typeof updateReAdjustButtonVisibility==='function')updateReAdjustButtonVisibility();
 }
 function renderAgenda(){
  const ev=tasksForDate(selectedDate);
  agendaTitle.textContent=`${selectedDate.getMonth()+1}月${selectedDate.getDate()}日の予定`;
- agendaList.innerHTML=ev.length?ev.map(x=>`<div class="agenda-item"><time>${x[0]}</time><span><strong>${x[1]}</strong><small>学習ミッション</small></span><em>${x[2]}</em></div>`).join(''):'<div class="empty-agenda">予定はありません。休息や振り返りの時間にしましょう。</div>';
+ agendaList.innerHTML=ev.length?ev.map(x=>{
+  const isEvent=!!x[5];
+  const label=isEvent?(x[4]||'予定'):'学習ミッション';
+  const editBtns=isEvent?`<div class="event-actions"><button type="button" data-edit-event="${x[5]}">編集</button><button type="button" data-delete-event="${x[5]}">削除</button></div>`:'';
+  return `<div class="agenda-item${isEvent?' agenda-item--event':''}"><time>${x[0]}</time><span><strong>${x[1]}</strong><small>${label}</small></span><em>${x[2]}</em>${editBtns}</div>`;
+ }).join(''):'<div class="empty-agenda">予定はありません。休息や振り返りの時間にしましょう。</div>';
+ bindEventActionButtons();
 }
 function openCalendar(){calendarPerson.textContent=(data[current]?.name||'学習')+' / 学習カレンダー';show(calendarScreen);renderCalendar()}
 document.querySelectorAll('[data-nav]').forEach(btn=>btn.addEventListener('click',()=>{
@@ -994,6 +1064,162 @@ document.querySelector('#prevMonth').onclick=()=>{calendarDate=new Date(calendar
 document.querySelector('#nextMonth').onclick=()=>{calendarDate=new Date(calendarDate.getFullYear(),calendarDate.getMonth()+1,1);renderCalendar()};
 document.querySelector('#todayBtn').onclick=()=>{calendarDate=new Date(TODAY.getFullYear(),TODAY.getMonth(),1);selectedDate=new Date(TODAY);renderCalendar()};
 
+// Sprint 50: 固定予定の追加・編集・削除
+const eventFormEl=document.querySelector('#eventForm');
+const openEventFormBtn=document.querySelector('#openEventFormBtn');
+const eventTitleInput=document.querySelector('#eventTitle');
+const eventDateInput=document.querySelector('#eventDate');
+const eventStartInput=document.querySelector('#eventStart');
+const eventEndInput=document.querySelector('#eventEnd');
+const eventCategoryInput=document.querySelector('#eventCategory');
+const eventNoteInput=document.querySelector('#eventNote');
+const eventTargetInput=document.querySelector('#eventTarget');
+const eventEditIdInput=document.querySelector('#eventEditId');
+const saveEventBtn=document.querySelector('#saveEventBtn');
+const deleteEventBtn=document.querySelector('#deleteEventBtn');
+const eventFormTitle=document.querySelector('#eventFormTitle');
+
+function openEventForm(existing){
+ eventFormEl.classList.remove('hidden');
+ if(existing){
+  eventFormTitle.textContent='予定を編集';
+  eventEditIdInput.value=existing.id;
+  eventTitleInput.value=existing.title;
+  eventDateInput.value=existing.date;
+  eventStartInput.value=existing.startTime||'';
+  eventEndInput.value=existing.endTime||'';
+  eventCategoryInput.value=existing.category||'other';
+  eventNoteInput.value=existing.note||'';
+  eventTargetInput.value=existing.__ownerChildId||'family';
+  deleteEventBtn.classList.remove('hidden');
+ }else{
+  eventFormTitle.textContent='予定を追加';
+  eventEditIdInput.value='';
+  eventTitleInput.value='';
+  eventDateInput.value=dateKey(selectedDate);
+  eventStartInput.value='';
+  eventEndInput.value='';
+  eventCategoryInput.value='club';
+  eventNoteInput.value='';
+  eventTargetInput.value=current;
+  deleteEventBtn.classList.add('hidden');
+ }
+}
+openEventFormBtn.onclick=()=>openEventForm(null);
+
+saveEventBtn.onclick=()=>{
+ const title=eventTitleInput.value.trim();
+ if(!title)return;
+ const dateStr=eventDateInput.value||dateKey(selectedDate);
+ const targetChild=eventTargetInput.value;
+ const editId=eventEditIdInput.value;
+ const entry={
+  id:editId||('event-'+Date.now()),
+  type:'fixed-event',
+  category:eventCategoryInput.value,
+  title,
+  date:dateStr,
+  startTime:eventStartInput.value||null,
+  endTime:eventEndInput.value||null,
+  note:eventNoteInput.value||'',
+  childId:targetChild
+ };
+ if(editId){
+  // 編集：どのオーナー(iori/sakuya/family)に保存されているか分からないため、3つとも探して更新する
+  ['iori','sakuya','family'].forEach(owner=>{
+   const list=getEventsRaw(dateStr,owner);
+   const idx=list.findIndex(e=>e.id===editId);
+   if(idx>-1){
+    if(owner===targetChild){list[idx]=entry;saveEventsRaw(dateStr,owner,list)}
+    else{list.splice(idx,1);saveEventsRaw(dateStr,owner,list);const newList=getEventsRaw(dateStr,targetChild);newList.push(entry);saveEventsRaw(dateStr,targetChild,newList)}
+   }
+  });
+ }else{
+  const list=getEventsRaw(dateStr,targetChild);
+  list.push(entry);
+  saveEventsRaw(dateStr,targetChild,list);
+ }
+ eventFormEl.classList.add('hidden');
+ renderCalendar();
+ render();
+};
+
+deleteEventBtn.onclick=()=>{
+ const editId=eventEditIdInput.value;
+ if(!editId)return;
+ if(!confirm('この予定を削除しますか？'))return;
+ const dateStr=eventDateInput.value||dateKey(selectedDate);
+ ['iori','sakuya','family'].forEach(owner=>{
+  const list=getEventsRaw(dateStr,owner);
+  const filtered=list.filter(e=>e.id!==editId);
+  if(filtered.length!==list.length)saveEventsRaw(dateStr,owner,filtered);
+ });
+ eventFormEl.classList.add('hidden');
+ renderCalendar();
+ render();
+};
+
+// agendaList内の編集・削除ボタンにイベントを登録(再描画のたびに呼び出す)
+function bindEventActionButtons(){
+ document.querySelectorAll('[data-edit-event]').forEach(b=>b.onclick=()=>{
+  const id=b.dataset.editEvent;
+  const dateStr=dateKey(selectedDate);
+  let found=null,owner=null;
+  ['iori','sakuya','family'].forEach(o=>{
+   const item=getEventsRaw(dateStr,o).find(e=>e.id===id);
+   if(item){found=item;owner=o}
+  });
+  if(found){found.__ownerChildId=owner;openEventForm(found)}
+ });
+ document.querySelectorAll('[data-delete-event]').forEach(b=>b.onclick=()=>{
+  if(!confirm('この予定を削除しますか？'))return;
+  const id=b.dataset.deleteEvent;
+  const dateStr=dateKey(selectedDate);
+  ['iori','sakuya','family'].forEach(owner=>{
+   const list=getEventsRaw(dateStr,owner);
+   const filtered=list.filter(e=>e.id!==id);
+   if(filtered.length!==list.length)saveEventsRaw(dateStr,owner,filtered);
+  });
+  renderCalendar();
+  render();
+ });
+}
+
+// Sprint 50: 「今日の計画を再調整」。固定予定は維持し、未完了の学習予定だけを
+// 空き時間(固定予定と重ならない時間)へ再配置する。完了済みは動かさない。適用を押すまで保存しない。
+const reAdjustPlanBtn=document.querySelector('#reAdjustPlanBtn');
+function updateReAdjustButtonVisibility(){
+ if(!reAdjustPlanBtn)return;
+ const dk=dateKey(selectedDate);
+ const hasEvents=getEventsForDate(dk,current).length>0;
+ reAdjustPlanBtn.classList.toggle('hidden',!(hasEvents&&dk===dateKey(TODAY)));
+}
+if(reAdjustPlanBtn)reAdjustPlanBtn.onclick=()=>{
+ const dk=dateKey(TODAY);
+ const saved=JSON.parse(localStorage.getItem(key())||'{}');
+ const currentTasks=(saved.customTasks||data[current].tasks).map(t=>t.length>=4?t:[t[0],t[1],t[2],t[3]||null]);
+ const checks=saved.checks||{};
+ const busy=mergedBusyPeriods(dk,current);
+ const kept=[];//完了済みはそのまま
+ const pending=[];//未完了は再配置対象
+ currentTasks.forEach((t,i)=>{if(checks[i])kept.push(t);else pending.push(t)});
+ let clock=Math.max(360,...kept.map(t=>toMinutes(t[0])+ (parseInt(t[2])||30)));//完了済みの後から、最低6:00から
+ if(!kept.length)clock=360;
+ const result=[...kept];
+ pending.forEach(t=>{
+  const duration=parseInt(t[2])||30;
+  clock=avoidBusyPeriods(clock,duration,busy);
+  result.push([asTime(clock),t[1],t[2],t[3]]);
+  clock+=duration+10;
+ });
+ result.sort((a,b)=>toMinutes(a[0])-toMinutes(b[0]));
+ generatedPlan=result;
+ planPreview.innerHTML=result.map((t,i)=>`<article><b>${String(i+1).padStart(2,'0')}</b><time>${t[0]}</time><span><strong>${t[1]}</strong><small>${t[2]}</small></span></article>`).join('');
+ applyPlanBtn.disabled=false;
+ show(plannerScreen);
+};
+
+
 
 // Materials
 const defaultMaterials={
@@ -1006,7 +1232,6 @@ const defaultMaterials={
   {name:'ジョイフルワーク',subject:'英語',priority:'school',note:'学校の宿題',current:8,total:60,todayFrom:8,todayTo:14}
  ],
  sakuya:[
-  {name:'読書感想文',subject:'国語',priority:'urgent',note:'3時間で完成',current:0,total:4,todayFrom:1,todayTo:4},
   {name:'サマースクール',subject:'その他',priority:'urgent',note:'丸付け',current:18,total:40,todayFrom:18,todayTo:22},
   {name:'国語ワーク',subject:'国語',priority:'school',note:'3ページ',current:10,total:60,todayFrom:10,todayTo:13},
   {name:'理科ワーク',subject:'理科',priority:'school',note:'10ページ',current:15,total:70,todayFrom:15,todayTo:25},

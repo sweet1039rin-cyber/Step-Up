@@ -228,7 +228,35 @@
    <div class="week-row"><span>日</span><span>月</span><span>火</span><span>水</span><span>木</span><span>金</span><span>土</span></div>
    <div id="calendarGrid" class="calendar-grid"></div>
   </section>
-  <section class="calendar-card agenda"><div class="card-title"><span>01</span><h2 id="agendaTitle">7月19日の予定</h2></div><div id="agendaList"></div></section>
+  <section class="calendar-card agenda"><div class="card-title"><span>01</span><h2 id="agendaTitle">7月19日の予定</h2><button id="openEventFormBtn" type="button" class="event-add-btn">＋</button></div><div id="agendaList"></div><button id="reAdjustPlanBtn" type="button" class="hidden">今日の計画を再調整</button></section>
+  <section id="eventForm" class="utility-card material-form hidden">
+   <div class="card-title"><span>＋</span><h2 id="eventFormTitle">予定を追加</h2></div>
+   <label>予定名<input id="eventTitle" placeholder="例：部活"></label>
+   <label>日付<input id="eventDate" type="date"></label>
+   <label>開始時刻(任意)<input id="eventStart" type="time"></label>
+   <label>終了時刻(任意)<input id="eventEnd" type="time"></label>
+   <label>予定の種類<select id="eventCategory">
+    <option value="club">部活</option>
+    <option value="outing">外出</option>
+    <option value="tutor">オンライン家庭教師</option>
+    <option value="school">学校</option>
+    <option value="hospital">通院</option>
+    <option value="family">家族の予定</option>
+    <option value="commute">移動</option>
+    <option value="meal">食事</option>
+    <option value="rest">休憩</option>
+    <option value="other">その他</option>
+   </select></label>
+   <label>メモ<input id="eventNote" placeholder="任意"></label>
+   <label>対象<select id="eventTarget">
+    <option value="iori">壱凰</option>
+    <option value="sakuya">朔埜</option>
+    <option value="family">共通</option>
+   </select></label>
+   <input type="hidden" id="eventEditId">
+   <button id="saveEventBtn" type="button">予定を保存</button>
+   <button id="deleteEventBtn" type="button" class="hidden">この予定を削除</button>
+  </section>
  </main>
  <nav><button data-nav="home">⌂<span>ホーム</span></button><button class="active" data-nav="calendar">▦<span>カレンダー</span></button><button data-nav="assignments">📋<span>課題</span></button><button data-nav="materials">▤<span>教材</span></button><button data-nav="growth">↗<span>成長</span></button></nav>
 </section>
@@ -406,6 +434,6 @@
 <script src="data/defaultSchedules.js?v=1"></script>
 <script src="data/coachMessages.js?v=1"></script>
 <script src="data/teacherComments.js?v=1"></script>
-<script src="app.js?v=72"></script>
+<script src="app.js?v=73"></script>
 </body>
 </html>
