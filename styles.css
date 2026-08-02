@@ -1446,3 +1446,105 @@ html:not(.theme-champion-black) .champion-emblem.lg{
   width:150px;height:150px;
  }
 }
+
+/* ============================================
+   Sprint 43: さくや専用「課題テストのマイルール」カード
+   （既存デザインに合わせ、本人が決めたルールだと分かる
+   　落ち着いた見せ方にする。命令的な表現は避ける）
+   ============================================ */
+.sakuya-test-rules-card{margin-top:16px}
+.sakuya-test-rules-sub{
+ display:inline-block;font-size:12px;font-weight:800;letter-spacing:.06em;
+ color:var(--text-muted,#777);background:rgba(20,106,255,.08);
+ padding:4px 12px;border-radius:999px;margin:2px 0 14px;
+}
+.mission-page.sakuya-theme .sakuya-test-rules-sub{background:rgba(20,106,255,.12);color:var(--accent,#146aff)}
+.sakuya-test-rules-list{margin:0 0 20px;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px}
+.sakuya-test-rules-list li{
+ position:relative;padding-left:22px;font-size:14px;line-height:1.6;color:inherit;
+}
+.sakuya-test-rules-list li::before{
+ content:"○";position:absolute;left:0;top:0;color:var(--accent,#146aff);font-size:12px;
+}
+.sakuya-subject-tracker{display:flex;flex-direction:column;gap:14px;margin-bottom:18px}
+.sakuya-subject-row{
+ background:rgba(20,106,255,.05);border:1px solid rgba(20,106,255,.15);
+ border-radius:12px;padding:14px 16px;
+}
+.mission-page.sakuya-theme .sakuya-subject-row{background:rgba(20,106,255,.07)}
+.sakuya-subject-row h3{margin:0 0 10px;font-size:15px;display:flex;align-items:baseline;gap:8px}
+.sakuya-subject-range{font-size:11px;font-weight:700;color:var(--text-muted,#888)}
+.sakuya-subject-row label{
+ display:block;font-size:12px;font-weight:700;color:var(--text-muted,#777);margin-top:8px;
+}
+.sakuya-subject-row label:first-of-type{margin-top:0}
+.sakuya-subject-row input{
+ width:100%;margin-top:4px;padding:9px 10px;border:1px solid #cfd6e4;border-radius:8px;
+ font:inherit;box-sizing:border-box;background:#fff;color:#161616;
+}
+.sakuya-subject-status{
+ display:inline-block;margin-top:10px;font-size:12px;font-weight:800;padding:3px 10px;border-radius:999px;
+ background:#eee;color:#666;
+}
+.sakuya-subject-status.is-clear{background:#e5f4ea;color:#1e8a4c}
+.sakuya-subject-status.is-retry{background:#fdeceb;color:#c0392b}
+#sakuyaTestRulesSave{
+ width:100%;padding:13px 0;border:0;border-radius:10px;font-weight:800;font-size:14px;
+ background:var(--accent,#146aff);color:#fff;cursor:pointer;
+}
+.sakuya-test-rules-save-status{
+ margin:8px 0 0;font-size:12px;color:#1e8a4c;text-align:center;min-height:1.2em;
+}
+@media(max-width:480px){
+ .sakuya-subject-row h3{flex-wrap:wrap}
+}
+
+/* ============================================
+   どこスタ連携カード（既存の.card/.material-formスタイルを再利用）
+   ============================================ */
+.dokosuta-card{margin-top:16px}
+.dokosuta-intro{font-size:13px;color:var(--text-muted,#777);margin:0 0 14px}
+.dokosuta-open-btn{
+ width:100%;padding:13px 0;border:0;border-radius:10px;font-weight:800;font-size:14px;
+ background:var(--accent,#146aff);color:#fff;cursor:pointer;margin-bottom:8px;
+}
+.dokosuta-fallback{font-size:12px;color:#c0392b;margin:0 0 10px}
+.dokosuta-fallback a{color:#146aff;font-weight:700}
+.dokosuta-toggle-btn{
+ width:100%;padding:11px 0;border:1px solid #cfd6e4;border-radius:10px;font-weight:700;font-size:13px;
+ background:#fff;color:#333;cursor:pointer;margin-bottom:10px;
+}
+.dokosuta-form{display:flex;flex-direction:column;gap:10px;margin-bottom:14px;
+ background:rgba(20,106,255,.05);border:1px solid rgba(20,106,255,.15);border-radius:12px;padding:14px 16px;
+}
+.dokosuta-form label{display:block;font-size:12px;font-weight:700;color:var(--text-muted,#777)}
+.dokosuta-form input,.dokosuta-form select{
+ width:100%;margin-top:4px;padding:9px 10px;border:1px solid #cfd6e4;border-radius:8px;
+ font:inherit;box-sizing:border-box;background:#fff;color:#161616;
+}
+.dokosuta-checkbox{display:flex;align-items:center;gap:8px;font-size:13px}
+.dokosuta-checkbox input{width:auto;margin:0}
+#saveDokosutaBtn{
+ padding:12px 0;border:0;border-radius:10px;font-weight:800;font-size:14px;
+ background:var(--accent,#146aff);color:#fff;cursor:pointer;
+}
+#deleteDokosutaBtn{
+ padding:11px 0;border:1px solid #e35;border-radius:10px;font-weight:700;font-size:13px;
+ background:#fff;color:#c0392b;cursor:pointer;
+}
+.dokosuta-history{display:flex;flex-direction:column;gap:10px}
+.dokosuta-history-item{
+ display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;
+ background:#f7f9fc;border:1px solid #e3e8f0;border-radius:10px;padding:10px 12px;
+}
+.dokosuta-history-item.is-reviewed{opacity:.6}
+.dokosuta-history-main{display:flex;flex-direction:column;gap:2px;font-size:13px}
+.dokosuta-history-main small{color:var(--text-muted,#888)}
+.dokosuta-history-actions{display:flex;gap:6px;flex-wrap:wrap}
+.dokosuta-history-actions button{
+ padding:6px 10px;border:1px solid #cfd6e4;border-radius:8px;background:#fff;font-size:12px;cursor:pointer;
+}
+.dokosuta-empty{font-size:13px;color:var(--text-muted,#888);text-align:center;padding:12px 0}
+@media(max-width:480px){
+ .dokosuta-history-item{flex-direction:column;align-items:flex-start}
+}

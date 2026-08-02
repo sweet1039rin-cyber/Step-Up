@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#05070b">
 <title>Step Up v6.4 IORI Daily Mission</title>
-<link rel="stylesheet" href="styles.css?v=69">
+<link rel="stylesheet" href="styles.css?v=70">
 </head>
 <body>
 <div id="app">
@@ -120,6 +120,41 @@
    </details>
   </section>
   <section class="step-card"><small>TODAY'S STEP UP</small><h2 id="stepMessage">今日の記録はまだありません。「まとめて保存」を押すと、ここに表示されます。</h2></section>
+  <section id="dokosutaCard" class="card dokosuta-card">
+   <div class="card-title"><span>★</span><h2>どこスタ連携</h2></div>
+   <p class="dokosuta-intro">どこスタで学習したら、Step Upに内容を記録しよう。</p>
+   <button id="openDokosutaBtn" type="button" class="dokosuta-open-btn">どこスタを開く</button>
+   <p id="dokosutaFallback" class="dokosuta-fallback hidden">ポップアップがブロックされました。<a id="dokosutaFallbackLink" href="https://d-study-home.i-cube-cube-core.com" target="_blank" rel="noopener noreferrer">こちらをタップして開いてください</a></p>
+
+   <button id="toggleDokosutaFormBtn" type="button" class="dokosuta-toggle-btn">学習記録を追加</button>
+   <div id="dokosutaForm" class="dokosuta-form hidden">
+    <label>日付<input id="dokosutaDate" type="date"></label>
+    <label>対象の子ども<select id="dokosutaChild">
+     <option value="iori">壱凰</option>
+     <option value="sakuya">朔埜</option>
+    </select></label>
+    <label>教科<select id="dokosutaSubject">
+     <option value="国語">国語</option>
+     <option value="数学">数学</option>
+     <option value="英語">英語</option>
+     <option value="理科">理科</option>
+     <option value="社会">社会</option>
+     <option value="その他">その他</option>
+    </select></label>
+    <label>単元名<input id="dokosutaUnit" placeholder="例：連立方程式"></label>
+    <label>学習時間（分）<input id="dokosutaMinutes" type="number" min="0" step="1"></label>
+    <label>取り組んだ内容<input id="dokosutaContent" placeholder="例：基本問題と文章題"></label>
+    <label>間違えた問題数<input id="dokosutaMistakes" type="number" min="0" step="1"></label>
+    <label>分からなかった内容<input id="dokosutaUnclear" placeholder="任意"></label>
+    <label class="dokosuta-checkbox"><input id="dokosutaReviewAgain" type="checkbox"> もう一度復習したい</label>
+    <label>メモ<input id="dokosutaMemo" placeholder="任意"></label>
+    <input type="hidden" id="dokosutaEditId">
+    <button id="saveDokosutaBtn" type="button">記録を保存</button>
+    <button id="deleteDokosutaBtn" type="button" class="hidden">この記録を削除</button>
+   </div>
+
+   <div id="dokosutaHistory" class="dokosuta-history"></div>
+  </section>
   <section class="rest-card"><small>REST & RECOVERY</small><h2>頑張った後は、しっかり整える。</h2><div><span>水分補給</span><span>ストレッチ</span><span>入浴</span><span>睡眠</span></div></section>
   <section id="sakuyaTestRulesCard" class="card sakuya-test-rules-card hidden">
    <div class="card-title"><span>★</span><h2>課題テストのマイルール</h2></div>
@@ -434,6 +469,6 @@
 <script src="data/defaultSchedules.js?v=1"></script>
 <script src="data/coachMessages.js?v=1"></script>
 <script src="data/teacherComments.js?v=1"></script>
-<script src="app.js?v=74"></script>
+<script src="app.js?v=75"></script>
 </body>
 </html>
