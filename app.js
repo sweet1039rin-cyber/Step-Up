@@ -1494,11 +1494,11 @@ function renderMaterials(){
 const notebookLinks = {
  sakuya: {
   summerSchool: {
-   english: "",
-   math: "",
-   science: "",
-   social: "",
-   japanese: ""
+   english: "https://notebook.google.com/notebook/1fc70cd4-8f7b-491d-afab-c017bbd896ed",
+   math: "https://notebook.google.com/notebook/b2b791fc-ece6-41e0-9c10-a43a4bd5e9e3",
+   science: "https://notebook.google.com/notebook/6f74d340-780f-4494-bdbd-1aafe2a2a51c",
+   social: "https://notebook.google.com/notebook/9d79ac0c-7ff4-4e9f-af38-9070766f49c9",
+   japanese: "https://notebook.google.com/notebook/b27f8756-eca2-4942-a248-aeb0a06ffd1a"
   }
  },
  iori: {
