@@ -1482,6 +1482,89 @@ function renderMaterials(){
  materialList.innerHTML=filtered.length?filtered.map(x=>{const total=Number(x.total||100),currentPage=Number(x.current||0),pct=Math.min(100,Math.round(currentPage/total*100));return `<article class="material-item ${x.priority} ${x.done?'done':''}"><div><small>${x.subject} / ${x.priority==='urgent'?'PRIORITY':x.priority==='school'?'SCHOOL':'REVIEW'}</small><h2>${x.name}</h2><p>${x.note||''}</p><div class="page-target"><span>今日 P${x.todayFrom||'-'}〜${x.todayTo||'-'}</span><b>現在 P${currentPage} / ${total}</b></div><div class="material-progress"><i style="width:${pct}%"></i></div><em>残り ${Math.max(0,total-currentPage)}ページ</em></div><div class="material-actions"><button data-progress-id="${x.id}">＋進捗</button><button data-material-id="${x.id}">${x.done?'戻す':'完了'}</button></div></article>`}).join(''):'<div class="empty-state">この条件の教材はありません。</div>';
  document.querySelectorAll('[data-material-id]').forEach(b=>b.onclick=()=>{const all=getMaterials();const item=all.find(x=>String(x.id)===b.dataset.materialId);if(!item)return;item.done=!item.done;item.current=item.done?Number(item.total||100):0;saveMaterials(all);syncLearningProgress(current,item.name,item.current,item.total);renderMaterials()});
  document.querySelectorAll('[data-progress-id]').forEach(b=>b.onclick=()=>{const all=getMaterials();const item=all.find(x=>String(x.id)===b.dataset.progressId);if(!item)return;const total=Number(item.total||9999);item.current=Math.max(0,Math.min(total,Number(item.current||0)+1));item.done=item.current>=total;saveMaterials(all);syncLearningProgress(current,item.name,item.current,item.total);renderMaterials()});
+ renderNotebookSection();
+}
+
+// ============================================================
+// NotebookLM連携（登録済みURLを新しいタブで開くだけ。API連携・自動取得は行わない）
+// URLは子ども→教材→教科の3階層構造でこの1か所にまとめて管理する。
+// 各教科の下に将来「プロンプトをコピー」等の補助ボタンを追加しやすいよう、
+// ボタン生成はSUBJECT_LABELS配列を基準にした共通ループにしている。
+// ============================================================
+const notebookLinks = {
+ sakuya: {
+  summerSchool: {
+   english: "",
+   math: "",
+   science: "",
+   social: "",
+   japanese: ""
+  }
+ },
+ iori: {
+  shinKenkyu: {
+   english: "",
+   math: "",
+   science: "",
+   social: "",
+   japanese: ""
+  }
+ }
+};
+// 子どもの内部キー → 対応する教材の内部キー・表示名
+const NOTEBOOK_MATERIAL_BY_CHILD={
+ sakuya:{materialId:'summerSchool',materialLabel:'サマースクール'},
+ iori:{materialId:'shinKenkyu',materialLabel:'新研究'}
+};
+// 教科の内部キー → 表示名・アイコン(表示名と内部キーを混同しないよう分離)
+const NOTEBOOK_SUBJECTS=[
+ {id:'japanese',label:'国語',icon:'📖'},
+ {id:'math',label:'数学',icon:'📗'},
+ {id:'english',label:'英語',icon:'📘'},
+ {id:'science',label:'理科',icon:'🧪'},
+ {id:'social',label:'社会',icon:'🌍'}
+];
+
+// URLを開く共通処理：登録済みなら新しいタブ、未登録なら画面内通知を表示する。
+function openNotebook(childId,materialId,subjectId){
+ const url=notebookLinks?.[childId]?.[materialId]?.[subjectId]||'';
+ if(!url){
+  showNotebookNotice('NotebookLMのURLがまだ登録されていません');
+  return;
+ }
+ window.open(url,'_blank','noopener,noreferrer');
+}
+function showNotebookNotice(message){
+ const el=document.querySelector('#notebookNotice');
+ if(!el)return;
+ el.textContent=message;
+ clearTimeout(window.notebookNoticeTimer);
+ window.notebookNoticeTimer=setTimeout(()=>{if(el.textContent===message)el.textContent=''},3000);
+}
+// 現在選択中の子どもに対応する教材・5教科ボタンだけを描画する(両方同時表示しない)
+function renderNotebookSection(){
+ const sectionEl=document.querySelector('#notebookSection');
+ const subEl=document.querySelector('#notebookSub');
+ const buttonsEl=document.querySelector('#notebookButtons');
+ if(!sectionEl||!subEl||!buttonsEl)return;
+ // 今回は朔埜のサマースクールのみ完成のため、朔埜選択時だけセクションを表示する。
+ // 壱凰選択時はセクション自体を非表示にする(準備中表示も出さない)。
+ // notebookLinksのiori.shinKenkyu構造自体は将来用にそのまま残す。
+ if(current!=='sakuya'){
+  sectionEl.classList.add('hidden');
+  subEl.textContent='';buttonsEl.innerHTML='';
+  return;
+ }
+ sectionEl.classList.remove('hidden');
+ const info=NOTEBOOK_MATERIAL_BY_CHILD[current];
+ if(!info){subEl.textContent='';buttonsEl.innerHTML='';return}
+ subEl.textContent=`${info.materialLabel}で復習する`;
+ buttonsEl.innerHTML=NOTEBOOK_SUBJECTS.map(s=>
+  `<button type="button" class="notebook-subject-btn" data-notebook-child="${current}" data-notebook-material="${info.materialId}" data-notebook-subject="${s.id}">${s.icon} ${s.label}（${info.materialLabel}）</button>`
+ ).join('');
+ buttonsEl.querySelectorAll('[data-notebook-subject]').forEach(b=>b.onclick=()=>{
+  openNotebook(b.dataset.notebookChild,b.dataset.notebookMaterial,b.dataset.notebookSubject);
+ });
 }
 function openMaterials(){materialsPerson.textContent=data[current].name+' / 教材';materialForm.classList.add('hidden');renderMaterials();show(materialsScreen)}
 materialsBack.onclick=()=>show(mission);

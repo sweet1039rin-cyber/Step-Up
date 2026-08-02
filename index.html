@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#05070b">
 <title>Step Up v6.4 IORI Daily Mission</title>
-<link rel="stylesheet" href="styles.css?v=70">
+<link rel="stylesheet" href="styles.css?v=71">
 </head>
 <body>
 <div id="app">
@@ -303,6 +303,12 @@
   <section class="utility-hero"><small>LEARNING TOOLS</small><h1>今日使う教材を、<br>迷わず選ぶ。</h1><p>提出期限と学校の宿題を最優先に表示します。</p></section>
   <section class="quick-filter" id="materialFilters"><button class="active" data-filter="all">すべて</button><button data-filter="urgent">優先</button><button data-filter="school">学校</button><button data-filter="review">復習</button></section>
   <section id="materialList" class="material-list"></section>
+  <section id="notebookSection" class="card notebook-card">
+   <div class="card-title"><span>★</span><h2>NotebookLM</h2></div>
+   <p id="notebookSub" class="notebook-sub"></p>
+   <div id="notebookButtons" class="notebook-buttons"></div>
+   <p id="notebookNotice" class="notebook-notice" aria-live="polite"></p>
+  </section>
   <section id="materialForm" class="utility-card material-form hidden"><div class="card-title"><span>＋</span><h2>教材を追加</h2></div><label>教材名<input id="newMaterialName" placeholder="例：数学 新研究"></label><label>教科<select id="newMaterialSubject"><option>国語</option><option>数学</option><option>英語</option><option>理科</option><option>社会</option><option>その他</option></select></label><label>優先度<select id="newMaterialPriority"><option value="urgent">最優先</option><option value="school">学校の宿題</option><option value="review">復習</option></select></label><button id="saveMaterialBtn">教材を保存</button></section>
  </main>
  <nav><button data-nav="home">⌂<span>ホーム</span></button><button data-nav="calendar">▦<span>カレンダー</span></button><button data-nav="assignments">📋<span>課題</span></button><button class="active" data-nav="materials">▤<span>教材</span></button><button data-nav="growth">↗<span>成長</span></button></nav>
@@ -469,6 +475,6 @@
 <script src="data/defaultSchedules.js?v=1"></script>
 <script src="data/coachMessages.js?v=1"></script>
 <script src="data/teacherComments.js?v=1"></script>
-<script src="app.js?v=75"></script>
+<script src="app.js?v=77"></script>
 </body>
 </html>
