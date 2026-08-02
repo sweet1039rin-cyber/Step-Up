@@ -1024,7 +1024,7 @@ function eventsKey(dateStr,childId){return `stepup-events-${dateStr}-${childId}`
 // どこスタ連携（手動記録）
 // 既存データ・機能とは完全に別のキーで管理し、既存処理は一切変更しない。
 // ============================================================
-const DOKOSUTA_URL='https://d-study-home.i-cube-cube-core.com';
+const DOKOSUTA_URL='https://d-study-home.i-cube-core.com/';
 function dokosutaKey(childId){return `stepup-dokosuta-log-${childId}`}
 function getDokosutaLog(childId){try{const v=JSON.parse(localStorage.getItem(dokosutaKey(childId))||'[]');return Array.isArray(v)?v:[]}catch(e){return[]}}
 function saveDokosutaLog(childId,list){localStorage.setItem(dokosutaKey(childId),JSON.stringify(list))}
