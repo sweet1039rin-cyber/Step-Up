@@ -1548,3 +1548,28 @@ html:not(.theme-champion-black) .champion-emblem.lg{
 @media(max-width:480px){
  .dokosuta-history-item{flex-direction:column;align-items:flex-start}
 }
+
+/* ============================================
+   NotebookLM連携カード（既存.card/ボタンスタイルを再利用）
+   ============================================ */
+.notebook-card{margin-top:16px}
+.notebook-sub{font-size:13px;color:var(--text-muted,#777);margin:0 0 14px}
+.notebook-buttons{display:flex;flex-direction:column;gap:10px}
+.notebook-subject-btn{
+ display:flex;align-items:center;gap:14px;width:100%;min-height:56px;
+ padding:12px 16px;border:1px solid #e2e2e5;border-radius:14px;
+ background:var(--surface,#fff);box-shadow:var(--shadow,0 2px 10px rgba(0,0,0,.06));
+ font-family:inherit;font-size:14px;color:var(--text,#161616);
+ cursor:pointer;text-align:left;box-sizing:border-box;
+}
+.notebook-subject-btn:active{background:rgba(20,106,255,.06)}
+.notebook-subject-icon{font-size:22px;flex:none;line-height:1}
+.notebook-subject-text{display:flex;flex-direction:column;gap:2px;flex:1;min-width:0}
+.notebook-subject-name{font-weight:800;font-size:15px;color:var(--text,#161616)}
+.notebook-subject-caption{font-size:12px;color:var(--text-muted,#888);font-weight:600}
+.notebook-subject-arrow{font-size:16px;font-weight:900;color:var(--accent,#146aff);flex:none}
+.notebook-notice{margin:10px 0 0;font-size:12px;color:#c0392b;min-height:1.2em;text-align:center}
+@media(max-width:480px){
+ .notebook-subject-btn{padding:14px 14px;min-height:58px}
+ .notebook-subject-name{font-size:15px}
+}

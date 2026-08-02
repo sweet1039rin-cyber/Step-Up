@@ -1518,11 +1518,11 @@ const NOTEBOOK_MATERIAL_BY_CHILD={
 };
 // 教科の内部キー → 表示名・アイコン(表示名と内部キーを混同しないよう分離)
 const NOTEBOOK_SUBJECTS=[
- {id:'japanese',label:'国語',icon:'📖'},
- {id:'math',label:'数学',icon:'📗'},
  {id:'english',label:'英語',icon:'📘'},
+ {id:'math',label:'数学',icon:'📗'},
  {id:'science',label:'理科',icon:'🧪'},
- {id:'social',label:'社会',icon:'🌍'}
+ {id:'social',label:'社会',icon:'🌍'},
+ {id:'japanese',label:'国語',icon:'📖'}
 ];
 
 // URLを開く共通処理：登録済みなら新しいタブ、未登録なら画面内通知を表示する。
@@ -1558,9 +1558,13 @@ function renderNotebookSection(){
  sectionEl.classList.remove('hidden');
  const info=NOTEBOOK_MATERIAL_BY_CHILD[current];
  if(!info){subEl.textContent='';buttonsEl.innerHTML='';return}
- subEl.textContent=`${info.materialLabel}で復習する`;
+ subEl.textContent=`${info.materialLabel} AI復習`;
  buttonsEl.innerHTML=NOTEBOOK_SUBJECTS.map(s=>
-  `<button type="button" class="notebook-subject-btn" data-notebook-child="${current}" data-notebook-material="${info.materialId}" data-notebook-subject="${s.id}">${s.icon} ${s.label}（${info.materialLabel}）</button>`
+  `<button type="button" class="notebook-subject-btn" data-notebook-child="${current}" data-notebook-material="${info.materialId}" data-notebook-subject="${s.id}">
+    <span class="notebook-subject-icon">${s.icon}</span>
+    <span class="notebook-subject-text"><span class="notebook-subject-name">${s.label}</span><small class="notebook-subject-caption">NotebookLMで開く</small></span>
+    <span class="notebook-subject-arrow">→</span>
+   </button>`
  ).join('');
  buttonsEl.querySelectorAll('[data-notebook-subject]').forEach(b=>b.onclick=()=>{
   openNotebook(b.dataset.notebookChild,b.dataset.notebookMaterial,b.dataset.notebookSubject);
