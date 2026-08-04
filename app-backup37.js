@@ -466,7 +466,7 @@ document.querySelector('#saveGrades')?.addEventListener('click',()=>{
 window.addEventListener('load',initGradeInputs);
 
 const select=document.querySelector('#select'),mission=document.querySelector('#mission'),family=document.querySelector('#family'),materialsScreen=document.querySelector('#materials'),growthScreen=document.querySelector('#growth'),plannerScreen=document.querySelector('#planner'),reportScreen=document.querySelector('#report');let current='iori';
-function show(el){document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));el.classList.add('active');el.classList.toggle('sakuya-theme',current==='sakuya');scrollTo(0,0)}
+function show(el){document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));el.classList.add('active');scrollTo(0,0)}
 document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>{if(b.dataset.view==='family')openFamily();else{current=b.dataset.view;render();show(mission)}});
 back.onclick=()=>show(select);familyBack.onclick=()=>show(select);
 document.querySelector('#viewTodayPlan')?.addEventListener('click',()=>document.querySelector('.goals')?.scrollIntoView({behavior:'smooth',block:'start'}));
