@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#05070b">
 <title>Step Up v6.4 IORI Daily Mission</title>
-<link rel="stylesheet" href="styles.css?v=74">
+<link rel="stylesheet" href="styles.css?v=72">
 </head>
 <body>
 <div id="app">
@@ -104,7 +104,7 @@
   <section class="card home-deadline-card"><div class="card-title"><span>03</span><h2>提出期限が近い課題</h2></div><div id="homeDeadlineList"></div><button id="goToDeadlinePage" type="button" class="plan-edit-btn ghost">提出期限を見る</button></section>
   <section class="card schedule"><div class="card-title"><span>03</span><h2>詳細スケジュール</h2><div class="schedule-actions"><button id="openAssignmentBtn" class="plan-edit-btn ghost icon-only" title="課題管理" aria-label="課題管理">📋</button><button id="openPlannerBtn" class="plan-edit-btn icon-only" title="計画を調整" aria-label="計画を調整">⚙</button></div></div><div id="scheduleList"></div><p id="scheduleReflectStatus" class="schedule-reflect-status" aria-live="polite"></p></section>
   <section id="voiceCoach" class="voice-coach-card">
-   <div class="voice-heading"><img src="assets/sakuya/owl_front.png" alt="AIコーチのフクロウ君" class="sakuya-ai-coach-image"><span class="voice-heading-text"><small>AI VOICE COACH</small><h2>今日の頑張りを記録</h2></span></div>
+   <div class="voice-heading"><small>AI VOICE COACH</small><h2>今日の頑張りを記録</h2></div>
    <button id="voiceStart" class="voice-start" type="button"><span class="mic-icon">●</span><strong>タップして話す</strong><small id="voiceStatus">マイク待機中</small></button>
    <textarea id="voiceTranscript" placeholder="例：数学を3ページ進めた。英語は難しかった。（音声でも手入力でもOK）"></textarea>
   <div class="voice-actions"><button id="voiceClear" type="button">クリア</button><button id="voiceAnalyze" type="button">まとめて保存</button></div>
