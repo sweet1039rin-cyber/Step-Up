@@ -1722,10 +1722,6 @@ html:not(.theme-champion-black) .champion-emblem.lg{
 .screen.sakuya-theme .calendar-hero h1,
 .screen.sakuya-theme .growth-hero h1,
 .screen.sakuya-theme .assignment-hero h1{color:var(--sakuya-text) !important}
-.screen.sakuya-theme .utility-hero p,
-.screen.sakuya-theme .calendar-hero p,
-.screen.sakuya-theme .growth-hero p,
-.screen.sakuya-theme .assignment-hero p{color:#5F7188 !important}
 
 /* ボタン：青・オレンジ・黄色を使い分け。処理は変更しない */
 .screen.sakuya-theme .voice-start,
@@ -1882,70 +1878,3 @@ html:not(.theme-champion-black) .champion-emblem.lg{
 .screen.sakuya-theme #notebookSection{order:12}
 .screen.sakuya-theme .rest-card{order:13}
 .screen.sakuya-theme #missionCelebration{order:14}
-
-/* ============================================
-   AI VOICE COACH：ミントグリーン仕様（.screen.sakuya-theme限定）
-   紫案は廃止。機能・onclick・保存処理は一切変更しない。見た目のみ。
-   ============================================ */
-.screen.sakuya-theme #voiceCoach{
- position:relative;overflow:hidden;
- background:linear-gradient(160deg,#FFFFFF,#EAFBF8 130%) !important;
- border:1px solid #C9F1EA;
- border-radius:24px;
- box-shadow:0 10px 26px rgba(79,209,197,.18),0 2px 6px rgba(79,209,197,.12);
-}
-/* 背景の薄い音声波形装飾(繰り返しグラデーションで簡易的な波形を表現) */
-.screen.sakuya-theme #voiceCoach::before{
- content:"";position:absolute;inset:0;pointer-events:none;
- background:repeating-linear-gradient(100deg,
-  rgba(142,231,218,.20) 0 6px,
-  transparent 6px 18px);
- mask-image:linear-gradient(180deg,transparent,rgba(0,0,0,.9) 40%,rgba(0,0,0,.9) 75%,transparent);
-}
-/* 右上の音符装飾 */
-.screen.sakuya-theme #voiceCoach::after{
- content:"♪";position:absolute;top:14px;right:18px;font-size:22px;
- background:linear-gradient(135deg,#4FD1C5,#8EE7DA);
- -webkit-background-clip:text;background-clip:text;color:transparent;
- opacity:.85;pointer-events:none;
-}
-.screen.sakuya-theme #voiceCoach>*{position:relative;z-index:1}
-
-/* 見出し・フクロウ君の配置：左にタイトル/ボタン、右にowl_voice.pngを配置 */
-.screen.sakuya-theme .voice-heading{
- display:flex;align-items:flex-start;justify-content:space-between;gap:12px;
-}
-.screen.sakuya-theme .voice-heading-text{order:1}
-.screen.sakuya-theme .sakuya-ai-coach-image{
- order:2;align-self:flex-end;
- width:clamp(56px,16vw,88px);height:auto;object-fit:contain;flex-shrink:0;
-}
-.screen.sakuya-theme .voice-heading small{
- color:#33C9B8 !important;font-weight:900;letter-spacing:.1em;
-}
-.screen.sakuya-theme .voice-heading h2{
- color:#184E4A !important;font-weight:800;font-size:16px;line-height:1.5;
-}
-
-/* 話しかけるボタン：ミントグラデーションの丸ボタン。処理は変更しない */
-.screen.sakuya-theme .voice-start{
- background:linear-gradient(135deg,#4FD1C5,#33C9B8) !important;
- color:#FFFFFF !important;border:none !important;border-radius:999px !important;
- box-shadow:0 6px 16px rgba(51,201,184,.35);
- transition:filter .15s ease;
-}
-.screen.sakuya-theme .voice-start:hover{filter:brightness(1.08)}
-.screen.sakuya-theme .voice-start .mic-icon{color:#FFFFFF !important}
-.screen.sakuya-theme .voice-start small{color:rgba(255,255,255,.85) !important}
-
-/* テキストエリア・詳細設定枠も淡いミントの枠へ統一 */
-.screen.sakuya-theme #voiceTranscript{
- border:1px solid #C9F1EA !important;border-radius:14px;
-}
-.screen.sakuya-theme .voice-actions button,
-.screen.sakuya-theme #micTestBtn{
- border-radius:14px;
-}
-.screen.sakuya-theme #voiceAnalyze{
- background:linear-gradient(135deg,#4FD1C5,#33C9B8) !important;color:#fff !important;border:none !important;
-}
