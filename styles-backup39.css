@@ -1787,94 +1787,31 @@ html:not(.theme-champion-black) .champion-emblem.lg{
  background-position:58% 42% !important;
 }
 
-/* 画像の上には文字・グラフを重ねない。
-   .focus-hero自体は「画像だけを見せる帯」にし、
-   文字(ミッションタイトル)とリング(達成率)は、画像の直後に
-   通常のブロックとして続けて配置する(要素は削除せず、位置だけ変更)。 */
-.screen.sakuya-theme .focus-hero{
- display:flex !important;flex-direction:column;
-}
+/* 文字パネル：左下に配置し、背景の邪魔をしないよう最小限の帯にする */
 .screen.sakuya-theme .focus-hero>div:first-child{
- order:2;
- width:100%;max-width:none;
- padding:16px 18px 4px;
- background:none;
+ position:absolute;left:0;bottom:0;
+ max-width:64%;
+ padding:16px 18px;
+ background:linear-gradient(0deg,rgba(255,255,255,.92),rgba(255,255,255,.55) 80%,rgba(255,255,255,0));
+ border-radius:0 18px 0 0;
 }
 .screen.sakuya-theme .focus-hero small{color:var(--sakuya-blue) !important}
 .screen.sakuya-theme .focus-hero h1,
 .screen.sakuya-theme .focus-hero p{color:var(--sakuya-text) !important;text-shadow:none}
-.screen.sakuya-theme .focus-hero h1{font-size:clamp(22px,5.5vw,30px) !important;margin:4px 0 !important}
+.screen.sakuya-theme .focus-hero h1{font-size:clamp(24px,6vw,34px) !important;margin:4px 0 !important}
 .screen.sakuya-theme .focus-hero p{font-size:14px !important;line-height:1.5}
 
-/* 進捗リング：画像の下、文字の隣に通常配置(画像には重ねない) */
+/* 進捗リング：右下に配置。主人公・フクロウ君・ボールの位置を避ける */
 .screen.sakuya-theme .focus-hero .ring{
- order:2;
- position:static !important;
- align-self:flex-end;
- margin:0 18px 16px auto;
- width:clamp(70px,20vw,90px) !important;height:clamp(70px,20vw,90px) !important;
- background:var(--sakuya-sky);
+ position:absolute;right:16px;bottom:16px;
+ width:clamp(70px,20vw,96px) !important;height:clamp(70px,20vw,96px) !important;
+ background:rgba(255,255,255,.92);
  border-width:8px !important;
- box-shadow:none;
+ box-shadow:0 4px 14px rgba(0,0,0,.15);
 }
 .screen.sakuya-theme .focus-hero .ring strong{font-size:clamp(16px,4.5vw,22px) !important;color:var(--sakuya-blue)}
 .screen.sakuya-theme .focus-hero .ring span{color:var(--sakuya-text)}
-/* 画像部分：order:1で先頭に固定表示するための高さ(文字がその下に続く分、Hero全体を伸ばす) */
-.screen.sakuya-theme .focus-hero::before{
- content:"";order:1;display:block;width:100%;
- min-height:clamp(300px,86vw,360px);
- background-image:inherit;background-size:inherit;background-position:inherit;background-repeat:inherit;
- border-radius:22px 22px 0 0;
-}
-.screen.sakuya-theme .focus-hero{background-image:none !important}
-.screen.sakuya-theme .focus-hero::before{
- background-image:url("assets/sakuya/sakuya_header.png") !important;
- background-size:cover !important;
- background-position:58% 42% !important;
- background-repeat:no-repeat !important;
-}
 
 @media(max-width:480px){
  .screen.sakuya-theme .focus-hero{background-position:58% 40% !important}
 }
-
-/* ============================================
-   さくやページ 第3段階：教材/成長Hero画像・AIコーチ画像・並び替え
-   （.screen.sakuya-theme スコープ限定。壱凰は影響なし）
-   ============================================ */
-
-/* 教材/成長ページのHero画像：既定は非表示(壱凰では出さない) */
-.sakuya-hero-image{display:none}
-.screen.sakuya-theme .sakuya-hero-image{
- display:block;width:100%;height:auto;max-height:220px;object-fit:cover;
- border-radius:18px;margin-bottom:14px;
-}
-/* 画像の上に文字を重ねないよう、Hero自体を縦積みのブロックに統一 */
-.screen.sakuya-theme .utility-hero,
-.screen.sakuya-theme .growth-hero{
- display:block !important;
-}
-
-/* AIコーチのフクロウ君画像サイズ(owl_voice.png、既存クラスをそのまま利用) */
-.screen.sakuya-theme .sakuya-ai-coach-image{
- width:clamp(56px,16vw,88px);height:auto;object-fit:contain;
-}
-
-/* ホーム画面の並び替え：要素は削除せず、表示順だけをCSSのorderで変更する。
-   優先順：あいさつ→Hero(画像)→今日のミッション(goals)→今日の計画を見るボタン(mobileWelcome内)→
-   達成率(priority)→今やること(schedule/mobileCurrentMission)→AIコーチ→その他 */
-.screen.sakuya-theme .mission-wrap{display:flex;flex-direction:column}
-.screen.sakuya-theme #mobileWelcome{order:1}
-.screen.sakuya-theme .focus-hero{order:2}
-.screen.sakuya-theme .two-grid{order:3}
-.screen.sakuya-theme #mobileCurrentMission{order:4}
-.screen.sakuya-theme .priority{order:5}
-.screen.sakuya-theme .countdown-strip{order:6}
-.screen.sakuya-theme .home-deadline-card{order:7}
-.screen.sakuya-theme .schedule{order:8}
-.screen.sakuya-theme #voiceCoach{order:9}
-.screen.sakuya-theme .step-card{order:10}
-.screen.sakuya-theme #dokosutaCard{order:11}
-.screen.sakuya-theme #notebookSection{order:12}
-.screen.sakuya-theme .rest-card{order:13}
-.screen.sakuya-theme #missionCelebration{order:14}

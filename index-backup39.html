@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#05070b">
 <title>Step Up v6.4 IORI Daily Mission</title>
-<link rel="stylesheet" href="styles.css?v=77">
+<link rel="stylesheet" href="styles.css?v=76">
 </head>
 <body>
 <div id="app">
@@ -104,7 +104,7 @@
   <section class="card home-deadline-card"><div class="card-title"><span>03</span><h2>提出期限が近い課題</h2></div><div id="homeDeadlineList"></div><button id="goToDeadlinePage" type="button" class="plan-edit-btn ghost">提出期限を見る</button></section>
   <section class="card schedule"><div class="card-title"><span>03</span><h2>詳細スケジュール</h2><div class="schedule-actions"><button id="openAssignmentBtn" class="plan-edit-btn ghost icon-only" title="課題管理" aria-label="課題管理">📋</button><button id="openPlannerBtn" class="plan-edit-btn icon-only" title="計画を調整" aria-label="計画を調整">⚙</button></div></div><div id="scheduleList"></div><p id="scheduleReflectStatus" class="schedule-reflect-status" aria-live="polite"></p></section>
   <section id="voiceCoach" class="voice-coach-card">
-   <div class="voice-heading"><img src="assets/sakuya/owl_voice.png" alt="AIコーチのフクロウ君" class="sakuya-ai-coach-image"><span class="voice-heading-text"><small>AI VOICE COACH</small><h2>今日の頑張りを記録</h2></span></div>
+   <div class="voice-heading"><img src="assets/sakuya/owl_front.png" alt="AIコーチのフクロウ君" class="sakuya-ai-coach-image"><span class="voice-heading-text"><small>AI VOICE COACH</small><h2>今日の頑張りを記録</h2></span></div>
    <button id="voiceStart" class="voice-start" type="button"><span class="mic-icon">●</span><strong>タップして話す</strong><small id="voiceStatus">マイク待機中</small></button>
    <textarea id="voiceTranscript" placeholder="例：数学を3ページ進めた。英語は難しかった。（音声でも手入力でもOK）"></textarea>
   <div class="voice-actions"><button id="voiceClear" type="button">クリア</button><button id="voiceAnalyze" type="button">まとめて保存</button></div>
@@ -300,7 +300,7 @@
 <section id="materials" class="screen utility-page">
  <header class="appbar"><button id="materialsBack">←</button><div><b>MATERIALS</b><span id="materialsPerson">教材</span></div><button id="addMaterialBtn">＋</button></header>
  <main class="utility-wrap">
-  <section class="utility-hero"><img src="assets/sakuya/sakuya_materials_header.png" alt="" class="sakuya-hero-image sakuya-materials-hero-image"><small>LEARNING TOOLS</small><h1>今日使う教材を、<br>迷わず選ぶ。</h1><p>提出期限と学校の宿題を最優先に表示します。</p></section>
+  <section class="utility-hero"><small>LEARNING TOOLS</small><h1>今日使う教材を、<br>迷わず選ぶ。</h1><p>提出期限と学校の宿題を最優先に表示します。</p></section>
   <section class="quick-filter" id="materialFilters"><button class="active" data-filter="all">すべて</button><button data-filter="urgent">優先</button><button data-filter="school">学校</button><button data-filter="review">復習</button></section>
   <section id="materialList" class="material-list"></section>
   <section id="notebookSection" class="card notebook-card">
@@ -317,7 +317,7 @@
 <section id="growth" class="screen utility-page growth-page">
  <header class="appbar"><button id="growthBack">←</button><div><b>GROWTH</b><span id="growthPerson">成長記録</span></div><button id="resetTodayBtn">↻</button></header>
  <main class="utility-wrap">
-  <section class="utility-hero growth-hero"><img src="assets/sakuya/sakuya_growth_header.png" alt="" class="sakuya-hero-image sakuya-growth-hero-image"><small>YOUR PROGRESS</small><h1>昨日の自分より、<br>一歩前へ。</h1><p>点数だけではなく、続けたこと・挑戦したことを記録します。</p></section>
+  <section class="utility-hero growth-hero"><small>YOUR PROGRESS</small><h1>昨日の自分より、<br>一歩前へ。</h1><p>点数だけではなく、続けたこと・挑戦したことを記録します。</p></section>
   <section class="growth-summary"><article><b id="growthRate">0%</b><span>今日の達成率</span></article><article><b id="growthDone">0</b><span>完了ミッション</span></article><article><b id="growthStreak">1日</b><span>継続日数</span></article></section>
   <section id="personalCoach" class="personal-coach-card" aria-live="polite">
    <div class="personal-coach-heading"><div><small>PERSONAL AI COACH</small><h2>AIコーチからのメッセージ</h2></div><span id="coachChildName" class="coach-child-name"></span></div>
