@@ -488,18 +488,6 @@ const TASK_ASSIGNMENT_MAP={
  sakuya:{}
 };
 function taskAssignmentId(title,childId=current){return (TASK_ASSIGNMENT_MAP[childId]||{})[title]||null}
-
-// Sprint 75: スケジュール項目の色分類。既存のtitle文字列だけから安全に判定する。
-// 新しい必須フィールドは追加しない。教科による色分けはしない(通常学習は常に青)。
-const SCHEDULE_CATEGORY_LABELS={morning:'朝活',night:'夜活',exercise:'筋トレ',outing:'外出',study:'学習'};
-function classifyScheduleCategory(title){
- const t=String(title||'');
- if(/朝活/.test(t))return 'morning';
- if(/筋トレ/.test(t))return 'exercise';
- if(/外出|移動/.test(t))return 'outing';
- if(/夜活|確認テスト|課題テスト対策|復習テスト/.test(t))return 'night';
- return 'study';
-}
 function activeTasks(){
  const saved=JSON.parse(localStorage.getItem(key())||'{}');
  const base=saved.customTasks||data[current].tasks;
@@ -711,17 +699,12 @@ function formatFocusTitle(text){
  if(parts.length<2)return escapeHtml(text);
  return parts.map(part=>`<span class="focus-phrase">${escapeHtml(part)}</span>`).join('<span class="focus-space" aria-hidden="true"> </span>');
 }
-function render(){const d=data[current];mission.classList.toggle('sakuya-theme',current==='sakuya');personName.textContent=d.name;
- const heroYearEl=document.querySelector('#heroDateYear'),heroFullEl=document.querySelector('#heroDateFull');
- if(heroYearEl)heroYearEl.textContent=`${TODAY.getFullYear()}年`;
- if(heroFullEl)heroFullEl.textContent=`${TODAY.getMonth()+1}月${TODAY.getDate()}日（${['日','月','火','水','木','金','土'][TODAY.getDay()]}）`;
- if(current==='sakuya'){const focusInfo=sakuyaFocusDisplay();focusTitle.innerHTML=formatFocusTitle(dynamicFocusText(focusInfo.title));focusSub.textContent=focusInfo.sub;priorityTitle.textContent=focusInfo.priorityTitle;priorityText.textContent=focusInfo.priorityText;}else{focusTitle.innerHTML=formatFocusTitle(dynamicFocusText(d.focus));focusSub.textContent=d.sub;priorityTitle.textContent=d.priority;priorityText.textContent=d.priorityText;}renderMobileWelcome(d);renderCountdown();const goalsEl=document.querySelector('#goals');if(goalsEl)goalsEl.innerHTML=(current==='sakuya'?sakuyaDynamicGoals():d.goals).map(x=>`<li>${x}</li>`).join('');const saved=JSON.parse(localStorage.getItem(key())||'{}');const tasks=activeTasks();const linkedItems=ProgressEngine.getAll(current);scheduleList.innerHTML=tasks.map((t,i)=>{
+function render(){const d=data[current];mission.classList.toggle('sakuya-theme',current==='sakuya');personName.textContent=d.name;if(current==='sakuya'){const focusInfo=sakuyaFocusDisplay();focusTitle.innerHTML=formatFocusTitle(dynamicFocusText(focusInfo.title));focusSub.textContent=focusInfo.sub;priorityTitle.textContent=focusInfo.priorityTitle;priorityText.textContent=focusInfo.priorityText;}else{focusTitle.innerHTML=formatFocusTitle(dynamicFocusText(d.focus));focusSub.textContent=d.sub;priorityTitle.textContent=d.priority;priorityText.textContent=d.priorityText;}renderMobileWelcome(d);renderCountdown();const goalsEl=document.querySelector('#goals');if(goalsEl)goalsEl.innerHTML=(current==='sakuya'?sakuyaDynamicGoals():d.goals).map(x=>`<li>${x}</li>`).join('');const saved=JSON.parse(localStorage.getItem(key())||'{}');const tasks=activeTasks();const linkedItems=ProgressEngine.getAll(current);scheduleList.innerHTML=tasks.map((t,i)=>{
 if(t[5]){
  // Sprint 50: 固定予定は表示専用行。チェックボックスを持たせず、完了数・進捗率には含めない。
  return `<div class="task task--event"><time>${t[0]}</time><span><strong>${t[1]}</strong><small>${t[4]||'予定'}</small></span><span class="task-state">${t[2]}</span></div>`;
 }
-const cat=classifyScheduleCategory(t[1]);
-const assignment=t[3]?linkedItems.find(x=>x.id===t[3]):null;const assignmentText=assignment?`課題：${assignment.done?'完了済み':assignment.status==='in-progress'?'進行中':'未着手'}${assignment.total!=null?`・${assignment.current}/${assignment.total}`:''}`:(saved.checks?.[i]?'完了 ✓':'タップで完了');return `<label class="task cat-${cat} ${saved.checks?.[i]?'done':''}"><input type="checkbox" data-i="${i}" data-assignment-id="${t[3]||''}" ${saved.checks?.[i]?'checked':''}><time class="cat-${cat}">${t[0]}</time><span><strong>${t[1]}</strong><small class="task-tag cat-${cat}">${SCHEDULE_CATEGORY_LABELS[cat]}</small></span><span class="task-state">${assignmentText}</span><span class="duration">${t[2]}</span></label>`;
+const assignment=t[3]?linkedItems.find(x=>x.id===t[3]):null;const assignmentText=assignment?`課題：${assignment.done?'完了済み':assignment.status==='in-progress'?'進行中':'未着手'}${assignment.total!=null?`・${assignment.current}/${assignment.total}`:''}`:(saved.checks?.[i]?'完了 ✓':'タップで完了');return `<label class="task ${saved.checks?.[i]?'done':''}"><input type="checkbox" data-i="${i}" data-assignment-id="${t[3]||''}" ${saved.checks?.[i]?'checked':''}><time>${t[0]}</time><span><strong>${t[1]}</strong><small>${t[2]}</small></span><span class="task-state">${assignmentText}</span><span class="duration">${t[2]}</span></label>`;
 }).join('');stepMessage.textContent=saved.step||'今日の記録はまだありません。「まとめて保存」を押すと、ここに表示されます。';bindChecks();update();renderPersonalCoach();renderHomeDeadlineCard();loadDailyReportCard();renderSakuyaTestRulesCard();renderDokosutaHistory()}
 // Sprint 12-3/12-4: 今日の学習報告カード（提出物・課題データとは別のlocalStorageキーで管理）
 function dailyReportKey(date){return `stepup_daily_report_${date}_${current}`}
@@ -962,16 +945,13 @@ function renderMobileWelcome(d){
  const hour=new Date().getHours();
  const greeting=hour<11?'おはよう！':hour<18?'こんにちは！':'こんばんは！';
  const shortName=current==='iori'?'壱凰':'朔埜';
- const messageText=current==='iori'?'今日も昨日の自分を超えよう。':'今日も一歩ずつ進もう。';
  const greetingEl=document.querySelector('#welcomeGreeting');
- const nameChildEl=document.querySelector('#welcomeNameChild');
- const nameMessageEl=document.querySelector('#welcomeNameMessage');
+ const nameEl=document.querySelector('#welcomeName');
  const targetEl=document.querySelector('#welcomeTarget');
  const dateEl=document.querySelector('#welcomeDate');
  if(dateEl)dateEl.textContent=`${TODAY.getFullYear()}年${TODAY.getMonth()+1}月${TODAY.getDate()}日（${['日','月','火','水','木','金','土'][TODAY.getDay()]}）`;
  if(greetingEl)greetingEl.textContent=greeting;
- if(nameChildEl)nameChildEl.textContent=`${shortName}、`;
- if(nameMessageEl)nameMessageEl.textContent=messageText;
+ if(nameEl)nameEl.textContent=`${shortName}、今日も一歩ずつ進もう。`;
  if(targetEl)targetEl.textContent=current==='sakuya'?sakuyaFocusDisplay().priorityTitle:d.priority;
 }
 
@@ -1089,30 +1069,17 @@ function updateMobileMission(tasks,checks,done){
  const saved=JSON.parse(localStorage.getItem(key())||'{}');
  const activeIndex=Number.isInteger(saved.activeTaskIndex)?saved.activeTaskIndex:null;
  const isActive=next>=0&&activeIndex===next;
- const count=document.querySelector('#mobileMissionCount'),time=document.querySelector('#mobileMissionTime'),title=document.querySelector('#mobileMissionTitle'),duration=document.querySelector('#mobileMissionDuration'),button=document.querySelector('#completeCurrentMission'),label=document.querySelector('#mobileMissionLabel'),progress=document.querySelector('#mobileProgressBar'),remainingText=document.querySelector('#mobileRemainingText'),remainingList=document.querySelector('#mobileRemainingList'),tag=document.querySelector('#mobileMissionTag'),remainingBadge=document.querySelector('#mobileMissionRemaining');
+ const count=document.querySelector('#mobileMissionCount'),time=document.querySelector('#mobileMissionTime'),title=document.querySelector('#mobileMissionTitle'),duration=document.querySelector('#mobileMissionDuration'),button=document.querySelector('#completeCurrentMission'),label=document.querySelector('#mobileMissionLabel'),progress=document.querySelector('#mobileProgressBar'),remainingText=document.querySelector('#mobileRemainingText'),remainingList=document.querySelector('#mobileRemainingList');
  const percentValue=tasks.length?Math.round(done/tasks.length*100):0;
  if(count)count.textContent=`${done} / ${tasks.length} 完了`;
  if(progress)progress.style.width=percentValue+'%';
  if(remainingText)remainingText.textContent=next<0?'今日のミッションはすべて完了！':`今日はあと${tasks.length-done}個`;
  if(remainingList)remainingList.innerHTML=next<0?'':tasks.map((t,i)=>!checks[i]&&i!==next?`<span>${escapeHtml(t[1])}</span>`:'').join('');
- if(next<0){
-  if(label)label.textContent='TODAY COMPLETE';if(time){time.textContent='DONE';time.className='cat-study';}if(title)title.textContent='今日の計画をすべて完了！';if(duration)duration.textContent='今日のStep Upを残して、しっかり休もう。';if(tag){tag.textContent='';tag.className='task-tag hidden';}if(remainingBadge)remainingBadge.classList.add('hidden');if(button){button.textContent='MISSION COMPLETE ✓';button.disabled=true;delete button.dataset.taskIndex;}
-  return;
- }
- const nextTask=tasks[next];
- const cat=classifyScheduleCategory(nextTask[1]);
+ if(next<0){if(label)label.textContent='TODAY COMPLETE';if(time)time.textContent='DONE';if(title)title.textContent='今日の計画をすべて完了！';if(duration)duration.textContent='今日のStep Upを残して、しっかり休もう。';if(button){button.textContent='MISSION COMPLETE ✓';button.disabled=true;delete button.dataset.taskIndex;}return;}
  if(label)label.textContent=isActive?'学習中':'今やること';
- if(time){time.textContent=nextTask[0];time.className='cat-'+cat;}
- if(title)title.textContent=nextTask[1];
- if(duration)duration.textContent=isActive?`予定時間 ${nextTask[2]}・集中して進めよう`:`予定時間 ${nextTask[2]}`;
- if(tag){tag.textContent=SCHEDULE_CATEGORY_LABELS[cat];tag.className='task-tag cat-'+cat;}
- // 残量：紐付く課題データがあれば「残りNページ/回」等を表示。無ければ非表示。
- if(remainingBadge){
-  const linked=nextTask[3]?ProgressEngine.getAll(current).find(x=>x.id===nextTask[3]):null;
-  const remainLabel=linked&&linked.remaining&&linked.remaining!=='なし'?`残り${linked.remaining}`:'';
-  if(remainLabel){remainingBadge.textContent=remainLabel;remainingBadge.classList.remove('hidden');}
-  else{remainingBadge.textContent='';remainingBadge.classList.add('hidden');}
- }
+ if(time)time.textContent=tasks[next][0];
+ if(title)title.textContent=tasks[next][1];
+ if(duration)duration.textContent=isActive?`予定時間 ${tasks[next][2]}・集中して進めよう`:`予定時間 ${tasks[next][2]}`;
  if(button){button.textContent=isActive?'完了する ✓':'開始する';button.disabled=false;button.dataset.taskIndex=String(next);button.dataset.action=isActive?'complete':'start';}
 }
 function update(){const cs=[...document.querySelectorAll('.task input')],done=cs.filter(x=>x.checked).length,p=cs.length?Math.round(done/cs.length*100):0;percent.textContent=p+'%';const doneCountEl=document.querySelector('#doneCount'),totalCountEl=document.querySelector('#totalCount'),barEl=document.querySelector('#bar');if(doneCountEl)doneCountEl.textContent=done;if(totalCountEl)totalCountEl.textContent=cs.length;if(barEl)barEl.style.width=p+'%';const tasks=activeTasks(),checks=cs.map(x=>x.checked);updateMobileMission(tasks,checks,done);renderPersonalCoach();}

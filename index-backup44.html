@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#05070b">
 <title>Step Up v6.4 IORI Daily Mission</title>
-<link rel="stylesheet" href="styles.css?v=82">
+<link rel="stylesheet" href="styles.css?v=80">
 </head>
 <body>
 <div id="app">
@@ -73,34 +73,23 @@
 <section id="mission" class="screen mission-page">
  <header class="appbar"><button id="back">←</button><div><b>STEP UP</b><span id="personName"></span></div><button id="themeToggle">◐</button></header>
  <main class="mission-wrap">
-  <section class="focus-hero"><div class="focus-hero-date-badge"><small>📅 <span id="heroDateYear"></span></small><strong id="heroDateFull"></strong></div><div class="focus-hero-legacy-text hidden"><small>TODAY'S ミッション</small><h1 id="focusTitle"></h1><p id="focusSub"></p></div><div class="ring"><strong id="percent">0%</strong><span>COMPLETE</span></div></section>
+  <section class="focus-hero"><div><small>TODAY'S ミッション</small><h1 id="focusTitle"></h1><p id="focusSub"></p></div><div class="ring"><strong id="percent">0%</strong><span>COMPLETE</span></div></section>
   <section id="mobileWelcome" class="mobile-welcome" aria-label="今日の案内">
-   <img src="assets/sakuya/owl_front.png" alt="" class="welcome-icon welcome-icon-sakuya">
-   <span class="welcome-icon welcome-icon-iori" aria-hidden="true"></span>
-   <div class="welcome-text">
-    <small class="hidden">STEP UP / TODAY</small>
-    <time id="welcomeDate" class="welcome-date hidden">2026年7月21日（火）</time>
-    <p id="welcomeGreeting">おはよう！</p>
-    <h1 id="welcomeName"><strong id="welcomeNameChild"></strong><span id="welcomeNameMessage">今日も一歩ずつ進もう。</span></h1>
-   </div>
+   <small>STEP UP / TODAY</small>
+   <time id="welcomeDate" class="welcome-date">2026年7月21日（火）</time>
+   <p id="welcomeGreeting">おはよう！</p>
+   <h1 id="welcomeName">今日も一歩ずつ進もう。</h1>
   </section>
   <div class="plan-mode-buttons">
    <button id="planModeManualBtn" type="button" class="plan-mode-btn plan-mode-manual"><span class="plan-mode-icon">📝</span><span class="plan-mode-label">自分で計画を作る</span><span class="plan-mode-arrow">→</span></button>
    <button id="planModeAiBtn" type="button" class="plan-mode-btn plan-mode-ai"><span class="plan-mode-icon">🦉</span><span class="plan-mode-label">AIコーチと計画を作る</span><span class="plan-mode-arrow">→</span></button>
   </div>
   <section id="mobileCurrentMission" class="mobile-current-mission" aria-live="polite">
-   <div class="current-mission-head"><small id="mobileMissionLabel">今やること</small><span id="mobileMissionCount" class="hidden">0 / 0 完了</span></div>
-   <div class="current-mission-body">
-    <time id="mobileMissionTime" class="cat-study">--:--</time>
-    <div>
-     <strong id="mobileMissionTitle">今日の計画を確認しよう</strong>
-     <div class="current-mission-meta"><span id="mobileMissionTag" class="task-tag cat-study">学習</span><span id="mobileMissionDuration">一つずつ進めれば大丈夫。</span></div>
-    </div>
-    <div class="current-mission-side"><span id="mobileMissionRemaining" class="mobile-mission-remaining hidden"></span><span class="current-mission-arrow">›</span></div>
-   </div>
-   <div class="mobile-progress hidden" aria-label="今日の進捗"><i id="mobileProgressBar"></i></div>
-   <p id="mobileRemainingText" class="mobile-remaining-text hidden">今日はあと0個</p>
-   <div id="mobileRemainingList" class="mobile-remaining-list hidden"></div>
+   <div class="current-mission-head"><small id="mobileMissionLabel">今やること</small><span id="mobileMissionCount">0 / 0 完了</span></div>
+   <div class="current-mission-body"><time id="mobileMissionTime">--:--</time><div><strong id="mobileMissionTitle">今日の計画を確認しよう</strong><p id="mobileMissionDuration">一つずつ進めれば大丈夫。</p></div></div>
+   <div class="mobile-progress" aria-label="今日の進捗"><i id="mobileProgressBar"></i></div>
+   <p id="mobileRemainingText" class="mobile-remaining-text">今日はあと0個</p>
+   <div id="mobileRemainingList" class="mobile-remaining-list"></div>
    <button id="completeCurrentMission" type="button" class="hidden">開始する</button>
   </section>
   <div id="missionCelebration" class="mission-celebration" role="status" aria-live="polite" aria-hidden="true">
@@ -539,6 +528,6 @@
 <script src="data/defaultSchedules.js?v=1"></script>
 <script src="data/coachMessages.js?v=1"></script>
 <script src="data/teacherComments.js?v=1"></script>
-<script src="app.js?v=85"></script>
+<script src="app.js?v=83"></script>
 </body>
 </html>
