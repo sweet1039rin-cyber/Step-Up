@@ -391,7 +391,6 @@ button,input,select,textarea{touch-action:manipulation}
 
 /* v6.4: July 21 daily mission */
 .welcome-date{display:inline-flex;margin:10px 0 0;padding:6px 10px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.07);font-size:12px;font-weight:900;letter-spacing:.04em;border-radius:999px;color:#fff}
-.welcome-date.hidden{display:none !important}
 @media(max-width:720px){.welcome-date{font-size:11px}.schedule-list .task time{min-width:52px}.schedule-list .task strong{line-height:1.45}}
 
 /* ============================================
@@ -2136,6 +2135,7 @@ html.theme-champion-black .plan-mode-ai{
 .screen.sakuya-theme .focus-hero-date-badge small,
 .screen.sakuya-theme .focus-hero-date-badge strong{color:#fff !important;text-shadow:0 2px 6px rgba(7,59,135,.9)}
 .screen.sakuya-theme .focus-hero .ring{display:none !important}
+.screen.sakuya-theme .focus-hero-date-badge{display:none !important}
 
 /* ============================================
    あいさつカード：朔埜(空色グラデーション+フクロウ君) / 壱凰(白+赤黒+SUエンブレム)
