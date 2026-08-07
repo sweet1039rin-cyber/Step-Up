@@ -1859,6 +1859,25 @@ html:not(.theme-champion-black) .champion-emblem.lg{
  width:clamp(56px,16vw,88px);height:auto;object-fit:contain;
 }
 
+/* ホーム画面の並び替え：要素は削除せず、表示順だけをCSSのorderで変更する。
+   優先順：あいさつ→Hero(画像)→今日のミッション(goals)→今日の計画を見るボタン(mobileWelcome内)→
+   達成率(priority)→今やること(schedule/mobileCurrentMission)→AIコーチ→その他 */
+.screen.sakuya-theme .mission-wrap{display:flex;flex-direction:column}
+.screen.sakuya-theme #mobileWelcome{order:1}
+.screen.sakuya-theme .focus-hero{order:2}
+.screen.sakuya-theme .two-grid{order:3}
+.screen.sakuya-theme #mobileCurrentMission{order:4}
+.screen.sakuya-theme .priority{order:5}
+.screen.sakuya-theme .countdown-strip{order:6}
+.screen.sakuya-theme .home-deadline-card{order:7}
+.screen.sakuya-theme .schedule{order:8}
+.screen.sakuya-theme #voiceCoach{order:9}
+.screen.sakuya-theme .step-card{order:10}
+.screen.sakuya-theme #dokosutaCard{order:11}
+.screen.sakuya-theme #notebookSection{order:12}
+.screen.sakuya-theme .rest-card{order:13}
+.screen.sakuya-theme #missionCelebration{order:14}
+
 /* ============================================
    AI VOICE COACH：ミントグリーン仕様（.screen.sakuya-theme限定）
    紫案は廃止。機能・onclick・保存処理は一切変更しない。見た目のみ。
@@ -2135,7 +2154,6 @@ html.theme-champion-black .plan-mode-ai{
 .screen.sakuya-theme .focus-hero-date-badge small,
 .screen.sakuya-theme .focus-hero-date-badge strong{color:#fff !important;text-shadow:0 2px 6px rgba(7,59,135,.9)}
 .screen.sakuya-theme .focus-hero .ring{display:none !important}
-.screen.sakuya-theme .focus-hero-date-badge{display:none !important}
 
 /* ============================================
    あいさつカード：朔埜(空色グラデーション+フクロウ君) / 壱凰(白+赤黒+SUエンブレム)
