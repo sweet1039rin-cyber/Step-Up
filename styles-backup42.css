@@ -1795,46 +1795,51 @@ html:not(.theme-champion-black) .champion-emblem.lg{
    .focus-hero自体は「画像だけを見せる帯」にし、
    文字(ミッションタイトル)とリング(達成率)は、画像の直後に
    通常のブロックとして続けて配置する(要素は削除せず、位置だけ変更)。 */
-/* Sprint 73: Hero画像はそのまま(画像を隠さない)、文字は左上だけに
-   半透明ネイビーのグラデーションを敷いて重ねる。主人公・フクロウ君・ボールの
-   写っている中央〜右下には文字ブロックがかからないよう、幅と位置を制限する。 */
 .screen.sakuya-theme .focus-hero{
- position:relative;
- display:block !important;
- min-height:clamp(300px,86vw,360px) !important;
+ display:flex !important;flex-direction:column;
+}
+.screen.sakuya-theme .focus-hero>div:first-child{
+ order:2;
+ width:100%;max-width:none;
+ padding:16px 18px 4px;
+ background:none;
+}
+.screen.sakuya-theme .focus-hero small{color:var(--sakuya-blue) !important}
+.screen.sakuya-theme .focus-hero h1,
+.screen.sakuya-theme .focus-hero p{color:var(--sakuya-text) !important;text-shadow:none}
+.screen.sakuya-theme .focus-hero h1{font-size:clamp(22px,5.5vw,30px) !important;margin:4px 0 !important}
+.screen.sakuya-theme .focus-hero p{font-size:14px !important;line-height:1.5}
+
+/* 進捗リング：画像の下、文字の隣に通常配置(画像には重ねない) */
+.screen.sakuya-theme .focus-hero .ring{
+ order:2;
+ position:static !important;
+ align-self:flex-end;
+ margin:0 18px 16px auto;
+ width:clamp(70px,20vw,90px) !important;height:clamp(70px,20vw,90px) !important;
+ background:var(--sakuya-sky);
+ border-width:8px !important;
+ box-shadow:none;
+}
+.screen.sakuya-theme .focus-hero .ring strong{font-size:clamp(16px,4.5vw,22px) !important;color:var(--sakuya-blue)}
+.screen.sakuya-theme .focus-hero .ring span{color:var(--sakuya-text)}
+/* 画像部分：order:1で先頭に固定表示するための高さ(文字がその下に続く分、Hero全体を伸ばす) */
+.screen.sakuya-theme .focus-hero::before{
+ content:"";order:1;display:block;width:100%;
+ min-height:clamp(300px,86vw,360px);
+ background-image:inherit;background-size:inherit;background-position:inherit;background-repeat:inherit;
+ border-radius:22px 22px 0 0;
+}
+.screen.sakuya-theme .focus-hero{background-image:none !important}
+.screen.sakuya-theme .focus-hero::before{
  background-image:url("assets/sakuya/sakuya_header.png") !important;
  background-size:cover !important;
  background-position:58% 42% !important;
  background-repeat:no-repeat !important;
- overflow:hidden;
 }
-.screen.sakuya-theme .focus-hero>div:first-child{
- position:absolute;top:0;left:0;
- max-width:62%;
- padding:16px 18px;
- background:linear-gradient(135deg,rgba(7,59,135,.78),rgba(7,59,135,.35) 55%,transparent 85%);
- border-radius:22px 0 40px 0;
-}
-.screen.sakuya-theme .focus-hero small{color:#fff !important;text-shadow:0 1px 4px rgba(7,59,135,.9)}
-.screen.sakuya-theme .focus-hero h1,
-.screen.sakuya-theme .focus-hero p{color:#fff !important;text-shadow:0 2px 6px rgba(7,59,135,.85)}
-.screen.sakuya-theme .focus-hero h1{font-size:clamp(22px,5.5vw,30px) !important;margin:4px 0 !important}
-.screen.sakuya-theme .focus-hero p{font-size:14px !important;line-height:1.5}
-
-/* 進捗リング：右下に配置。主人公・フクロウ君・ボールの位置を避ける */
-.screen.sakuya-theme .focus-hero .ring{
- position:absolute;right:16px;bottom:16px;
- width:clamp(70px,20vw,90px) !important;height:clamp(70px,20vw,90px) !important;
- background:rgba(255,255,255,.92);
- border-width:8px !important;
- box-shadow:0 4px 14px rgba(0,0,0,.15);
-}
-.screen.sakuya-theme .focus-hero .ring strong{font-size:clamp(16px,4.5vw,22px) !important;color:var(--sakuya-blue)}
-.screen.sakuya-theme .focus-hero .ring span{color:var(--sakuya-text)}
 
 @media(max-width:480px){
  .screen.sakuya-theme .focus-hero{background-position:58% 40% !important}
- .screen.sakuya-theme .focus-hero>div:first-child{max-width:70%}
 }
 
 /* ============================================
@@ -2039,53 +2044,3 @@ html.theme-champion-black .family-activity-row{background:rgba(255,255,255,.05);
 .screen.sakuya-theme .family-activity-row{
  background:var(--sakuya-sky);border-color:#CFEAFF;border-radius:12px;color:var(--sakuya-text);
 }
-
-/* ============================================
-   Sprint 73: 計画作成2ボタン(自分で計画を作る/AIコーチと計画を作る)
-   共通の基本構造はどちらのテーマにも属さない最小限のレイアウトのみ
-   ============================================ */
-.plan-mode-buttons{display:flex;flex-direction:column;gap:10px;margin:14px 0}
-.plan-mode-btn{
- display:flex;align-items:center;gap:12px;width:100%;
- padding:14px 16px;border:none;border-radius:16px;cursor:pointer;
- font-size:15px;font-weight:800;text-align:left;
-}
-.plan-mode-icon{font-size:20px;flex:none}
-.plan-mode-label{flex:1}
-.plan-mode-arrow{font-size:16px;font-weight:900;flex:none}
-
-/* 壱凰(Champion Edition)：既存配色をそのまま踏襲。
-   whiteテーマはhtmlへクラスが付与されない仕様のため、無条件のデフォルトとして適用し、
-   blackテーマの場合だけ上書きする。朔埜(.screen.sakuya-theme)は下記ルールで確実に上書きされる。 */
-.mission-page:not(.sakuya-theme) .plan-mode-btn,
-.utility-page:not(.sakuya-theme) .plan-mode-btn{
- background:#ffffff;color:#161616;border:1px solid rgba(0,0,0,.08);
-}
-.mission-page:not(.sakuya-theme) .plan-mode-manual,
-.utility-page:not(.sakuya-theme) .plan-mode-manual{
- background:#d50018;color:#fff;border-color:transparent;
-}
-.mission-page:not(.sakuya-theme) .plan-mode-ai,
-.utility-page:not(.sakuya-theme) .plan-mode-ai{
- background:#1c1c20;color:#fff;border-color:transparent;
-}
-html.theme-champion-black .plan-mode-btn{
- background:#1c1c20;color:#fff;border:1px solid rgba(255,255,255,.12);
-}
-html.theme-champion-black .plan-mode-manual{
- background:#e60012;color:#fff;border-color:transparent;
-}
-html.theme-champion-black .plan-mode-ai{
- background:#0b0b0d;color:#fff;border-color:transparent;
-}
-
-/* 朔埜(sakuya-theme)：自分で計画を作る＝ブルー系、AIコーチと計画を作る＝ミント系 */
-.screen.sakuya-theme .plan-mode-manual{
- background:linear-gradient(135deg,#2563EB,#38B2F6) !important;color:#fff !important;
- box-shadow:0 4px 0 #073B87;
-}
-.screen.sakuya-theme .plan-mode-ai{
- background:linear-gradient(135deg,#4FD1C5,#33C9B8) !important;color:#fff !important;
- box-shadow:0 4px 0 #1D8A7E;
-}
-.screen.sakuya-theme .plan-mode-btn:active{transform:translateY(2px);box-shadow:none}

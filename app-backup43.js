@@ -469,8 +469,7 @@ const select=document.querySelector('#select'),mission=document.querySelector('#
 function show(el){document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));el.classList.add('active');el.classList.toggle('sakuya-theme',current==='sakuya');scrollTo(0,0)}
 document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>{if(b.dataset.view==='family')openFamily();else{current=b.dataset.view;render();show(mission)}});
 back.onclick=()=>show(select);familyBack.onclick=()=>show(select);
-document.querySelector('#planModeManualBtn')?.addEventListener('click',()=>{openPlanner();setPlannerMode('manual');renderManualPlanList();populateManualPlanAssignmentSelect()});
-document.querySelector('#planModeAiBtn')?.addEventListener('click',()=>{openPlanner();setPlannerMode('ai')});
+document.querySelector('#viewTodayPlan')?.addEventListener('click',()=>document.querySelector('.goals')?.scrollIntoView({behavior:'smooth',block:'start'}));
 function openFamily(){renderFamily();show(family)}
 document.querySelectorAll('[data-family-nav]').forEach(button=>button.onclick=()=>{const destination=button.dataset.familyNav;if(destination==='family'){document.querySelectorAll('[data-family-nav]').forEach(x=>x.classList.toggle('active',x===button));return}current=destination;render();show(mission)});
 function key(){return 'stepup-v4-'+PLAN_DATE+'-'+current}
@@ -699,7 +698,7 @@ function formatFocusTitle(text){
  if(parts.length<2)return escapeHtml(text);
  return parts.map(part=>`<span class="focus-phrase">${escapeHtml(part)}</span>`).join('<span class="focus-space" aria-hidden="true"> </span>');
 }
-function render(){const d=data[current];mission.classList.toggle('sakuya-theme',current==='sakuya');personName.textContent=d.name;if(current==='sakuya'){const focusInfo=sakuyaFocusDisplay();focusTitle.innerHTML=formatFocusTitle(dynamicFocusText(focusInfo.title));focusSub.textContent=focusInfo.sub;priorityTitle.textContent=focusInfo.priorityTitle;priorityText.textContent=focusInfo.priorityText;}else{focusTitle.innerHTML=formatFocusTitle(dynamicFocusText(d.focus));focusSub.textContent=d.sub;priorityTitle.textContent=d.priority;priorityText.textContent=d.priorityText;}renderMobileWelcome(d);renderCountdown();const goalsEl=document.querySelector('#goals');if(goalsEl)goalsEl.innerHTML=(current==='sakuya'?sakuyaDynamicGoals():d.goals).map(x=>`<li>${x}</li>`).join('');const saved=JSON.parse(localStorage.getItem(key())||'{}');const tasks=activeTasks();const linkedItems=ProgressEngine.getAll(current);scheduleList.innerHTML=tasks.map((t,i)=>{
+function render(){const d=data[current];mission.classList.toggle('sakuya-theme',current==='sakuya');personName.textContent=d.name;if(current==='sakuya'){const focusInfo=sakuyaFocusDisplay();focusTitle.innerHTML=formatFocusTitle(dynamicFocusText(focusInfo.title));focusSub.textContent=focusInfo.sub;priorityTitle.textContent=focusInfo.priorityTitle;priorityText.textContent=focusInfo.priorityText;}else{focusTitle.innerHTML=formatFocusTitle(dynamicFocusText(d.focus));focusSub.textContent=d.sub;priorityTitle.textContent=d.priority;priorityText.textContent=d.priorityText;}renderMobileWelcome(d);renderCountdown();goals.innerHTML=(current==='sakuya'?sakuyaDynamicGoals():d.goals).map(x=>`<li>${x}</li>`).join('');const saved=JSON.parse(localStorage.getItem(key())||'{}');const tasks=activeTasks();const linkedItems=ProgressEngine.getAll(current);scheduleList.innerHTML=tasks.map((t,i)=>{
 if(t[5]){
  // Sprint 50: 固定予定は表示専用行。チェックボックスを持たせず、完了数・進捗率には含めない。
  return `<div class="task task--event"><time>${t[0]}</time><span><strong>${t[1]}</strong><small>${t[4]||'予定'}</small></span><span class="task-state">${t[2]}</span></div>`;
@@ -1082,7 +1081,7 @@ function updateMobileMission(tasks,checks,done){
  if(duration)duration.textContent=isActive?`予定時間 ${tasks[next][2]}・集中して進めよう`:`予定時間 ${tasks[next][2]}`;
  if(button){button.textContent=isActive?'完了する ✓':'開始する';button.disabled=false;button.dataset.taskIndex=String(next);button.dataset.action=isActive?'complete':'start';}
 }
-function update(){const cs=[...document.querySelectorAll('.task input')],done=cs.filter(x=>x.checked).length,p=cs.length?Math.round(done/cs.length*100):0;percent.textContent=p+'%';const doneCountEl=document.querySelector('#doneCount'),totalCountEl=document.querySelector('#totalCount'),barEl=document.querySelector('#bar');if(doneCountEl)doneCountEl.textContent=done;if(totalCountEl)totalCountEl.textContent=cs.length;if(barEl)barEl.style.width=p+'%';const tasks=activeTasks(),checks=cs.map(x=>x.checked);updateMobileMission(tasks,checks,done);renderPersonalCoach();}
+function update(){const cs=[...document.querySelectorAll('.task input')],done=cs.filter(x=>x.checked).length,p=cs.length?Math.round(done/cs.length*100):0;percent.textContent=p+'%';doneCount.textContent=done;totalCount.textContent=cs.length;bar.style.width=p+'%';const tasks=activeTasks(),checks=cs.map(x=>x.checked);updateMobileMission(tasks,checks,done);renderPersonalCoach();}
 
 function showMissionCelebration(taskTitle,allDone){
  const box=document.querySelector('#missionCelebration'),title=document.querySelector('#celebrationTitle'),text=document.querySelector('#celebrationText');
@@ -1805,7 +1804,7 @@ function renderNotebookSection(){
   openNotebook(b.dataset.notebookChild,b.dataset.notebookMaterial,b.dataset.notebookSubject);
  });
 }
-function openMaterials(){materialsPerson.textContent=data[current].name+' / 学習ツール';renderNotebookSection();show(materialsScreen)}
+function openMaterials(){materialsPerson.textContent=data[current].name+' / 教材';materialForm.classList.add('hidden');renderMaterials();show(materialsScreen)}
 materialsBack.onclick=()=>show(mission);
 addMaterialBtn.onclick=()=>materialForm.classList.toggle('hidden');
 materialFilters.querySelectorAll('button').forEach(b=>b.onclick=()=>{materialFilter=b.dataset.filter;materialFilters.querySelectorAll('button').forEach(x=>x.classList.toggle('active',x===b));renderMaterials()});
@@ -2118,7 +2117,7 @@ document.querySelector('#saveDeadlineChangesBtn')?.addEventListener('click',()=>
  renderAssignments();
  render();
 });
-function openAssignments(){assignmentForm.classList.add('hidden');materialForm.classList.add('hidden');renderAssignments();populateAssignmentMaterialList();renderMaterials();show(assignmentsScreen)}
+function openAssignments(){assignmentForm.classList.add('hidden');renderAssignments();populateAssignmentMaterialList();show(assignmentsScreen)}
 // 既存教材(教材ページのdefaultMaterials+保存済み教材)から候補一覧を作る。一覧にない場合は自由入力可。
 function populateAssignmentMaterialList(){
  const dl=document.querySelector('#assignmentMaterialList');
