@@ -1763,7 +1763,7 @@ html:not(.theme-champion-black) .champion-emblem.lg{
  box-shadow:0 -4px 14px rgba(37,99,235,.08);
 }
 .screen.sakuya-theme nav button{
- color:#3B6EA5;border-radius:16px;margin:8px 4px;transition:background .2s,color .2s;
+ color:#9DB8DE;border-radius:16px;margin:8px 4px;transition:background .2s,color .2s;
 }
 .screen.sakuya-theme nav .active{
  color:#fff;background:linear-gradient(135deg,var(--sakuya-blue),var(--sakuya-sub-blue));
@@ -2147,8 +2147,8 @@ html.theme-champion-black .plan-mode-ai{
 /* 朔埜：ネイビーのtext-shadow付き白文字、達成率リングは非表示(日付のみ) */
 .screen.sakuya-theme .focus-hero{padding:0 !important}
 .screen.sakuya-theme .focus-hero-date-badge{
- position:absolute;bottom:16px;right:16px;
- padding:10px 16px;border-radius:14px;text-align:right;
+ position:absolute;top:16px;left:16px;
+ padding:10px 16px;border-radius:14px;
  background:linear-gradient(135deg,rgba(7,59,135,.55),rgba(7,59,135,.25) 70%,transparent);
 }
 .screen.sakuya-theme .focus-hero-date-badge small,
@@ -2158,17 +2158,15 @@ html.theme-champion-black .plan-mode-ai{
 /* ============================================
    あいさつカード：朔埜(空色グラデーション+フクロウ君) / 壱凰(白+赤黒+SUエンブレム)
    ============================================ */
-/* Sprint 79: あいさつカードは2行構成に統一する(横並び1行はやめる)。
-   高さ圧縮(padding・アイコンサイズ)はSprint78のコンパクトさをそのまま維持する。 */
-.mobile-welcome{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:16px;margin-top:10px}
-.welcome-icon{width:34px;height:34px;flex:none;object-fit:contain}
+.mobile-welcome{display:flex;align-items:center;gap:14px;padding:18px 20px;border-radius:20px;margin-top:14px}
+.welcome-icon{width:56px;height:56px;flex:none;object-fit:contain}
 .welcome-icon-sakuya{display:none}
-.welcome-icon-iori{display:none;border-radius:8px;background-size:cover;background-position:center}
-.welcome-text{flex:1;min-width:0;display:block}
-#welcomeGreeting{margin:0;font-size:13px;font-weight:800;line-height:1.3}
-#welcomeName{margin:1px 0 0;font-size:13px;font-weight:700;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-#welcomeNameChild{display:none}
-#welcomeNameMessage{font-weight:700;white-space:nowrap}
+.welcome-icon-iori{display:none;border-radius:12px;background-size:cover;background-position:center}
+.welcome-text{flex:1;min-width:0}
+#welcomeGreeting{margin:0;font-size:13px;font-weight:700}
+#welcomeName{margin:2px 0 0;font-size:clamp(20px,5.5vw,26px);line-height:1.3}
+#welcomeNameChild{font-weight:900}
+#welcomeNameMessage{font-weight:700;font-size:.7em;display:block}
 
 /* 朔埜：少し濃い空色グラデーション */
 .screen.sakuya-theme .mobile-welcome{
@@ -2179,14 +2177,10 @@ html.theme-champion-black .plan-mode-ai{
 .screen.sakuya-theme #welcomeNameChild,
 .screen.sakuya-theme #welcomeNameMessage{color:#0A2E52 !important}
 
-/* 壱凰：Champion Edition 黒〜濃いグレーのグラデーション＋白文字、SUエンブレム */
+/* 壱凰：Champion Edition 白ベース＋赤黒アクセント、SUエンブレム */
 .mission-page:not(.sakuya-theme) .mobile-welcome{
- background:linear-gradient(135deg,#1c1c20,#0b0b0d) !important;
- border-left:6px solid #d50018;position:relative;overflow:hidden;
+ background:#fff;border-left:6px solid #d50018;position:relative;overflow:hidden;
 }
-.mission-page:not(.sakuya-theme) #welcomeGreeting,
-.mission-page:not(.sakuya-theme) #welcomeNameChild,
-.mission-page:not(.sakuya-theme) #welcomeNameMessage{color:#fff !important}
 .mission-page:not(.sakuya-theme) .welcome-icon-iori{
  display:block;
  background-image:url("assets/hero-emblem-white-v2.webp");
@@ -2194,10 +2188,10 @@ html.theme-champion-black .plan-mode-ai{
 html.theme-champion-black .welcome-icon-iori{
  background-image:url("assets/hero-emblem-black-v2.webp");
 }
-html.theme-champion-black .mobile-welcome{background:linear-gradient(135deg,#1c1c20,#0b0b0d) !important;border-left-color:#e60012}
+html.theme-champion-black .mobile-welcome{background:#151515;border-left-color:#e60012}
 html.theme-champion-black #welcomeGreeting,
 html.theme-champion-black #welcomeNameChild,
-html.theme-champion-black #welcomeNameMessage{color:#fff !important}
+html.theme-champion-black #welcomeNameMessage{color:#fff}
 
 @media(max-width:480px){
  .screen.sakuya-theme .focus-hero-date-badge{padding:8px 12px}
