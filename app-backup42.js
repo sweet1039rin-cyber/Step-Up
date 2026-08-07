@@ -2126,15 +2126,7 @@ function populateAssignmentMaterialList(){
  getMaterials().forEach(m=>names.add(m.name));
  dl.innerHTML=[...names].map(n=>`<option value="${escapeHtml(n)}">`).join('');
 }
-openAssignmentBtn.onclick=openAssignments;assignmentBack.onclick=()=>show(mission);addAssignmentBtn.onclick=()=>{
- const isHidden=assignmentForm.classList.toggle('hidden');
- if(!isHidden){
-  requestAnimationFrame(()=>{
-   assignmentForm.scrollIntoView({behavior:'smooth',block:'start'});
-   document.querySelector('#newAssignmentName')?.focus({preventScroll:true});
-  });
- }
-};
+openAssignmentBtn.onclick=openAssignments;assignmentBack.onclick=()=>show(mission);addAssignmentBtn.onclick=()=>assignmentForm.classList.toggle('hidden');
 document.querySelector('#newAssignmentType')?.addEventListener('change',(e)=>{
  const numericFields=document.querySelector('#newAssignmentNumericFields');
  const statusField=document.querySelector('#newAssignmentStatusField');
