@@ -722,7 +722,7 @@ if(t[5]){
 }
 const cat=classifyScheduleCategory(t[1]);
 const assignment=t[3]?linkedItems.find(x=>x.id===t[3]):null;const assignmentText=assignment?`課題：${assignment.done?'完了済み':assignment.status==='in-progress'?'進行中':'未着手'}${assignment.total!=null?`・${assignment.current}/${assignment.total}`:''}`:(saved.checks?.[i]?'完了 ✓':'タップで完了');return `<label class="task cat-${cat} ${saved.checks?.[i]?'done':''}"><input type="checkbox" data-i="${i}" data-assignment-id="${t[3]||''}" ${saved.checks?.[i]?'checked':''}><time class="cat-${cat}">${t[0]}</time><span><strong>${t[1]}</strong><small class="task-tag cat-${cat}">${SCHEDULE_CATEGORY_LABELS[cat]}</small></span><span class="task-state">${assignmentText}</span><span class="duration">${t[2]}</span></label>`;
-}).join('');stepMessage.textContent=saved.step||'今日の記録はまだありません。「今日の記録を保存する」を押すと、ここに表示されます。';bindChecks();update();renderPersonalCoach();renderHomeDeadlineCard();loadDailyReportCard();renderSakuyaTestRulesCard();renderDokosutaHistory()}
+}).join('');stepMessage.textContent=saved.step||'今日の記録はまだありません。「まとめて保存」を押すと、ここに表示されます。';bindChecks();update();renderPersonalCoach();renderHomeDeadlineCard();loadDailyReportCard();renderSakuyaTestRulesCard();renderDokosutaHistory()}
 // Sprint 12-3/12-4: 今日の学習報告カード（提出物・課題データとは別のlocalStorageキーで管理）
 function dailyReportKey(date){return `stepup_daily_report_${date}_${current}`}
 // Sprint 43: さくや専用「課題テストのマイルール」カード。
@@ -961,7 +961,8 @@ document.querySelector('#todayAssignmentsMore')?.addEventListener('click',()=>op
 function renderMobileWelcome(d){
  const hour=new Date().getHours();
  const greeting=hour<11?'おはよう！':hour<18?'こんにちは！':'こんばんは！';
- const messageText='今日も一歩ずつ進もう。';
+ const shortName=current==='iori'?'壱凰':'朔埜';
+ const messageText=current==='iori'?'今日も昨日の自分を超えよう。':'今日も一歩ずつ進もう。';
  const greetingEl=document.querySelector('#welcomeGreeting');
  const nameChildEl=document.querySelector('#welcomeNameChild');
  const nameMessageEl=document.querySelector('#welcomeNameMessage');
@@ -969,7 +970,7 @@ function renderMobileWelcome(d){
  const dateEl=document.querySelector('#welcomeDate');
  if(dateEl)dateEl.textContent=`${TODAY.getFullYear()}年${TODAY.getMonth()+1}月${TODAY.getDate()}日（${['日','月','火','水','木','金','土'][TODAY.getDay()]}）`;
  if(greetingEl)greetingEl.textContent=greeting;
- if(nameChildEl)nameChildEl.textContent='';
+ if(nameChildEl)nameChildEl.textContent=`${shortName}、`;
  if(nameMessageEl)nameMessageEl.textContent=messageText;
  if(targetEl)targetEl.textContent=current==='sakuya'?sakuyaFocusDisplay().priorityTitle:d.priority;
 }

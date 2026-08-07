@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#05070b">
 <title>Step Up v6.4 IORI Daily Mission</title>
-<link rel="stylesheet" href="styles.css?v=87">
+<link rel="stylesheet" href="styles.css?v=86">
 </head>
 <body>
 <div id="app">
@@ -317,11 +317,20 @@
  <header class="appbar"><button id="growthBack">←</button><div><b>GROWTH</b><span id="growthPerson">成長記録</span></div><button id="resetTodayBtn">↻</button></header>
  <main class="utility-wrap">
   <section class="utility-hero growth-hero"><img src="assets/sakuya/sakuya_growth_header.png" alt="" class="sakuya-hero-image sakuya-growth-hero-image"><small>YOUR PROGRESS</small><h1>昨日の自分より、<br>一歩前へ。</h1><p>点数だけではなく、続けたこと・挑戦したことを記録します。</p></section>
+  <section class="growth-summary"><article><b id="growthRate">0%</b><span>今日の達成率</span></article><article><b id="growthDone">0</b><span>完了ミッション</span></article><article><b id="growthStreak">1日</b><span>継続日数</span></article></section>
+  <section id="personalCoach" class="personal-coach-card" aria-live="polite">
+   <div class="personal-coach-heading"><div><small>PERSONAL AI COACH</small><h2>AIコーチからのメッセージ</h2></div><span id="coachChildName" class="coach-child-name"></span></div>
+   <div class="coach-message-grid">
+    <article><span class="coach-icon">🌟</span><div><small>今日の良かったところ</small><p id="coachGood"></p></div></article>
+    <article><span class="coach-icon">💡</span><div><small>苦手克服の攻略ポイント</small><p id="coachStrategy"></p></div></article>
+    <article><span class="coach-icon">🎯</span><div><small>次の一歩</small><p id="coachNext"></p></div></article>
+   </div>
+  </section>
   <section id="voiceCoach" class="voice-coach-card">
    <div class="voice-heading"><img src="assets/sakuya/owl_voice.png" alt="AIコーチのフクロウ君" class="sakuya-ai-coach-image"><span class="voice-heading-text"><small>AI VOICE COACH</small><h2>今日の頑張りを記録</h2></span></div>
    <button id="voiceStart" class="voice-start" type="button"><span class="mic-icon">●</span><strong>タップして話す</strong><small id="voiceStatus">マイク待機中</small></button>
-   <textarea id="voiceTranscript" placeholder="例：数学を3ページ進めた／英単語を50個覚えた／夜活を頑張った"></textarea>
-  <div class="voice-actions"><button id="voiceClear" type="button">クリア</button><button id="voiceAnalyze" type="button">今日の記録を保存する</button></div>
+   <textarea id="voiceTranscript" placeholder="例：数学を3ページ進めた。英語は難しかった。（音声でも手入力でもOK）"></textarea>
+  <div class="voice-actions"><button id="voiceClear" type="button">クリア</button><button id="voiceAnalyze" type="button">まとめて保存</button></div>
    <div id="voiceResult" class="voice-result hidden" aria-live="polite"></div>
    <details class="voice-advanced-details">
     <summary>詳細設定</summary>
@@ -333,6 +342,11 @@
     </section>
    </details>
   </section>
+  <section class="step-card"><small>TODAY'S STEP UP</small><h2 id="stepMessage">今日の記録はまだありません。「まとめて保存」を押すと、ここに表示されます。</h2></section>
+  <section class="utility-card"><div class="card-title"><span>01</span><h2>今週の積み重ね</h2></div><div id="weekBars" class="week-bars"></div></section>
+  <section class="utility-card"><div class="card-title"><span>02</span><h2>今日のStep Up</h2></div><div id="growthStep" class="growth-step">まだ記録がありません。小さな成長を一つ残そう。</div></section>
+  <section class="utility-card"><div class="card-title"><span>03</span><h2>できたこと</h2></div><div id="achievementList" class="achievement-list"></div></section>
+  <section class="rest-card"><small>REST & RECOVERY</small><h2>頑張った後は、しっかり整える。</h2><div><span>水分補給</span><span>ストレッチ</span><span>入浴</span><span>睡眠</span></div></section>
   <section id="sakuyaTestRulesCard" class="card sakuya-test-rules-card hidden">
    <div class="card-title"><span>★</span><h2>課題テストのマイルール</h2></div>
    <p class="sakuya-test-rules-sub">サマースクール</p>
@@ -380,20 +394,6 @@
    <button id="sakuyaTestRulesSave" type="button">記録を保存</button>
    <p id="sakuyaTestRulesStatus" class="sakuya-test-rules-save-status" aria-live="polite"></p>
   </section>
-  <section id="personalCoach" class="personal-coach-card" aria-live="polite">
-   <div class="personal-coach-heading"><div><small>PERSONAL AI COACH</small><h2>AIコーチからのメッセージ</h2></div><span id="coachChildName" class="coach-child-name"></span></div>
-   <div class="coach-message-grid">
-    <article><span class="coach-icon">🌟</span><div><small>今日の良かったところ</small><p id="coachGood"></p></div></article>
-    <article><span class="coach-icon">💡</span><div><small>苦手克服の攻略ポイント</small><p id="coachStrategy"></p></div></article>
-    <article><span class="coach-icon">🎯</span><div><small>次の一歩</small><p id="coachNext"></p></div></article>
-   </div>
-  </section>
-  <section class="step-card"><small>TODAY'S STEP UP</small><h2 id="stepMessage">今日の記録はまだありません。「今日の記録を保存する」を押すと、ここに表示されます。</h2></section>
-  <section class="utility-card"><div class="card-title"><span>01</span><h2>今日のStep Up</h2></div><div id="growthStep" class="growth-step">まだ記録がありません。小さな成長を一つ残そう。</div></section>
-  <section class="utility-card"><div class="card-title"><span>02</span><h2>できたこと</h2></div><div id="achievementList" class="achievement-list"></div></section>
-  <section class="utility-card"><div class="card-title"><span>03</span><h2>今週の積み重ね</h2></div><div id="weekBars" class="week-bars"></div></section>
-  <section class="growth-summary"><article><b id="growthRate">0%</b><span>今日の達成率</span></article><article><b id="growthDone">0</b><span>完了ミッション</span></article><article><b id="growthStreak">1日</b><span>継続日数</span></article></section>
-  <section class="rest-card"><small>REST & RECOVERY</small><h2>頑張った後は、しっかり整える。</h2><div><span>水分補給</span><span>ストレッチ</span><span>入浴</span><span>睡眠</span></div></section>
  </main>
  <nav><button data-nav="home">⌂<span>ホーム</span></button><button data-nav="calendar">▦<span>カレンダー</span></button><button data-nav="assignments">📋<span>課題</span></button><button data-nav="materials">▤<span>学習ツール</span></button><button class="active" data-nav="growth">↗<span>成長</span></button></nav>
 </section>
@@ -539,6 +539,6 @@
 <script src="data/defaultSchedules.js?v=1"></script>
 <script src="data/coachMessages.js?v=1"></script>
 <script src="data/teacherComments.js?v=1"></script>
-<script src="app.js?v=87"></script>
+<script src="app.js?v=86"></script>
 </body>
 </html>
