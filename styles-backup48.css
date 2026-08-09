@@ -1809,6 +1809,13 @@ html:not(.theme-champion-black) .champion-emblem.lg{
  background-repeat:no-repeat !important;
  overflow:hidden;
 }
+.screen.sakuya-theme .focus-hero>div:first-child{
+ position:absolute;top:0;left:0;
+ max-width:62%;
+ padding:16px 18px;
+ background:linear-gradient(135deg,rgba(7,59,135,.78),rgba(7,59,135,.35) 55%,transparent 85%);
+ border-radius:22px 0 40px 0;
+}
 .screen.sakuya-theme .focus-hero small{color:#fff !important;text-shadow:0 1px 4px rgba(7,59,135,.9)}
 .screen.sakuya-theme .focus-hero h1,
 .screen.sakuya-theme .focus-hero p{color:#fff !important;text-shadow:0 2px 6px rgba(7,59,135,.85)}
