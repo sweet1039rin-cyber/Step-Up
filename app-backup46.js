@@ -128,28 +128,7 @@ function createTomorrowPlan(id=current){
   }
   return linked;
  }).flat();
- // 家庭教師 数学Day：10件を一度に出さず、最も番号の小さい未完了Dayだけを候補にする。
- const tutorMathEntries=[];
- if(id==='iori'){
-  const allCustom=ProgressEngine.getAll('iori');
-  let nextMathDay=null;
-  for(let day=1;day<=IORI_TUTOR_MATH_TOTAL_DAYS;day++){
-   const item=allCustom.find(x=>x.id===tutorMathItemId(day));
-   if(item&&!item.done){nextMathDay=item;break}
-  }
-  if(nextMathDay){
-   tutorMathEntries.push({
-    assignmentId:nextMathDay.id,
-    subject:'数学',
-    title:nextMathDay.title,
-    status:nextMathDay.status,
-    remaining:nextMathDay.remaining||'10問（計算8問・応用2問）',
-    priority:2,
-    category:'school-homework'
-   });
-  }
- }
- const merged=[...assignmentEntries,...tutorMathEntries,...dokosutaEntries];
+ const merged=[...assignmentEntries,...dokosutaEntries];
  return merged.sort((a,b)=>a.priority-b.priority);
 }
 function saveTomorrowPlan(id=current){
@@ -392,42 +371,10 @@ function ensureIoriTutorPhysicsItems(){
  }
  if(changed)saveCustomAssignments('iori',customs);
 }
-const IORI_TUTOR_MATH_TOTAL_DAYS=10;
-const IORI_TUTOR_MATH_DAY_NOTES={
- 1:'因数分解の利用（基本）＆ 数の問題',
- 2:'因数分解の利用（公式の活用）＆ 連続する整数の問題',
- 3:'平方根の考え方の利用 ＆ 面積（図形）の問題',
- 4:'平方完成を利用する解き方 ＆ 道幅（図形）の問題',
- 5:'解の公式の利用（基本形）＆ 箱の容積の問題',
- 6:'解の公式の利用（整理・約分が必要な形）＆ 動点と面積の問題',
- 7:'式の展開・整理が必要な二次方程式 ＆ 関数との融合問題',
- 8:'さまざまな二次方程式の計算 ＆ 物理・運動（ボールの高さ）の問題',
- 9:'総合計算演習① ＆ 売上・割合の問題',
- 10:'総合計算演習② ＆ 直角三角形と三平方の融合問題'
-};
-function tutorMathItemId(day){return `iori-custom-tutor-math-day-${String(day).padStart(2,'0')}`}
-function ensureIoriTutorMathItems(){
- const customs=getCustomAssignments('iori');
- let changed=false;
- for(let day=1;day<=IORI_TUTOR_MATH_TOTAL_DAYS;day++){
-  const id=tutorMathItemId(day);
-  if(!customs.some(c=>c.id===id)){
-   customs.push({
-    id,subject:'数学',title:`家庭教師 数学 Day${day}`,scope:'',deadline:'',
-    category:'school-homework',status:'not-started',current:null,total:null,
-    progress:'',remaining:'',done:false,
-    note:`中学3年 数学「二次方程式（計算＋応用）」10日間完成ドリル：${IORI_TUTOR_MATH_DAY_NOTES[day]}（計算8問・応用2問・全10問）`,
-    source:'sprint84-tutor-math'
-   });
-   changed=true;
-  }
- }
- if(changed)saveCustomAssignments('iori',customs);
-}
 const ProgressEngine={
  getAll(id){
   migrateProgressIfNeeded(id);
-  if(id==='iori'){ensureIoriTutorPhysicsItems();ensureIoriTutorMathItems();}
+  if(id==='iori')ensureIoriTutorPhysicsItems();
   const canonical=assignmentItems(id).map(it=>({
    id:it.id,childId:id,subject:it.subject,title:it.title,category:it.category,
    categoryLabel:categoryLabel(it.category),priority:it.priority,status:it.status,
@@ -553,43 +500,20 @@ function classifyScheduleCategory(title){
  if(/夜活|確認テスト|課題テスト対策|復習テスト/.test(t))return 'night';
  return 'study';
 }
-function activeTasks(childId=current){
- const k='stepup-v4-'+PLAN_DATE+'-'+childId;
- const saved=JSON.parse(localStorage.getItem(k)||'{}');
- const base=saved.customTasks||data[childId].tasks;
+function activeTasks(){
+ const saved=JSON.parse(localStorage.getItem(key())||'{}');
+ const base=saved.customTasks||data[current].tasks;
  // Sprint 66: 5番目の要素(メタ情報)に対応。無ければ空オブジェクトとして扱う(後方互換)。
  // meta.archived=trueの項目は「計画から外された」ものとして、表示からは除外する(物理削除はしない)。
  const studyTasks=base
-  .map(t=>t.length>=4?t:[t[0],t[1],t[2],taskAssignmentId(t[1],childId)])
+  .map(t=>t.length>=4?t:[t[0],t[1],t[2],taskAssignmentId(t[1])])
   .filter(t=>!(t[4]&&t[4].archived));
  // Sprint 50: 固定予定(部活・外出など)を、今日の予定として学習予定と時系列でマージする。
  const dk=dateKey(TODAY);
- const events=getEventsForDate(dk,childId).map(e=>[e.startTime||'',e.title,e.endTime&&e.startTime?`${e.startTime}〜${e.endTime}`:'',null,EVENT_CATEGORY_LABELS[e.category]||'予定',e.id]);
+ const events=getEventsForDate(dk,current).map(e=>[e.startTime||'',e.title,e.endTime&&e.startTime?`${e.startTime}〜${e.endTime}`:'',null,EVENT_CATEGORY_LABELS[e.category]||'予定',e.id]);
  const merged=[...studyTasks.map(t=>[t[0],t[1],t[2],t[3],null,null,t[4]||null]),...events.map(e=>[...e,null])];
  merged.sort((a,b)=>(a[0]||'99:99').localeCompare(b[0]||'99:99'));
  return merged;
-}
-// Sprint 85: タスクのリアクション識別キー。配列インデックスは使わない。
-// 優先順位：①課題IDがあればassignment:ID ②無ければcontent:時刻|タイトル|所要時間
-function taskReactionKey(t){
- if(t[3])return `assignment:${t[3]}`;
- return `content:${t[0]||''}|${t[1]||''}|${t[2]||''}`;
-}
-function familyReactionsKey(childId){return `stepup-family-reactions-${dateKey(TODAY)}-${childId}`}
-function getFamilyReactions(childId){
- try{const v=JSON.parse(localStorage.getItem(familyReactionsKey(childId))||'{}');return (v&&typeof v==='object')?v:{}}
- catch(e){return {}}
-}
-// 保護者が👍を押す/解除する。1タスク1リアクション、押すと付き、もう一度押すと外れる。
-function toggleFamilyReaction(childId,taskKey){
- const reactions=getFamilyReactions(childId);
- if(reactions[taskKey]&&reactions[taskKey].liked){
-  delete reactions[taskKey];
- }else{
-  reactions[taskKey]={liked:true,updatedAt:new Date().toISOString()};
- }
- localStorage.setItem(familyReactionsKey(childId),JSON.stringify(reactions));
- return reactions;
 }
 // 2つの日程配列を比較し、同一内容(時刻・タイトル・所要時間が一致)のタスクへ
 // チェック状態を引き継ぐ。並び替え・追加・アーカイブの前後で、内容ベースに
@@ -791,13 +715,13 @@ function render(){const d=data[current];mission.classList.toggle('sakuya-theme',
  const heroYearEl=document.querySelector('#heroDateYear'),heroFullEl=document.querySelector('#heroDateFull');
  if(heroYearEl)heroYearEl.textContent=`${TODAY.getFullYear()}年`;
  if(heroFullEl)heroFullEl.textContent=`${TODAY.getMonth()+1}月${TODAY.getDate()}日（${['日','月','火','水','木','金','土'][TODAY.getDay()]}）`;
- if(current==='sakuya'){const focusInfo=sakuyaFocusDisplay();focusTitle.innerHTML=formatFocusTitle(dynamicFocusText(focusInfo.title));focusSub.textContent=focusInfo.sub;priorityTitle.textContent=focusInfo.priorityTitle;priorityText.textContent=focusInfo.priorityText;}else{focusTitle.innerHTML=formatFocusTitle(dynamicFocusText(d.focus));focusSub.textContent=d.sub;priorityTitle.textContent=d.priority;priorityText.textContent=d.priorityText;}renderMobileWelcome(d);renderCountdown();const goalsEl=document.querySelector('#goals');if(goalsEl)goalsEl.innerHTML=(current==='sakuya'?sakuyaDynamicGoals():d.goals).map(x=>`<li>${x}</li>`).join('');const saved=JSON.parse(localStorage.getItem(key())||'{}');const tasks=activeTasks();const linkedItems=ProgressEngine.getAll(current);const familyReactions=getFamilyReactions(current);scheduleList.innerHTML=tasks.map((t,i)=>{
+ if(current==='sakuya'){const focusInfo=sakuyaFocusDisplay();focusTitle.innerHTML=formatFocusTitle(dynamicFocusText(focusInfo.title));focusSub.textContent=focusInfo.sub;priorityTitle.textContent=focusInfo.priorityTitle;priorityText.textContent=focusInfo.priorityText;}else{focusTitle.innerHTML=formatFocusTitle(dynamicFocusText(d.focus));focusSub.textContent=d.sub;priorityTitle.textContent=d.priority;priorityText.textContent=d.priorityText;}renderMobileWelcome(d);renderCountdown();const goalsEl=document.querySelector('#goals');if(goalsEl)goalsEl.innerHTML=(current==='sakuya'?sakuyaDynamicGoals():d.goals).map(x=>`<li>${x}</li>`).join('');const saved=JSON.parse(localStorage.getItem(key())||'{}');const tasks=activeTasks();const linkedItems=ProgressEngine.getAll(current);scheduleList.innerHTML=tasks.map((t,i)=>{
 if(t[5]){
  // Sprint 50: 固定予定は表示専用行。チェックボックスを持たせず、完了数・進捗率には含めない。
  return `<div class="task task--event"><time>${t[0]}</time><span><strong>${t[1]}</strong><small>${t[4]||'予定'}</small></span><span class="task-state">${t[2]}</span></div>`;
 }
 const cat=classifyScheduleCategory(t[1]);
-const assignment=t[3]?linkedItems.find(x=>x.id===t[3]):null;const assignmentText=assignment?`課題：${assignment.done?'完了済み':assignment.status==='in-progress'?'進行中':'未着手'}${assignment.total!=null?`・${assignment.current}/${assignment.total}`:''}`:(saved.checks?.[i]?'完了 ✓':'タップで完了');const familyLiked=(familyReactions[taskReactionKey(t)]||{}).liked;const familyLikeBadge=familyLiked?'<span class="family-like-badge" title="おうちの人から👍">👍 おうちの人から</span>':'';return `<label class="task cat-${cat} ${saved.checks?.[i]?'done':''}"><input type="checkbox" data-i="${i}" data-assignment-id="${t[3]||''}" ${saved.checks?.[i]?'checked':''}><time class="cat-${cat}">${t[0]}</time><span><strong>${t[1]}</strong><small class="task-tag cat-${cat}">${SCHEDULE_CATEGORY_LABELS[cat]}</small></span><span class="task-state">${assignmentText}</span><span class="duration">${t[2]}</span>${familyLikeBadge}</label>`;
+const assignment=t[3]?linkedItems.find(x=>x.id===t[3]):null;const assignmentText=assignment?`課題：${assignment.done?'完了済み':assignment.status==='in-progress'?'進行中':'未着手'}${assignment.total!=null?`・${assignment.current}/${assignment.total}`:''}`:(saved.checks?.[i]?'完了 ✓':'タップで完了');return `<label class="task cat-${cat} ${saved.checks?.[i]?'done':''}"><input type="checkbox" data-i="${i}" data-assignment-id="${t[3]||''}" ${saved.checks?.[i]?'checked':''}><time class="cat-${cat}">${t[0]}</time><span><strong>${t[1]}</strong><small class="task-tag cat-${cat}">${SCHEDULE_CATEGORY_LABELS[cat]}</small></span><span class="task-state">${assignmentText}</span><span class="duration">${t[2]}</span></label>`;
 }).join('');stepMessage.textContent=saved.step||'今日の記録はまだありません。「今日の記録を保存する」を押すと、ここに表示されます。';bindChecks();update();renderPersonalCoach();renderHomeDeadlineCard();loadDailyReportCard();renderSakuyaTestRulesCard();renderDokosutaHistory()}
 // Sprint 12-3/12-4: 今日の学習報告カード（提出物・課題データとは別のlocalStorageキーで管理）
 function dailyReportKey(date){return `stepup_daily_report_${date}_${current}`}
@@ -1297,45 +1221,13 @@ function renderPersonalCoach(){
  if(strategy)strategy.textContent=message.strategy;
  if(next)next.textContent=message.next;
 }
-function childSummary(id){
- const saved=JSON.parse(localStorage.getItem('stepup-v4-'+PLAN_DATE+'-'+id)||'{}');
- const tasks=activeTasks(id).filter(t=>!t[5]); // イベント(固定予定)は達成率の分母に含めない(子ども側update()と同じ基準)
- const checks=saved.checks||{};
- const total=tasks.length;
- const done=tasks.filter((t,i)=>checks[i]).length;
- const rate=total?Math.round(done/total*100):0;
- const mins=tasks.reduce((sum,t,i)=>sum+(checks[i]?parseInt(t[2])||0:0),0);
- return {done,total,rate,mins,step:saved.step||'まだ記録なし'};
-}
+function childSummary(id){const saved=JSON.parse(localStorage.getItem('stepup-v4-'+PLAN_DATE+'-'+id)||'{}');const tasks=saved.customTasks||data[id].tasks;const total=tasks.length;const done=Object.values(saved.checks||{}).filter(Boolean).length;const rate=Math.round(done/total*100);const mins=tasks.reduce((sum,t,i)=>sum+((saved.checks||{})[i]?parseInt(t[2])||0:0),0);return {done,total,rate,mins,step:saved.step||'まだ記録なし'}}
 function renderFamily(){
  const a=childSummary('iori'),b=childSummary('sakuya'),allDone=a.done+b.done,allTotal=a.total+b.total,rate=Math.round(allDone/allTotal*100),mins=a.mins+b.mins;
  familyStats.innerHTML=`<div><b>${rate}%</b><span>今日の達成率</span></div><div><b>${Math.floor(mins/60)}h ${mins%60}m</b><span>完了した学習時間</span></div><div><b>${allTotal-allDone}</b><span>残りミッション</span></div>`;
  childOverview.innerHTML=[['壱凰','IORI','iori',a,'#d70725'],['朔埜','SAKUYA','sakuya',b,'#146aff']].map(([name,en,key,x,color])=>`<article style="--child:${color}" data-child-open="${key}" role="button" tabindex="0" aria-label="${name}の個人ページを見る"><small>${en}</small><h2>${name}</h2><div class="child-rate"><b>${x.rate}%</b><span>${x.done}/${x.total} COMPLETE</span></div><div class="child-bar"><i style="width:${x.rate}%"></i></div><p>${x.step}</p></article>`).join('');
  childOverview.querySelectorAll('[data-child-open]').forEach(card=>{const open=()=>{current=card.dataset.childOpen;render();show(mission)};card.onclick=open;card.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open()}}});
  renderFamilyTodayActivity();
- renderFamilyDeadlineAlert();
- renderFamilyStepUp();
-}
-// Sprint 85: 提出期限アラート(閲覧専用)。既存のgetPendingDeadlineAssignments()をそのまま利用する。
-function renderFamilyDeadlineAlert(){
- const el=document.querySelector('#familyDeadlineAlert');
- if(!el)return;
- const rows=['iori','sakuya'].flatMap(childId=>{
-  const name=childId==='iori'?'壱凰':'朔埜';
-  return getPendingDeadlineAssignments(childId)
-   .filter(a=>['overdue','today','within3'].includes(a.category))
-   .map(a=>({...a,name}));
- });
- el.innerHTML=rows.length
-  ?rows.map(a=>`<div class="family-activity-row"><b>[${a.name}] ${escapeHtml(a.title)}</b><span class="deadline-tag cat-${a.category}">${escapeHtml(a.label)}</span></div>`).join('')
-  :'<p class="family-activity-empty">期限が近い提出物はありません。</p>';
-}
-// 今日のStep Up：子どもごとに1件、既存のchildSummary().stepをそのまま利用する。
-function renderFamilyStepUp(){
- const el=document.querySelector('#familyStepUp');
- if(!el)return;
- const a=childSummary('iori'),b=childSummary('sakuya');
- el.innerHTML=`<div class="family-activity-row"><b>壱凰</b><span>${escapeHtml(a.step)}</span></div><div class="family-activity-row"><b>朔埜</b><span>${escapeHtml(b.step)}</span></div>`;
 }
 // Sprint 66: 保護者ページ(閲覧専用)。子どもごとに「今日追加された課題」「今日の計画」を表示する。
 // 編集・上書きの手段は一切設けない。
@@ -1347,31 +1239,20 @@ function renderFamilyTodayActivity(){
   const name=childId==='iori'?'壱凰':'朔埜';
   const customs=getCustomAssignments(childId).filter(c=>(c.createdAt||'').slice(0,10)===todayStr);
   const savedPlan=JSON.parse(localStorage.getItem(`stepup-v4-${todayStr}-${childId}`)||'{}');
-  const savedChecks=savedPlan.checks||{};
-  const reactions=getFamilyReactions(childId);
-  // Sprint 85: 子ども側の詳細スケジュールと完全に同じ基準(activeTasks)で今日の計画を表示する。
-  // これにより、子ども側でチェックしたタスク＝ここで完了表示されるタスク、が一致する。
-  const allTasks=activeTasks(childId);
-  const activePlan=allTasks.map((t,i)=>({t,i})).filter(({t})=>!t[5]); // イベント行を除外しつつ、元の配列インデックスを保持する
-  // アーカイブ履歴(表示からは外れているが記録は残っている項目)は生のcustomTasksから別途取得する
   const rawTasks=(savedPlan.customTasks||[]).map(t=>t.length>=5?t:[t[0],t[1],t[2],t[3]||null,{}]);
+  const activePlan=rawTasks.filter(t=>!(t[4]&&t[4].archived));
   const archivedPlan=rawTasks.filter(t=>t[4]&&t[4].archived);
+  const savedChecks=savedPlan.checks||{};
 
   const addedHtml=customs.length
    ?customs.map(c=>`<div class="family-activity-row"><b>${escapeHtml(c.title)}</b><span>${escapeHtml(c.subject||'')}${c.material?'／教材：'+escapeHtml(c.material):''}</span><small>追加：${c.createdAt?new Date(c.createdAt).toLocaleString('ja-JP'):'—'}</small></div>`).join('')
    :'<p class="family-activity-empty">今日追加された課題はありません。</p>';
 
   const planHtml=activePlan.length
-   ?activePlan.map(({t,i})=>{
-     const meta=t[6]||{};
+   ?activePlan.map((t,i)=>{
+     const meta=t[4]||{};
      const pageText=(meta.pageStart!=null&&meta.pageEnd!=null)?`P${meta.pageStart}〜${meta.pageEnd}`:(meta.problemRange||'');
-     const isDone=!!savedChecks[i];
-     const rKey=taskReactionKey(t);
-     const liked=!!(reactions[rKey]&&reactions[rKey].liked);
-     const likeBtn=isDone
-      ?`<button type="button" class="family-like-btn ${liked?'is-liked':''}" data-like-child="${childId}" data-like-key="${escapeHtml(rKey)}" aria-pressed="${liked}">👍${liked?' 応援済み':''}</button>`
-      :`<button type="button" class="family-like-btn is-disabled" disabled title="完了したら応援できます">👍</button>`;
-     return `<div class="family-activity-row"><b>${t[0]||'--:--'} ${escapeHtml(t[1])}</b><span>${escapeHtml(t[2]||'')}${pageText?'／'+escapeHtml(pageText):''}</span><small>完了：${isDone?'済み':'未'}${meta.updatedAt?'／更新：'+new Date(meta.updatedAt).toLocaleString('ja-JP'):''}</small>${likeBtn}</div>`;
+     return `<div class="family-activity-row"><b>${t[0]||'--:--'} ${escapeHtml(t[1])}</b><span>${escapeHtml(t[2]||'')}${pageText?'／'+escapeHtml(pageText):''}</span><small>完了：${savedChecks[i]?'済み':'未'}／更新：${meta.updatedAt?new Date(meta.updatedAt).toLocaleString('ja-JP'):'—'}</small></div>`;
     }).join('')
    :'<p class="family-activity-empty">今日の計画はまだありません。</p>';
 
@@ -1386,13 +1267,6 @@ function renderFamilyTodayActivity(){
     ${archivedHtml}
    </div>`;
  }).join('');
- el.querySelectorAll('[data-like-key]').forEach(btn=>{
-  btn.onclick=()=>{
-   toggleFamilyReaction(btn.dataset.likeChild,btn.dataset.likeKey);
-   renderFamilyTodayActivity();
-   if(document.querySelector('#mission')?.classList.contains('active'))render();
-  };
- });
 }
 
 // Calendar navigation and rendering
@@ -2413,9 +2287,6 @@ generatePlanBtn.onclick=()=>{
  // 優先位置に確実に含まれるよう、キューの末尾ではなく既存項目の直後(苦手学習より前)に挿入する
  const dokosutaQueueItems=createTomorrowPlan(current).filter(it=>it.category==='dokosuta-review'||it.category==='dokosuta-research-link').map(it=>({name:it.title,target:it.remaining,minutesHint:it.minutes}));
  queue.splice(Math.min(queue.length,4),0,...dokosutaQueueItems);
- // 家庭教師 数学Day：最小番号の未完了1件だけを候補に含める(10件まとめては出さない)
- const tutorMathQueueItems=createTomorrowPlan(current).filter(it=>it.assignmentId&&String(it.assignmentId).startsWith('iori-custom-tutor-math-day-')).map(it=>({name:it.title,target:it.remaining}));
- if(tutorMathQueueItems.length&&!queue.some(q=>q.name===tutorMathQueueItems[0].name))queue.splice(Math.min(queue.length,2),0,...tutorMathQueueItems);
  let idx=0;
  while(remaining>0&&queue.length){const item=queue[idx%queue.length],duration=Math.min(item.minutesHint||session,remaining);clock=avoidBusyPeriods(clock,duration,busy);result.push([asTime(clock),`${item.name}（${item.target}）`,`${duration}分`]);clock+=duration;remaining-=duration;idx++;if(remaining>0)clock+=rest;if(idx===Math.ceil(queue.length/2)&&remaining>=30)clock+=45}
  if(hasTutor.checked){clock=avoidBusyPeriods(clock,60,busy);result.push([asTime(clock),'家庭教師の授業','60分']);clock+=70}

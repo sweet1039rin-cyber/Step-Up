@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#05070b">
 <title>Step Up v6.4 IORI Daily Mission</title>
-<link rel="stylesheet" href="styles.css?v=90">
+<link rel="stylesheet" href="styles.css?v=89">
 </head>
 <body>
 <div id="app">
@@ -527,12 +527,11 @@
  <header class="appbar"><button id="familyBack">←</button><div><b>FAMILY DASHBOARD</b><span>Support Team</span></div><span></span></header>
  <main class="family-wrap"><section class="family-hero"><small>SUPPORT TEAM</small><h1>家族・講師・AIで、<br>今日の成長を支える。</h1><div class="family-stats" id="familyStats"></div></section>
  <section class="family-mobile-switch" aria-label="画面を切り替える"><button type="button" class="active" data-family-nav="family">家族</button><button type="button" data-family-nav="iori">壱凰</button><button type="button" data-family-nav="sakuya">朔埜</button></section>
- <section class="child-overview" id="childOverview"></section>
- <section class="family-card wide" id="familyTodayActivityCard"><small>TODAY'S SCHEDULE（閲覧専用）</small><h2>今日の詳細スケジュール</h2><p class="family-readonly-note">保護者はここから計画の編集や完了チェックの変更はできません。完了したタスクには👍で応援できます。</p><div id="familyTodayActivity"></div></section>
- <section class="family-card wide" id="familyDeadlineCard"><small>DEADLINE ALERT</small><h2>提出期限アラート</h2><div id="familyDeadlineAlert"></div></section>
- <section class="family-card wide" id="familyStepUpCard"><small>TODAY'S STEP UP</small><h2>今日のStep Up</h2><div id="familyStepUp"></div></section>
- <section class="family-insights" id="familyInsights"></section>
- </main>
+ <section class="child-overview" id="childOverview"></section><section class="family-insights" id="familyInsights"></section>
+<section class="family-card wide" id="familyTodayActivityCard"><small>TODAY'S ACTIVITY（閲覧専用）</small><h2>今日追加された課題・今日の計画</h2><div id="familyTodayActivity"></div></section>
+ <div class="family-grid"><section class="family-card"><small>家庭教師 INPUT</small><h2>授業記録</h2><label>授業内容<textarea placeholder="例：数学／二次関数"></textarea></label><label>宿題・次回までの課題<textarea placeholder="例：新研究 P80〜90"></textarea></label><button>記録を保存</button></section>
+ <section class="family-card"><small>保護者 INPUT</small><h2>家庭での様子</h2><textarea placeholder="今日できたこと、生活リズム、声かけなど"></textarea><button>コメントを保存</button></section>
+ <section class="family-card wide"><small>CALENDAR & GROWTH</small><h2>カレンダー</h2><div class="timeline"><article><b>家庭教師</b><p>数学の理解が深まりました。次回までに新研究を進めましょう。</p></article><article><b>保護者</b><p>今日は自分から机に向かえました。</p></article><article><b>AI COACH</b><p>昨日より集中時間が20分伸びています。今日のStep Upです。</p></article></div></section></div></main>
 </section>
 </div>
 <script src="data/children.js?v=3"></script>
@@ -540,6 +539,6 @@
 <script src="data/defaultSchedules.js?v=1"></script>
 <script src="data/coachMessages.js?v=1"></script>
 <script src="data/teacherComments.js?v=1"></script>
-<script src="app.js?v=89"></script>
+<script src="app.js?v=87"></script>
 </body>
 </html>

@@ -2197,22 +2197,3 @@ html.theme-champion-black .voice-start{background:linear-gradient(135deg,#e60012
 
 /* 成長ページ：達成率・完了ミッション・継続日数のブロックを、後半セクションらしい控えめな見た目へ */
 .growth-summary{margin-top:16px}
-
-/* ============================================
-   Sprint 85: FAMILY DASHBOARD 👍リアクション・閲覧専用の明示
-   ============================================ */
-.family-readonly-note{font-size:12px;color:#8b96a8;margin:4px 0 12px}
-.family-activity-row{position:relative}
-.family-like-btn{
- margin-top:8px;padding:6px 14px;border-radius:999px;border:1px solid #d7deea;
- background:#fff;font-weight:800;font-size:13px;cursor:pointer;
-}
-.family-like-btn.is-liked{background:#fff4d6;border-color:#f0c14b;color:#8a6200}
-.family-like-btn.is-disabled{opacity:.4;cursor:not-allowed}
-
-/* 子ども側の詳細スケジュールに表示する、保護者からの👍バッジ */
-.family-like-badge{
- display:inline-block;margin-top:4px;padding:2px 8px;border-radius:999px;
- background:#fff4d6;color:#8a6200;font-size:11px;font-weight:800;
-}
-.screen.sakuya-theme .family-like-badge{background:#FFF0D6;color:#8C4B06}
