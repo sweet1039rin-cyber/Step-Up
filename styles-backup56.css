@@ -2216,65 +2216,14 @@ html.theme-champion-black .voice-start{background:linear-gradient(135deg,#e60012
    grid-column:1/-1で独立した行にし、横書き1行のピル型バッジとして表示する。 */
 .family-like-badge{
  grid-column:1/-1;
- display:inline-flex;flex-wrap:wrap;align-items:baseline;gap:2px 6px;
- width:fit-content;max-width:100%;height:auto;
- writing-mode:horizontal-tb;
- margin-top:2px;padding:4px 10px;border-radius:14px;
- background:#fff4d6;color:#8a6200;font-size:11px;font-weight:800;line-height:1.5;
+ display:inline-flex;align-items:center;gap:4px;
+ width:fit-content;max-width:fit-content;height:auto;
+ white-space:nowrap;writing-mode:horizontal-tb;
+ margin-top:2px;padding:3px 10px;border-radius:999px;
+ background:#fff4d6;color:#8a6200;font-size:11px;font-weight:800;line-height:1.6;
 }
-.family-like-badge-break{flex-basis:100%;height:0}
 /* 朔埜：淡いパステルイエロー＋やさしいネイビー文字 */
 .screen.sakuya-theme .family-like-badge{background:#FFF6D9;color:#0A2E52}
 /* 壱凰：淡いゴールド／クリーム系＋濃いネイビー文字(Champion Editionの赤黒を邪魔しない) */
 .mission-page:not(.sakuya-theme) .family-like-badge{background:#F5EEDA;color:#17232E}
-
-/* ============================================
-   Sprint 87①: 計画作成「生活・予定」ワンタップテンプレート
-   課題一覧と視覚的に分けるため、専用の配色・見出しにする。
-   ============================================ */
-.manual-plan-preset-card{border:1px dashed #cbd5e3;background:#fbfcfe}
-.manual-plan-preset-note{font-size:12px;color:#7a8699;margin:0 0 10px}
-.manual-plan-preset-group{margin-top:10px}
-.manual-plan-preset-group>small{display:block;font-weight:900;color:#7a8699;letter-spacing:.06em;margin-bottom:6px}
-.manual-plan-preset-buttons{display:flex;flex-wrap:wrap;gap:8px}
-.manual-plan-preset-btn{
- padding:9px 16px;border-radius:999px;border:1px solid #cbd5e3;background:#fff;
- font-weight:700;font-size:13px;cursor:pointer;color:#333;
-}
-.screen.sakuya-theme .manual-plan-preset-card{border-color:#CFEAFF;background:#F4FAFF}
-.screen.sakuya-theme .manual-plan-preset-btn{
- border-color:#9FE8D0;color:#0F6B52;background:#EAFBF6;
-}
-
-/* ============================================
-   Sprint 87②: FAMILY DASHBOARD 応援パネル(リアクション+コメント)
-   ============================================ */
-.family-cheer-toggle-btn{
- margin-top:8px;padding:6px 14px;border-radius:999px;border:1px solid #d7deea;
- background:#fff;font-weight:800;font-size:13px;cursor:pointer;
-}
-.family-cheer-toggle-btn.has-reaction{background:#fff4d6;border-color:#f0c14b;color:#8a6200}
-.family-cheer-toggle-btn.is-disabled{opacity:.4;cursor:not-allowed}
-.family-cheer-panel{
- grid-column:1/-1;margin-top:10px;padding:12px;border-radius:12px;
- background:#f7f9fc;border:1px solid #e3e8f0;
-}
-.family-cheer-reactions{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
-.family-cheer-reaction-btn{
- display:flex;flex-direction:column;align-items:center;gap:2px;
- padding:8px 10px;border-radius:10px;border:1px solid #d7deea;background:#fff;
- font-size:20px;cursor:pointer;min-width:56px;
-}
-.family-cheer-reaction-btn small{font-size:10px;font-weight:700;color:#5a6b82}
-.family-cheer-reaction-btn.is-selected{background:#fff4d6;border-color:#f0c14b}
-.family-cheer-comments{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
-.family-cheer-comment-btn{
- padding:6px 12px;border-radius:999px;border:1px solid #d7deea;background:#fff;
- font-size:12px;cursor:pointer;color:#333;
-}
-.family-cheer-comment-btn.is-selected{background:#e8f1ff;border-color:#1568f0;color:#1568f0}
-.family-cheer-free-comment{width:100%;padding:9px;border:1px solid #cfd6e4;border-radius:8px;font:inherit;margin-bottom:10px}
-.family-cheer-actions{display:flex;gap:8px}
-.family-cheer-send-btn{padding:8px 18px;border:0;border-radius:8px;background:#1568f0;color:#fff;font-weight:800;cursor:pointer}
-.family-cheer-remove-btn{padding:8px 18px;border:1px solid #e0233d;border-radius:8px;background:#fff;color:#e0233d;font-weight:800;cursor:pointer}
 html.theme-champion-black .family-like-badge{background:#3a3220;color:#F5EEDA}

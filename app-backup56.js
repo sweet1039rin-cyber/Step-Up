@@ -549,8 +549,7 @@ function classifyScheduleCategory(title){
  const t=String(title||'');
  if(/朝活/.test(t))return 'morning';
  if(/筋トレ/.test(t))return 'exercise';
- // Sprint 87: 生活予定・学校予定も、既存の「外出」と同じ系統色(outing)として扱う。教科色にはしない。
- if(/外出|移動|朝食|昼食|夕食|休憩|学校|部活|オンライン/.test(t))return 'outing';
+ if(/外出|移動/.test(t))return 'outing';
  if(/夜活|確認テスト|課題テスト対策|復習テスト/.test(t))return 'night';
  return 'study';
 }
@@ -582,7 +581,6 @@ function getFamilyReactions(childId){
  catch(e){return {}}
 }
 // 保護者が👍を押す/解除する。1タスク1リアクション、押すと付き、もう一度押すと外れる。
-// (Sprint87以降のUIはsetFamilyReaction/removeFamilyReactionを使うが、既存呼び出しとの互換のため残す)
 function toggleFamilyReaction(childId,taskKey){
  const reactions=getFamilyReactions(childId);
  if(reactions[taskKey]&&reactions[taskKey].liked){
@@ -590,44 +588,6 @@ function toggleFamilyReaction(childId,taskKey){
  }else{
   reactions[taskKey]={liked:true,updatedAt:new Date().toISOString()};
  }
- localStorage.setItem(familyReactionsKey(childId),JSON.stringify(reactions));
- return reactions;
-}
-// Sprint 87: 応援リアクションの種類・定型コメント一覧
-const FAMILY_REACTION_TYPES=[
- {id:'like',emoji:'👍',label:'いいね'},
- {id:'hanamaru',emoji:'🌸',label:'はなまる'},
- {id:'sugoi',emoji:'🔥',label:'すごい！'},
- {id:'fight',emoji:'💪',label:'ファイト'},
- {id:'congrats',emoji:'🎉',label:'おめでとう'}
-];
-const FAMILY_COMMENT_PRESETS=[
- 'よく頑張ったね！',
- 'この調子で頑張って！',
- '最後までできてすごい！',
- '毎日続けられているね！',
- 'あと少し、応援してるよ！'
-];
-// 保存データを表示用に正規化する。既存の{liked:true}のみのデータは、
-// reaction:'like'（👍いいね）として安全に読み替える(後方互換)。
-function normalizeFamilyReactionEntry(entry){
- if(!entry)return null;
- if(entry.reaction)return {reaction:entry.reaction,comment:entry.comment||'',updatedAt:entry.updatedAt};
- if(entry.liked)return {reaction:'like',comment:'',updatedAt:entry.updatedAt};
- return null;
-}
-function familyReactionMeta(reactionId){return FAMILY_REACTION_TYPES.find(r=>r.id===reactionId)||FAMILY_REACTION_TYPES[0]}
-// リアクション+コメントを保存(上書き)する。customTasks/checksには一切保存しない。
-function setFamilyReaction(childId,taskKey,reactionId,comment){
- const reactions=getFamilyReactions(childId);
- reactions[taskKey]={reaction:reactionId,comment:(comment||'').slice(0,50),updatedAt:new Date().toISOString()};
- localStorage.setItem(familyReactionsKey(childId),JSON.stringify(reactions));
- return reactions;
-}
-// リアクションを解除(削除)する。
-function removeFamilyReaction(childId,taskKey){
- const reactions=getFamilyReactions(childId);
- delete reactions[taskKey];
  localStorage.setItem(familyReactionsKey(childId),JSON.stringify(reactions));
  return reactions;
 }
@@ -820,16 +780,6 @@ document.querySelector('#manualPlanAddFreeBtn')?.addEventListener('click',()=>{
  document.querySelector('#manualPlanFreeTitle').value='';
  renderManualPlanList();render();
 });
-// Sprint 87: 生活・予定のワンタップテンプレート。既存の「自由な予定を追加」フォームへ値をセットするだけで、
-// 保存経路(addFreeTaskToTodayPlan)自体は既存のまま。新しい保存形式は作らない。
-document.querySelectorAll('.manual-plan-preset-btn').forEach(btn=>{
- btn.addEventListener('click',()=>{
-  const titleInput=document.querySelector('#manualPlanFreeTitle');
-  const startInput=document.querySelector('#manualPlanFreeStart');
-  if(titleInput)titleInput.value=btn.dataset.presetTitle;
-  if(startInput)startInput.focus();
- });
-});
 
 function escapeHtml(text){return String(text).replace(/[&<>\"]/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[ch]))}
 function formatFocusTitle(text){
@@ -847,7 +797,7 @@ if(t[5]){
  return `<div class="task task--event"><time>${t[0]}</time><span><strong>${t[1]}</strong><small>${t[4]||'予定'}</small></span><span class="task-state">${t[2]}</span></div>`;
 }
 const cat=classifyScheduleCategory(t[1]);
-const assignment=t[3]?linkedItems.find(x=>x.id===t[3]):null;const assignmentText=assignment?`課題：${assignment.done?'完了済み':assignment.status==='in-progress'?'進行中':'未着手'}${assignment.total!=null?`・${assignment.current}/${assignment.total}`:''}`:(saved.checks?.[i]?'完了 ✓':'タップで完了');const familyEntry=normalizeFamilyReactionEntry(familyReactions[taskReactionKey(t)]);const familyMeta=familyEntry?familyReactionMeta(familyEntry.reaction):null;const familyLikeBadge=familyEntry?`<span class="family-like-badge" title="おうちの人から">${familyMeta.emoji} ${escapeHtml(familyMeta.label)}${familyEntry.comment?'<br class=\"family-like-badge-break\">'+escapeHtml(familyEntry.comment):''}</span>`:'';return `<label class="task cat-${cat} ${saved.checks?.[i]?'done':''}"><input type="checkbox" data-i="${i}" data-assignment-id="${t[3]||''}" ${saved.checks?.[i]?'checked':''}><time class="cat-${cat}">${t[0]}</time><span><strong>${t[1]}</strong><small class="task-tag cat-${cat}">${SCHEDULE_CATEGORY_LABELS[cat]}</small></span><span class="task-state">${assignmentText}</span><span class="duration">${t[2]}</span>${familyLikeBadge}</label>`;
+const assignment=t[3]?linkedItems.find(x=>x.id===t[3]):null;const assignmentText=assignment?`課題：${assignment.done?'完了済み':assignment.status==='in-progress'?'進行中':'未着手'}${assignment.total!=null?`・${assignment.current}/${assignment.total}`:''}`:(saved.checks?.[i]?'完了 ✓':'タップで完了');const familyLiked=(familyReactions[taskReactionKey(t)]||{}).liked;const familyLikeBadge=familyLiked?'<span class="family-like-badge" title="おうちの人から👍">👍 おうちの人から</span>':'';return `<label class="task cat-${cat} ${saved.checks?.[i]?'done':''}"><input type="checkbox" data-i="${i}" data-assignment-id="${t[3]||''}" ${saved.checks?.[i]?'checked':''}><time class="cat-${cat}">${t[0]}</time><span><strong>${t[1]}</strong><small class="task-tag cat-${cat}">${SCHEDULE_CATEGORY_LABELS[cat]}</small></span><span class="task-state">${assignmentText}</span><span class="duration">${t[2]}</span>${familyLikeBadge}</label>`;
 }).join('');stepMessage.textContent=saved.step||'今日の記録はまだありません。「今日の記録を保存する」を押すと、ここに表示されます。';bindChecks();update();renderPersonalCoach();renderHomeDeadlineCard();loadDailyReportCard();renderSakuyaTestRulesCard();renderDokosutaHistory()}
 // Sprint 12-3/12-4: 今日の学習報告カード（提出物・課題データとは別のlocalStorageキーで管理）
 function dailyReportKey(date){return `stepup_daily_report_${date}_${current}`}
@@ -1417,21 +1367,11 @@ function renderFamilyTodayActivity(){
      const pageText=(meta.pageStart!=null&&meta.pageEnd!=null)?`P${meta.pageStart}〜${meta.pageEnd}`:(meta.problemRange||'');
      const isDone=!!savedChecks[i];
      const rKey=taskReactionKey(t);
-     const current=normalizeFamilyReactionEntry(reactions[rKey]);
-     const meta2=familyReactionMeta(current?.reaction);
-     const cheerBtn=isDone
-      ?`<button type="button" class="family-cheer-toggle-btn ${current?'has-reaction':''}" data-cheer-toggle="fam-cheer-${childId}-${i}">${current?meta2.emoji+' '+meta2.label+'を送信済み':'応援する'}</button>`
-      :`<button type="button" class="family-cheer-toggle-btn is-disabled" disabled title="完了したら応援できます">応援する</button>`;
-     const cheerPanel=isDone?`<div id="fam-cheer-${childId}-${i}" class="family-cheer-panel hidden">
-      <div class="family-cheer-reactions">${FAMILY_REACTION_TYPES.map(r=>`<button type="button" class="family-cheer-reaction-btn ${current&&current.reaction===r.id?'is-selected':''}" data-cheer-reaction="${r.id}">${r.emoji}<small>${r.label}</small></button>`).join('')}</div>
-      <div class="family-cheer-comments">${FAMILY_COMMENT_PRESETS.map(c=>`<button type="button" class="family-cheer-comment-btn ${current&&current.comment===c?'is-selected':''}" data-cheer-comment="${escapeHtml(c)}">${escapeHtml(c)}</button>`).join('')}</div>
-      <input type="text" class="family-cheer-free-comment" maxlength="50" placeholder="自由コメント（任意・50文字まで）" value="${escapeHtml(current&&!FAMILY_COMMENT_PRESETS.includes(current.comment)?current.comment||'':'')}">
-      <div class="family-cheer-actions">
-       <button type="button" class="family-cheer-send-btn" data-cheer-send="${childId}" data-cheer-key="${escapeHtml(rKey)}" data-cheer-panel="fam-cheer-${childId}-${i}">送信</button>
-       ${current?`<button type="button" class="family-cheer-remove-btn" data-cheer-remove="${childId}" data-cheer-key="${escapeHtml(rKey)}">取り消す</button>`:''}
-      </div>
-     </div>`:'';
-     return `<div class="family-activity-row"><b>${t[0]||'--:--'} ${escapeHtml(t[1])}</b><span>${escapeHtml(t[2]||'')}${pageText?'／'+escapeHtml(pageText):''}</span><small>完了：${isDone?'済み':'未'}${meta.updatedAt?'／更新：'+new Date(meta.updatedAt).toLocaleString('ja-JP'):''}</small>${cheerBtn}${cheerPanel}</div>`;
+     const liked=!!(reactions[rKey]&&reactions[rKey].liked);
+     const likeBtn=isDone
+      ?`<button type="button" class="family-like-btn ${liked?'is-liked':''}" data-like-child="${childId}" data-like-key="${escapeHtml(rKey)}" aria-pressed="${liked}">👍${liked?' 応援済み':''}</button>`
+      :`<button type="button" class="family-like-btn is-disabled" disabled title="完了したら応援できます">👍</button>`;
+     return `<div class="family-activity-row"><b>${t[0]||'--:--'} ${escapeHtml(t[1])}</b><span>${escapeHtml(t[2]||'')}${pageText?'／'+escapeHtml(pageText):''}</span><small>完了：${isDone?'済み':'未'}${meta.updatedAt?'／更新：'+new Date(meta.updatedAt).toLocaleString('ja-JP'):''}</small>${likeBtn}</div>`;
     }).join('')
    :'<p class="family-activity-empty">今日の計画はまだありません。</p>';
 
@@ -1446,45 +1386,9 @@ function renderFamilyTodayActivity(){
     ${archivedHtml}
    </div>`;
  }).join('');
- // 「応援する」ボタン：パネルの開閉のみ(保存はしない)
- el.querySelectorAll('[data-cheer-toggle]').forEach(btn=>{
+ el.querySelectorAll('[data-like-key]').forEach(btn=>{
   btn.onclick=()=>{
-   const panel=document.querySelector(`#${CSS.escape(btn.dataset.cheerToggle)}`);
-   panel?.classList.toggle('hidden');
-  };
- });
- // パネル内：リアクション選択(見た目の選択状態のみ切替、保存は「送信」時)
- el.querySelectorAll('[data-cheer-reaction]').forEach(btn=>{
-  btn.onclick=()=>{
-   btn.closest('.family-cheer-reactions')?.querySelectorAll('.family-cheer-reaction-btn').forEach(b=>b.classList.remove('is-selected'));
-   btn.classList.add('is-selected');
-  };
- });
- // パネル内：定型コメント選択(選ぶと自由コメント欄へ反映、他の定型ボタンの選択は解除)
- el.querySelectorAll('[data-cheer-comment]').forEach(btn=>{
-  btn.onclick=()=>{
-   btn.closest('.family-cheer-comments')?.querySelectorAll('.family-cheer-comment-btn').forEach(b=>b.classList.remove('is-selected'));
-   btn.classList.add('is-selected');
-   const freeInput=btn.closest('.family-cheer-panel')?.querySelector('.family-cheer-free-comment');
-   if(freeInput)freeInput.value=btn.dataset.cheerComment;
-  };
- });
- // 送信：選択中のリアクション(未選択なら👍)＋コメントを保存する
- el.querySelectorAll('[data-cheer-send]').forEach(btn=>{
-  btn.onclick=()=>{
-   const panel=document.querySelector(`#${CSS.escape(btn.dataset.cheerPanel)}`);
-   const selectedReactionBtn=panel?.querySelector('.family-cheer-reaction-btn.is-selected');
-   const reactionId=selectedReactionBtn?selectedReactionBtn.dataset.cheerReaction:'like';
-   const comment=panel?.querySelector('.family-cheer-free-comment')?.value.trim()||'';
-   setFamilyReaction(btn.dataset.cheerSend,btn.dataset.cheerKey,reactionId,comment);
-   renderFamilyTodayActivity();
-   if(document.querySelector('#mission')?.classList.contains('active'))render();
-  };
- });
- // 取り消し：リアクションを削除する
- el.querySelectorAll('[data-cheer-remove]').forEach(btn=>{
-  btn.onclick=()=>{
-   removeFamilyReaction(btn.dataset.cheerRemove,btn.dataset.cheerKey);
+   toggleFamilyReaction(btn.dataset.likeChild,btn.dataset.likeKey);
    renderFamilyTodayActivity();
    if(document.querySelector('#mission')?.classList.contains('active'))render();
   };
