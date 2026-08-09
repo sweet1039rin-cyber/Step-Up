@@ -2210,20 +2210,9 @@ html.theme-champion-black .voice-start{background:linear-gradient(135deg,#e60012
 .family-like-btn.is-liked{background:#fff4d6;border-color:#f0c14b;color:#8a6200}
 .family-like-btn.is-disabled{opacity:.4;cursor:not-allowed}
 
-/* 子ども側の詳細スケジュールに表示する、保護者からの👍バッジ。
-   .taskは4列グリッド(42px 90px 1fr auto)のため、5番目の子要素のままだと
-   最初の狭い列(42px)に押し込まれ文字が縦積みになってしまう。
-   grid-column:1/-1で独立した行にし、横書き1行のピル型バッジとして表示する。 */
+/* 子ども側の詳細スケジュールに表示する、保護者からの👍バッジ */
 .family-like-badge{
- grid-column:1/-1;
- display:inline-flex;align-items:center;gap:4px;
- width:fit-content;max-width:fit-content;height:auto;
- white-space:nowrap;writing-mode:horizontal-tb;
- margin-top:2px;padding:3px 10px;border-radius:999px;
- background:#fff4d6;color:#8a6200;font-size:11px;font-weight:800;line-height:1.6;
+ display:inline-block;margin-top:4px;padding:2px 8px;border-radius:999px;
+ background:#fff4d6;color:#8a6200;font-size:11px;font-weight:800;
 }
-/* 朔埜：淡いパステルイエロー＋やさしいネイビー文字 */
-.screen.sakuya-theme .family-like-badge{background:#FFF6D9;color:#0A2E52}
-/* 壱凰：淡いゴールド／クリーム系＋濃いネイビー文字(Champion Editionの赤黒を邪魔しない) */
-.mission-page:not(.sakuya-theme) .family-like-badge{background:#F5EEDA;color:#17232E}
-html.theme-champion-black .family-like-badge{background:#3a3220;color:#F5EEDA}
+.screen.sakuya-theme .family-like-badge{background:#FFF0D6;color:#8C4B06}
