@@ -16,6 +16,6 @@ error.textContent = "";
 try {
  await firebase.signInWithEmailAndPassword(firebase.auth, email.value.trim(), password.value);
 } catch (e) {  
-error.textContent = "ログインできませんでした。入力内容を確認してください。";
+error.textContent = "ログインできませんでした：" + (e.code || e.message);
 } 
 });   
