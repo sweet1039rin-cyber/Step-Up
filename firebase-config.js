@@ -18,3 +18,4 @@ import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from
   const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 window.stepUpFirebase = { app, auth, signInWithEmailAndPassword, onAuthStateChanged, signOut };
+window.dispatchEvent(new Event("stepUpFirebaseReady"));

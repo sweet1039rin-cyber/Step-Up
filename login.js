@@ -4,8 +4,8 @@ loginScreen.innerHTML = '<div class="login-card"><h1>Step Up</h1><p>毎日の一
 document.body.appendChild(loginScreen);
 loginScreen.style.cssText = "position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;background:#fff7d6;";
 loginScreen.querySelector(".login-card").insertAdjacentHTML("beforeend", '<label>メールアドレス</label><input id="login-email" type="email"><label>パスワード</label><input id="login-password" type="password"><button id="login-button">ログイン</button><p id="login-error"></p>');
-const firebase = window.stepUpFirebase;
-if (!firebase) return;
+let firebase = window.stepUpFirebase;
+
 const email = document.getElementById("login-email");
 const password = document.getElementById("login-password");
 const button = document.getElementById("login-button");
