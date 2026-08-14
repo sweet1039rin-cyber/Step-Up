@@ -1,6 +1,7 @@
   // Import the functions you need from the SDKs you need
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
   // TODO: Add SDKs for Firebase products that you want to use
   // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -17,5 +18,6 @@ import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-window.stepUpFirebase = { app, auth, signInWithEmailAndPassword, onAuthStateChanged, signOut };
+const db = getFirestore(app);
+window.stepUpFirebase = { app, auth, db, doc, getDoc, setDoc, onSnapshot, signInWithEmailAndPassword, onAuthStateChanged, signOut };
 window.dispatchEvent(new Event("stepUpFirebaseReady"));
