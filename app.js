@@ -848,7 +848,7 @@ if(t[5]){
 }
 const cat=classifyScheduleCategory(t[1]);
 const assignment=t[3]?linkedItems.find(x=>x.id===t[3]):null;const assignmentText=assignment?`課題：${assignment.done?'完了済み':assignment.status==='in-progress'?'進行中':'未着手'}${assignment.total!=null?`・${assignment.current}/${assignment.total}`:''}`:(saved.checks?.[i]?'完了 ✓':'タップで完了');const familyEntry=normalizeFamilyReactionEntry(familyReactions[taskReactionKey(t)]);const familyMeta=familyEntry?familyReactionMeta(familyEntry.reaction):null;const familyLikeBadge=familyEntry?`<span class="family-like-badge" title="おうちの人から">${familyMeta.emoji} ${escapeHtml(familyMeta.label)}${familyEntry.comment?'<br class=\"family-like-badge-break\">'+escapeHtml(familyEntry.comment):''}</span>`:'';return `<label class="task cat-${cat} ${saved.checks?.[i]?'done':''}"><input type="checkbox" data-i="${i}" data-assignment-id="${t[3]||''}" ${saved.checks?.[i]?'checked':''}><time class="cat-${cat}">${t[0]}</time><span><strong>${t[1]}</strong><small class="task-tag cat-${cat}">${SCHEDULE_CATEGORY_LABELS[cat]}</small></span><span class="task-state">${assignmentText}</span><span class="duration">${t[2]}</span>${familyLikeBadge}</label>`;
-}).join('');stepMessage.textContent=saved.step||'今日の記録はまだありません。「今日の記録を保存する」を押すと、ここに表示されます。';bindChecks();update();renderPersonalCoach();renderHomeDeadlineCard();loadDailyReportCard();renderSakuyaTestRulesCard();renderDokosutaHistory()}
+}).join('');stepMessage.textContent=saved.step||'今日の記録はまだありません。「今日の記録を保存する」を押すと、ここに表示されます。';bindChecks();startCheckSync();update();renderPersonalCoach();renderHomeDeadlineCard();loadDailyReportCard();renderSakuyaTestRulesCard();renderDokosutaHistory()}
 // Sprint 12-3/12-4: 今日の学習報告カード（提出物・課題データとは別のlocalStorageキーで管理）
 function dailyReportKey(date){return `stepup_daily_report_${date}_${current}`}
 // Sprint 43: さくや専用「課題テストのマイルール」カード。
@@ -1201,7 +1201,7 @@ function showScheduleReflectStatus(result){
  clearTimeout(window.scheduleReflectStatusTimer);
  window.scheduleReflectStatusTimer=setTimeout(()=>{if(el.textContent===message)el.textContent=''},4000);
 }
-function bindChecks(){document.querySelectorAll('.task input').forEach(c=>c.onchange=()=>{const saved=JSON.parse(localStorage.getItem(key())||'{}');saved.checks=saved.checks||{};saved.checks[c.dataset.i]=c.checked;if(c.checked&&saved.activeTaskIndex===Number(c.dataset.i))saved.activeTaskIndex=null;localStorage.setItem(key(),JSON.stringify(saved));const task=c.closest('.task');task.classList.toggle('done',c.checked);const state=task.querySelector('.task-state');if(state)state.textContent=c.checked?(c.dataset.assignmentId?'記録済み（保存で課題へ反映）':'完了 ✓'):'タップで完了';update()})}
+function bindChecks(){document.querySelectorAll('.task input').forEach(c=>c.onchange=()=>{const saved=JSON.parse(localStorage.getItem(key())||'{}');saved.checks=saved.checks||{};saved.checks[c.dataset.i]=c.checked;if(c.checked&&saved.activeTaskIndex===Number(c.dataset.i))saved.activeTaskIndex=null;localStorage.setItem(key(),JSON.stringify(saved));saveChecksToFirebase(saved);const task=c.closest('.task');task.classList.toggle('done',c.checked);const state=task.querySelector('.task-state');if(state)state.textContent=c.checked?(c.dataset.assignmentId?'記録済み（保存で課題へ反映）':'完了 ✓'):'タップで完了';update()})}
 function stepSuggestion(done,total,tasks,checks){
  if(!done)return '今日の計画を確認し、最初のミッションに挑戦した。';
  if(done===total)return `予定していた${total}個のミッションを最後までやり切った。`;
@@ -2941,4 +2941,33 @@ render=function(){sprint8Render();updateVoicePersonalization();if(reportScreen?.
   preSprint11RenderReport();
   try{renderTeacherCommentSection()}catch(e){console.error('講師コメント欄の表示に失敗しました',e)}
  };
+
+  let checkSyncStop=null,checkSyncKey="",checkSyncRetry=null;
+  function firebaseCheckRef(){
+    const f=window.stepUpFirebase,u=f?.auth?.currentUser;
+ return f?.firestoreReady && u ? f.doc(f.db,"users",u.uid,"scheduleChecks",key()) : null;
+  }
+  async function saveChecksToFirebase(saved){
+    const f=window.stepUpFirebase,ref=firebaseCheckRef();
+    if(!f||!ref)return;
+    try{await f.setDoc(ref,{checks:saved.checks||{},activeTaskIndex:Number.isInteger(saved.activeTaskIndex)?saved.activeTaskIndex:null,updatedAt:Date.now()},{merge:true})}
+    catch(e){console.error("check sync save failed",e)}
+  }
+  function startCheckSync(){
+    const f=window.stepUpFirebase,ref=firebaseCheckRef();
+    if(!f||!ref){if(!checkSyncRetry)checkSyncRetry=setTimeout(()=>{checkSyncRetry=null;startCheckSync()},500);return}
+    const nextKey=key();
+    if(checkSyncKey===nextKey)return;
+    if(checkSyncStop)checkSyncStop();
+    checkSyncKey=nextKey;
+    checkSyncStop=f.onSnapshot(ref,async snap=>{
+      const local=JSON.parse(localStorage.getItem(nextKey)||"{}");
+      if(!snap.exists()){await saveChecksToFirebase(local);return}
+      const remote=snap.data();
+      local.checks=remote.checks||{};
+      local.activeTaskIndex=Number.isInteger(remote.activeTaskIndex)?remote.activeTaskIndex:null;
+      localStorage.setItem(nextKey,JSON.stringify(local));
+      if(key()===nextKey)render();
+    },e=>console.error("check sync load failed",e));
+  }
 })();
