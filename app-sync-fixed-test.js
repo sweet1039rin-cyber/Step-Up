@@ -2949,8 +2949,8 @@ render=function(){sprint8Render();updateVoicePersonalization();if(reportScreen?.
   }
   async function saveChecksToFirebase(saved){
     const f=window.stepUpFirebase,ref=firebaseCheckRef();
- if(!f||!ref){alert("同期保存中止 ready="+!!f?.firestoreReady+" user="+!!f?.auth?.currentUser+" key="+key());return}
- try{await f.setDoc(ref,{checks:saved.checks||{},activeTaskIndex:Number.isInteger(saved.activeTaskIndex)?saved.activeTaskIndex:null,updatedAt:Date.now()},{merge:true});alert("同期保存成功 key="+key())}
+    if(!f||!ref)return;
+    try{await f.setDoc(ref,{checks:saved.checks||{},activeTaskIndex:Number.isInteger(saved.activeTaskIndex)?saved.activeTaskIndex:null,updatedAt:Date.now()},{merge:true})}
  catch(e){console.error("check sync save failed",e);alert("同期保存エラー: "+(e.code||e.message))}
   }
   function startCheckSync(){
