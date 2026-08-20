@@ -1285,6 +1285,33 @@ initTheme();
  const textBlock=hero?.querySelector(':scope>div:first-child');
  if(!textBlock||textBlock.querySelector('.champion-hero-brand'))return;
  textBlock.insertAdjacentHTML('afterbegin','<div class="champion-hero-brand" aria-hidden="true"><span class="champion-emblem lg" aria-hidden="true"></span><span class="champion-hero-brand-text"><span class="champion-hero-brand-main">Step Up</span><span class="champion-hero-brand-edition">CHAMPION EDITION</span><span class="champion-hero-brand-sub">今日も勝利への一歩。</span></span></div>');
+  function firebaseCheckRef(){
+    const f=window.stepUpFirebase,u=f?.auth?.currentUser;
+ return f?.firestoreReady && u ? f.doc(f.db,"users",u.uid,"scheduleChecks",key()) : null;
+  }
+  async function saveChecksToFirebase(saved){
+    const f=window.stepUpFirebase,ref=firebaseCheckRef();
+    if(!f||!ref)return;
+    try{await f.setDoc(ref,{checks:saved.checks||{},activeTaskIndex:Number.isInteger(saved.activeTaskIndex)?saved.activeTaskIndex:null,updatedAt:Date.now()},{merge:true})}
+ catch(e){console.error("check sync save failed",e);alert("同期保存エラー: "+(e.code||e.message))}
+  }
+  function startCheckSync(){
+    const f=window.stepUpFirebase,ref=firebaseCheckRef();
+    if(!f||!ref){if(!checkSyncRetry)checkSyncRetry=setTimeout(()=>{checkSyncRetry=null;startCheckSync()},500);return}
+    const nextKey=key();
+    if(checkSyncKey===nextKey)return;
+    if(checkSyncStop)checkSyncStop();
+    checkSyncKey=nextKey;
+    checkSyncStop=f.onSnapshot(ref,async snap=>{
+      const local=JSON.parse(localStorage.getItem(nextKey)||"{}");
+      if(!snap.exists()){await saveChecksToFirebase(local);return}
+      const remote=snap.data();
+      local.checks=remote.checks||{};
+      local.activeTaskIndex=Number.isInteger(remote.activeTaskIndex)?remote.activeTaskIndex:null;
+      localStorage.setItem(nextKey,JSON.stringify(local));
+      if(key()===nextKey)render();
+ },e=>{console.error("check sync load failed",e);alert("同期読込エラー: "+(e.code||e.message))});
+  }
 })();
 // Sprint 39: 重要な見出しにだけ「エンブレムライン」(線+ダイヤ+エンブレム+ダイヤ+線)を一度だけ配置する(表示のみ)。
 function championEmblemLineHTML(){
@@ -2943,31 +2970,5 @@ render=function(){sprint8Render();updateVoicePersonalization();if(reportScreen?.
   try{renderTeacherCommentSection()}catch(e){console.error('講師コメント欄の表示に失敗しました',e)}
  };
 
-  function firebaseCheckRef(){
-    const f=window.stepUpFirebase,u=f?.auth?.currentUser;
- return f?.firestoreReady && u ? f.doc(f.db,"users",u.uid,"scheduleChecks",key()) : null;
-  }
-  async function saveChecksToFirebase(saved){
-    const f=window.stepUpFirebase,ref=firebaseCheckRef();
-    if(!f||!ref)return;
-    try{await f.setDoc(ref,{checks:saved.checks||{},activeTaskIndex:Number.isInteger(saved.activeTaskIndex)?saved.activeTaskIndex:null,updatedAt:Date.now()},{merge:true})}
- catch(e){console.error("check sync save failed",e);alert("同期保存エラー: "+(e.code||e.message))}
-  }
-  function startCheckSync(){
-    const f=window.stepUpFirebase,ref=firebaseCheckRef();
-    if(!f||!ref){if(!checkSyncRetry)checkSyncRetry=setTimeout(()=>{checkSyncRetry=null;startCheckSync()},500);return}
-    const nextKey=key();
-    if(checkSyncKey===nextKey)return;
-    if(checkSyncStop)checkSyncStop();
-    checkSyncKey=nextKey;
-    checkSyncStop=f.onSnapshot(ref,async snap=>{
-      const local=JSON.parse(localStorage.getItem(nextKey)||"{}");
-      if(!snap.exists()){await saveChecksToFirebase(local);return}
-      const remote=snap.data();
-      local.checks=remote.checks||{};
-      local.activeTaskIndex=Number.isInteger(remote.activeTaskIndex)?remote.activeTaskIndex:null;
-      localStorage.setItem(nextKey,JSON.stringify(local));
-      if(key()===nextKey)render();
- },e=>{console.error("check sync load failed",e);alert("同期読込エラー: "+(e.code||e.message))});
-  }
+
 })();
