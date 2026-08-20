@@ -528,6 +528,33 @@ document.querySelector('#planModeAiBtn')?.addEventListener('click',()=>{openPlan
 function openFamily(){renderFamily();show(family)}
 document.querySelectorAll('[data-family-nav]').forEach(button=>button.onclick=()=>{const destination=button.dataset.familyNav;if(destination==='family'){document.querySelectorAll('[data-family-nav]').forEach(x=>x.classList.toggle('active',x===button));return}current=destination;render();show(mission)});
 function key(){return 'stepup-v4-'+PLAN_DATE+'-'+current}
+  function firebaseCheckRef(){
+    const f=window.stepUpFirebase,u=f?.auth?.currentUser;
+ return f?.firestoreReady && u ? f.doc(f.db,"users",u.uid,"scheduleChecks",key()) : null;
+  }
+  async function saveChecksToFirebase(saved){
+    const f=window.stepUpFirebase,ref=firebaseCheckRef();
+    if(!f||!ref)return;
+    try{await f.setDoc(ref,{checks:saved.checks||{},activeTaskIndex:Number.isInteger(saved.activeTaskIndex)?saved.activeTaskIndex:null,updatedAt:Date.now()},{merge:true})}
+ catch(e){console.error("check sync save failed",e);alert("同期保存エラー: "+(e.code||e.message))}
+  }
+  function startCheckSync(){
+    const f=window.stepUpFirebase,ref=firebaseCheckRef();
+    if(!f||!ref){if(!checkSyncRetry)checkSyncRetry=setTimeout(()=>{checkSyncRetry=null;startCheckSync()},500);return}
+    const nextKey=key();
+    if(checkSyncKey===nextKey)return;
+    if(checkSyncStop)checkSyncStop();
+    checkSyncKey=nextKey;
+    checkSyncStop=f.onSnapshot(ref,async snap=>{
+      const local=JSON.parse(localStorage.getItem(nextKey)||"{}");
+      if(!snap.exists()){await saveChecksToFirebase(local);return}
+      const remote=snap.data();
+      local.checks=remote.checks||{};
+      local.activeTaskIndex=Number.isInteger(remote.activeTaskIndex)?remote.activeTaskIndex:null;
+      localStorage.setItem(nextKey,JSON.stringify(local));
+      if(key()===nextKey)render();
+ },e=>{console.error("check sync load failed",e);alert("同期読込エラー: "+(e.code||e.message))});
+  }
 // Sprint 18: 当日の計画（チェック項目）と課題IDの明示的な対応表。
 // 実行時の文字列検索は行わず、あらかじめ決めた1:1の対応のみを使う。
 // 対応表に無いタイトルはassignmentId=nullとなり、課題へは一切反映されない。
@@ -1285,33 +1312,6 @@ initTheme();
  const textBlock=hero?.querySelector(':scope>div:first-child');
  if(!textBlock||textBlock.querySelector('.champion-hero-brand'))return;
  textBlock.insertAdjacentHTML('afterbegin','<div class="champion-hero-brand" aria-hidden="true"><span class="champion-emblem lg" aria-hidden="true"></span><span class="champion-hero-brand-text"><span class="champion-hero-brand-main">Step Up</span><span class="champion-hero-brand-edition">CHAMPION EDITION</span><span class="champion-hero-brand-sub">今日も勝利への一歩。</span></span></div>');
-  function firebaseCheckRef(){
-    const f=window.stepUpFirebase,u=f?.auth?.currentUser;
- return f?.firestoreReady && u ? f.doc(f.db,"users",u.uid,"scheduleChecks",key()) : null;
-  }
-  async function saveChecksToFirebase(saved){
-    const f=window.stepUpFirebase,ref=firebaseCheckRef();
-    if(!f||!ref)return;
-    try{await f.setDoc(ref,{checks:saved.checks||{},activeTaskIndex:Number.isInteger(saved.activeTaskIndex)?saved.activeTaskIndex:null,updatedAt:Date.now()},{merge:true})}
- catch(e){console.error("check sync save failed",e);alert("同期保存エラー: "+(e.code||e.message))}
-  }
-  function startCheckSync(){
-    const f=window.stepUpFirebase,ref=firebaseCheckRef();
-    if(!f||!ref){if(!checkSyncRetry)checkSyncRetry=setTimeout(()=>{checkSyncRetry=null;startCheckSync()},500);return}
-    const nextKey=key();
-    if(checkSyncKey===nextKey)return;
-    if(checkSyncStop)checkSyncStop();
-    checkSyncKey=nextKey;
-    checkSyncStop=f.onSnapshot(ref,async snap=>{
-      const local=JSON.parse(localStorage.getItem(nextKey)||"{}");
-      if(!snap.exists()){await saveChecksToFirebase(local);return}
-      const remote=snap.data();
-      local.checks=remote.checks||{};
-      local.activeTaskIndex=Number.isInteger(remote.activeTaskIndex)?remote.activeTaskIndex:null;
-      localStorage.setItem(nextKey,JSON.stringify(local));
-      if(key()===nextKey)render();
- },e=>{console.error("check sync load failed",e);alert("同期読込エラー: "+(e.code||e.message))});
-  }
 })();
 // Sprint 39: 重要な見出しにだけ「エンブレムライン」(線+ダイヤ+エンブレム+ダイヤ+線)を一度だけ配置する(表示のみ)。
 function championEmblemLineHTML(){
