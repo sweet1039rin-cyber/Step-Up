@@ -2951,7 +2951,7 @@ render=function(){sprint8Render();updateVoicePersonalization();if(reportScreen?.
     const f=window.stepUpFirebase,ref=firebaseCheckRef();
     if(!f||!ref)return;
     try{await f.setDoc(ref,{checks:saved.checks||{},activeTaskIndex:Number.isInteger(saved.activeTaskIndex)?saved.activeTaskIndex:null,updatedAt:Date.now()},{merge:true})}
-    catch(e){console.error("check sync save failed",e)}
+ catch(e){console.error("check sync save failed",e);alert("同期保存エラー: "+(e.code||e.message))}
   }
   function startCheckSync(){
     const f=window.stepUpFirebase,ref=firebaseCheckRef();
@@ -2968,6 +2968,6 @@ render=function(){sprint8Render();updateVoicePersonalization();if(reportScreen?.
       local.activeTaskIndex=Number.isInteger(remote.activeTaskIndex)?remote.activeTaskIndex:null;
       localStorage.setItem(nextKey,JSON.stringify(local));
       if(key()===nextKey)render();
-    },e=>console.error("check sync load failed",e));
+ },e=>{console.error("check sync load failed",e);alert("同期読込エラー: "+(e.code||e.message))});
   }
 })();
