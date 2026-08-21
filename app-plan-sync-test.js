@@ -538,7 +538,7 @@ function key(){return 'stepup-v4-'+PLAN_DATE+'-'+current}
     try{await f.setDoc(ref,{checks:saved.checks||{},activeTaskIndex:Number.isInteger(saved.activeTaskIndex)?saved.activeTaskIndex:null,updatedAt:Date.now()},{merge:true})}
  catch(e){console.error("check sync save failed",e);alert("同期保存エラー: "+(e.code||e.message))}
   }
- async function savePlanToFirebase(saved){const f=window.stepUpFirebase,ref=firebaseCheckRef();if(!f||!ref)return;try{await f.setDoc(ref,{customTasks:Array.isArray(saved.customTasks)?saved.customTasks:[],planUpdatedAt:Date.now()},{merge:true})}catch(e){console.error("plan sync save failed",e);alert("計画同期保存エラー："+(e.code||e.message))}}
+ async function savePlanToFirebase(saved){const f=window.stepUpFirebase,ref=firebaseCheckRef();if(!f||!ref)return;try{await f.setDoc(ref,{customTasks:Array.isArray(saved.customTasks)?saved.customTasks:[],planUpdatedAt:Date.now()},{merge:true});alert("計画同期保存成功 key="+key())}catch(e){console.error("plan sync save failed",e);alert("計画同期保存エラー："+(e.code||e.message))}}
   function startCheckSync(){
     const f=window.stepUpFirebase,ref=firebaseCheckRef();
     if(!f||!ref){if(!checkSyncRetry)checkSyncRetry=setTimeout(()=>{checkSyncRetry=null;startCheckSync()},500);return}
