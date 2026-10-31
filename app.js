@@ -532,30 +532,19 @@ function key(){return 'stepup-v4-'+PLAN_DATE+'-'+current}
     const f=window.stepUpFirebase,u=f?.auth?.currentUser;
  return f?.firestoreReady && u ? f.doc(f.db,"users",u.uid,"scheduleChecks",key()) : null;
   }
+  // 【同期統合 2026-10-29】チェック・計画の同期は stepup-sync.js の
+  // 全データ同期(users/{uid}/kv)に一本化した。localStorage への保存は
+  // 呼び出し側で完了しており、stepup-sync.js が変更を検知して送信する。
+  // 旧 scheduleChecks ドキュメントへの書き込み・購読は、値の競合を
+  // 避けるため停止する(関数名と呼び出し側はそのまま残す)。
   async function saveChecksToFirebase(saved){
-    const f=window.stepUpFirebase,ref=firebaseCheckRef();
-    if(!f||!ref)return;
-    try{await f.setDoc(ref,{checks:saved.checks||{},activeTaskIndex:Number.isInteger(saved.activeTaskIndex)?saved.activeTaskIndex:null,updatedAt:Date.now()},{merge:true})}
- catch(e){console.error("check sync save failed",e);alert("同期保存エラー: "+(e.code||e.message))}
+    if(window.StepUpSync&&window.StepUpSync.pushKey)window.StepUpSync.pushKey(key());
   }
- async function savePlanToFirebase(saved){const f=window.stepUpFirebase,ref=firebaseCheckRef();if(!f||!ref)return;try{await f.setDoc(ref,{customTasksJson:JSON.stringify(Array.isArray(saved.customTasks)?saved.customTasks:[]),planUpdatedAt:Date.now()},{merge:true})}catch(e){console.error("plan sync save failed",e);alert("計画同期保存エラー："+(e.code||e.message))}}
+ async function savePlanToFirebase(saved){
+    if(window.StepUpSync&&window.StepUpSync.pushKey)window.StepUpSync.pushKey(key());
+  }
   function startCheckSync(){
-    const f=window.stepUpFirebase,ref=firebaseCheckRef();
-    if(!f||!ref){if(!checkSyncRetry)checkSyncRetry=setTimeout(()=>{checkSyncRetry=null;startCheckSync()},500);return}
-    const nextKey=key();
-    if(checkSyncKey===nextKey)return;
-    if(checkSyncStop)checkSyncStop();
-    checkSyncKey=nextKey;
-    checkSyncStop=f.onSnapshot(ref,async snap=>{
-      const local=JSON.parse(localStorage.getItem(nextKey)||"{}");
-      if(!snap.exists()){await saveChecksToFirebase(local);return}
-      const remote=snap.data();
-      local.checks=remote.checks||{};
- if(typeof remote.customTasksJson==="string"){try{local.customTasks=JSON.parse(remote.customTasksJson)}catch(e){console.error("plan sync parse failed",e)}}
-      local.activeTaskIndex=Number.isInteger(remote.activeTaskIndex)?remote.activeTaskIndex:null;
-      localStorage.setItem(nextKey,JSON.stringify(local));
-      if(key()===nextKey)render();
- },e=>{console.error("check sync load failed",e);alert("同期読込エラー: "+(e.code||e.message))});
+    if(window.StepUpSync&&window.StepUpSync.start)window.StepUpSync.start();
   }
 // Sprint 18: 当日の計画（チェック項目）と課題IDの明示的な対応表。
 // 実行時の文字列検索は行わず、あらかじめ決めた1:1の対応のみを使う。
