@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>中3音楽 暗記シート｜楽典と鑑賞</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: #fff;
+    color: #222;
+    font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", "Noto Sans JP", sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+  }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 16px 14px 44px; }
+  header {
+    border: 3px solid #6a4fb3;
+    background: #f3efff;
+    border-radius: 16px;
+    padding: 18px;
+    margin-bottom: 18px;
+  }
+  header .label {
+    display: inline-block;
+    background: #c62828;
+    color: #fff;
+    border-radius: 999px;
+    padding: 2px 10px;
+    font-size: .86rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  h1 { margin: 0 0 6px; color: #4527a0; font-size: 1.65rem; line-height: 1.35; }
+  header p { margin: 4px 0; }
+  h2 {
+    margin: 28px 0 12px;
+    padding: 9px 13px;
+    border-radius: 9px;
+    color: #fff;
+    background: #6a4fb3;
+    font-size: 1.22rem;
+  }
+  h2.blue { background: #2470a8; }
+  h2.green { background: #2e7d5b; }
+  h2.orange { background: #c46a12; }
+  h2.pink { background: #b63b68; }
+  h3 { margin: 18px 0 7px; color: #4527a0; font-size: 1.08rem; }
+  p { margin: 6px 0; }
+  ul, ol { margin: 6px 0 8px 1.25em; padding: 0; }
+  li { margin: 3px 0; }
+  .box {
+    border: 2px solid #6a4fb3;
+    background: #faf8ff;
+    border-radius: 11px;
+    padding: 11px 14px;
+    margin: 11px 0;
+  }
+  .box.blue { border-color: #2470a8; background: #f2f8fc; }
+  .box.green { border-color: #2e7d5b; background: #f2faf6; }
+  .box.orange { border-color: #c46a12; background: #fff8ef; }
+  .box-title { font-weight: 800; margin-bottom: 4px; }
+  .warn {
+    border: 2px solid #c62828;
+    background: #fff5f5;
+    border-radius: 11px;
+    padding: 11px 14px;
+    margin: 12px 0;
+  }
+  .warn .box-title { color: #a51f1f; font-weight: 800; }
+  .memory {
+    border-left: 6px solid #efb000;
+    background: #fff9db;
+    padding: 9px 12px;
+    margin: 10px 0;
+    border-radius: 6px;
+  }
+  .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .grid3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+  .card {
+    border: 1.5px solid #c9c2e8;
+    border-radius: 11px;
+    padding: 11px 12px;
+    background: #fff;
+  }
+  .card strong.symbol {
+    display: block;
+    font-size: 1.65rem;
+    line-height: 1.25;
+    color: #4527a0;
+    text-align: center;
+  }
+  .card .name { text-align: center; font-weight: 800; }
+  table { width: 100%; border-collapse: collapse; margin: 10px 0 14px; font-size: .96rem; }
+  th, td { border: 1px solid #bfc9d4; padding: 7px 8px; vertical-align: top; }
+  th { background: #eaf2f8; color: #174d73; text-align: left; }
+  tr:nth-child(even) td { background: #fbfcfd; }
+  .big { font-size: 1.13rem; font-weight: 800; }
+  .red { color: #c62828; font-weight: 800; }
+  .blue-text { color: #17658f; font-weight: 800; }
+  .center { text-align: center; }
+  .small { font-size: .9rem; color: #555; }
+  svg { display: block; width: 100%; height: auto; margin: 10px auto 4px; }
+  .caption { text-align: center; color: #555; font-size: .9rem; margin: 3px 0 10px; }
+  .scale-pattern { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 9px 0; }
+  .tone, .step { border-radius: 8px; padding: 7px 9px; font-weight: 800; text-align: center; }
+  .tone { background: #eaf2f8; border: 1.5px solid #2470a8; min-width: 42px; }
+  .step { background: #fff0c9; border: 1.5px solid #c48a12; min-width: 36px; }
+  .step.half { background: #ffe3e3; border-color: #c62828; color: #a51f1f; }
+  .hairpin { font-size: 2rem; line-height: 1; color: #4527a0; font-weight: 700; text-align: center; }
+  .check { list-style: none; margin-left: .2em; }
+  .check li { margin: 6px 0; }
+  .check li::before { content: "□ "; color: #6a4fb3; font-weight: 900; }
+  footer { margin-top: 30px; text-align: center; color: #777; font-size: .86rem; }
+  @media (max-width: 640px) {
+    body { font-size: 15px; }
+    .grid, .grid3 { grid-template-columns: 1fr; }
+    h1 { font-size: 1.42rem; }
+    table { font-size: .9rem; }
+    th, td { padding: 6px; }
+  }
+  @media print {
+    .wrap { max-width: none; padding: 0; }
+    header, h2, th, .box, .warn, .memory { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    h2, .box, .warn, table, svg { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <span class="label">範囲は予測｜正式な範囲が出たら学校の内容と照合</span>
+  <h1>中3音楽 暗記シート｜楽典と鑑賞</h1>
+  <p>楽譜の記号は、「音の高さ」「長さ」「速さ」「強さ」「進み方」に分けて覚えると読みやすくなります。</p>
+  <p class="small">使い方：まず図と表を見てルールを確認し、最後の「テスト直前チェック」で □ を埋めましょう。</p>
+</header>
+
+<h2>1. 音の名前と変化記号</h2>
+
+<svg viewBox="0 0 720 205" role="img" aria-label="ト音記号の五線とドレミの位置を示す図">
+  <text x="22" y="112" font-size="66" fill="#4527a0">𝄞</text>
+  <g stroke="#333" stroke-width="1.7">
+    <line x1="84" y1="60" x2="700" y2="60"/>
+    <line x1="84" y1="75" x2="700" y2="75"/>
+    <line x1="84" y1="90" x2="700" y2="90"/>
+    <line x1="84" y1="105" x2="700" y2="105"/>
+    <line x1="84" y1="120" x2="700" y2="120"/>
+    <line x1="105" y1="135" x2="155" y2="135"/>
+  </g>
+  <g fill="#222">
+    <g transform="translate(130 135)"><ellipse rx="10" ry="7" transform="rotate(-15)"/><line x1="9" y1="0" x2="9" y2="-44" stroke="#222" stroke-width="2"/></g>
+    <g transform="translate(195 127.5)"><ellipse rx="10" ry="7" transform="rotate(-15)"/><line x1="9" y1="0" x2="9" y2="-44" stroke="#222" stroke-width="2"/></g>
+    <g transform="translate(260 120)"><ellipse rx="10" ry="7" transform="rotate(-15)"/><line x1="9" y1="0" x2="9" y2="-44" stroke="#222" stroke-width="2"/></g>
+    <g transform="translate(325 112.5)"><ellipse rx="10" ry="7" transform="rotate(-15)"/><line x1="9" y1="0" x2="9" y2="-44" stroke="#222" stroke-width="2"/></g>
+    <g transform="translate(390 105)"><ellipse rx="10" ry="7" transform="rotate(-15)"/><line x1="9" y1="0" x2="9" y2="-44" stroke="#222" stroke-width="2"/></g>
+    <g transform="translate(455 97.5)"><ellipse rx="10" ry="7" transform="rotate(-15)"/><line x1="9" y1="0" x2="9" y2="-44" stroke="#222" stroke-width="2"/></g>
+    <g transform="translate(520 90)"><ellipse rx="10" ry="7" transform="rotate(-15)"/><line x1="-9" y1="0" x2="-9" y2="44" stroke="#222" stroke-width="2"/></g>
+    <g transform="translate(585 82.5)"><ellipse rx="10" ry="7" transform="rotate(-15)"/><line x1="-9" y1="0" x2="-9" y2="44" stroke="#222" stroke-width="2"/></g>
+  </g>
+  <g font-size="15" font-weight="700" text-anchor="middle" fill="#222">
+    <text x="130" y="178">ド</text><text x="195" y="178">レ</text><text x="260" y="178">ミ</text><text x="325" y="178">ファ</text>
+    <text x="390" y="178">ソ</text><text x="455" y="178">ラ</text><text x="520" y="178">シ</text><text x="585" y="178">ド</text>
+  </g>
+  <g font-size="12" text-anchor="middle" fill="#555">
+    <text x="130" y="196">C</text><text x="195" y="196">D</text><text x="260" y="196">E</text><text x="325" y="196">F</text>
+    <text x="390" y="196">G</text><text x="455" y="196">A</text><text x="520" y="196">B</text><text x="585" y="196">C</text>
+  </g>
+</svg>
+<p class="caption">ト音記号の五線：線の音は下から「ミ・ソ・シ・レ・ファ」、間の音は下から「ファ・ラ・ド・ミ」</p>
+
+<div class="grid3">
+  <div class="card">
+    <strong class="symbol">♯</strong>
+    <div class="name">シャープ</div>
+    <p class="center">音を<span class="red">半音上げる</span></p>
+  </div>
+  <div class="card">
+    <strong class="symbol">♭</strong>
+    <div class="name">フラット</div>
+    <p class="center">音を<span class="blue-text">半音下げる</span></p>
+  </div>
+  <div class="card">
+    <strong class="symbol">♮</strong>
+    <div class="name">ナチュラル</div>
+    <p class="center">♯や♭を消して<span class="big">元に戻す</span></p>
+  </div>
+</div>
+
+<div class="box">
+  <div class="box-title">覚えること</div>
+  <ul>
+    <li>変化記号は、音符の左側に付けます。</li>
+    <li>♯や♭の働きは、原則として<span class="red">同じ小節の中の、同じ高さの音</span>に続きます。</li>
+    <li>次の小節に入ると、原則として変化記号の働きは終わります。</li>
+  </ul>
+</div>
+
+<h2 class="blue">2. 音符と休符の長さ</h2>
+
+<svg viewBox="0 0 760 245" role="img" aria-label="全音符、二分音符、四分音符、八分音符の長さの関係図">
+  <g font-size="16" font-weight="700" fill="#222">
+    <text x="15" y="48">全音符</text>
+    <text x="15" y="98">二分音符</text>
+    <text x="15" y="148">四分音符</text>
+    <text x="15" y="198">八分音符</text>
+  </g>
+  <g stroke="#2470a8" stroke-width="1.5">
+    <rect x="130" y="24" width="600" height="34" fill="#bfe1f5"/>
+    <rect x="130" y="74" width="300" height="34" fill="#d7edf9"/><rect x="430" y="74" width="300" height="34" fill="#d7edf9"/>
+    <rect x="130" y="124" width="150" height="34" fill="#e8f4fb"/><rect x="280" y="124" width="150" height="34" fill="#e8f4fb"/><rect x="430" y="124" width="150" height="34" fill="#e8f4fb"/><rect x="580" y="124" width="150" height="34" fill="#e8f4fb"/>
+    <g fill="#f5fbfe">
+      <rect x="130" y="174" width="75" height="34"/><rect x="205" y="174" width="75" height="34"/><rect x="280" y="174" width="75" height="34"/><rect x="355" y="174" width="75" height="34"/>
+      <rect x="430" y="174" width="75" height="34"/><rect x="505" y="174" width="75" height="34"/><rect x="580" y="174" width="75" height="34"/><rect x="655" y="174" width="75" height="34"/>
+    </g>
+  </g>
+  <g font-size="14" text-anchor="middle" fill="#174d73">
+    <text x="430" y="46">1つ分</text>
+    <text x="280" y="96">1/2</text><text x="580" y="96">1/2</text>
+    <text x="205" y="146">1/4</text><text x="355" y="146">1/4</text><text x="505" y="146">1/4</text><text x="655" y="146">1/4</text>
+    <text x="430" y="226">八分音符は全音符の 1/8 の長さ</text>
+  </g>
+</svg>
+<p class="caption">音符の長さは、上から順に半分ずつになります。十六分音符は八分音符の半分です。</p>
+
+<table>
+  <thead><tr><th>音符</th><th>休符</th><th>四分音符を1拍とした長さ</th><th>見分けるヒント</th></tr></thead>
+  <tbody>
+    <tr><td>全音符</td><td>全休符</td><td>4拍分</td><td>音符には棒（符幹）がありません。</td></tr>
+    <tr><td>二分音符</td><td>二分休符</td><td>2拍分</td><td>白い音符に棒があります。</td></tr>
+    <tr><td>四分音符</td><td>四分休符</td><td>1拍分</td><td>黒い音符に棒があります。</td></tr>
+    <tr><td>八分音符</td><td>八分休符</td><td>0.5拍分</td><td>黒い音符に棒と旗が1つあります。</td></tr>
+    <tr><td>十六分音符</td><td>十六分休符</td><td>0.25拍分</td><td>黒い音符に棒と旗が2つあります。</td></tr>
+  </tbody>
+</table>
+
+<div class="box blue">
+  <div class="box-title">付点は「元の半分を足す」</div>
+  <p>付点四分音符 ＝ 四分音符（1拍）＋ 八分音符（0.5拍）＝ <span class="big">1.5拍分</span></p>
+  <p>付点二分音符 ＝ 二分音符（2拍）＋ 四分音符（1拍）＝ <span class="big">3拍分</span></p>
+  <p class="red">付点は「2倍」ではありません。</p>
+</div>
+
+<h2 class="green">3. 拍子・調号・音階</h2>
+
+<h3>拍子記号の読み方</h3>
+<div class="grid3">
+  <div class="card"><strong class="symbol">4/4</strong><div class="name">4分の4拍子</div><p class="center">四分音符を1拍として<br>1小節に4拍分</p></div>
+  <div class="card"><strong class="symbol">3/4</strong><div class="name">4分の3拍子</div><p class="center">四分音符を1拍として<br>1小節に3拍分</p></div>
+  <div class="card"><strong class="symbol">6/8</strong><div class="name">8分の6拍子</div><p class="center">八分音符を1拍として<br>1小節に6拍分</p></div>
+</div>
+<div class="memory"><b>合言葉：</b>拍子記号は「下＝何音符が1拍、上＝1小節に何拍分」。</div>
+
+<h3>調号と調の関係（入口）</h3>
+<table>
+  <thead><tr><th>調号</th><th>長調</th><th>短調</th><th>覚え方</th></tr></thead>
+  <tbody>
+    <tr><td>なし</td><td>ハ長調</td><td>イ短調</td><td>変化記号なし</td></tr>
+    <tr><td>♯ 1つ</td><td>ト長調</td><td>ホ短調</td><td>♯はファにつく</td></tr>
+    <tr><td>♯ 2つ</td><td>ニ長調</td><td>ロ短調</td><td>ファ、ド</td></tr>
+    <tr><td>♯ 3つ</td><td>イ長調</td><td>嬰ヘ短調</td><td>ファ、ド、ソ</td></tr>
+    <tr><td>♭ 1つ</td><td>ヘ長調</td><td>ニ短調</td><td>♭はシにつく</td></tr>
+    <tr><td>♭ 2つ</td><td>変ロ長調</td><td>ト短調</td><td>シ、ミ</td></tr>
+    <tr><td>♭ 3つ</td><td>変ホ長調</td><td>ハ短調</td><td>シ、ミ、ラ</td></tr>
+  </tbody>
+</table>
+<p><b>♯が付く順番：</b>ファ・ド・ソ・レ・ラ・ミ・シ</p>
+<p><b>♭が付く順番：</b>シ・ミ・ラ・レ・ソ・ド・ファ</p>
+
+<h3>音階の並び</h3>
+<p><b>長音階</b>（明るい感じの音階）</p>
+<div class="scale-pattern">
+  <span class="tone">ド</span><span class="step">全</span><span class="tone">レ</span><span class="step">全</span><span class="tone">ミ</span><span class="step half">半</span><span class="tone">ファ</span><span class="step">全</span><span class="tone">ソ</span><span class="step">全</span><span class="tone">ラ</span><span class="step">全</span><span class="tone">シ</span><span class="step half">半</span><span class="tone">ド</span>
+</div>
+<p><b>短音階</b>（自然的短音階）</p>
+<div class="scale-pattern">
+  <span class="tone">ラ</span><span class="step">全</span><span class="tone">シ</span><span class="step half">半</span><span class="tone">ド</span><span class="step">全</span><span class="tone">レ</span><span class="step">全</span><span class="tone">ミ</span><span class="step half">半</span><span class="tone">ファ</span><span class="step">全</span><span class="tone">ソ</span><span class="step">全</span><span class="tone">ラ</span>
+</div>
+
+<h2 class="orange">4. 速さ・強さ・繰り返しの記号</h2>
+
+<h3>速度記号</h3>
+<table>
+  <thead><tr><th>記号・言葉</th><th>読み方</th><th>意味</th></tr></thead>
+  <tbody>
+    <tr><td>Adagio</td><td>アダージョ</td><td>ゆっくり</td></tr>
+    <tr><td>Andante</td><td>アンダンテ</td><td>歩くような速さ</td></tr>
+    <tr><td>Moderato</td><td>モデラート</td><td>中くらいの速さ</td></tr>
+    <tr><td>Allegro</td><td>アレグロ</td><td>速く</td></tr>
+    <tr><td>Presto</td><td>プレスト</td><td>非常に速く</td></tr>
+    <tr><td>rit.</td><td>リタルダンド</td><td>だんだん遅く</td></tr>
+    <tr><td>a tempo</td><td>ア・テンポ</td><td>元の速さに戻る</td></tr>
+  </tbody>
+</table>
+
+<h3>強弱記号</h3>
+<table>
+  <thead><tr><th>記号</th><th>名前</th><th>意味</th></tr></thead>
+  <tbody>
+    <tr><td class="big">pp</td><td>ピアニッシモ</td><td>非常に弱く</td></tr>
+    <tr><td class="big">p</td><td>ピアノ</td><td>弱く</td></tr>
+    <tr><td class="big">mp</td><td>メッゾ・ピアノ</td><td>やや弱く</td></tr>
+    <tr><td class="big">mf</td><td>メッゾ・フォルテ</td><td>やや強く</td></tr>
+    <tr><td class="big">f</td><td>フォルテ</td><td>強く</td></tr>
+    <tr><td class="big">ff</td><td>フォルティッシモ</td><td>非常に強く</td></tr>
+  </tbody>
+</table>
+<div class="grid">
+  <div class="card">
+    <div class="hairpin">&lt;</div>
+    <div class="name">クレッシェンド</div>
+    <p class="center">だんだん強く</p>
+  </div>
+  <div class="card">
+    <div class="hairpin">&gt;</div>
+    <div class="name">デクレッシェンド</div>
+    <p class="center">だんだん弱く<br><span class="small">ディミヌエンドともいいます</span></p>
+  </div>
+</div>
+
+<h3>反復記号</h3>
+<table>
+  <thead><tr><th>書き方</th><th>進み方</th></tr></thead>
+  <tbody>
+    <tr><td class="big">|:　　:|</td><td>2つの印にはさまれた部分を繰り返します。</td></tr>
+    <tr><td class="big">D.C. al Fine</td><td>最初（頭）に戻り、Fineの場所で終わります。</td></tr>
+    <tr><td class="big">D.S. al Fine</td><td>セーニョ（𝄋）の場所に戻り、Fineの場所で終わります。</td></tr>
+    <tr><td class="big">D.C. al Coda</td><td>最初に戻り、コーダ記号の場所からコーダへ飛んで演奏します。</td></tr>
+  </tbody>
+</table>
+
+<h2 class="pink">5. 鑑賞で覚えること</h2>
+
+<h3>ベートーヴェン「交響曲第9番」</h3>
+<div class="box orange">
+  <div class="box-title">作品の基本情報</div>
+  <ul>
+    <li><b>作曲者：</b>ベートーヴェン（ドイツの作曲家）</li>
+    <li><b>作品：</b>交響曲第9番（「合唱付き」とも呼ばれます）</li>
+    <li><b>合唱が入る場所：</b>第4楽章</li>
+    <li><b>歌の元になった詩：</b>シラーの『歓喜に寄す』</li>
+    <li><b>有名な旋律：</b>『歓喜の歌』</li>
+  </ul>
+</div>
+<p>第4楽章では、独唱者と合唱が加わります。たくさんの楽器だけで演奏される交響曲に、人の歌声が入ることが大きな特徴です。</p>
+
+<h3>オーケストラの楽器の分類</h3>
+<table>
+  <thead><tr><th>分類</th><th>音の出し方</th><th>主な楽器</th></tr></thead>
+  <tbody>
+    <tr><td><b>弦楽器</b></td><td>弦を弓でこする、指ではじくなどして振動させる</td><td>バイオリン、ビオラ、チェロ、コントラバス、ハープ</td></tr>
+    <tr><td><b>木管楽器</b></td><td>息で管の中の空気やリードを振動させる</td><td>フルート、オーボエ、クラリネット、ファゴット、サクソフォーン</td></tr>
+    <tr><td><b>金管楽器</b></td><td>唇を振動させ、管に息を吹き込む</td><td>トランペット、ホルン、トロンボーン、チューバ</td></tr>
+    <tr><td><b>打楽器</b></td><td>打つ、振る、こするなどして音を出す</td><td>ティンパニ、大太鼓、小太鼓、シンバル、木琴</td></tr>
+  </tbody>
+</table>
+<div class="memory"><b>大事な考え方：</b>分類は「何でできているか」ではなく、「どのように音を出すか」で決まります。金属製のフルートが木管楽器なのは、そのためです。</div>
+
+<h3>オペラの基礎</h3>
+<table>
+  <thead><tr><th>言葉</th><th>意味</th><th>覚え方</th></tr></thead>
+  <tbody>
+    <tr><td><b>序曲</b></td><td>始まりにオーケストラだけで演奏される曲</td><td>物語の予告編</td></tr>
+    <tr><td><b>アリア</b></td><td>登場人物が気持ちを旋律豊かに独唱する曲</td><td>気持ちを歌う</td></tr>
+    <tr><td><b>レチタティーヴォ</b></td><td>会話をするように歌う部分</td><td>物語を進める</td></tr>
+    <tr><td><b>重唱</b></td><td>2人以上が同時に、それぞれの旋律を歌うこと</td><td>気持ちが重なる</td></tr>
+    <tr><td><b>合唱</b></td><td>大勢で歌うこと</td><td>場面を大きく盛り上げる</td></tr>
+  </tbody>
+</table>
+
+<h3>日本の伝統音楽</h3>
+<div class="box green">
+  <div class="box-title">雅楽（ががく）</div>
+  <ul>
+    <li>宮中や神社・寺院で伝えられてきた、長い歴史をもつ音楽です。</li>
+    <li><b>笙（しょう）：</b>竹の管を束ねた楽器。和音や長い響きを出します。</li>
+    <li><b>篳篥（ひちりき）：</b>主となる旋律を演奏する、はっきりした音色の縦笛です。</li>
+    <li><b>龍笛（りゅうてき）：</b>旋律を演奏する横笛です。</li>
+    <li>ゆったりした時間の流れ、音色の重なり、音と音の間の「間」が大切にされます。</li>
+  </ul>
+</div>
+<table>
+  <thead><tr><th>楽器・音楽</th><th>特徴</th></tr></thead>
+  <tbody>
+    <tr><td>箏（こと）</td><td>13本の弦をはじいて演奏します。</td></tr>
+    <tr><td>三味線</td><td>3本の弦をばちで弾きます。歌舞伎や人形浄瑠璃にも使われます。</td></tr>
+    <tr><td>尺八</td><td>竹でできた縦笛で、息の音も含めた豊かな音色が特徴です。</td></tr>
+    <tr><td>民謡</td><td>地域の仕事や暮らしの中で歌い継がれてきた歌です。</td></tr>
+  </tbody>
+</table>
+<p>日本の伝統音楽では、曲によって違いはありますが、大きな音だけでなく、小さな音、余韻、間の取り方も大切にされます。</p>
+
+<div class="warn">
+  <div class="box-title">間違えやすい点</div>
+  <ul>
+    <li><b>付点は2倍ではない：</b>元の長さに「元の半分」を足します。</li>
+    <li><b>拍子記号の下の数字は速さではない：</b>「何音符を1拍にするか」を表します。</li>
+    <li><b>クレッシェンドは急に強くすることではない：</b>少しずつ強くします。</li>
+    <li><b>調号1つは♯と♭で別：</b>♯1つはト長調、♭1つはヘ長調です。</li>
+    <li><b>楽器の分類は材料で決めない：</b>フルートは金属製でも木管楽器です。</li>
+    <li><b>D.C. al Fineは最後まで繰り返さない：</b>最初へ戻り、Fineで終わります。</li>
+    <li><b>アリアとレチタティーヴォを混同しない：</b>アリアは気持ち、レチタティーヴォは会話と物語の進行です。</li>
+  </ul>
+</div>
+
+<h2>テスト直前チェック</h2>
+<ul class="check">
+  <li>五線の線の音を「ミ・ソ・シ・レ・ファ」と言える</li>
+  <li>♯、♭、♮の意味を説明できる</li>
+  <li>付点四分音符が1.5拍分だと分かる</li>
+  <li>6/8拍子の読み方を説明できる</li>
+  <li>♯1つの長調と、♭1つの長調を言える</li>
+  <li>長音階の「全・全・半・全・全・全・半」を言える</li>
+  <li>Allegro、Andante、Moderatoの意味が分かる</li>
+  <li>f、p、クレッシェンドの意味が分かる</li>
+  <li>D.C. al Fineの進み方を説明できる</li>
+  <li>「交響曲第9番」の作曲者と合唱が入る楽章を言える</li>
+  <li>フルートが木管楽器である理由を説明できる</li>
+  <li>アリアとレチタティーヴォの違いを説明できる</li>
+  <li>雅楽の3つの管楽器、笙・篳篥・龍笛を言える</li>
+</ul>
+
+<footer>中3音楽 暗記シート｜範囲は予測版です。正式な範囲発表後に、学校で学習した内容と照合してください。</footer>
+
+</div>
+
+<div style="max-width:880px;margin:24px auto 8px;padding:0 16px 24px;font-family:sans-serif;text-align:center"><a href="iori.html" style="display:inline-block;background:#ff6b9d;color:#fff;font-weight:700;text-decoration:none;padding:14px 22px;border-radius:999px;font-size:16px">← 教材トップへ戻る</a></div>
+</body>
+</html>

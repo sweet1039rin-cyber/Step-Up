@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>中1理科 暗記シート｜状態変化と密度</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 16px; background: #ffffff; color: #222; font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", "Noto Sans JP", sans-serif; line-height: 1.7; font-size: 16px; }
+  main { max-width: 760px; margin: 0 auto; }
+  h1 { font-size: 1.5rem; color: #fff; background: #2e7d6b; margin: 0 0 6px; padding: 12px 16px; border-radius: 10px; }
+  .sub { color: #555; font-size: .9rem; margin: 0 0 18px; }
+  h2 { font-size: 1.2rem; color: #2e7d6b; border-left: 8px solid #2e7d6b; padding-left: 10px; margin: 28px 0 10px; }
+  h2.blue { color: #1f5fa8; border-color: #1f5fa8; }
+  h2.orange { color: #b05e14; border-color: #e08a2e; }
+  h2.purple { color: #6a3fa0; border-color: #8a5fc0; }
+  .box { border: 2px solid #2e7d6b; border-radius: 10px; padding: 12px 16px; margin: 10px 0; background: #f2faf7; }
+  .box.blue { border-color: #1f5fa8; background: #f0f6fd; }
+  .box.orange { border-color: #e08a2e; background: #fdf6ec; }
+  .box.purple { border-color: #8a5fc0; background: #f6f1fc; }
+  .warn { border: 2px solid #c0392b; border-radius: 10px; padding: 12px 16px; margin: 10px 0; background: #fdf0ee; }
+  .warn b { color: #c0392b; }
+  ul { margin: 6px 0; padding-left: 1.3em; }
+  li { margin: 4px 0; }
+  .formula { font-size: 1.25rem; font-weight: bold; text-align: center; padding: 10px; background: #fff; border: 2px dashed #1f5fa8; border-radius: 8px; margin: 10px 0; }
+  table { border-collapse: collapse; width: 100%; margin: 10px 0; }
+  th, td { border: 1px solid #999; padding: 8px 10px; text-align: left; }
+  th { background: #e8f3ef; }
+  .fig { text-align: center; margin: 12px 0; }
+  .fig figcaption { font-size: .9rem; color: #555; margin-top: 4px; }
+  svg { max-width: 100%; height: auto; }
+  .big { font-size: 1.1rem; font-weight: bold; }
+  .note { font-size: .9rem; color: #555; }
+  @media print {
+    body { padding: 0; }
+    h2 { page-break-after: avoid; }
+    .box, .warn, .fig { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<main>
+<h1>中1理科 暗記シート｜状態変化と密度</h1>
+<p class="sub">期末テスト対策（範囲は予測）。大事なところだけを集めたシートです。</p>
+
+<h2>1. 物質の三態（さんの状態）</h2>
+<div class="box">
+  <ul>
+    <li>物質の状態は <span class="big">固体・液体・気体</span> の3つ。水でいうと、氷（固体）・水（液体）・水蒸気（気体）。</li>
+    <li>状態が変わることを <span class="big">状態変化</span> という。</li>
+    <li>状態変化では、<span class="big">粒子の集まり方が変わるだけ</span> で、粒子の種類や数は変わらない。だから物質そのものは別の物質にならない。</li>
+  </ul>
+</div>
+
+<figure class="fig">
+<svg viewBox="0 0 640 240" width="640" role="img" aria-label="三態の粒子モデル図">
+  <!-- 固体 -->
+  <rect x="15" y="35" width="180" height="150" rx="8" fill="#eef6ff" stroke="#1f5fa8" stroke-width="2"/>
+  <g fill="#1f5fa8">
+    <circle cx="50" cy="70" r="11"/><circle cx="85" cy="70" r="11"/><circle cx="120" cy="70" r="11"/><circle cx="155" cy="70" r="11"/>
+    <circle cx="50" cy="105" r="11"/><circle cx="85" cy="105" r="11"/><circle cx="120" cy="105" r="11"/><circle cx="155" cy="105" r="11"/>
+    <circle cx="50" cy="140" r="11"/><circle cx="85" cy="140" r="11"/><circle cx="120" cy="140" r="11"/><circle cx="155" cy="140" r="11"/>
+  </g>
+  <text x="105" y="25" text-anchor="middle" font-size="19" font-weight="bold" fill="#1f5fa8">固体</text>
+  <text x="105" y="212" text-anchor="middle" font-size="14" fill="#333">粒子が規則正しく並ぶ</text>
+  <text x="105" y="232" text-anchor="middle" font-size="14" fill="#333">間隔：いちばん小さい</text>
+  <!-- 液体 -->
+  <rect x="230" y="35" width="180" height="150" rx="8" fill="#eafaf1" stroke="#2e7d6b" stroke-width="2"/>
+  <g fill="#2e7d6b">
+    <circle cx="265" cy="75" r="11"/><circle cx="310" cy="65" r="11"/><circle cx="355" cy="78" r="11"/><circle cx="385" cy="60" r="11"/>
+    <circle cx="280" cy="115" r="11"/><circle cx="330" cy="108" r="11"/><circle cx="375" cy="118" r="11"/>
+    <circle cx="262" cy="152" r="11"/><circle cx="312" cy="148" r="11"/><circle cx="360" cy="155" r="11"/><circle cx="392" cy="142" r="11"/>
+  </g>
+  <text x="320" y="25" text-anchor="middle" font-size="19" font-weight="bold" fill="#2e7d6b">液体</text>
+  <text x="320" y="212" text-anchor="middle" font-size="14" fill="#333">粒子が少し離れて動ける</text>
+  <text x="320" y="232" text-anchor="middle" font-size="14" fill="#333">間隔：中くらい</text>
+  <!-- 気体 -->
+  <rect x="445" y="35" width="180" height="150" rx="8" fill="#fdf3e7" stroke="#e08a2e" stroke-width="2"/>
+  <g fill="#e08a2e">
+    <circle cx="480" cy="60" r="11"/><circle cx="560" cy="52" r="11"/><circle cx="605" cy="85" r="11"/>
+    <circle cx="520" cy="110" r="11"/><circle cx="585" cy="140" r="11"/><circle cx="470" cy="160" r="11"/>
+    <circle cx="540" cy="168" r="11"/><circle cx="610" cy="168" r="11"/>
+  </g>
+  <text x="535" y="25" text-anchor="middle" font-size="19" font-weight="bold" fill="#b05e14">気体</text>
+  <text x="535" y="212" text-anchor="middle" font-size="14" fill="#333">粒子が自由に飛び回る</text>
+  <text x="535" y="232" text-anchor="middle" font-size="14" fill="#333">間隔：いちばん大きい</text>
+</svg>
+<figcaption>粒子の間隔は 固体 ＜ 液体 ＜ 気体 の順に大きくなる</figcaption>
+</figure>
+
+<h2>2. 融点と沸点</h2>
+<div class="box">
+  <table>
+    <tr><th>言葉</th><th>意味</th><th>水の場合</th></tr>
+    <tr><td class="big">融点（ゆうてん）</td><td>固体がとけて液体になるときの温度</td><td>0℃</td></tr>
+    <tr><td class="big">沸点（ふってん）</td><td>液体が沸騰して気体になるときの温度</td><td>100℃</td></tr>
+  </table>
+  <ul>
+    <li>とけている最中と、沸騰している最中は、<span class="big">加熱しても温度は上がらない（一定）</span>。加えた熱が「状態を変えること」に使われるから。</li>
+    <li>例：エタノールの沸点は78℃。加熱して78℃で温度が止まったら、そこが沸点。</li>
+  </ul>
+</div>
+
+<figure class="fig">
+<svg viewBox="0 0 560 300" width="560" role="img" aria-label="加熱曲線の図">
+  <!-- 軸 -->
+  <line x1="70" y1="20" x2="70" y2="255" stroke="#333" stroke-width="2"/>
+  <line x1="70" y1="255" x2="530" y2="255" stroke="#333" stroke-width="2"/>
+  <polygon points="70,12 64,26 76,26" fill="#333"/>
+  <polygon points="538,255 524,249 524,261" fill="#333"/>
+  <text x="30" y="45" font-size="15" fill="#333">温度</text>
+  <text x="470" y="282" font-size="15" fill="#333">加熱時間</text>
+  <!-- 融点・沸点の目盛り -->
+  <line x1="64" y1="185" x2="76" y2="185" stroke="#333" stroke-width="2"/>
+  <text x="58" y="190" text-anchor="end" font-size="14" fill="#333">融点</text>
+  <line x1="64" y1="85" x2="76" y2="85" stroke="#333" stroke-width="2"/>
+  <text x="58" y="90" text-anchor="end" font-size="14" fill="#333">沸点</text>
+  <!-- 曲線 -->
+  <polyline points="70,225 180,185 300,185 380,85 500,85" fill="none" stroke="#c0392b" stroke-width="3"/>
+  <!-- ラベル -->
+  <text x="185" y="170" font-size="15" font-weight="bold" fill="#c0392b">とけている間：温度は一定</text>
+  <text x="330" y="70" font-size="15" font-weight="bold" fill="#c0392b">沸騰している間：温度は一定</text>
+  <text x="95" y="245" font-size="13" fill="#555">固体</text>
+  <text x="225" y="245" font-size="13" fill="#555">固体＋液体</text>
+  <text x="330" y="245" font-size="13" fill="#555">液体</text>
+  <text x="440" y="245" font-size="13" fill="#555">液体＋気体</text>
+  <text x="505" y="130" font-size="13" fill="#555">気体</text>
+</svg>
+<figcaption>加熱曲線：温度が横ばいになる部分が、融点と沸点</figcaption>
+</figure>
+
+<h2 class="blue">3. 状態変化と体積・質量</h2>
+<div class="box blue">
+  <ul>
+    <li><span class="big">質量は変わらない。</span>粒子の数が変わらないから。（例）50gの氷がとけても、水は50gのまま。</li>
+    <li><span class="big">体積は変わる。</span>ふつう、固体 ＜ 液体 ＜ 気体 の順に体積が大きくなる。（例）固体のろうをとかすと体積は大きくなる。</li>
+    <li>多くの物質は、固体になると粒子が規則正しく並び、体積は小さくなる。</li>
+  </ul>
+</div>
+<div class="warn">
+  <b>⚠ 水だけは例外！</b>
+  <ul>
+    <li>水は、冷やして氷（固体）になると<span class="big">体積が大きくなる</span>珍しい物質。</li>
+    <li>でも質量は変わらない。体積が増える分、氷は水より密度が小さくなる（→ 氷が水に浮く理由）。</li>
+  </ul>
+</div>
+
+<h2 class="orange">4. 蒸留（じょうりゅう）</h2>
+<div class="box orange">
+  <ul>
+    <li><span class="big">沸点の差を利用して、混ざった液体を分ける方法</span>が蒸留。</li>
+    <li>やり方：混合物を加熱する → 沸点の低い物質が先に気体になる → 冷やして液体にもどして集める。</li>
+    <li>例：水（沸点100℃）とエタノール（沸点78℃）の混合物では、<span class="big">エタノールが多く含まれる液体が先に出てくる</span>。</li>
+  </ul>
+</div>
+
+<h2 class="purple">5. 密度（みつど）</h2>
+<div class="box purple">
+  <p>密度は「どれだけぎゅっと詰まっているか」を表す量。物質ごとに決まっていて、<span class="big">物質を見分ける手がかり</span>になる。</p>
+  <div class="formula">密度（g/cm³）＝ 質量（g）÷ 体積（cm³）</div>
+  <ul>
+    <li>単位は <span class="big">g/cm³</span>（グラム毎立方センチメートル）。</li>
+    <li>変形も使えるように：<span class="big">質量 ＝ 密度 × 体積</span>／<span class="big">体積 ＝ 質量 ÷ 密度</span></li>
+    <li>例：質量60g・体積20cm³の金属 → 密度 ＝ 60 ÷ 20 ＝ <span class="big">3.0 g/cm³</span></li>
+    <li>例：密度0.9g/cm³の油45g → 体積 ＝ 45 ÷ 0.9 ＝ <span class="big">50 cm³</span></li>
+    <li>質量が同じなら、<span class="big">体積が小さい方が密度が大きい</span>。</li>
+  </ul>
+</div>
+
+<figure class="fig">
+<svg viewBox="0 0 560 260" width="560" role="img" aria-label="密度と浮き沈みの図">
+  <!-- 水の容器 -->
+  <path d="M60 60 L85 240 L475 240 L500 60" fill="#dbeeff" stroke="#1f5fa8" stroke-width="2"/>
+  <line x1="52" y1="60" x2="508" y2="60" stroke="#1f5fa8" stroke-width="2" stroke-dasharray="6 4"/>
+  <text x="500" y="50" text-anchor="end" font-size="15" fill="#1f5fa8">水（密度 1.0 g/cm³）</text>
+  <!-- 浮くもの -->
+  <rect x="140" y="42" width="80" height="36" rx="5" fill="#f7c873" stroke="#b05e14" stroke-width="2"/>
+  <text x="180" y="30" text-anchor="middle" font-size="15" font-weight="bold" fill="#b05e14">浮く</text>
+  <text x="180" y="105" text-anchor="middle" font-size="13" fill="#333">密度 0.8 など</text>
+  <text x="180" y="123" text-anchor="middle" font-size="13" fill="#333">水より小さい</text>
+  <!-- 沈むもの -->
+  <rect x="345" y="196" width="80" height="36" rx="5" fill="#9aa3ad" stroke="#555" stroke-width="2"/>
+  <text x="385" y="185" text-anchor="middle" font-size="15" font-weight="bold" fill="#555">沈む</text>
+  <text x="385" y="160" text-anchor="middle" font-size="13" fill="#333">密度 3.0 など</text>
+  <text x="385" y="142" text-anchor="middle" font-size="13" fill="#333">水より大きい</text>
+</svg>
+<figcaption>水の密度1.0と比べて、小さいものは浮き、大きいものは沈む</figcaption>
+</figure>
+
+<div class="box purple">
+  <ul>
+    <li><span class="big">水より密度が小さい → 浮く</span>（例：油、氷）</li>
+    <li><span class="big">水より密度が大きい → 沈む</span>（例：金属）</li>
+    <li>例：ある液体80cm³の質量が64g → 密度 ＝ 64 ÷ 80 ＝ 0.8 g/cm³ → 水より小さいので<span class="big">浮く</span>。</li>
+  </ul>
+</div>
+
+<h2 class="blue">6. 質量パーセント濃度（中間の復習）</h2>
+<div class="box blue">
+  <p>水溶液に溶けている物質の割合を表す数字。</p>
+  <div class="formula">質量パーセント濃度（％）＝ 溶質の質量（g）÷ 水溶液全体の質量（g）× 100</div>
+  <ul>
+    <li>「溶質」＝ 溶けている物質（例：食塩）。「水溶液全体」＝ 溶質 ＋ 水 の合計。</li>
+    <li>例：食塩20gを水80gに溶かす → 全体は100g → 濃度 ＝ 20 ÷ 100 × 100 ＝ <span class="big">20％</span></li>
+  </ul>
+</div>
+
+<h2>まとめ｜間違えやすい点</h2>
+<div class="warn">
+  <ul>
+    <li><b>質量と体積を混同しない。</b>状態変化で変わるのは体積だけ。質量は絶対に変わらない。</li>
+    <li><b>水は例外。</b>氷になると体積が増える（多くの物質は固体で体積が減る）。</li>
+    <li><b>温度が一定＝状態変化の最中。</b>加熱曲線の横ばい部分が融点・沸点。</li>
+    <li><b>蒸留で先に出るのは沸点の低い方。</b>「低い方から先に気体になる」が合言葉。</li>
+    <li><b>密度の公式は「質量 ÷ 体積」。</b>逆にしない。単位 g/cm³ を書き忘れない。</li>
+    <li><b>浮く・沈むは水の1.0と比べる。</b>小さい→浮く、大きい→沈む。</li>
+    <li><b>濃度の分母は「水溶液全体」。</b>水だけの質量で割らない。</li>
+  </ul>
+</div>
+
+<p class="note">※このシートは期末テストの予測範囲（状態変化と密度）をもとに作成しています。正式な範囲が出たら見直します。</p>
+</main>
+
+<div style="max-width:880px;margin:24px auto 8px;padding:0 16px 24px;font-family:sans-serif;text-align:center"><a href="sakuya.html" style="display:inline-block;background:#ff6b9d;color:#fff;font-weight:700;text-decoration:none;padding:14px 22px;border-radius:999px;font-size:16px">← 教材トップへ戻る</a></div>
+</body>
+</html>

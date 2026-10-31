@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>中3技家 暗記シート｜情報の技術・消費生活・子どもの成長</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 16px; background: #ffffff; color: #222; font-family: "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif; line-height: 1.7; font-size: 15px; }
+  .wrap { max-width: 820px; margin: 0 auto; }
+  h1 { font-size: 22px; margin: 0 0 4px; color: #1a5c2e; border-bottom: 4px solid #1a5c2e; padding-bottom: 8px; }
+  .sub { color: #555; font-size: 13px; margin-bottom: 16px; }
+  .field-tag { display: inline-block; color: #fff; font-weight: bold; border-radius: 4px; padding: 2px 10px; font-size: 13px; margin-bottom: 6px; }
+  .tech { background: #1565c0; }
+  .home { background: #c2185b; }
+  h2 { font-size: 18px; margin: 26px 0 8px; padding: 6px 10px; border-radius: 6px; background: #e8f3ec; color: #1a5c2e; }
+  h2.blue { background: #e3f0fb; color: #0d47a1; }
+  h2.pink { background: #fde7f1; color: #880e4f; }
+  .memorize { border: 2px solid #43a047; border-radius: 8px; padding: 10px 14px; margin: 10px 0; background: #f6fbf6; }
+  .memorize .label { font-weight: bold; color: #2e7d32; font-size: 13px; letter-spacing: .1em; }
+  .memorize ul { margin: 6px 0 2px; padding-left: 20px; }
+  .warn { border: 2px solid #e53935; border-radius: 8px; padding: 10px 14px; margin: 10px 0; background: #fff5f5; }
+  .warn .label { font-weight: bold; color: #c62828; font-size: 13px; letter-spacing: .1em; }
+  .warn ul { margin: 6px 0 2px; padding-left: 20px; }
+  table { border-collapse: collapse; width: 100%; margin: 10px 0; font-size: 14px; }
+  th, td { border: 1px solid #bbb; padding: 6px 8px; text-align: left; }
+  th { background: #eef4ee; }
+  b.key { color: #c62828; }
+  .figure { text-align: center; margin: 12px 0; }
+  .figure figcaption { font-size: 13px; color: #555; margin-top: 4px; }
+  .formula { font-size: 17px; font-weight: bold; text-align: center; background: #fffde7; border: 1px dashed #f9a825; border-radius: 8px; padding: 8px; margin: 10px 0; }
+  @media print { body { padding: 0; } h2 { break-after: avoid; } .memorize, .warn, table, .figure { break-inside: avoid; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>中3技家 暗記シート｜情報の技術・消費生活・子どもの成長</h1>
+<p class="sub">対象：中学3年生｜期末テスト対策（※範囲は未発表のため、中3の標準単元からの予測です。正式な範囲が出たら調整します）</p>
+
+<span class="field-tag tech">技術分野</span>
+<h2 class="blue">1. コンピュータの仕組み</h2>
+<div class="memorize">
+  <span class="label">覚えること</span>
+  <ul>
+    <li><b class="key">CPU（中央処理装置）</b>＝演算（計算）と制御（命令を出す）を行う、コンピュータの頭脳</li>
+    <li><b class="key">主記憶装置（メモリ）</b>＝作業中のデータを一時的に置く。電源を切ると<b class="key">消える</b></li>
+    <li><b class="key">補助記憶装置（SSD・HDD・USBメモリ）</b>＝データを長く保存する。電源を切っても<b class="key">消えない</b></li>
+    <li>入力装置＝キーボード・マウスなど／出力装置＝ディスプレイ・プリンタなど</li>
+  </ul>
+</div>
+
+<h2 class="blue">2. デジタル情報の表し方</h2>
+<div class="formula">1バイト ＝ 8ビット　／　情報は「0」と「1」の組み合わせで表す</div>
+<div class="memorize">
+  <span class="label">覚えること</span>
+  <ul>
+    <li><b class="key">ビット</b>＝情報の最小の単位（0か1のどちらか）</li>
+    <li>白黒画像は1画素＝<b class="key">1ビット</b>（白＝0、黒＝1）</li>
+    <li><b class="key">画素（ピクセル）</b>＝画像を構成する小さな点。数が多いほど<b class="key">解像度</b>が高く、なめらかに見える</li>
+    <li>色は光の三原色 <b class="key">赤（R）・緑（G）・青（B）</b> の組み合わせで表す</li>
+    <li>音や画像など、もとは連続した量（アナログ）を、切りのよい数字に変えたものがデジタル</li>
+  </ul>
+</div>
+<div class="warn">
+  <span class="label">間違えやすい点</span>
+  <ul>
+    <li>1バイトは「10ビット」ではなく<b class="key">8ビット</b></li>
+    <li>画素数が多い＝データ量も<b class="key">大きく</b>なる（きれいだが重い）</li>
+  </ul>
+</div>
+
+<h2 class="blue">3. ネットワークのしくみ</h2>
+<figure class="figure">
+  <svg width="640" height="190" viewBox="0 0 640 190" role="img" aria-label="ネットワークのつながり図">
+    <rect x="10" y="30" width="130" height="55" rx="8" fill="#e3f0fb" stroke="#1565c0" stroke-width="2"/>
+    <text x="75" y="54" text-anchor="middle" font-size="14" font-weight="bold">クライアント</text>
+    <text x="75" y="74" text-anchor="middle" font-size="12">（使う側）</text>
+    <rect x="10" y="105" width="130" height="55" rx="8" fill="#e3f0fb" stroke="#1565c0" stroke-width="2"/>
+    <text x="75" y="129" text-anchor="middle" font-size="14" font-weight="bold">クライアント</text>
+    <text x="75" y="149" text-anchor="middle" font-size="12">（使う側）</text>
+    <rect x="230" y="68" width="120" height="55" rx="8" fill="#fff3e0" stroke="#ef6c00" stroke-width="2"/>
+    <text x="290" y="92" text-anchor="middle" font-size="14" font-weight="bold">ルーター</text>
+    <text x="290" y="112" text-anchor="middle" font-size="12">出入り口</text>
+    <ellipse cx="445" cy="95" rx="62" ry="38" fill="#f1f8e9" stroke="#43a047" stroke-width="2"/>
+    <text x="445" y="90" text-anchor="middle" font-size="14" font-weight="bold">インター</text>
+    <text x="445" y="110" text-anchor="middle" font-size="14" font-weight="bold">ネット</text>
+    <rect x="540" y="68" width="92" height="55" rx="8" fill="#fde7f1" stroke="#c2185b" stroke-width="2"/>
+    <text x="586" y="92" text-anchor="middle" font-size="14" font-weight="bold">サーバ</text>
+    <text x="586" y="112" text-anchor="middle" font-size="12">（提供する側）</text>
+    <line x1="140" y1="58" x2="230" y2="88" stroke="#666" stroke-width="2"/>
+    <line x1="140" y1="132" x2="230" y2="103" stroke="#666" stroke-width="2"/>
+    <line x1="350" y1="95" x2="383" y2="95" stroke="#666" stroke-width="2"/>
+    <line x1="507" y1="95" x2="540" y2="95" stroke="#666" stroke-width="2"/>
+    <text x="75" y="20" text-anchor="middle" font-size="12" fill="#1565c0">家・学校の中 ＝ LAN</text>
+    <text x="445" y="160" text-anchor="middle" font-size="12" fill="#43a047">世界中をつなぐ ＝ WAN の代表例</text>
+  </svg>
+  <figcaption>ネットワークのつながり：使う側（クライアント）と、情報を提供する側（サーバ）がつながっている</figcaption>
+</figure>
+<div class="memorize">
+  <span class="label">覚えること</span>
+  <ul>
+    <li><b class="key">LAN</b>＝家庭や学校など限られた範囲のネットワーク／<b class="key">WAN</b>＝広い範囲をつなぐネットワーク</li>
+    <li><b class="key">サーバ</b>＝情報を提供するコンピュータ／<b class="key">クライアント</b>＝情報をもらって使う側</li>
+    <li><b class="key">IPアドレス</b>＝ネットワーク上の「住所」。1台ごとに決まっている</li>
+    <li><b class="key">プロトコル</b>＝通信の約束ごと（ルール）</li>
+  </ul>
+</div>
+
+<h2 class="blue">4. 情報セキュリティと情報モラル</h2>
+<div class="memorize">
+  <span class="label">覚えること</span>
+  <ul>
+    <li><b class="key">フィッシング</b>＝本物を装った偽メール・偽サイトで、パスワードなどを盗む手口</li>
+    <li>パスワードは長くする、<b class="key">使い回しをしない</b>、他人に教えない</li>
+    <li>ウイルス対策ソフトを使う／OSやアプリを最新の状態に保つ</li>
+    <li><b class="key">著作権</b>＝写真・イラスト・音楽・文章は作った人のもの。ネットで見られても無断で使ってはいけない</li>
+    <li>他人の顔写真や名前などの<b class="key">個人情報</b>を勝手に公開しない</li>
+    <li>SNSの発信は、消しても記録が残る。一度出た情報は完全には消せない</li>
+  </ul>
+</div>
+
+<h2 class="blue">5. プログラムによる計測・制御</h2>
+<div class="formula">センサで測る → コンピュータが判断する → アクチュエータが動かす</div>
+<div class="memorize">
+  <span class="label">覚えること</span>
+  <ul>
+    <li><b class="key">センサ</b>＝明るさ・温度・距離などを測って伝える装置</li>
+    <li><b class="key">アクチュエータ</b>＝モーターなど、実際に動きを生み出す装置</li>
+    <li>プログラムの基本構造は3つ：<b class="key">順次</b>（順番に）、<b class="key">分岐</b>（条件で分かれる）、<b class="key">反復</b>（くり返す）</li>
+    <li>処理の流れを図にしたものを<b class="key">フローチャート（流れ図）</b>という</li>
+    <li>身近な例：エアコンの温度調節、自動ドア、信号機など</li>
+  </ul>
+</div>
+
+<span class="field-tag home">家庭分野</span>
+<h2 class="pink">6. 契約と買い物</h2>
+<div class="memorize">
+  <span class="label">覚えること</span>
+  <ul>
+    <li>契約は「<b class="key">申し込み</b>」と「<b class="key">承諾</b>」の意思が合わさると成立する（口約束でも成立）</li>
+    <li>コンビニでの買い物など、日常の買い物もすべて売買契約</li>
+    <li><b class="key">未成年者</b>が親の同意なしに結んだ契約は、原則として<b class="key">取り消すことができる</b>（未成年者取消権）</li>
+  </ul>
+</div>
+<div class="warn">
+  <span class="label">間違えやすい点</span>
+  <ul>
+    <li>小遣いの範囲の買い物や、成年と偽った場合など、取り消せない場合もある</li>
+    <li>「契約書にサインしたとき」だけが契約ではない。口頭でも成立する</li>
+  </ul>
+</div>
+
+<h2 class="pink">7. クレジットと電子マネー</h2>
+<table>
+  <tr><th>種類</th><th>支払いのタイミング</th><th>ポイント</th></tr>
+  <tr><td><b>クレジットカード</b></td><td>後払い</td><td>カード会社が店に立て替え払いし、後から利用者に請求。使いすぎ＝借金と同じ</td></tr>
+  <tr><td><b>電子マネー（プリペイド型）</b></td><td>前払い</td><td>事前にチャージ（入金）した残高の範囲で使う</td></tr>
+  <tr><td><b>電子マネー（ポストペイ型）</b></td><td>後払い</td><td>使った分がクレジットカードなどから後で請求される</td></tr>
+  <tr><td><b>デビットカード</b></td><td>即時払い</td><td>使った瞬間に銀行口座から引き落とされる</td></tr>
+</table>
+<div class="warn">
+  <span class="label">間違えやすい点</span>
+  <ul>
+    <li>クレジットカードは「お得なカード」ではなく<b class="key">後払い＝借金</b>。分割払い・リボ払いは手数料がかかる</li>
+    <li>交通系ICへのチャージは<b class="key">前払い（プリペイド型）</b></li>
+  </ul>
+</div>
+
+<h2 class="pink">8. 消費者トラブルとクーリング・オフ</h2>
+<figure class="figure">
+  <svg width="640" height="120" viewBox="0 0 640 120" role="img" aria-label="クーリング・オフの期限の図">
+    <line x1="30" y1="60" x2="610" y2="60" stroke="#c2185b" stroke-width="3"/>
+    <circle cx="60" cy="60" r="8" fill="#c2185b"/>
+    <text x="60" y="35" text-anchor="middle" font-size="13" font-weight="bold">契約書を受け取った日</text>
+    <text x="60" y="95" text-anchor="middle" font-size="12">（1日目）</text>
+    <circle cx="330" cy="60" r="8" fill="#c2185b"/>
+    <text x="330" y="35" text-anchor="middle" font-size="13">この間なら理由なしで解除できる</text>
+    <text x="330" y="95" text-anchor="middle" font-size="12">はがきなど書面で通知する</text>
+    <circle cx="580" cy="60" r="8" fill="#c2185b"/>
+    <text x="580" y="35" text-anchor="middle" font-size="13" font-weight="bold">8日目</text>
+    <text x="580" y="95" text-anchor="middle" font-size="12">（訪問販売の場合）</text>
+    <rect x="68" y="52" width="504" height="16" fill="#fde7f1" opacity="0.7"/>
+  </svg>
+  <figcaption>クーリング・オフの期間（訪問販売・電話勧誘販売は8日間）</figcaption>
+</figure>
+<div class="memorize">
+  <span class="label">覚えること</span>
+  <ul>
+    <li><b class="key">クーリング・オフ</b>＝訪問販売など特定の取引で、契約後でも一定期間内なら<b class="key">理由なしで解除できる</b>制度</li>
+    <li>期間の代表例：訪問販売・電話勧誘販売は<b class="key">8日間</b>（契約書を受け取った日から数える）</li>
+    <li>通知は証拠が残るよう<b class="key">書面（はがき等）</b>で行い、コピーを残す</li>
+    <li>困ったときの相談先：<b class="key">消費者ホットライン「188（いやや）」</b>→近くの<b class="key">消費生活センター</b>につながる</li>
+  </ul>
+</div>
+<div class="warn">
+  <span class="label">間違えやすい点</span>
+  <ul>
+    <li>クーリング・オフは<b class="key">すべての買い物に使える制度ではない</b>。自分から店に出向いて買った物は原則対象外</li>
+    <li>電話や口頭の通知だけでは証拠が残らない。必ず書面で</li>
+  </ul>
+</div>
+
+<h2 class="pink">9. 子どもの生活と成長（幼児の発達）</h2>
+<table>
+  <tr><th>時期の目安</th><th>できるようになること</th></tr>
+  <tr><td>生後3〜4か月ころ</td><td>首がすわる</td></tr>
+  <tr><td>生後5〜6か月ころ</td><td>寝返り、お座りの始まり</td></tr>
+  <tr><td>生後7〜9か月ころ</td><td>はいはい、お座りが安定</td></tr>
+  <tr><td>生後10か月〜1歳ころ</td><td>つかまり立ち、伝い歩き</td></tr>
+  <tr><td>1歳前後</td><td>一人で歩く（歩行の始まり）</td></tr>
+</table>
+<div class="memorize">
+  <span class="label">覚えること</span>
+  <ul>
+    <li>発達の順序は決まっているが、時期には<b class="key">個人差が大きい</b>（目安より遅くても、ただちに異常ではない）</li>
+    <li><b class="key">遊びは幼児にとって学びそのもの</b>：体の動かし方、言葉、人との関わり方（社会性）が遊びの中で育つ</li>
+    <li>生活習慣（食事・睡眠・排泄など）は、くり返しの中で少しずつ自立していく</li>
+    <li>関わるときは<b class="key">安全の確保</b>（誤飲・転落の防止）と、子どもの気持ちを受け止めることが大切</li>
+  </ul>
+</div>
+<div class="warn">
+  <span class="label">間違えやすい点</span>
+  <ul>
+    <li>発達の順序は「首がすわる → はいはい → 歩く」。逆にならない</li>
+    <li>幼児の遊びは「勉強のじゃま」ではなく、発達に<b class="key">必要</b>なもの</li>
+  </ul>
+</div>
+
+<h2>まとめ｜テスト直前チェック</h2>
+<div class="memorize">
+  <span class="label">覚えること</span>
+  <ul>
+    <li>技術：CPU＝演算と制御／1バイト＝8ビット／サーバとクライアント／センサ→判断→アクチュエータ</li>
+    <li>家庭：契約＝申し込み＋承諾／未成年者は原則取り消せる／クレジットは後払い</li>
+    <li>困ったときは <b class="key">188</b>（消費者ホットライン）と消費生活センター</li>
+    <li>幼児：発達には個人差、遊び＝学び</li>
+  </ul>
+</div>
+
+</div>
+
+<div style="max-width:880px;margin:24px auto 8px;padding:0 16px 24px;font-family:sans-serif;text-align:center"><a href="iori.html" style="display:inline-block;background:#ff6b9d;color:#fff;font-weight:700;text-decoration:none;padding:14px 22px;border-radius:999px;font-size:16px">← 教材トップへ戻る</a></div>
+</body>
+</html>
