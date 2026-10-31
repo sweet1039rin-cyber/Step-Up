@@ -1992,6 +1992,7 @@ function renderMaterials(){
  document.querySelectorAll('[data-material-id]').forEach(b=>b.onclick=()=>{const all=getMaterials();const item=all.find(x=>String(x.id)===b.dataset.materialId);if(!item)return;item.done=!item.done;item.current=item.done?Number(item.total||100):0;saveMaterials(all);syncLearningProgress(current,item.name,item.current,item.total);renderMaterials()});
  document.querySelectorAll('[data-progress-id]').forEach(b=>b.onclick=()=>{const all=getMaterials();const item=all.find(x=>String(x.id)===b.dataset.progressId);if(!item)return;const total=Number(item.total||9999);item.current=Math.max(0,Math.min(total,Number(item.current||0)+1));item.done=item.current>=total;saveMaterials(all);syncLearningProgress(current,item.name,item.current,item.total);renderMaterials()});
  renderNotebookSection();
+ renderLinkShelf();
 }
 
 // ============================================================
@@ -2079,8 +2080,86 @@ function renderNotebookSection(){
   openNotebook(b.dataset.notebookChild,b.dataset.notebookMaterial,b.dataset.notebookSubject);
  });
 }
-function openMaterials(){materialsPerson.textContent=data[current].name+' / 学習ツール';renderNotebookSection();show(materialsScreen)}
+function openMaterials(){materialsPerson.textContent=data[current].name+' / 学習ツール';renderNotebookSection();renderLinkShelf();show(materialsScreen)}
 materialsBack.onclick=()=>show(mission);
+
+// ============================================================
+// リンク置き場（第2次改修-1）
+// 学習ツール画面の既存セクション（NotebookLM・どこスタ連携）の下に、
+// 子ども別のリンク一覧カードを追加する。index.htmlは変更しないため、
+// カードのHTMLはこのコードが生成して #dokosutaCard の直後へ差し込む。
+// 保存キー stepup-links-{childId} は stepup- 接頭辞を持つので、
+// stepup-sync.js の同期対象（isSyncTarget）に含まれる。
+// ============================================================
+function linkShelfKey(childId){return 'stepup-links-'+childId}
+function defaultLinks(childId){
+ if(childId==='sakuya'){
+  const nb=notebookLinks.sakuya.summerSchool;
+  return [
+   {name:'NotebookLM 英語',url:nb.english},
+   {name:'NotebookLM 数学',url:nb.math},
+   {name:'NotebookLM 理科',url:nb.science},
+   {name:'📚 期末テスト対策',url:'study/sakuya.html'}
+  ];
+ }
+ return [{name:'📚 期末テスト対策',url:'study/iori.html'}];
+}
+function getLinks(childId){
+ // キーが無い時だけ初期値を投入する（既存データは上書きしない）
+ if(localStorage.getItem(linkShelfKey(childId))===null){
+  const list=defaultLinks(childId);
+  saveLinks(childId,list);
+  return list;
+ }
+ try{const parsed=JSON.parse(localStorage.getItem(linkShelfKey(childId))||'[]');return Array.isArray(parsed)?parsed:[]}catch(e){return []}
+}
+function saveLinks(childId,list){localStorage.setItem(linkShelfKey(childId),JSON.stringify(list))}
+function ensureLinkShelfCard(){
+ let card=document.querySelector('#linkShelfCard');
+ if(card)return card;
+ card=document.createElement('section');
+ card.id='linkShelfCard';
+ card.className='card link-shelf-card';
+ card.innerHTML=`
+  <div class="card-title"><span>🔗</span><h2>リンク置き場</h2></div>
+  <div id="linkShelfList" class="link-shelf-list"></div>
+  <div class="link-shelf-form">
+   <label>名前<input id="linkShelfName" type="text" placeholder="例：英語の動画"></label>
+   <label>URL<input id="linkShelfUrl" type="url" placeholder="https://..."></label>
+   <button id="linkShelfAddBtn" type="button">追加</button>
+  </div>`;
+ const doko=document.querySelector('#dokosutaCard');
+ if(doko&&doko.parentNode){doko.parentNode.insertBefore(card,doko.nextSibling)}
+ else{document.querySelector('#materials .utility-wrap')?.appendChild(card)}
+ card.querySelector('#linkShelfAddBtn').onclick=()=>{
+  const nameEl=card.querySelector('#linkShelfName'),urlEl=card.querySelector('#linkShelfUrl');
+  const name=nameEl.value.trim(),url=urlEl.value.trim();
+  if(!name||!url){showNotebookNotice('リンクの名前とURLを入力してください');return}
+  const list=getLinks(current);
+  list.push({name,url});
+  saveLinks(current,list);
+  nameEl.value='';urlEl.value='';
+  renderLinkShelf();
+ };
+ return card;
+}
+function renderLinkShelf(){
+ const card=ensureLinkShelfCard();
+ const listEl=card.querySelector('#linkShelfList');
+ if(!listEl)return;
+ const list=getLinks(current);
+ listEl.innerHTML=list.length?list.map((link,i)=>`
+  <div class="link-shelf-row">
+   <a class="link-shelf-open" href="${escapeHtml(link.url||'')}" target="_blank" rel="noopener noreferrer">${escapeHtml(link.name||'リンク')}</a>
+   <button type="button" class="link-shelf-delete" data-link-delete="${i}" aria-label="このリンクを削除">✕</button>
+  </div>`).join(''):'<div class="empty-state">リンクはまだありません。下の欄から追加できます。</div>';
+ listEl.querySelectorAll('[data-link-delete]').forEach(b=>b.onclick=()=>{
+  const links=getLinks(current);
+  links.splice(Number(b.dataset.linkDelete),1);
+  saveLinks(current,links);
+  renderLinkShelf();
+ });
+}
 addMaterialBtn.onclick=()=>materialForm.classList.toggle('hidden');
 materialFilters.querySelectorAll('button').forEach(b=>b.onclick=()=>{materialFilter=b.dataset.filter;materialFilters.querySelectorAll('button').forEach(x=>x.classList.toggle('active',x===b));renderMaterials()});
 saveMaterialBtn.onclick=()=>{const name=newMaterialName.value.trim();if(!name)return;const list=getMaterials();list.push({id:Date.now(),name,subject:newMaterialSubject.value,priority:newMaterialPriority.value,note:'追加した教材',current:0,total:100,todayFrom:1,todayTo:5,done:false});saveMaterials(list);newMaterialName.value='';materialForm.classList.add('hidden');renderMaterials()};
@@ -2217,6 +2296,7 @@ function renderAssignments(){
   }).join('');
  }
  wireDeadlineCardEvents();
+ refreshBulkCompleteBtn();
 }
 function formatDeadlineJapanese(deadline){
  const dl=parseDeadlineDateOnly(deadline);
@@ -2392,6 +2472,41 @@ document.querySelector('#saveDeadlineChangesBtn')?.addEventListener('click',()=>
  renderAssignments();
  render();
 });
+// ============================================================
+// 課題の一括完了（第2次改修-2）
+// 課題・提出物画面に「未完了をすべて完了にする」ボタンを追加する。
+// index.htmlは変更しないため、ボタンはこのコードが生成して
+// #assignmentSummary の直後へ差し込む。
+// 完了の付け方は「変更を保存」ボタンと同じ経路
+// （ProgressEngine.updateItem で {done:true, status:'completed'}）。
+// ============================================================
+function ensureBulkCompleteBtn(){
+ let btn=document.querySelector('#bulkCompleteBtn');
+ if(btn)return btn;
+ btn=document.createElement('button');
+ btn.id='bulkCompleteBtn';
+ btn.type='button';
+ btn.className='bulk-complete-btn';
+ btn.textContent='未完了をすべて完了にする';
+ btn.onclick=()=>{
+  const pending=ProgressEngine.getAll(current).filter(a=>!a.done);
+  if(!pending.length)return;
+  if(!confirm(`未完了の課題 ${pending.length}件をすべて完了にしますか？`))return;
+  pending.forEach(item=>ProgressEngine.updateItem(current,item.id,{done:true,status:'completed'}));
+  showDeadlineSaveStatus(`${pending.length}件を完了にしました`);
+  renderAssignments();
+  render();
+ };
+ const summary=document.querySelector('#assignmentSummary');
+ if(summary&&summary.parentNode){summary.parentNode.insertBefore(btn,summary.nextSibling)}
+ return btn;
+}
+function refreshBulkCompleteBtn(){
+ const btn=ensureBulkCompleteBtn();
+ const pendingCount=ProgressEngine.getAll(current).filter(a=>!a.done).length;
+ btn.disabled=pendingCount===0;
+ btn.textContent=pendingCount?`未完了をすべて完了にする（${pendingCount}件）`:'未完了の課題はありません';
+}
 function openAssignments(){assignmentForm.classList.add('hidden');materialForm.classList.add('hidden');renderAssignments();populateAssignmentMaterialList();renderMaterials();show(assignmentsScreen)}
 // 既存教材(教材ページのdefaultMaterials+保存済み教材)から候補一覧を作る。一覧にない場合は自由入力可。
 function populateAssignmentMaterialList(){
