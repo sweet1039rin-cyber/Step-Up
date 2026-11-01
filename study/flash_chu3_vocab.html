@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>中3英語 暗記カード｜英単語・熟語｜Step Up テスト対策</title>
+<style>
+:root{--ink:#1c2733;--accent:#ff6b9d;--navy:#1a1a5e;--line:#d9e2ec;--soft:#f4f7fb}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:var(--ink);
+ font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP","Yu Gothic",sans-serif;
+ font-size:18px;line-height:1.85;-webkit-text-size-adjust:100%}
+.wrap{max-width:880px;margin:0 auto;padding:20px 18px 56px}
+h1{font-size:1.55rem;line-height:1.45;border-bottom:4px solid var(--accent);padding-bottom:.35em;margin:.4em 0 .8em}
+p{margin:.6em 0}
+.backlink{display:inline-block;margin-top:28px;background:var(--accent);color:#fff;font-weight:700;
+ text-decoration:none;padding:14px 22px;border-radius:999px;font-size:1.05rem}
+.toplink{font-size:.95rem;margin-bottom:4px}
+.toplink a{color:var(--navy)}
+footer{margin-top:10px}
+@media (max-width:600px){body{font-size:17px}.wrap{padding:14px 12px 48px}h1{font-size:1.35rem}}
+.progress-text{font-weight:700;margin:16px 0 6px;font-size:1.1rem}
+.progress-bar{height:16px;background:var(--soft);border:2px solid var(--line);border-radius:999px;overflow:hidden}
+.progress-fill{height:100%;background:var(--accent);width:0;transition:width .3s}
+.card-scene{perspective:1200px;margin:20px 0 6px}
+.fcard{position:relative;width:100%;height:400px;cursor:pointer;transform-style:preserve-3d;transition:transform .45s;-webkit-tap-highlight-color:transparent}
+.fcard.flipped{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+ border:3px solid var(--navy);border-radius:18px;padding:24px 18px;overflow:hidden;
+ display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:#fff}
+.face.back{transform:rotateY(180deg);background:var(--soft);border-color:var(--accent)}
+.face-label{font-size:.85rem;font-weight:700;color:var(--accent);letter-spacing:.2em;margin-bottom:12px}
+.face-label.ans{color:var(--navy)}
+.face-text{font-size:1.3rem;font-weight:700;line-height:1.65}
+.face-note{margin-top:14px;font-size:.98rem;color:#54677a;line-height:1.65}
+.tap-hint{margin-top:16px;font-size:.9rem;color:#8a97a5}
+.judge{display:flex;gap:12px;margin-top:16px}
+.jbtn{flex:1;font-family:inherit;font-size:1.25rem;font-weight:700;padding:18px 10px;border-radius:14px;
+ border:3px solid var(--navy);background:#fff;color:var(--navy);cursor:pointer;min-height:64px}
+.jbtn.known{background:var(--accent);border-color:var(--accent);color:#fff}
+.jbtn:active{transform:scale(.98)}
+.round-info{text-align:center;color:#54677a;font-size:.95rem;margin-top:12px}
+.done-box{border:3px solid var(--accent);border-radius:18px;padding:32px 20px;text-align:center;background:#fff5f8;margin-top:22px}
+.done-title{font-size:1.5rem;font-weight:700;color:#c2255c;margin:.2em 0}
+.restart{max-width:340px;margin:16px auto 0;display:block;width:100%}
+</style>
+</head>
+<body>
+<div class="wrap">
+<p class="toplink"><a href="iori.html">← 中3トップへ戻る</a></p>
+<h1>中3英語 暗記カード｜英単語・熟語</h1>
+<p>カードをタップすると答えが見えます。答えを見たら「覚えた」「まだ」で教えてください。「まだ」のカードだけが次の周に出てきます。</p>
+<div class="progress-text" id="progressText"></div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+<div id="playArea">
+<div class="card-scene"><div class="fcard" id="fcard">
+<div class="face front"><div class="face-label">も　ん　だ　い</div><div class="face-text" id="frontText"></div><div class="tap-hint">タップで答えを見る</div></div>
+<div class="face back"><div class="face-label ans">こ　た　え</div><div class="face-text" id="backText"></div><div class="face-note" id="backNote"></div></div>
+</div></div>
+<div class="judge" id="judgeBtns" style="visibility:hidden">
+<button class="jbtn still" id="btnStill" type="button">まだ</button>
+<button class="jbtn known" id="btnKnown" type="button">覚えた</button>
+</div>
+<p class="round-info" id="roundInfo"></p>
+</div>
+<div id="doneArea" style="display:none">
+<div class="done-box"><p class="done-title">🎉 全部おぼえた！</p><p id="doneText"></p>
+<button class="jbtn known restart" id="btnRestart" type="button">最初からもう一度</button></div>
+</div>
+<footer><a class="backlink" href="iori.html">← 中3トップへ戻る</a> <a class="backlink" href="../index.html" style="background:#1a1a5e">🏠 アプリへ戻る</a></footer>
+</div>
+<script>
+var CARDS = [
+ {
+  "q": "environment",
+  "a": "環境",
+  "n": "例：We must protect the environment.（私たちは環境を守らなければなりません）"
+ },
+ {
+  "q": "recycle",
+  "a": "リサイクルする",
+  "n": "例：We recycle cans and bottles.（私たちは缶と瓶をリサイクルします）"
+ },
+ {
+  "q": "reduce",
+  "a": "減らす",
+  "n": "例：Let's reduce plastic bags.（レジ袋を減らしましょう）「reuse（再利用）」とセットで入試頻出です"
+ },
+ {
+  "q": "energy",
+  "a": "エネルギー",
+  "n": "例：Solar energy is clean.（太陽エネルギーはクリーンです）solar は「太陽の」"
+ },
+ {
+  "q": "decide",
+  "a": "決める",
+  "n": "例：I decided to study abroad.（私は留学することに決めました）decide to 〜 で「〜することに決める」"
+ },
+ {
+  "q": "believe",
+  "a": "信じる",
+  "n": "例：I believe you.（私はあなたを信じます）"
+ },
+ {
+  "q": "experience",
+  "a": "経験",
+  "n": "例：It was a good experience.（それは良い経験でした）"
+ },
+ {
+  "q": "future",
+  "a": "未来",
+  "n": "例：Think about your future.（自分の未来について考えなさい）"
+ },
+ {
+  "q": "culture",
+  "a": "文化",
+  "n": "例：I want to learn about Japanese culture.（日本の文化について学びたいです）"
+ },
+ {
+  "q": "famous",
+  "a": "有名な",
+  "n": "例：Kyoto is a famous city.（京都は有名な都市です）be famous for 〜 とセットで覚えます"
+ },
+ {
+  "q": "popular",
+  "a": "人気のある",
+  "n": "例：Soccer is popular in Brazil.（サッカーはブラジルで人気があります）"
+ },
+ {
+  "q": "different",
+  "a": "違う・異なる",
+  "n": "例：The two pictures are different.（2枚の絵は違います）be different from 〜 で「〜と違う」"
+ },
+ {
+  "q": "important",
+  "a": "重要な",
+  "n": "例：Health is important.（健康は重要です）"
+ },
+ {
+  "q": "delicious",
+  "a": "おいしい",
+  "n": "例：This cake is delicious.（このケーキはおいしいです）"
+ },
+ {
+  "q": "look forward to 〜",
+  "a": "〜を楽しみに待つ",
+  "n": "例：I look forward to seeing you.（あなたに会うのを楽しみにしています）to の後ろは動詞の ing 形です"
+ },
+ {
+  "q": "be famous for 〜",
+  "a": "〜で有名",
+  "n": "例：This town is famous for its apples.（この町はりんごで有名です）"
+ },
+ {
+  "q": "be interested in 〜",
+  "a": "〜に興味がある",
+  "n": "例：I am interested in science.（私は理科に興味があります）"
+ },
+ {
+  "q": "take care of 〜",
+  "a": "〜の世話をする",
+  "n": "例：She takes care of her dog.（彼女は犬の世話をしています）look after 〜 も同じ意味です"
+ },
+ {
+  "q": "all over the world",
+  "a": "世界中の",
+  "n": "例：People all over the world play soccer.（世界中の人々がサッカーをします）"
+ },
+ {
+  "q": "for example",
+  "a": "例えば",
+  "n": "例：For example, I like apples.（例えば、私はりんごが好きです）文の最初に置いてコンマを打ちます"
+ },
+ {
+  "q": "in the future",
+  "a": "将来・未来に",
+  "n": "例：I want to be a teacher in the future.（将来、先生になりたいです）"
+ },
+ {
+  "q": "not only 〜 but also ...",
+  "a": "〜だけでなく…も",
+  "n": "例：He can speak not only English but also French.（彼は英語だけでなくフランス語も話せます）"
+ },
+ {
+  "q": "be able to 〜",
+  "a": "〜できる",
+  "n": "例：She is able to swim fast.（彼女は速く泳ぐことができます）can とほぼ同じ意味です"
+ },
+ {
+  "q": "have to 〜",
+  "a": "〜しなければならない",
+  "n": "例：I have to study today.（今日は勉強しなければなりません）否定は don't have to 〜（〜しなくてよい）"
+ },
+ {
+  "q": "used to 〜",
+  "a": "以前は〜していた",
+  "n": "例：He used to live in Osaka.（彼は以前大阪に住んでいました）今は違う、という意味合いです"
+ },
+ {
+  "q": "turn off 〜",
+  "a": "〜を消す・止める",
+  "n": "例：Turn off the light, please.（電気を消してください）反対は turn on 〜（つける）"
+ },
+ {
+  "q": "get to 〜",
+  "a": "〜に着く",
+  "n": "例：We got to the station at nine.（私たちは9時に駅に着きました）arrive at 〜 と同じ意味です"
+ },
+ {
+  "q": "a lot of 〜",
+  "a": "たくさんの〜",
+  "n": "例：I have a lot of books.（私は本をたくさん持っています）数えられる名詞・数えられない名詞の両方に使えます"
+ }
+];
+var total = CARDS.length;
+var knownCount = 0;
+var deck = [];
+var pos = 0;
+var flipped = false;
+var round = 1;
+function el(id){ return document.getElementById(id); }
+function shuffle(a){ for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+function updateProgress(){
+  el('progressText').textContent = '覚えた ' + knownCount + ' / ' + total + ' 枚';
+  el('progressFill').style.width = (total ? (knownCount/total*100) : 0) + '%';
+}
+function updateRoundInfo(){
+  el('roundInfo').textContent = '第' + round + '周目｜この周はあと ' + (deck.length - pos) + ' 枚';
+}
+function showCard(){
+  flipped = false;
+  el('fcard').classList.remove('flipped');
+  var c = CARDS[deck[pos]];
+  el('frontText').textContent = c.q;
+  el('backText').textContent = c.a;
+  el('backNote').textContent = c.n || '';
+  el('judgeBtns').style.visibility = 'hidden';
+  updateRoundInfo();
+}
+function startRound(){ shuffle(deck); pos = 0; showCard(); }
+function init(){
+  knownCount = 0; round = 1;
+  deck = CARDS.map(function(_, i){ return i; });
+  el('doneArea').style.display = 'none';
+  el('playArea').style.display = 'block';
+  updateProgress();
+  startRound();
+}
+function finish(){
+  el('playArea').style.display = 'none';
+  el('doneArea').style.display = 'block';
+  el('doneText').textContent = '全' + total + '枚のカードを全部おぼえました。おつかれさま！';
+}
+function judge(known){
+  if(!flipped) return;
+  if(known){ knownCount++; deck.splice(pos, 1); }
+  else { pos++; }
+  updateProgress();
+  if(pos >= deck.length){
+    if(deck.length === 0){ finish(); return; }
+    round++; startRound(); return;
+  }
+  showCard();
+}
+el('fcard').addEventListener('click', function(){
+  if(flipped) return;
+  flipped = true;
+  this.classList.add('flipped');
+  el('judgeBtns').style.visibility = 'visible';
+});
+el('btnKnown').addEventListener('click', function(){ judge(true); });
+el('btnStill').addEventListener('click', function(){ judge(false); });
+el('btnRestart').addEventListener('click', init);
+init();
+</script>
+</body>
+</html>
