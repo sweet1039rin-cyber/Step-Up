@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>夜テスト｜中1 朔埜 SAKUYA｜Step Up テスト対策</title>
+<style>
+:root{--ink:#1c2733;--accent:#ff6b9d;--navy:#1a1a5e;--line:#d9e2ec;--soft:#f4f7fb}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:var(--ink);
+ font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP","Yu Gothic",sans-serif;
+ font-size:18px;line-height:1.85;-webkit-text-size-adjust:100%}
+.wrap{max-width:880px;margin:0 auto;padding:20px 18px 56px}
+h1{font-size:1.55rem;line-height:1.45;border-bottom:4px solid var(--accent);padding-bottom:.35em;margin:.4em 0 .8em}
+h2{font-size:1.3rem;line-height:1.5;border-left:8px solid var(--accent);padding:.1em 0 .1em .5em;margin:1.4em 0 .6em;background:var(--soft)}
+p{margin:.6em 0}
+strong{color:#c2255c}
+.backlink{display:inline-block;margin-top:28px;background:var(--accent);color:#fff;font-weight:700;
+ text-decoration:none;padding:14px 22px;border-radius:999px;font-size:1.05rem}
+.toplink{font-size:.95rem;margin-bottom:4px}
+.toplink a{color:var(--navy)}
+footer{margin-top:10px}
+.bigbtn{display:block;width:100%;text-align:center;background:var(--navy);color:#fff;font-weight:700;
+ border:none;border-radius:14px;padding:18px 14px;font-size:1.15rem;cursor:pointer;margin:.7em 0;text-decoration:none}
+.bigbtn.pink{background:var(--accent)}
+.bigbtn:disabled{background:#9aa7b4;cursor:default}
+.subbtn{display:inline-block;background:#fff;color:var(--navy);font-weight:700;border:2px solid var(--navy);
+ border-radius:999px;padding:10px 20px;font-size:1rem;cursor:pointer;text-decoration:none;margin:.2em .2em .2em 0}
+.qbox{border:3px solid var(--navy);border-radius:14px;padding:20px 18px;margin:1em 0;background:#fff}
+.qsubj{display:inline-block;background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:2px 14px;font-size:.9rem;font-weight:700;color:var(--navy)}
+.qtext{font-size:1.2rem;font-weight:700;margin:.6em 0}
+.atext{border-top:2px dashed var(--line);margin-top:.8em;padding-top:.8em}
+.judgerow{display:flex;gap:10px;margin-top:1em}
+.judgerow button{flex:1;padding:16px 8px;font-size:1.1rem;font-weight:700;border-radius:12px;border:none;cursor:pointer}
+.btn-ok{background:#1f9d66;color:#fff}
+.btn-ng{background:#e8edf3;color:var(--ink);border:2px solid var(--line)}
+.note{background:#fff7ea;border-left:6px solid #f2b134;border-radius:6px;padding:.6em 1em;margin:.8em 0}
+.rowitem{border:2px solid var(--line);border-radius:12px;padding:12px 14px;margin:.6em 0;background:#fff}
+.rowitem .meta{font-size:.88rem;color:#5a6b7d}
+.duebox{border:3px solid #c2255c;border-radius:14px;padding:16px 18px;background:#fff5f8;margin:1em 0}
+.score{font-size:2rem;font-weight:700;color:var(--navy);text-align:center}
+.center{text-align:center}
+.weekrow{display:flex;gap:6px;justify-content:center;margin:.6em 0}
+.weekrow span{width:42px;height:42px;border-radius:50%;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:700;background:#fff}
+.weekrow span.done{background:var(--accent);border-color:var(--accent);color:#fff}
+.timedisp{font-size:4rem;font-weight:700;text-align:center;color:var(--navy);font-variant-numeric:tabular-nums;margin:.2em 0}
+.progresswrap{background:var(--soft);border-radius:999px;height:22px;overflow:hidden;margin:.8em 0}
+.progressbar{background:var(--accent);height:100%;width:0%}
+.presetrow{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.presetrow button{padding:12px 20px;font-size:1.05rem;font-weight:700;border-radius:999px;border:2px solid var(--navy);background:#fff;color:var(--navy);cursor:pointer}
+.presetrow button.on{background:var(--navy);color:#fff}
+.phaselabel{text-align:center;font-size:1.3rem;font-weight:700}
+@media (max-width:600px){body{font-size:17px}.wrap{padding:14px 12px 48px}h1{font-size:1.35rem}h2{font-size:1.18rem}.timedisp{font-size:3rem}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<p class="toplink"><a href="sakuya.html">← 教材トップへ戻る</a></p>
+
+<h1>🌙 夜テスト｜中1 朔埜 SAKUYA</h1>
+<div class="note">朔埜のマイルール：夜に全教科10問ずつテストする／8点以上を目指す／できなかった所は次の日に復習する／夜9時〜9時30分までに行う。</div>
+<div id="startArea">
+<p>全教科まぜて10問出ます。1問ずつ、答えを見てから「できた／できなかった」で自己判定しよう。</p>
+<button type="button" class="bigbtn pink" id="ntStart">テストを始める</button>
+</div>
+<div id="quizArea" style="display:none">
+<p class="center" id="ntProg"></p>
+<div class="qbox">
+<span class="qsubj" id="ntSubj"></span>
+<div class="qtext" id="ntQ"></div>
+<div class="atext" id="ntA" style="display:none"></div>
+</div>
+<button type="button" class="bigbtn" id="ntShow">答えを見る</button>
+<div class="judgerow" id="ntJudge" style="display:none">
+<button type="button" class="btn-ok" id="ntOk">できた</button>
+<button type="button" class="btn-ng" id="ntNg">できなかった</button>
+</div>
+</div>
+<div id="resultArea" style="display:none">
+<p class="score" id="ntScore"></p>
+<p class="center" id="ntComment"></p>
+<button type="button" class="bigbtn pink" id="ntAgain">もう一度テストする</button>
+</div>
+<h2>今までの記録（直近7回）</h2>
+<div id="ntHistory"></div>
+<script>
+
+function todayStr(d){d=d||new Date();var m=('0'+(d.getMonth()+1)).slice(-2);var day=('0'+d.getDate()).slice(-2);return d.getFullYear()+'-'+m+'-'+day;}
+function daysDiff(a,b){return Math.round((new Date(a+'T00:00:00')-new Date(b+'T00:00:00'))/86400000);}
+function loadArr(k){try{var v=JSON.parse(localStorage.getItem(k));return Array.isArray(v)?v:[];}catch(e){return[];}}
+
+var CHILD='sakuya';
+var KEY='stepup-nighttest-'+CHILD;
+var BANK=[{"s": "数学", "q": "方程式とは何ですか？", "a": "分からない数 x をふくんだ等式（＝のある式）です"}, {"s": "数学", "q": "方程式を解くときのゴールは？", "a": "「x ＝ ○」の形にすることです"}, {"s": "数学", "q": "等式の性質：両辺に同じ数をたしても、等式はどうなる？", "a": "成り立ちます"}, {"s": "数学", "q": "等式で、両辺をわるときに使えない数は？", "a": "0 です"}, {"s": "数学", "q": "移項（いこう）とは何ですか？", "a": "項を ＝ の反対側へ移すことです"}, {"s": "数学", "q": "5x ＋ 3 ＝ 18 で「＋3」を右辺へ移項すると？", "a": "5x ＝ 18 − 3 になります"}, {"s": "数学", "q": "− の項を移項すると、符号はどうなる？", "a": "＋ になります"}, {"s": "数学", "q": "方程式を解くとき、xの項と数字はどちらへ集める？", "a": "xの項は左辺、数字だけの項は右辺へ集めます"}, {"s": "数学", "q": "3(x − 2) のかっこをはずすと？", "a": "3x − 6"}, {"s": "数学", "q": "（x − 1）／3 ＝ 4 の分数を消すには？", "a": "両辺に 3 をかけて x − 1 ＝ 12 にします"}, {"s": "数学", "q": "（1/2）x ＝ 5 を解くと？", "a": "x ＝ 10"}, {"s": "数学", "q": "0.4x − 1 ＝ 1.4 の小数を消すには？", "a": "両辺に 10 をかけて 4x − 10 ＝ 14 にします"}, {"s": "数学", "q": "5x ＝ 15 の解は？", "a": "x ＝ 3"}, {"s": "数学", "q": "文章題のステップ1は、何を決めること？", "a": "求めるものを x にすることです"}, {"s": "数学", "q": "過不足の型：「4個ずつで12個余り、5個ずつで3個足りない」（人数 x 人）の式は？", "a": "4x ＋ 12 ＝ 5x − 3"}, {"s": "数学", "q": "「5を加えて3倍する」を式にすると？", "a": "（x ＋ 5）× 3"}, {"s": "数学", "q": "解の検算（けんざん）のしかたは？", "a": "解を もとの式に代入して、左辺と右辺が同じ数になるか確認します"}, {"s": "数学", "q": "分数を消すときの注意点は？", "a": "両辺の全部の項に分母の数をかけることです"}, {"s": "英語", "q": "「三単現」の3つの条件は？", "a": "三人称・単数・現在 のことです"}, {"s": "英語", "q": "s が付く主語の例は？", "a": "he・she・it、人の名前（1人）、もの（1つ）"}, {"s": "英語", "q": "play の三単現の形は？", "a": "plays"}, {"s": "英語", "q": "watch の三単現の形は？", "a": "watches"}, {"s": "英語", "q": "go の三単現の形は？", "a": "goes"}, {"s": "英語", "q": "study の三単現の形は？", "a": "studies"}, {"s": "英語", "q": "have の三単現の形は？", "a": "has"}, {"s": "英語", "q": "「She plays tennis.」を疑問文にすると？", "a": "Does she play tennis?"}, {"s": "英語", "q": "「He watches TV.」を否定文にすると？", "a": "He doesn't watch TV."}, {"s": "英語", "q": "「Does she plays…?」は正しい？", "a": "間違いです。正しくは「Does she play…?」"}, {"s": "英語", "q": "主語が you の疑問文では、do と does のどちらを使う？", "a": "do を使います"}, {"s": "英語", "q": "「彼は何本のペンを持っていますか」を英語で言うと？", "a": "How many pens does he have?"}, {"s": "英語", "q": "疑問詞の文の語順は？", "a": "疑問詞 ＋ does／do ＋ 主語 ＋ 動詞の原形"}, {"s": "英語", "q": "「彼女はいつ起きますか」を英語で言うと？", "a": "When does she get up?"}, {"s": "英語", "q": "命令文の作り方は？", "a": "主語を書かず、動詞の原形で文を始めます"}, {"s": "英語", "q": "「遅れないでください」を英語で言うと？", "a": "Don't be late."}, {"s": "英語", "q": "「Does Ken watch TV?」への答え「はい、見ます」は？", "a": "Yes, he does."}, {"s": "英語", "q": "このシートの合言葉は？", "a": "主語が1人の他人のときは動詞に s。does が来たら s を渡して動詞は元の形へ"}, {"s": "理科", "q": "物質の三態とは？", "a": "固体・液体・気体の3つの状態です"}, {"s": "理科", "q": "状態変化で変わらないものは？", "a": "粒子の種類と数（＝質量）です"}, {"s": "理科", "q": "粒子の間隔が大きい順に並べると？", "a": "気体 ＞ 液体 ＞ 固体"}, {"s": "理科", "q": "融点（ゆうてん）とは？", "a": "固体がとけて液体になるときの温度です"}, {"s": "理科", "q": "沸点（ふってん）とは？", "a": "液体が沸騰して気体になるときの温度です"}, {"s": "理科", "q": "とけている最中・沸騰している最中に温度が上がらないのはなぜ？", "a": "加えた熱が「状態を変えること」に使われるからです"}, {"s": "理科", "q": "エタノールの沸点は？", "a": "78℃"}, {"s": "理科", "q": "水が氷（固体）になると体積はどうなる？", "a": "大きくなります"}, {"s": "理科", "q": "氷が水に浮くのはなぜ？", "a": "体積が増えて、水より密度が小さくなるからです"}, {"s": "理科", "q": "蒸留（じょうりゅう）とはどんな方法？", "a": "沸点の差を利用して、混ざった液体を分ける方法です"}, {"s": "理科", "q": "水とエタノールの混合物を蒸留すると、先に出てくるのは？", "a": "エタノールが多くふくまれる液体です"}, {"s": "理科", "q": "密度の公式は？", "a": "密度（g/cm³）＝ 質量（g）÷ 体積（cm³）"}, {"s": "理科", "q": "密度と体積から質量を求める式は？", "a": "質量 ＝ 密度 × 体積"}, {"s": "理科", "q": "質量と密度から体積を求める式は？", "a": "体積 ＝ 質量 ÷ 密度"}, {"s": "理科", "q": "質量60g・体積20cm³の金属の密度は？", "a": "3.0 g/cm³"}, {"s": "理科", "q": "密度0.9g/cm³の油45gの体積は？", "a": "50 cm³"}, {"s": "理科", "q": "水（密度1.0）より密度が小さいものは、浮く？沈む？", "a": "浮きます"}, {"s": "理科", "q": "質量パーセント濃度の公式は？", "a": "濃度（％）＝ 溶質の質量 ÷ 水溶液全体の質量 × 100"}, {"s": "理科", "q": "食塩20gを水80gに溶かしたときの濃度は？", "a": "20％"}, {"s": "理科", "q": "質量が同じ2つの物質では、体積が小さい方の密度は？", "a": "大きいです"}, {"s": "理科", "q": "溶解度（ようかいど）とは？", "a": "ある温度で、水100gに限界まで溶ける物質の質量（g）です"}, {"s": "理科", "q": "溶解度は、何によって決まる？", "a": "物質の種類と温度で決まります"}, {"s": "理科", "q": "飽和水溶液（ほうわすいようえき）とは？", "a": "溶解度いっぱいまで物質が溶けた水溶液です"}, {"s": "理科", "q": "硝酸カリウムの溶解度は？（水100g・20℃）", "a": "32g"}, {"s": "理科", "q": "食塩の溶解度の特徴は？", "a": "温度が変わっても ほとんど変わりません（約36g）"}, {"s": "理科", "q": "溶解度曲線とは？", "a": "温度と溶解度の関係を表したグラフです"}, {"s": "理科", "q": "40℃の水200gに、硝酸カリウムは最大で何g溶ける？", "a": "128g"}, {"s": "理科", "q": "溶け残りの計算式は？", "a": "溶け残り ＝ 入れた量 － 溶解度"}, {"s": "理科", "q": "20℃の水100gに硝酸カリウムを40g入れたときの溶け残りは？", "a": "8g"}, {"s": "理科", "q": "再結晶（さいけっしょう）とは？", "a": "一度溶かした物質を、再び結晶として取り出すことです"}, {"s": "理科", "q": "硝酸カリウムの再結晶に向いている方法は？", "a": "冷やす方法（熱い飽和水溶液を冷やす）"}, {"s": "理科", "q": "食塩の再結晶に向いている方法は？", "a": "蒸発法（加熱して水を蒸発させる）"}, {"s": "理科", "q": "冷やして出てくる結晶の量の計算式は？", "a": "結晶（g）＝ 溶解度（もとの温度）－ 溶解度（冷やした温度）"}, {"s": "理科", "q": "60℃で硝酸カリウム110gを溶かした飽和水溶液（水100g）を20℃まで冷やすと、結晶は何g出る？", "a": "78g"}, {"s": "理科", "q": "純粋な結晶を取り出すとき、熱いうちに ろ過 するのはなぜ？", "a": "熱い水に溶けなかった不純物を取り除くためです"}, {"s": "理科", "q": "食塩の飽和水溶液を冷やしても結晶が出ない理由は？", "a": "温度による溶解度の変化がほとんどないからです"}, {"s": "社会", "q": "794年に平安京へ都を移した天皇は？", "a": "桓武天皇"}, {"s": "社会", "q": "摂関政治（せっかんせいじ）とは？", "a": "藤原氏が 摂政・関白 について、天皇を助けながら政治の実権を握ったしくみです"}, {"s": "社会", "q": "摂政は、どんなときに置かれる役職？", "a": "天皇が幼いとき（または女性の天皇のとき）"}, {"s": "社会", "q": "摂関政治の全盛期を築いた藤原氏は？", "a": "藤原道長（1016年ごろ）"}, {"s": "社会", "q": "「望月の歌」を詠んだのは誰？", "a": "藤原道長"}, {"s": "社会", "q": "894年に遣唐使の停止を意見したのは誰？", "a": "菅原道真"}, {"s": "社会", "q": "国風文化とは？", "a": "日本の風土や生活に合った、日本独自の文化です"}, {"s": "社会", "q": "かな文字は、何をもとに作られた？", "a": "漢字をもとに作られました"}, {"s": "社会", "q": "『源氏物語』の作者は？", "a": "紫式部"}, {"s": "社会", "q": "『枕草子』の作者は？", "a": "清少納言"}, {"s": "社会", "q": "『古今和歌集』をまとめた中心人物は？", "a": "紀貫之ら"}, {"s": "社会", "q": "武士団とは？", "a": "武士が一族や従者をまとめて作った集団です"}, {"s": "社会", "q": "武士として初めて太政大臣になったのは誰？", "a": "平清盛（1167年）"}, {"s": "社会", "q": "1185年に平氏が滅びた戦いは？", "a": "壇ノ浦の戦い"}, {"s": "社会", "q": "1192年に源頼朝が就いた役職は？", "a": "征夷大将軍"}, {"s": "社会", "q": "「御恩（ごおん）」とは？", "a": "将軍が御家人に土地を与えたり、土地の支配を認めたりすることです"}, {"s": "社会", "q": "「守護」の仕事は？", "a": "国ごとに置かれ、軍事・警察の仕事（国内の治安を守る）"}, {"s": "社会", "q": "1232年に北条泰時が定めた、武士のための最初の法律は？", "a": "御成敗式目（貞永式目）"}, {"s": "社会", "q": "元寇は、いつ・何回あった？", "a": "1274年と1281年の2回（文永の役・弘安の役）"}, {"s": "社会", "q": "元寇のあと、幕府と御家人の関係が悪くなった理由は？", "a": "勝っても新しい土地を恩賞（御恩）として分け与えることができなかったからです"}];
+var qs=[],idx=0,score=0;
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function renderHistory(){
+  var h=loadArr(KEY);var box=document.getElementById('ntHistory');
+  if(h.length===0){box.innerHTML='<p>まだ記録がありません。</p>';return;}
+  box.innerHTML=h.slice(-7).reverse().map(function(e){return '<div class="rowitem">'+e.date+'　<strong>'+e.score+'点</strong> / 10点</div>';}).join('');
+}
+function showQ(){
+  var item=qs[idx];
+  document.getElementById('ntProg').textContent='第'+(idx+1)+'問 / 10問';
+  document.getElementById('ntSubj').textContent=item.s;
+  document.getElementById('ntQ').textContent=item.q;
+  var a=document.getElementById('ntA');a.style.display='none';a.textContent=item.a;
+  document.getElementById('ntShow').style.display='block';
+  document.getElementById('ntJudge').style.display='none';
+}
+function startTest(){
+  qs=shuffle(BANK.slice()).slice(0,10);idx=0;score=0;
+  document.getElementById('startArea').style.display='none';
+  document.getElementById('resultArea').style.display='none';
+  document.getElementById('quizArea').style.display='block';
+  showQ();
+}
+function judge(ok){
+  if(ok)score++;
+  idx++;
+  if(idx>=qs.length){
+    document.getElementById('quizArea').style.display='none';
+    var r=document.getElementById('resultArea');r.style.display='block';
+    document.getElementById('ntScore').textContent=score+'点 / 10点';
+    document.getElementById('ntComment').textContent=score>=8?'8点以上！よくできました。この調子で続けよう。':'おつかれさま。できなかった問題は、まちがい復習や暗記カードで復習しよう。';
+    var h=loadArr(KEY);h.push({date:todayStr(),score:score});localStorage.setItem(KEY,JSON.stringify(h));
+    renderHistory();
+  }else{showQ();}
+}
+document.getElementById('ntStart').addEventListener('click',startTest);
+document.getElementById('ntAgain').addEventListener('click',startTest);
+document.getElementById('ntShow').addEventListener('click',function(){
+  document.getElementById('ntA').style.display='block';
+  document.getElementById('ntShow').style.display='none';
+  document.getElementById('ntJudge').style.display='flex';
+});
+document.getElementById('ntOk').addEventListener('click',function(){judge(true);});
+document.getElementById('ntNg').addEventListener('click',function(){judge(false);});
+renderHistory();
+</script>
+
+<footer><a class="backlink" href="sakuya.html">← 教材トップへ戻る</a></footer>
+</div>
+</body>
+</html>

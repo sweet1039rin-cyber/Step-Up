@@ -52,12 +52,28 @@ footer{margin-top:10px}
 .bigcard{display:block;text-decoration:none;border:3px solid var(--navy);border-radius:20px;padding:26px 20px;color:var(--ink);background:var(--soft)}
 .bigcard strong{display:block;font-size:1.7rem;color:var(--navy)}
 .bigcard span{font-size:1.05rem}
+
+.daily-menu{border:3px solid var(--navy);border-radius:14px;padding:16px 18px;margin:0 0 20px;background:var(--soft)}
+.daily-menu h2{border:none;background:none;padding:0;margin:.1em 0 .5em;font-size:1.25rem;color:var(--navy)}
+.daily-menu .dm-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.daily-menu a{display:block;text-align:center;background:#fff;border:2px solid var(--navy);border-radius:12px;padding:14px 8px;font-weight:700;color:var(--navy);text-decoration:none;font-size:1.05rem}
+.daily-menu a.hot{background:var(--accent);border-color:var(--accent);color:#fff}
 </style>
 </head>
 <body>
 <div class="wrap">
 <h1>中1 朔埜 SAKUYA の期末テスト対策</h1>
 <p>教科をえらんで、予想問題と暗記シートを開こう。まずは暗記シートで覚えてから、予想問題で力だめしするのがおすすめ。暗記カードは「覚えた／まだ」をくり返して覚える用です。</p>
+
+<section class="daily-menu">
+<h2>📅 毎日メニュー</h2>
+<div class="dm-grid">
+<a class="hot" href="morning_sakuya.html">🌅 朝活セット</a>
+<a href="nighttest_sakuya.html">🌙 夜テスト</a>
+<a href="mistakes_sakuya.html">✍️ まちがい復習</a>
+<a href="timer.html">⏱️ 集中タイマー</a>
+</div>
+</section>
 <div class="cards">
 <section class="card"><h2>数学</h2><p class="sub">方程式／比例・反比例</p><div class="btnrow"><a class="btn btn-quiz" href="quiz_chu1_math_01.html">✏️ 予想問題</a><a class="btn btn-memo" href="memorization_chu1_math.html">📖 暗記シート</a><a class="btn btn-memo" href="flash_chu1_math.html">🃏 暗記カード</a></div><div class="btnrow" style="margin-top:10px"><a class="btn btn-quiz" href="quiz_chu1_math_02.html">✏️ 予想問題② 比例・反比例</a></div></section>
 <section class="card"><h2>英語</h2><p class="sub">三単現のs</p><div class="btnrow"><a class="btn btn-quiz" href="quiz_chu1_english_01.html">✏️ 予想問題</a><a class="btn btn-memo" href="memorization_chu1_english.html">📖 暗記シート</a><a class="btn btn-memo" href="flash_chu1_english.html">🃏 暗記カード</a></div></section>

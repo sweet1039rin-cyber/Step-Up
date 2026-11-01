@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>朝活セット｜中3 壱凰 IORI｜Step Up テスト対策</title>
+<style>
+:root{--ink:#1c2733;--accent:#ff6b9d;--navy:#1a1a5e;--line:#d9e2ec;--soft:#f4f7fb}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:var(--ink);
+ font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP","Yu Gothic",sans-serif;
+ font-size:18px;line-height:1.85;-webkit-text-size-adjust:100%}
+.wrap{max-width:880px;margin:0 auto;padding:20px 18px 56px}
+h1{font-size:1.55rem;line-height:1.45;border-bottom:4px solid var(--accent);padding-bottom:.35em;margin:.4em 0 .8em}
+h2{font-size:1.3rem;line-height:1.5;border-left:8px solid var(--accent);padding:.1em 0 .1em .5em;margin:1.4em 0 .6em;background:var(--soft)}
+p{margin:.6em 0}
+strong{color:#c2255c}
+.backlink{display:inline-block;margin-top:28px;background:var(--accent);color:#fff;font-weight:700;
+ text-decoration:none;padding:14px 22px;border-radius:999px;font-size:1.05rem}
+.toplink{font-size:.95rem;margin-bottom:4px}
+.toplink a{color:var(--navy)}
+footer{margin-top:10px}
+.bigbtn{display:block;width:100%;text-align:center;background:var(--navy);color:#fff;font-weight:700;
+ border:none;border-radius:14px;padding:18px 14px;font-size:1.15rem;cursor:pointer;margin:.7em 0;text-decoration:none}
+.bigbtn.pink{background:var(--accent)}
+.bigbtn:disabled{background:#9aa7b4;cursor:default}
+.subbtn{display:inline-block;background:#fff;color:var(--navy);font-weight:700;border:2px solid var(--navy);
+ border-radius:999px;padding:10px 20px;font-size:1rem;cursor:pointer;text-decoration:none;margin:.2em .2em .2em 0}
+.qbox{border:3px solid var(--navy);border-radius:14px;padding:20px 18px;margin:1em 0;background:#fff}
+.qsubj{display:inline-block;background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:2px 14px;font-size:.9rem;font-weight:700;color:var(--navy)}
+.qtext{font-size:1.2rem;font-weight:700;margin:.6em 0}
+.atext{border-top:2px dashed var(--line);margin-top:.8em;padding-top:.8em}
+.judgerow{display:flex;gap:10px;margin-top:1em}
+.judgerow button{flex:1;padding:16px 8px;font-size:1.1rem;font-weight:700;border-radius:12px;border:none;cursor:pointer}
+.btn-ok{background:#1f9d66;color:#fff}
+.btn-ng{background:#e8edf3;color:var(--ink);border:2px solid var(--line)}
+.note{background:#fff7ea;border-left:6px solid #f2b134;border-radius:6px;padding:.6em 1em;margin:.8em 0}
+.rowitem{border:2px solid var(--line);border-radius:12px;padding:12px 14px;margin:.6em 0;background:#fff}
+.rowitem .meta{font-size:.88rem;color:#5a6b7d}
+.duebox{border:3px solid #c2255c;border-radius:14px;padding:16px 18px;background:#fff5f8;margin:1em 0}
+.score{font-size:2rem;font-weight:700;color:var(--navy);text-align:center}
+.center{text-align:center}
+.weekrow{display:flex;gap:6px;justify-content:center;margin:.6em 0}
+.weekrow span{width:42px;height:42px;border-radius:50%;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:700;background:#fff}
+.weekrow span.done{background:var(--accent);border-color:var(--accent);color:#fff}
+.timedisp{font-size:4rem;font-weight:700;text-align:center;color:var(--navy);font-variant-numeric:tabular-nums;margin:.2em 0}
+.progresswrap{background:var(--soft);border-radius:999px;height:22px;overflow:hidden;margin:.8em 0}
+.progressbar{background:var(--accent);height:100%;width:0%}
+.presetrow{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.presetrow button{padding:12px 20px;font-size:1.05rem;font-weight:700;border-radius:999px;border:2px solid var(--navy);background:#fff;color:var(--navy);cursor:pointer}
+.presetrow button.on{background:var(--navy);color:#fff}
+.phaselabel{text-align:center;font-size:1.3rem;font-weight:700}
+@media (max-width:600px){body{font-size:17px}.wrap{padding:14px 12px 48px}h1{font-size:1.35rem}h2{font-size:1.18rem}.timedisp{font-size:3rem}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<p class="toplink"><a href="iori.html">← 教材トップへ戻る</a></p>
+
+<h1>🌅 朝活セット｜中3 壱凰 IORI</h1>
+<p>朝の約10分でできるセットです。3つを順番にやって、「朝活できた！」を押そう。</p>
+<h2>① 暗記カード</h2>
+<p id="moFlashText"></p>
+<p><a class="bigbtn pink" id="moFlashLink" href="#">暗記カードを開く</a></p>
+<h2>② まちがい復習</h2>
+<p id="moMistakeText"></p>
+<p><a class="bigbtn" href="mistakes_iori.html">まちがい復習ボックスを開く</a></p>
+<h2>③ ミニ問題（日替わり5問）</h2>
+<p>問題をタップすると答えが出ます。</p>
+<div id="moMini"></div>
+<h2>今日の記録</h2>
+<button type="button" class="bigbtn pink" id="moDone">朝活できた！</button>
+<p class="center" id="moStreak"></p>
+<div class="weekrow" id="moWeek"></div>
+<p class="center" style="font-size:.9rem">今週（月〜日）の実施状況</p>
+<script>
+
+function todayStr(d){d=d||new Date();var m=('0'+(d.getMonth()+1)).slice(-2);var day=('0'+d.getDate()).slice(-2);return d.getFullYear()+'-'+m+'-'+day;}
+function daysDiff(a,b){return Math.round((new Date(a+'T00:00:00')-new Date(b+'T00:00:00'))/86400000);}
+function loadArr(k){try{var v=JSON.parse(localStorage.getItem(k));return Array.isArray(v)?v:[];}catch(e){return[];}}
+
+var CHILD='iori';
+var MKEY='stepup-morning-'+CHILD;
+var XKEY='stepup-mistakes-'+CHILD;
+var ROT=[["国語", "flash_chu3_japanese.html"], ["数学", "flash_chu3_math.html"], ["英語", "flash_chu3_english.html"], ["理科", "flash_chu3_science_02.html"], ["社会", "flash_chu3_social.html"], ["保健体育", "flash_chu3_hoken.html"], ["美術", "flash_chu3_art.html"]];
+var MINI=[{"s": "数学", "q": "相似（そうじ）とは、どんな関係？", "a": "形が同じで、大きさがちがう図形の関係です"}, {"s": "数学", "q": "DE ∥ BC のとき、成り立つ辺の比は？", "a": "AD：AB ＝ AE：AC ＝ DE：BC"}, {"s": "数学", "q": "平行線の問題で比を作るときのコツは？", "a": "小さい三角形と大きい三角形で、対応する辺どうしをそろえることです"}, {"s": "英語", "q": "先行詞が「物・動物」のときの関係代名詞（主格）は？", "a": "which"}, {"s": "英語", "q": "It is … for 人 to 〜 の意味は？", "a": "（人）にとって〜することは…だ"}, {"s": "理科", "q": "進行方向に力を加え続けると、物体はどうなる？", "a": "だんだん速くなります"}, {"s": "理科", "q": "位置エネルギーは、何で決まる？", "a": "質量と高さです（重いほど・高いほど大きい）"}, {"s": "理科", "q": "反対向きの2つの力の合力は？", "a": "大きさを引き算して、向きは大きい方です"}, {"s": "理科", "q": "作用・反作用の法則とは？", "a": "AがBに力を加えると、BもAに、大きさが等しく向きが反対の力を加えることです"}, {"s": "社会", "q": "1945年、日本が受け入れて戦争が終わった宣言は？", "a": "ポツダム宣言"}, {"s": "社会", "q": "沖縄返還は何年？", "a": "1972年"}, {"s": "社会", "q": "現在の選挙権は、何歳以上？", "a": "18歳以上です（普通選挙）"}, {"s": "国語", "q": "独立語の例は？", "a": "感動・呼びかけ・応答・提示のことばです"}, {"s": "国語", "q": "丁寧語の例は？", "a": "です・ます・ございます"}, {"s": "技術・家庭", "q": "1バイトは何ビット？", "a": "8ビット"}, {"s": "技術・家庭", "q": "プロトコルとは？", "a": "通信の約束ごと（ルール）です"}, {"s": "技術・家庭", "q": "クレジットカードの支払いタイミングは？", "a": "後払い"}, {"s": "音楽", "q": "♮（ナチュラル）の意味は？", "a": "♯や♭を消して、元の音に戻します"}, {"s": "音楽", "q": "6/8 拍子の読み方は？", "a": "8分の6拍子"}, {"s": "音楽", "q": "クレッシェンド（＜）の意味は？", "a": "だんだん強く"}, {"s": "保健体育", "q": "適応機制（てきおうきせい）とは？", "a": "欲求不満や不安をやわらげる、無意識の心の働きです"}, {"s": "保健体育", "q": "胸骨圧迫の強さと速さは？", "a": "胸の真ん中を約5cm沈む強さで、1分間に100〜120回"}, {"s": "美術", "q": "法隆寺金堂の仏像で知られる、飛鳥時代の仏師は？", "a": "鞍作鳥（止利仏師）"}, {"s": "美術", "q": "「印象派」の名前の由来になった作品は？", "a": "モネの『印象・日の出』"}];
+var WD=['日','月','火','水','木','金','土'];
+var now=new Date();
+var day=ROT[now.getDay()];
+document.getElementById('moFlashText').textContent='今日（'+WD[now.getDay()]+'曜日）は '+day[0]+' の日です。';
+document.getElementById('moFlashLink').href=day[1];
+(function(){
+  var a=loadArr(XKEY);var today=todayStr();
+  var due=a.filter(function(e){return daysDiff(today,e.last)>=1;}).length;
+  var el=document.getElementById('moMistakeText');
+  if(a.length===0){el.textContent='まちがい記録は なし。今日もその調子！';}
+  else{el.textContent='まちがい記録 '+a.length+'件（うち今日の復習は '+due+'件）あります。';}
+})();
+(function(){
+  var box=document.getElementById('moMini');
+  var start=(Math.floor(now.getTime()/86400000)*5)%MINI.length;
+  for(var i=0;i<5;i++){
+    (function(item){
+      var d=document.createElement('div');d.className='qbox';
+      d.innerHTML='<span class="qsubj"></span><div class="qtext"></div><div class="atext" style="display:none"></div>';
+      d.querySelector('.qsubj').textContent=item.s;
+      d.querySelector('.qtext').textContent=item.q;
+      d.querySelector('.atext').textContent=item.a;
+      d.addEventListener('click',function(){var a=d.querySelector('.atext');a.style.display=a.style.display==='none'?'block':'none';});
+      box.appendChild(d);
+    })(MINI[(start+i)%MINI.length]);
+  }
+})();
+function streakOf(days){
+  var s=0;var d=new Date();
+  if(days.indexOf(todayStr(d))<0){d.setDate(d.getDate()-1);}
+  while(days.indexOf(todayStr(d))>=0){s++;d.setDate(d.getDate()-1);}
+  return s;
+}
+function renderRecord(){
+  var days=loadArr(MKEY);var today=todayStr();
+  var btn=document.getElementById('moDone');
+  if(days.indexOf(today)>=0){btn.disabled=true;btn.textContent='今日は記録済み ✓';}
+  var s=streakOf(days);
+  document.getElementById('moStreak').textContent=s>0?('連続 '+s+' 日 朝活できています！'):('まだ連続記録はありません。今日から始めよう！');
+  var monday=new Date();var diff=(monday.getDay()+6)%7;monday.setDate(monday.getDate()-diff);
+  var wk=document.getElementById('moWeek');wk.innerHTML='';
+  for(var i=0;i<7;i++){
+    var d=new Date(monday);d.setDate(monday.getDate()+i);
+    var sp=document.createElement('span');
+    sp.textContent=WD[d.getDay()];
+    if(days.indexOf(todayStr(d))>=0)sp.className='done';
+    wk.appendChild(sp);
+  }
+}
+document.getElementById('moDone').addEventListener('click',function(){
+  var days=loadArr(MKEY);var today=todayStr();
+  if(days.indexOf(today)<0){days.push(today);localStorage.setItem(MKEY,JSON.stringify(days));}
+  renderRecord();
+});
+renderRecord();
+</script>
+
+<footer><a class="backlink" href="iori.html">← 教材トップへ戻る</a></footer>
+</div>
+</body>
+</html>

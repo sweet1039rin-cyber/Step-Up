@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>夜テスト｜中3 壱凰 IORI｜Step Up テスト対策</title>
+<style>
+:root{--ink:#1c2733;--accent:#ff6b9d;--navy:#1a1a5e;--line:#d9e2ec;--soft:#f4f7fb}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:var(--ink);
+ font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP","Yu Gothic",sans-serif;
+ font-size:18px;line-height:1.85;-webkit-text-size-adjust:100%}
+.wrap{max-width:880px;margin:0 auto;padding:20px 18px 56px}
+h1{font-size:1.55rem;line-height:1.45;border-bottom:4px solid var(--accent);padding-bottom:.35em;margin:.4em 0 .8em}
+h2{font-size:1.3rem;line-height:1.5;border-left:8px solid var(--accent);padding:.1em 0 .1em .5em;margin:1.4em 0 .6em;background:var(--soft)}
+p{margin:.6em 0}
+strong{color:#c2255c}
+.backlink{display:inline-block;margin-top:28px;background:var(--accent);color:#fff;font-weight:700;
+ text-decoration:none;padding:14px 22px;border-radius:999px;font-size:1.05rem}
+.toplink{font-size:.95rem;margin-bottom:4px}
+.toplink a{color:var(--navy)}
+footer{margin-top:10px}
+.bigbtn{display:block;width:100%;text-align:center;background:var(--navy);color:#fff;font-weight:700;
+ border:none;border-radius:14px;padding:18px 14px;font-size:1.15rem;cursor:pointer;margin:.7em 0;text-decoration:none}
+.bigbtn.pink{background:var(--accent)}
+.bigbtn:disabled{background:#9aa7b4;cursor:default}
+.subbtn{display:inline-block;background:#fff;color:var(--navy);font-weight:700;border:2px solid var(--navy);
+ border-radius:999px;padding:10px 20px;font-size:1rem;cursor:pointer;text-decoration:none;margin:.2em .2em .2em 0}
+.qbox{border:3px solid var(--navy);border-radius:14px;padding:20px 18px;margin:1em 0;background:#fff}
+.qsubj{display:inline-block;background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:2px 14px;font-size:.9rem;font-weight:700;color:var(--navy)}
+.qtext{font-size:1.2rem;font-weight:700;margin:.6em 0}
+.atext{border-top:2px dashed var(--line);margin-top:.8em;padding-top:.8em}
+.judgerow{display:flex;gap:10px;margin-top:1em}
+.judgerow button{flex:1;padding:16px 8px;font-size:1.1rem;font-weight:700;border-radius:12px;border:none;cursor:pointer}
+.btn-ok{background:#1f9d66;color:#fff}
+.btn-ng{background:#e8edf3;color:var(--ink);border:2px solid var(--line)}
+.note{background:#fff7ea;border-left:6px solid #f2b134;border-radius:6px;padding:.6em 1em;margin:.8em 0}
+.rowitem{border:2px solid var(--line);border-radius:12px;padding:12px 14px;margin:.6em 0;background:#fff}
+.rowitem .meta{font-size:.88rem;color:#5a6b7d}
+.duebox{border:3px solid #c2255c;border-radius:14px;padding:16px 18px;background:#fff5f8;margin:1em 0}
+.score{font-size:2rem;font-weight:700;color:var(--navy);text-align:center}
+.center{text-align:center}
+.weekrow{display:flex;gap:6px;justify-content:center;margin:.6em 0}
+.weekrow span{width:42px;height:42px;border-radius:50%;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:700;background:#fff}
+.weekrow span.done{background:var(--accent);border-color:var(--accent);color:#fff}
+.timedisp{font-size:4rem;font-weight:700;text-align:center;color:var(--navy);font-variant-numeric:tabular-nums;margin:.2em 0}
+.progresswrap{background:var(--soft);border-radius:999px;height:22px;overflow:hidden;margin:.8em 0}
+.progressbar{background:var(--accent);height:100%;width:0%}
+.presetrow{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.presetrow button{padding:12px 20px;font-size:1.05rem;font-weight:700;border-radius:999px;border:2px solid var(--navy);background:#fff;color:var(--navy);cursor:pointer}
+.presetrow button.on{background:var(--navy);color:#fff}
+.phaselabel{text-align:center;font-size:1.3rem;font-weight:700}
+@media (max-width:600px){body{font-size:17px}.wrap{padding:14px 12px 48px}h1{font-size:1.35rem}h2{font-size:1.18rem}.timedisp{font-size:3rem}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<p class="toplink"><a href="iori.html">← 教材トップへ戻る</a></p>
+
+<h1>🌙 夜テスト｜中3 壱凰 IORI</h1>
+<div class="note">ルール：10問に挑戦して、8点以上を目標にしよう。できなかった問題は「まちがい復習ボックス」に残して、あとで解き直そう。</div>
+<div id="startArea">
+<p>全教科まぜて10問出ます。1問ずつ、答えを見てから「できた／できなかった」で自己判定しよう。</p>
+<button type="button" class="bigbtn pink" id="ntStart">テストを始める</button>
+</div>
+<div id="quizArea" style="display:none">
+<p class="center" id="ntProg"></p>
+<div class="qbox">
+<span class="qsubj" id="ntSubj"></span>
+<div class="qtext" id="ntQ"></div>
+<div class="atext" id="ntA" style="display:none"></div>
+</div>
+<button type="button" class="bigbtn" id="ntShow">答えを見る</button>
+<div class="judgerow" id="ntJudge" style="display:none">
+<button type="button" class="btn-ok" id="ntOk">できた</button>
+<button type="button" class="btn-ng" id="ntNg">できなかった</button>
+</div>
+</div>
+<div id="resultArea" style="display:none">
+<p class="score" id="ntScore"></p>
+<p class="center" id="ntComment"></p>
+<button type="button" class="bigbtn pink" id="ntAgain">もう一度テストする</button>
+</div>
+<h2>今までの記録（直近7回）</h2>
+<div id="ntHistory"></div>
+<script>
+
+function todayStr(d){d=d||new Date();var m=('0'+(d.getMonth()+1)).slice(-2);var day=('0'+d.getDate()).slice(-2);return d.getFullYear()+'-'+m+'-'+day;}
+function daysDiff(a,b){return Math.round((new Date(a+'T00:00:00')-new Date(b+'T00:00:00'))/86400000);}
+function loadArr(k){try{var v=JSON.parse(localStorage.getItem(k));return Array.isArray(v)?v:[];}catch(e){return[];}}
+
+var CHILD='iori';
+var KEY='stepup-nighttest-'+CHILD;
+var BANK=[{"s": "数学", "q": "相似（そうじ）とは、どんな関係？", "a": "形が同じで、大きさがちがう図形の関係です"}, {"s": "数学", "q": "相似比とは？", "a": "対応する辺の長さの比です"}, {"s": "数学", "q": "△ABC ∽ △DEF のとき、頂点の対応は？", "a": "A↔D、B↔E、C↔F の順に対応します"}, {"s": "数学", "q": "面積比は、相似比とどう関係する？", "a": "面積比 ＝ 相似比の2乗"}, {"s": "数学", "q": "体積比は、相似比とどう関係する？", "a": "体積比 ＝ 相似比の3乗"}, {"s": "数学", "q": "辺の長さや周の長さの比は、相似比とどうなる？", "a": "相似比そのままです"}, {"s": "数学", "q": "辺の長さを求める手順の最初は？", "a": "対応する辺のペアを1組見つけることです"}, {"s": "数学", "q": "辺が 6cm → 9cm になったときの倍率は？", "a": "1.5倍（相似比 2：3）"}, {"s": "数学", "q": "DE ∥ BC のとき、成り立つ辺の比は？", "a": "AD：AB ＝ AE：AC ＝ DE：BC"}, {"s": "数学", "q": "中点連結定理とは？", "a": "2辺の中点を結んだ線分は、残りの辺の半分の長さで、その辺に平行になることです"}, {"s": "数学", "q": "（−3）² の値は？", "a": "9"}, {"s": "数学", "q": "y＝ax² で a＞0 のグラフの形は？", "a": "下に頂点のある放物線です"}, {"s": "数学", "q": "y＝ax² の変化の割合の公式は？", "a": "変化の割合 ＝ （yの増加量）÷（xの増加量）"}, {"s": "数学", "q": "y＝ax² の式（a）の求め方は？", "a": "分かっている x・y を式に代入して a を求めます"}, {"s": "数学", "q": "変域に x＝0 がふくまれるとき、y＝ax²（a＞0）の最小値は？", "a": "0 です"}, {"s": "数学", "q": "相似比の向きで気をつけることは？", "a": "どちらの図形を基準にした比かを確認することです"}, {"s": "数学", "q": "平行線の問題で比を作るときのコツは？", "a": "小さい三角形と大きい三角形で、対応する辺どうしをそろえることです"}, {"s": "数学", "q": "面積比・体積比で一番多いミスは？", "a": "2乗・3乗をし忘れることです"}, {"s": "英語", "q": "「〜している」の意味で名詞を説明する形は？", "a": "現在分詞（〜ing）"}, {"s": "英語", "q": "「〜された」の意味で名詞を説明する形は？", "a": "過去分詞"}, {"s": "英語", "q": "迷ったときの判断方法は？（分詞の使い分け）", "a": "その名詞が「自分で〜する側」か「される側」かで決めます"}, {"s": "英語", "q": "「眠っている赤ちゃん」を英語で言うと？", "a": "a sleeping baby"}, {"s": "英語", "q": "説明が長いとき、分詞は名詞の前？後ろ？", "a": "名詞の後ろに置きます"}, {"s": "英語", "q": "先行詞が「人」のときの関係代名詞（主格）は？", "a": "who"}, {"s": "英語", "q": "先行詞が「物・動物」のときの関係代名詞（主格）は？", "a": "which"}, {"s": "英語", "q": "人・物のどちらにも使える関係代名詞は？", "a": "that"}, {"s": "英語", "q": "関係代名詞の後ろに「動詞」が来るのは、主格？目的格？", "a": "主格です（関係代名詞が主語の代わり）"}, {"s": "英語", "q": "関係代名詞の後ろに「主語＋動詞」が来るのは？", "a": "目的格です（関係代名詞が目的語の代わり）"}, {"s": "英語", "q": "省略できるのは、主格と目的格のどちら？", "a": "目的格だけです"}, {"s": "英語", "q": "文をつなぐ3ステップの最初は？", "a": "2つの文で「同じもの」を指す言葉を見つけることです"}, {"s": "英語", "q": "「私が読んだ本」を英語で言うと？", "a": "the book which I read"}, {"s": "英語", "q": "「ピアノをひく少女」を英語で言うと？", "a": "the girl who plays the piano"}, {"s": "英語", "q": "It is … for 人 to 〜 の意味は？", "a": "（人）にとって〜することは…だ"}, {"s": "英語", "q": "want 人 to 〜 の意味は？", "a": "（人）に〜してほしい"}, {"s": "英語", "q": "間接疑問文の語順の注意点は？", "a": "疑問詞の後ろは、ふつうの文の語順に戻します"}, {"s": "英語", "q": "「オーストラリアで話されている言語」を英語で言うと？", "a": "the language spoken in Australia"}, {"s": "理科", "q": "速さの公式は？", "a": "速さ ＝ 距離 ÷ 時間"}, {"s": "理科", "q": "距離の求め方は？", "a": "距離 ＝ 速さ × 時間"}, {"s": "理科", "q": "慣性とは？", "a": "力がはたらかないとき、物体が今の運動の状態を続けようとすることです"}, {"s": "理科", "q": "摩擦力とは？", "a": "動きと反対向きにはたらく力です"}, {"s": "理科", "q": "進行方向に力を加え続けると、物体はどうなる？", "a": "だんだん速くなります"}, {"s": "理科", "q": "仕事の公式は？", "a": "仕事（J）＝ 力（N）× 距離（m）"}, {"s": "理科", "q": "仕事率の公式は？", "a": "仕事率（W）＝ 仕事（J）÷ 時間（秒）"}, {"s": "理科", "q": "物を持っているだけ・押しても動かないとき、仕事は？", "a": "0 です"}, {"s": "理科", "q": "100gの物体にはたらく重力は、約何N？", "a": "約1N"}, {"s": "理科", "q": "仕事の原理とは？", "a": "道具を使っても、仕事の量は減らないことです"}, {"s": "理科", "q": "動滑車を使うと、力と引く距離はどうなる？", "a": "力は 1/2 になり、引く距離は 2倍になります"}, {"s": "理科", "q": "仕事率が大きいのは、どんなとき？", "a": "同じ仕事を短時間で終えたときです"}, {"s": "理科", "q": "位置エネルギーは、何で決まる？", "a": "質量と高さです（重いほど・高いほど大きい）"}, {"s": "理科", "q": "運動エネルギーは、何で決まる？", "a": "質量と速さです"}, {"s": "理科", "q": "力学的エネルギーとは？", "a": "位置エネルギー ＋ 運動エネルギー の合計です"}, {"s": "理科", "q": "力学的エネルギーの保存とは？", "a": "摩擦や空気の抵抗がないとき、力学的エネルギーの合計は一定に保たれることです"}, {"s": "理科", "q": "ふりこで運動エネルギーが最大になるのは、どこ？", "a": "一番下の位置です"}, {"s": "理科", "q": "速さの計算で「秒速○m」のとき、使う単位は？", "a": "距離は m、時間は 秒 です"}, {"s": "理科", "q": "力の合成とは？", "a": "2つの力を1つの力に合わせることです"}, {"s": "理科", "q": "同じ向きの2つの力の合力は？", "a": "大きさを足し算します"}, {"s": "理科", "q": "反対向きの2つの力の合力は？", "a": "大きさを引き算して、向きは大きい方です"}, {"s": "理科", "q": "大きさが等しく反対向きの2力の合力は？", "a": "0 です（力のつり合い）"}, {"s": "理科", "q": "力の分解とは？", "a": "1つの力を2つの力に分けることです"}, {"s": "理科", "q": "斜面の上の物体の重力は、どう分解される？", "a": "斜面に平行な分力と、斜面に垂直な分力に分解されます"}, {"s": "理科", "q": "斜面の角度が大きいほど、平行な分力はどうなる？", "a": "大きくなります"}, {"s": "理科", "q": "慣性の法則とは？", "a": "力がはたらかないとき、静止した物体は静止し続け、運動する物体は同じ速さでまっすぐ進み続けることです"}, {"s": "理科", "q": "バスが急ブレーキをかけると、体が前に倒れるのはなぜ？", "a": "体が進み続けようとする（慣性）からです"}, {"s": "理科", "q": "だるま落としで、上の部分がそのまま下に落ちるのはなぜ？", "a": "上の部分が、その場にとどまろうとする（慣性）からです"}, {"s": "理科", "q": "作用・反作用の法則とは？", "a": "AがBに力を加えると、BもAに、大きさが等しく向きが反対の力を加えることです"}, {"s": "理科", "q": "作用・反作用と「つり合いの2力」の違いは？", "a": "はたらく物体が、別々どうしか（作用・反作用）、同じ物体か（つり合い）です"}, {"s": "理科", "q": "水圧の大きさは、何で決まる？", "a": "深さが深いほど大きくなります"}, {"s": "理科", "q": "同じ深さでは、水圧はどの向きにはたらく？", "a": "どの向きにも、同じ大きさではたらきます"}, {"s": "理科", "q": "浮力とは？", "a": "水中にある物体を、上向きに持ち上げようとする力です"}, {"s": "理科", "q": "浮力の大きさは、何で決まる？", "a": "物体が押しのけた水の体積が大きいほど、大きくなります"}, {"s": "理科", "q": "浮力の求め方は？（ばねばかりの値から）", "a": "浮力 ＝ 空気中での重さ － 水中での重さ"}, {"s": "理科", "q": "物体が水に浮いたままになるのは、浮力と重力がどんなとき？", "a": "浮力 ＝ 重力 のときです"}, {"s": "社会", "q": "1945年、日本が受け入れて戦争が終わった宣言は？", "a": "ポツダム宣言"}, {"s": "社会", "q": "占領期のGHQ最高司令官は？", "a": "マッカーサー"}, {"s": "社会", "q": "戦後の民主化の改革の例は？", "a": "農地改革・財閥解体・婦人参政権などです"}, {"s": "社会", "q": "日本国憲法が公布されたのは何年？", "a": "1946年"}, {"s": "社会", "q": "日本国憲法の三原則は？", "a": "国民主権・基本的人権の尊重・平和主義"}, {"s": "社会", "q": "サンフランシスコ平和条約が結ばれたのは何年？", "a": "1951年"}, {"s": "社会", "q": "日本が国際連合（国連）に加盟したのは何年？", "a": "1956年"}, {"s": "社会", "q": "1964年の大きな出来事は？", "a": "東京オリンピック"}, {"s": "社会", "q": "沖縄返還は何年？", "a": "1972年"}, {"s": "社会", "q": "高度経済成長が終わるきっかけになったのは？", "a": "1973年の石油危機（オイルショック）"}, {"s": "社会", "q": "三権分立とは？", "a": "権力を立法・行政・司法の3つに分けて、1か所に集中させない仕組みです"}, {"s": "社会", "q": "憲法で、国会はどのように位置づけられている？", "a": "「国権の最高機関」「国の唯一の立法機関」です"}, {"s": "社会", "q": "内閣の長は誰で、どう選ばれる？", "a": "内閣総理大臣。国会議員の中から、国会の議決で指名されます"}, {"s": "社会", "q": "議院内閣制とは？", "a": "内閣が国会の信任で成り立ち、国会に連帯責任を負う仕組みです"}, {"s": "社会", "q": "衆議院が内閣不信任を決議したとき、内閣の選択は？", "a": "総辞職か、衆議院の解散です"}, {"s": "社会", "q": "選挙の4原則は？", "a": "普通選挙・平等選挙・直接選挙・秘密選挙"}, {"s": "社会", "q": "現在の選挙権は、何歳以上？", "a": "18歳以上です（普通選挙）"}, {"s": "社会", "q": "衆議院の選挙制度は？", "a": "小選挙区制（個人に投票）と比例代表制（政党に投票）の組み合わせです"}, {"s": "社会", "q": "「一票の格差」とは？", "a": "議員1人を選ぶのに必要な票数に、地域で差が出る問題です"}, {"s": "社会", "q": "戦後の出来事の順番の合言葉は？", "a": "占領と改革 → 憲法 → 独立 → 国連 → オリンピック → 沖縄・中国 → 石油危機"}, {"s": "国語", "q": "主語を見つけるには、述語に何と問いかける？", "a": "「何が（誰が）」と問いかけます"}, {"s": "国語", "q": "述語は、文のどこにあることが多い？", "a": "文の最後のほうです"}, {"s": "国語", "q": "修飾語の役割は？", "a": "言葉をくわしく説明することです"}, {"s": "国語", "q": "接続語の例は？", "a": "しかし・だから・そして、などです"}, {"s": "国語", "q": "独立語の例は？", "a": "感動・呼びかけ・応答・提示のことばです"}, {"s": "国語", "q": "品詞のうち「用言」は3つ、何？", "a": "動詞・形容詞・形容動詞"}, {"s": "国語", "q": "動詞の「言い切り」の特徴は？", "a": "言い切りが ウ段 の音で終わります"}, {"s": "国語", "q": "形容詞の言い切りは？", "a": "「〜い」で終わります"}, {"s": "国語", "q": "形容動詞の言い切りと、名詞を修飾するときの形は？", "a": "言い切りは「〜だ」、修飾するときは「〜な」です"}, {"s": "国語", "q": "敬語の3種類は？", "a": "尊敬語・謙譲語・丁寧語"}, {"s": "国語", "q": "尊敬語の役割は？", "a": "目上の人の動作を高めて表すことです"}, {"s": "国語", "q": "謙譲語の役割は？", "a": "自分の動作を低くして、相手を敬うことです"}, {"s": "国語", "q": "丁寧語の例は？", "a": "です・ます・ございます"}, {"s": "国語", "q": "「行く・来る」の尊敬語と謙譲語は？", "a": "尊敬語は「いらっしゃる」、謙譲語は「参る・伺う」"}, {"s": "国語", "q": "「見る」の尊敬語と謙譲語は？", "a": "尊敬語は「ご覧になる」、謙譲語は「拝見する」"}, {"s": "国語", "q": "「言う」の尊敬語と謙譲語は？", "a": "尊敬語は「おっしゃる」、謙譲語は「申す・申し上げる」"}, {"s": "国語", "q": "「食べる・飲む」の尊敬語と謙譲語は？", "a": "尊敬語は「召し上がる」、謙譲語は「いただく」"}, {"s": "国語", "q": "「おっしゃられました」は、なぜ間違い？", "a": "二重敬語だからです"}, {"s": "技術・家庭", "q": "CPU（中央処理装置）の役割は？", "a": "演算（計算）と制御（命令を出す）を行う、コンピュータの頭脳です"}, {"s": "技術・家庭", "q": "主記憶装置（メモリ）の特徴は？", "a": "作業中のデータを一時的に置きます。電源を切ると消えます"}, {"s": "技術・家庭", "q": "1バイトは何ビット？", "a": "8ビット"}, {"s": "技術・家庭", "q": "ビットとは？", "a": "情報の最小の単位（0か1のどちらか）です"}, {"s": "技術・家庭", "q": "白黒画像は、1画素＝何ビット？", "a": "1ビット（白＝0、黒＝1）"}, {"s": "技術・家庭", "q": "画素（ピクセル）の数が多いと、どうなる？", "a": "解像度が高くなめらかに見えますが、データ量も大きくなります"}, {"s": "技術・家庭", "q": "色を表す、光の三原色は？", "a": "赤（R）・緑（G）・青（B）"}, {"s": "技術・家庭", "q": "LAN と WAN の違いは？", "a": "LANは家庭や学校など限られた範囲、WANは広い範囲をつなぐネットワークです"}, {"s": "技術・家庭", "q": "サーバとクライアントの違いは？", "a": "サーバは情報を提供する側、クライアントはもらって使う側です"}, {"s": "技術・家庭", "q": "IPアドレスとは？", "a": "ネットワーク上の「住所」で、機器1台ごとに決まっています"}, {"s": "技術・家庭", "q": "プロトコルとは？", "a": "通信の約束ごと（ルール）です"}, {"s": "技術・家庭", "q": "フィッシングとは？", "a": "本物を装った偽メール・偽サイトで、パスワードなどを盗む手口です"}, {"s": "技術・家庭", "q": "パスワードの安全な使い方は？", "a": "長くする・使い回しをしない・他人に教えない"}, {"s": "技術・家庭", "q": "センサの役割は？", "a": "明るさ・温度・距離などを測って伝えることです"}, {"s": "技術・家庭", "q": "アクチュエータとは？", "a": "モーターなど、実際に動きを生み出す装置です"}, {"s": "技術・家庭", "q": "プログラムの基本構造3つは？", "a": "順次（順番に）・分岐（条件で分かれる）・反復（くり返す）"}, {"s": "技術・家庭", "q": "契約が成立するのは、どんなとき？", "a": "「申し込み」と「承諾」の意思が合わさったときです"}, {"s": "技術・家庭", "q": "未成年者が親の同意なしに結んだ契約は、どうなる？", "a": "原則として取り消すことができます（未成年者取消権）"}, {"s": "技術・家庭", "q": "クレジットカードの支払いタイミングは？", "a": "後払い"}, {"s": "技術・家庭", "q": "交通系ICカードへのチャージは、前払い？後払い？", "a": "前払い（プリペイド型）"}, {"s": "技術・家庭", "q": "クーリング・オフ（訪問販売・電話勧誘販売）の期間は？", "a": "8日間（契約書を受け取った日から数える）"}, {"s": "技術・家庭", "q": "消費者トラブルの相談先「188」は何の番号？", "a": "消費者ホットライン"}, {"s": "技術・家庭", "q": "生後3〜4か月ころに、できるようになることは？", "a": "首がすわる"}, {"s": "技術・家庭", "q": "幼児にとって「遊び」とは？", "a": "学びそのものです"}, {"s": "音楽", "q": "♯（シャープ）の意味は？", "a": "音を半音上げます"}, {"s": "音楽", "q": "♭（フラット）の意味は？", "a": "音を半音下げます"}, {"s": "音楽", "q": "♮（ナチュラル）の意味は？", "a": "♯や♭を消して、元の音に戻します"}, {"s": "音楽", "q": "変化記号の働きが続く範囲は？", "a": "原則として、同じ小節の中の、同じ高さの音までです"}, {"s": "音楽", "q": "ト音記号で、線の音は下からどう並ぶ？", "a": "ミ・ソ・シ・レ・ファ"}, {"s": "音楽", "q": "全音符は、四分音符を1拍として何拍分？", "a": "4拍分"}, {"s": "音楽", "q": "二分音符は、何拍分？", "a": "2拍分"}, {"s": "音楽", "q": "八分音符は、何拍分？", "a": "0.5拍分"}, {"s": "音楽", "q": "付点四分音符は、何拍分？", "a": "1.5拍分（1拍＋0.5拍）"}, {"s": "音楽", "q": "付点二分音符は、何拍分？", "a": "3拍分（2拍＋1拍）"}, {"s": "音楽", "q": "6/8 拍子の読み方は？", "a": "8分の6拍子"}, {"s": "音楽", "q": "調号がない長調と短調は？", "a": "長調はハ長調、短調はイ短調"}, {"s": "音楽", "q": "♯が1つの長調は？", "a": "ト長調（♯はファにつく）"}, {"s": "音楽", "q": "♯が付く順番は？", "a": "ファ・ド・ソ・レ・ラ・ミ・シ"}, {"s": "音楽", "q": "長音階の「全・半」の並びは？", "a": "全・全・半・全・全・全・半"}, {"s": "音楽", "q": "Allegro（アレグロ）の意味は？", "a": "速く"}, {"s": "音楽", "q": "rit.（リタルダンド）の意味は？", "a": "だんだん遅く"}, {"s": "音楽", "q": "mf（メッゾ・フォルテ）の意味は？", "a": "やや強く"}, {"s": "音楽", "q": "クレッシェンド（＜）の意味は？", "a": "だんだん強く"}, {"s": "音楽", "q": "D.C. al Fine の進み方は？", "a": "最初（頭）に戻り、Fine の場所で終わります"}, {"s": "音楽", "q": "「交響曲第9番」の作曲者は？", "a": "ベートーヴェン（ドイツの作曲家）"}, {"s": "音楽", "q": "フルートが木管楽器なのは、なぜ？", "a": "楽器の分類は材料ではなく「どのように音を出すか」で決まるからです"}, {"s": "音楽", "q": "アリアとレチタティーヴォの違いは？", "a": "アリアは気持ちを旋律豊かに独唱する曲、レチタティーヴォは会話のように歌って物語を進める部分です"}, {"s": "保健体育", "q": "ストレスとは？", "a": "心や体に負担をかける刺激（ストレッサー）と、それへの反応のことです"}, {"s": "保健体育", "q": "コーピングとは？", "a": "ストレスへの対処法のことです"}, {"s": "保健体育", "q": "欲求不満（フラストレーション）とは？", "a": "欲求が障害で満たされず、葛藤が生じている状態です"}, {"s": "保健体育", "q": "適応機制（てきおうきせい）とは？", "a": "欲求不満や不安をやわらげる、無意識の心の働きです"}, {"s": "保健体育", "q": "「くやしさをバネに練習に打ち込む」は、どの適応機制？", "a": "昇華（しょうか）"}, {"s": "保健体育", "q": "「負けたのは運が悪かったから」と言い訳をするのは、どの適応機制？", "a": "合理化"}, {"s": "保健体育", "q": "感染症が成立する3条件は？", "a": "感染源・感染経路・感受性"}, {"s": "保健体育", "q": "予防接種は、3条件のどれを断つ対策？", "a": "感受性（抵抗力の弱さ）を断つ対策です"}, {"s": "保健体育", "q": "エイズの原因ウイルスは？", "a": "HIV"}, {"s": "保健体育", "q": "交通事故の要因の2つの面は？", "a": "人的要因と環境的要因"}, {"s": "保健体育", "q": "反応も呼吸もない人を見たら、まず何をする？", "a": "119番通報とAEDの手配をして、ただちに胸骨圧迫を始めます"}, {"s": "保健体育", "q": "胸骨圧迫の強さと速さは？", "a": "胸の真ん中を約5cm沈む強さで、1分間に100〜120回"}, {"s": "保健体育", "q": "出血が多いときの止血法は？", "a": "直接圧迫止血法"}, {"s": "保健体育", "q": "AEDは子どもにも使える？", "a": "使えます（年齢を問わず）"}, {"s": "保健体育", "q": "飲料水が家庭に届くまでの流れは？", "a": "水源 → 浄水場で浄化と消毒 → 配水池 → 各家庭"}, {"s": "保健体育", "q": "ごみ処理の基本「3R」とは？", "a": "リデュース（減らす）・リユース（繰り返し使う）・リサイクル（再生利用）"}, {"s": "保健体育", "q": "人間の環境への適応能力は？", "a": "限界があります"}, {"s": "保健体育", "q": "大気汚染の主な原因は？", "a": "工場や自動車の排ガスなどです"}, {"s": "保健体育", "q": "自然災害への備えで確認しておくことは？", "a": "ハザードマップ・非常持ち出し品・避難場所と避難経路です"}, {"s": "美術", "q": "法隆寺金堂の仏像で知られる、飛鳥時代の仏師は？", "a": "鞍作鳥（止利仏師）"}, {"s": "美術", "q": "『鳥獣人物戯画』が伝わる寺は？", "a": "京都・高山寺"}, {"s": "美術", "q": "水墨画『秋冬山水図』『天橋立図』の作者は？", "a": "雪舟（室町時代）"}, {"s": "美術", "q": "『風神雷神図屏風』の作者は？", "a": "俵屋宗達"}, {"s": "美術", "q": "『富嶽三十六景』の作者は？", "a": "葛飾北斎"}, {"s": "美術", "q": "『東海道五拾三次』の作者は？", "a": "歌川広重"}, {"s": "美術", "q": "『モナ・リザ』『最後の晩餐』の作者は？", "a": "レオナルド・ダ・ヴィンチ"}, {"s": "美術", "q": "『ダビデ像』『アダムの創造』の作者は？", "a": "ミケランジェロ"}, {"s": "美術", "q": "「印象派」の名前の由来になった作品は？", "a": "モネの『印象・日の出』"}, {"s": "美術", "q": "ゴッホは、印象派？ポスト印象派？", "a": "ポスト印象派です"}, {"s": "美術", "q": "ピカソの『ゲルニカ』は、どんな作品？", "a": "空爆への抗議を、白黒で描いた壁画です"}, {"s": "美術", "q": "暖色の例と特徴は？", "a": "赤・だいだい・黄。暖かく感じ、前に出て（進出色）大きく見えます（膨張色）"}, {"s": "美術", "q": "寒色の例と特徴は？", "a": "青・青紫・青緑。冷たく感じ、後ろに引っ込み（後退色）小さく見えます（収縮色）"}, {"s": "美術", "q": "色の三属性は？", "a": "色相・明度・彩度"}, {"s": "美術", "q": "明度と彩度、それぞれ何を表す？", "a": "明度は色の明るさ、彩度は色の鮮やかさです"}, {"s": "美術", "q": "補色とは？", "a": "色相環で向かい合う色です"}, {"s": "美術", "q": "補色対比とは？", "a": "補色同士を並べると、お互いがより鮮やかに見えることです"}, {"s": "美術", "q": "ピクトグラムとは？", "a": "文字を使わず、絵で情報を伝える図記号です"}, {"s": "美術", "q": "ユニバーサルデザインとは？", "a": "年齢や障がいの有無にかかわらず、できるだけ多くの人が使いやすいようにする考え方です"}, {"s": "美術", "q": "「ルビンの壺」はどんな錯視？", "a": "壺と、向かい合う顔が入れ替わって見える「図と地」の錯視です"}];
+var qs=[],idx=0,score=0;
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function renderHistory(){
+  var h=loadArr(KEY);var box=document.getElementById('ntHistory');
+  if(h.length===0){box.innerHTML='<p>まだ記録がありません。</p>';return;}
+  box.innerHTML=h.slice(-7).reverse().map(function(e){return '<div class="rowitem">'+e.date+'　<strong>'+e.score+'点</strong> / 10点</div>';}).join('');
+}
+function showQ(){
+  var item=qs[idx];
+  document.getElementById('ntProg').textContent='第'+(idx+1)+'問 / 10問';
+  document.getElementById('ntSubj').textContent=item.s;
+  document.getElementById('ntQ').textContent=item.q;
+  var a=document.getElementById('ntA');a.style.display='none';a.textContent=item.a;
+  document.getElementById('ntShow').style.display='block';
+  document.getElementById('ntJudge').style.display='none';
+}
+function startTest(){
+  qs=shuffle(BANK.slice()).slice(0,10);idx=0;score=0;
+  document.getElementById('startArea').style.display='none';
+  document.getElementById('resultArea').style.display='none';
+  document.getElementById('quizArea').style.display='block';
+  showQ();
+}
+function judge(ok){
+  if(ok)score++;
+  idx++;
+  if(idx>=qs.length){
+    document.getElementById('quizArea').style.display='none';
+    var r=document.getElementById('resultArea');r.style.display='block';
+    document.getElementById('ntScore').textContent=score+'点 / 10点';
+    document.getElementById('ntComment').textContent=score>=8?'8点以上！よくできました。この調子で続けよう。':'おつかれさま。できなかった問題は、まちがい復習や暗記カードで復習しよう。';
+    var h=loadArr(KEY);h.push({date:todayStr(),score:score});localStorage.setItem(KEY,JSON.stringify(h));
+    renderHistory();
+  }else{showQ();}
+}
+document.getElementById('ntStart').addEventListener('click',startTest);
+document.getElementById('ntAgain').addEventListener('click',startTest);
+document.getElementById('ntShow').addEventListener('click',function(){
+  document.getElementById('ntA').style.display='block';
+  document.getElementById('ntShow').style.display='none';
+  document.getElementById('ntJudge').style.display='flex';
+});
+document.getElementById('ntOk').addEventListener('click',function(){judge(true);});
+document.getElementById('ntNg').addEventListener('click',function(){judge(false);});
+renderHistory();
+</script>
+
+<footer><a class="backlink" href="iori.html">← 教材トップへ戻る</a></footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>朝活セット｜中1 朔埜 SAKUYA｜Step Up テスト対策</title>
+<style>
+:root{--ink:#1c2733;--accent:#ff6b9d;--navy:#1a1a5e;--line:#d9e2ec;--soft:#f4f7fb}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:var(--ink);
+ font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP","Yu Gothic",sans-serif;
+ font-size:18px;line-height:1.85;-webkit-text-size-adjust:100%}
+.wrap{max-width:880px;margin:0 auto;padding:20px 18px 56px}
+h1{font-size:1.55rem;line-height:1.45;border-bottom:4px solid var(--accent);padding-bottom:.35em;margin:.4em 0 .8em}
+h2{font-size:1.3rem;line-height:1.5;border-left:8px solid var(--accent);padding:.1em 0 .1em .5em;margin:1.4em 0 .6em;background:var(--soft)}
+p{margin:.6em 0}
+strong{color:#c2255c}
+.backlink{display:inline-block;margin-top:28px;background:var(--accent);color:#fff;font-weight:700;
+ text-decoration:none;padding:14px 22px;border-radius:999px;font-size:1.05rem}
+.toplink{font-size:.95rem;margin-bottom:4px}
+.toplink a{color:var(--navy)}
+footer{margin-top:10px}
+.bigbtn{display:block;width:100%;text-align:center;background:var(--navy);color:#fff;font-weight:700;
+ border:none;border-radius:14px;padding:18px 14px;font-size:1.15rem;cursor:pointer;margin:.7em 0;text-decoration:none}
+.bigbtn.pink{background:var(--accent)}
+.bigbtn:disabled{background:#9aa7b4;cursor:default}
+.subbtn{display:inline-block;background:#fff;color:var(--navy);font-weight:700;border:2px solid var(--navy);
+ border-radius:999px;padding:10px 20px;font-size:1rem;cursor:pointer;text-decoration:none;margin:.2em .2em .2em 0}
+.qbox{border:3px solid var(--navy);border-radius:14px;padding:20px 18px;margin:1em 0;background:#fff}
+.qsubj{display:inline-block;background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:2px 14px;font-size:.9rem;font-weight:700;color:var(--navy)}
+.qtext{font-size:1.2rem;font-weight:700;margin:.6em 0}
+.atext{border-top:2px dashed var(--line);margin-top:.8em;padding-top:.8em}
+.judgerow{display:flex;gap:10px;margin-top:1em}
+.judgerow button{flex:1;padding:16px 8px;font-size:1.1rem;font-weight:700;border-radius:12px;border:none;cursor:pointer}
+.btn-ok{background:#1f9d66;color:#fff}
+.btn-ng{background:#e8edf3;color:var(--ink);border:2px solid var(--line)}
+.note{background:#fff7ea;border-left:6px solid #f2b134;border-radius:6px;padding:.6em 1em;margin:.8em 0}
+.rowitem{border:2px solid var(--line);border-radius:12px;padding:12px 14px;margin:.6em 0;background:#fff}
+.rowitem .meta{font-size:.88rem;color:#5a6b7d}
+.duebox{border:3px solid #c2255c;border-radius:14px;padding:16px 18px;background:#fff5f8;margin:1em 0}
+.score{font-size:2rem;font-weight:700;color:var(--navy);text-align:center}
+.center{text-align:center}
+.weekrow{display:flex;gap:6px;justify-content:center;margin:.6em 0}
+.weekrow span{width:42px;height:42px;border-radius:50%;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:700;background:#fff}
+.weekrow span.done{background:var(--accent);border-color:var(--accent);color:#fff}
+.timedisp{font-size:4rem;font-weight:700;text-align:center;color:var(--navy);font-variant-numeric:tabular-nums;margin:.2em 0}
+.progresswrap{background:var(--soft);border-radius:999px;height:22px;overflow:hidden;margin:.8em 0}
+.progressbar{background:var(--accent);height:100%;width:0%}
+.presetrow{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.presetrow button{padding:12px 20px;font-size:1.05rem;font-weight:700;border-radius:999px;border:2px solid var(--navy);background:#fff;color:var(--navy);cursor:pointer}
+.presetrow button.on{background:var(--navy);color:#fff}
+.phaselabel{text-align:center;font-size:1.3rem;font-weight:700}
+@media (max-width:600px){body{font-size:17px}.wrap{padding:14px 12px 48px}h1{font-size:1.35rem}h2{font-size:1.18rem}.timedisp{font-size:3rem}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<p class="toplink"><a href="sakuya.html">← 教材トップへ戻る</a></p>
+
+<h1>🌅 朝活セット｜中1 朔埜 SAKUYA</h1>
+<p>朝の約10分でできるセットです。3つを順番にやって、「朝活できた！」を押そう。</p>
+<h2>① 暗記カード</h2>
+<p id="moFlashText"></p>
+<p><a class="bigbtn pink" id="moFlashLink" href="#">暗記カードを開く</a></p>
+<h2>② まちがい復習</h2>
+<p id="moMistakeText"></p>
+<p><a class="bigbtn" href="mistakes_sakuya.html">まちがい復習ボックスを開く</a></p>
+<h2>③ ミニ問題（日替わり5問）</h2>
+<p>問題をタップすると答えが出ます。</p>
+<div id="moMini"></div>
+<h2>今日の記録</h2>
+<button type="button" class="bigbtn pink" id="moDone">朝活できた！</button>
+<p class="center" id="moStreak"></p>
+<div class="weekrow" id="moWeek"></div>
+<p class="center" style="font-size:.9rem">今週（月〜日）の実施状況</p>
+<script>
+
+function todayStr(d){d=d||new Date();var m=('0'+(d.getMonth()+1)).slice(-2);var day=('0'+d.getDate()).slice(-2);return d.getFullYear()+'-'+m+'-'+day;}
+function daysDiff(a,b){return Math.round((new Date(a+'T00:00:00')-new Date(b+'T00:00:00'))/86400000);}
+function loadArr(k){try{var v=JSON.parse(localStorage.getItem(k));return Array.isArray(v)?v:[];}catch(e){return[];}}
+
+var CHILD='sakuya';
+var MKEY='stepup-morning-'+CHILD;
+var XKEY='stepup-mistakes-'+CHILD;
+var ROT=[["英語", "flash_chu1_english.html"], ["数学", "flash_chu1_math.html"], ["英語", "flash_chu1_english.html"], ["理科", "flash_chu1_science.html"], ["社会", "flash_chu1_social.html"], ["理科", "flash_chu1_science_03.html"], ["数学", "flash_chu1_math.html"]];
+var MINI=[{"s": "数学", "q": "方程式とは何ですか？", "a": "分からない数 x をふくんだ等式（＝のある式）です"}, {"s": "数学", "q": "等式で、両辺をわるときに使えない数は？", "a": "0 です"}, {"s": "数学", "q": "− の項を移項すると、符号はどうなる？", "a": "＋ になります"}, {"s": "数学", "q": "（x − 1）／3 ＝ 4 の分数を消すには？", "a": "両辺に 3 をかけて x − 1 ＝ 12 にします"}, {"s": "数学", "q": "5x ＝ 15 の解は？", "a": "x ＝ 3"}, {"s": "数学", "q": "「5を加えて3倍する」を式にすると？", "a": "（x ＋ 5）× 3"}, {"s": "英語", "q": "「三単現」の3つの条件は？", "a": "三人称・単数・現在 のことです"}, {"s": "英語", "q": "watch の三単現の形は？", "a": "watches"}, {"s": "英語", "q": "have の三単現の形は？", "a": "has"}, {"s": "英語", "q": "「Does she plays…?」は正しい？", "a": "間違いです。正しくは「Does she play…?」"}, {"s": "英語", "q": "疑問詞の文の語順は？", "a": "疑問詞 ＋ does／do ＋ 主語 ＋ 動詞の原形"}, {"s": "英語", "q": "「遅れないでください」を英語で言うと？", "a": "Don't be late."}, {"s": "理科", "q": "物質の三態とは？", "a": "固体・液体・気体の3つの状態です"}, {"s": "理科", "q": "融点（ゆうてん）とは？", "a": "固体がとけて液体になるときの温度です"}, {"s": "理科", "q": "エタノールの沸点は？", "a": "78℃"}, {"s": "理科", "q": "蒸留（じょうりゅう）とはどんな方法？", "a": "沸点の差を利用して、混ざった液体を分ける方法です"}, {"s": "理科", "q": "密度と体積から質量を求める式は？", "a": "質量 ＝ 密度 × 体積"}, {"s": "理科", "q": "密度0.9g/cm³の油45gの体積は？", "a": "50 cm³"}, {"s": "理科", "q": "食塩20gを水80gに溶かしたときの濃度は？", "a": "20％"}, {"s": "理科", "q": "溶解度は、何によって決まる？", "a": "物質の種類と温度で決まります"}, {"s": "理科", "q": "食塩の溶解度の特徴は？", "a": "温度が変わっても ほとんど変わりません（約36g）"}, {"s": "理科", "q": "溶け残りの計算式は？", "a": "溶け残り ＝ 入れた量 － 溶解度"}, {"s": "理科", "q": "硝酸カリウムの再結晶に向いている方法は？", "a": "冷やす方法（熱い飽和水溶液を冷やす）"}, {"s": "理科", "q": "60℃で硝酸カリウム110gを溶かした飽和水溶液（水100g）を20℃まで冷やすと、結晶は何g出る？", "a": "78g"}];
+var WD=['日','月','火','水','木','金','土'];
+var now=new Date();
+var day=ROT[now.getDay()];
+document.getElementById('moFlashText').textContent='今日（'+WD[now.getDay()]+'曜日）は '+day[0]+' の日です。';
+document.getElementById('moFlashLink').href=day[1];
+(function(){
+  var a=loadArr(XKEY);var today=todayStr();
+  var due=a.filter(function(e){return daysDiff(today,e.last)>=1;}).length;
+  var el=document.getElementById('moMistakeText');
+  if(a.length===0){el.textContent='まちがい記録は なし。今日もその調子！';}
+  else{el.textContent='まちがい記録 '+a.length+'件（うち今日の復習は '+due+'件）あります。';}
+})();
+(function(){
+  var box=document.getElementById('moMini');
+  var start=(Math.floor(now.getTime()/86400000)*5)%MINI.length;
+  for(var i=0;i<5;i++){
+    (function(item){
+      var d=document.createElement('div');d.className='qbox';
+      d.innerHTML='<span class="qsubj"></span><div class="qtext"></div><div class="atext" style="display:none"></div>';
+      d.querySelector('.qsubj').textContent=item.s;
+      d.querySelector('.qtext').textContent=item.q;
+      d.querySelector('.atext').textContent=item.a;
+      d.addEventListener('click',function(){var a=d.querySelector('.atext');a.style.display=a.style.display==='none'?'block':'none';});
+      box.appendChild(d);
+    })(MINI[(start+i)%MINI.length]);
+  }
+})();
+function streakOf(days){
+  var s=0;var d=new Date();
+  if(days.indexOf(todayStr(d))<0){d.setDate(d.getDate()-1);}
+  while(days.indexOf(todayStr(d))>=0){s++;d.setDate(d.getDate()-1);}
+  return s;
+}
+function renderRecord(){
+  var days=loadArr(MKEY);var today=todayStr();
+  var btn=document.getElementById('moDone');
+  if(days.indexOf(today)>=0){btn.disabled=true;btn.textContent='今日は記録済み ✓';}
+  var s=streakOf(days);
+  document.getElementById('moStreak').textContent=s>0?('連続 '+s+' 日 朝活できています！'):('まだ連続記録はありません。今日から始めよう！');
+  var monday=new Date();var diff=(monday.getDay()+6)%7;monday.setDate(monday.getDate()-diff);
+  var wk=document.getElementById('moWeek');wk.innerHTML='';
+  for(var i=0;i<7;i++){
+    var d=new Date(monday);d.setDate(monday.getDate()+i);
+    var sp=document.createElement('span');
+    sp.textContent=WD[d.getDay()];
+    if(days.indexOf(todayStr(d))>=0)sp.className='done';
+    wk.appendChild(sp);
+  }
+}
+document.getElementById('moDone').addEventListener('click',function(){
+  var days=loadArr(MKEY);var today=todayStr();
+  if(days.indexOf(today)<0){days.push(today);localStorage.setItem(MKEY,JSON.stringify(days));}
+  renderRecord();
+});
+renderRecord();
+</script>
+
+<footer><a class="backlink" href="sakuya.html">← 教材トップへ戻る</a></footer>
+</div>
+</body>
+</html>
