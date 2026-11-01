@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>中1理科 暗記シート③｜溶解度と再結晶</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 16px; background: #ffffff; color: #222; font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", "Noto Sans JP", sans-serif; line-height: 1.7; font-size: 16px; }
+  main { max-width: 760px; margin: 0 auto; }
+  h1 { font-size: 1.5rem; color: #fff; background: #2e7d6b; margin: 0 0 6px; padding: 12px 16px; border-radius: 10px; }
+  .sub { color: #555; font-size: .9rem; margin: 0 0 18px; }
+  h2 { font-size: 1.2rem; color: #2e7d6b; border-left: 8px solid #2e7d6b; padding-left: 10px; margin: 28px 0 10px; }
+  h2.blue { color: #1f5fa8; border-color: #1f5fa8; }
+  h2.orange { color: #b05e14; border-color: #e08a2e; }
+  h2.purple { color: #6a3fa0; border-color: #8a5fc0; }
+  .box { border: 2px solid #2e7d6b; border-radius: 10px; padding: 12px 16px; margin: 10px 0; background: #f2faf7; }
+  .box.blue { border-color: #1f5fa8; background: #f0f6fd; }
+  .box.orange { border-color: #e08a2e; background: #fdf6ec; }
+  .box.purple { border-color: #8a5fc0; background: #f6f1fc; }
+  .warn { border: 2px solid #c0392b; border-radius: 10px; padding: 12px 16px; margin: 10px 0; background: #fdf0ee; }
+  .warn b { color: #c0392b; }
+  ul { margin: 6px 0; padding-left: 1.3em; }
+  li { margin: 4px 0; }
+  .formula { font-size: 1.25rem; font-weight: bold; text-align: center; padding: 10px; background: #fff; border: 2px dashed #1f5fa8; border-radius: 8px; margin: 10px 0; }
+  table { border-collapse: collapse; width: 100%; margin: 10px 0; }
+  th, td { border: 1px solid #999; padding: 8px 10px; text-align: left; }
+  th { background: #e8f3ef; }
+  .fig { text-align: center; margin: 12px 0; }
+  .fig figcaption { font-size: .9rem; color: #555; margin-top: 4px; }
+  svg { max-width: 100%; height: auto; }
+  .big { font-size: 1.1rem; font-weight: bold; }
+  .note { font-size: .9rem; color: #555; }
+  @media print {
+    body { padding: 0; }
+    h2 { page-break-after: avoid; }
+    .box, .warn, .fig { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<main>
+<h1>中1理科 暗記シート③｜溶解度と再結晶</h1>
+<p class="sub">期末テスト対策（範囲は予測です。本当の範囲が出たら直します）。第2弾「状態変化と密度」の補足シートです。</p>
+
+<h2>1. 溶解度（ようかいど）とは</h2>
+<div class="box">
+  <ul>
+    <li><span class="big">溶解度</span> ＝ ある温度で、<span class="big">水100g</span> に物質が限界まで溶けたときの、溶けた物質の質量（g）。</li>
+    <li>溶解度は、<span class="big">物質の種類と温度</span> で決まる。</li>
+    <li>溶解度いっぱいまで溶けた水溶液を <span class="big">飽和水溶液</span> という。これ以上入れると溶け残りが出る。</li>
+    <li>固体の溶解度は、ふつう温度が高くなるほど大きくなる。ただし増え方は物質によって大きくちがう。</li>
+  </ul>
+</div>
+
+<figure class="fig">
+<svg viewBox="0 0 560 320" width="560" role="img" aria-label="溶解度曲線の図">
+  <!-- 軸 -->
+  <line x1="80" y1="20" x2="80" y2="265" stroke="#333" stroke-width="2"/>
+  <line x1="80" y1="265" x2="525" y2="265" stroke="#333" stroke-width="2"/>
+  <polygon points="80,12 74,26 86,26" fill="#333"/>
+  <polygon points="533,265 519,259 519,271" fill="#333"/>
+  <text x="18" y="45" font-size="15" fill="#333">溶解度</text>
+  <text x="18" y="65" font-size="13" fill="#333">(g/水100g)</text>
+  <text x="475" y="292" font-size="15" fill="#333">温度(℃)</text>
+  <!-- 目盛り：溶解度 0,50,100 → y=265,170,75 （1g=1.9px） -->
+  <line x1="74" y1="170" x2="86" y2="170" stroke="#333" stroke-width="2"/>
+  <text x="66" y="175" text-anchor="end" font-size="14" fill="#333">50</text>
+  <line x1="74" y1="75" x2="86" y2="75" stroke="#333" stroke-width="2"/>
+  <text x="66" y="80" text-anchor="end" font-size="14" fill="#333">100</text>
+  <!-- 目盛り：温度 0,20,40,60,80 → x=80,170,260,350,440 -->
+  <line x1="170" y1="259" x2="170" y2="271" stroke="#333" stroke-width="2"/>
+  <text x="170" y="288" text-anchor="middle" font-size="14" fill="#333">20</text>
+  <line x1="260" y1="259" x2="260" y2="271" stroke="#333" stroke-width="2"/>
+  <text x="260" y="288" text-anchor="middle" font-size="14" fill="#333">40</text>
+  <line x1="350" y1="259" x2="350" y2="271" stroke="#333" stroke-width="2"/>
+  <text x="350" y="288" text-anchor="middle" font-size="14" fill="#333">60</text>
+  <line x1="440" y1="259" x2="440" y2="271" stroke="#333" stroke-width="2"/>
+  <text x="440" y="288" text-anchor="middle" font-size="14" fill="#333">80</text>
+  <!-- 硝酸カリウム曲線：(0,13)→(104,240) (20,32)→(170,204) (40,64)→(260,143) (60,110)→(350,56) -->
+  <polyline points="104,240 170,204 260,143 350,56" fill="none" stroke="#c0392b" stroke-width="3"/>
+  <circle cx="170" cy="204" r="4" fill="#c0392b"/>
+  <circle cx="260" cy="143" r="4" fill="#c0392b"/>
+  <circle cx="350" cy="56" r="4" fill="#c0392b"/>
+  <text x="360" y="48" font-size="15" font-weight="bold" fill="#c0392b">硝酸カリウム</text>
+  <text x="360" y="68" font-size="13" fill="#c0392b">温度で大きく変わる</text>
+  <!-- 食塩：ほぼ36 → y=197 横ばい -->
+  <line x1="104" y1="197" x2="470" y2="192" stroke="#1f5fa8" stroke-width="3"/>
+  <text x="400" y="182" font-size="15" font-weight="bold" fill="#1f5fa8">食塩</text>
+  <text x="400" y="216" font-size="13" fill="#1f5fa8">ほぼ横ばい（約36g）</text>
+  <!-- 冷やす矢印 -->
+  <line x1="350" y1="90" x2="185" y2="185" stroke="#555" stroke-width="2" stroke-dasharray="5 4"/>
+  <polygon points="178,190 193,184 188,172" fill="#555"/>
+  <text x="215" y="130" font-size="13" fill="#555">冷やすと差の分だけ</text>
+  <text x="215" y="148" font-size="13" fill="#555">結晶が出てくる</text>
+</svg>
+<figcaption>溶解度曲線：温度と溶解度の関係を表したグラフ</figcaption>
+</figure>
+
+<h2 class="blue">2. 覚える数値（水100gあたり）</h2>
+<div class="box blue">
+  <table>
+    <tr><th>物質</th><th>20℃</th><th>40℃</th><th>60℃</th><th>特徴</th></tr>
+    <tr><td class="big">硝酸カリウム</td><td>32g</td><td>64g</td><td>110g</td><td>温度で <span class="big">大きく</span> 増える</td></tr>
+    <tr><td class="big">食塩</td><td>36g</td><td>36g</td><td>37g</td><td>温度で <span class="big">ほとんど変わらない</span></td></tr>
+  </table>
+  <ul>
+    <li>水の量が2倍・半分になれば、溶ける量も2倍・半分になる（<span class="big">水の量に比例</span>）。</li>
+    <li>例：40℃の水200gに硝酸カリウムは最大 64 × 2 ＝ <span class="big">128g</span> 溶ける。</li>
+  </ul>
+</div>
+
+<h2 class="orange">3. 溶け残りの計算</h2>
+<div class="box orange">
+  <div class="formula">溶け残り（g）＝ 入れた量 － 溶解度</div>
+  <ul>
+    <li>例：20℃の水100gに硝酸カリウムを40g入れる → 溶けるのは32gまで → 溶け残り ＝ 40 － 32 ＝ <span class="big">8g</span>。</li>
+    <li>入れた量が溶解度以下なら、全部溶けて溶け残りは0g。</li>
+  </ul>
+</div>
+
+<h2 class="purple">4. 再結晶（さいけっしょう）</h2>
+<div class="box purple">
+  <p><span class="big">再結晶</span> ＝ 一度溶かした物質を、再び結晶として取り出すこと。方法は2つ。</p>
+  <table>
+    <tr><th>方法</th><th>やり方</th><th>向いている物質</th></tr>
+    <tr><td class="big">冷やす方法</td><td>熱い飽和水溶液を冷やす</td><td>硝酸カリウム（溶解度が温度で大きく変わる）</td></tr>
+    <tr><td class="big">蒸発法</td><td>加熱して水を蒸発させる</td><td>食塩（溶解度が温度でほとんど変わらない）</td></tr>
+  </table>
+  <div class="formula">出てくる結晶（g）＝ 溶解度（もとの温度）－ 溶解度（冷やした温度）</div>
+  <ul>
+    <li>例：60℃で硝酸カリウム110gを溶かした飽和水溶液（水100g）を20℃に冷やす → 結晶 ＝ 110 － 32 ＝ <span class="big">78g</span>。</li>
+    <li>純粋な結晶を取り出す流れ：熱い水に溶かす → <span class="big">熱いうちにろ過</span>（溶けなかった不純物を取る）→ 冷やして結晶を出す → <span class="big">ろ過</span> して結晶を分ける。</li>
+    <li>食塩を冷やしても結晶がほとんど出ないのは、温度による溶解度の変化が小さいから。</li>
+  </ul>
+</div>
+
+<h2>まとめ｜間違えやすい点</h2>
+<div class="warn">
+  <ul>
+    <li><b>溶解度は「水100gあたり」。</b>水溶液全体の100gではない。水の量が変われば比例して計算する。</li>
+    <li><b>結晶の量は「差」で出す。</b>冷やす前と後の溶解度の引き算。もとの量をそのまま答えない。</li>
+    <li><b>食塩は冷やしても出てこない。</b>温度で溶解度が変わらないから。食塩は蒸発法。</li>
+    <li><b>曲線の形で物質を見分ける。</b>急なカーブ＝硝酸カリウムタイプ、横ばい＝食塩タイプ。</li>
+    <li><b>飽和水溶液＝限界まで溶けた状態。</b>これ以上は溶け残りになる。</li>
+  </ul>
+</div>
+
+<p class="note">※このシートは期末テストの予測範囲（溶解度と再結晶）をもとに作成しています。範囲は予測です。本当の範囲が出たら直します。</p>
+</main>
+
+<div style="max-width:880px;margin:24px auto 8px;padding:0 16px 24px;font-family:sans-serif;text-align:center"><a href="sakuya.html" style="display:inline-block;background:#ff6b9d;color:#fff;font-weight:700;text-decoration:none;padding:14px 22px;border-radius:999px;font-size:16px">← 教材トップへ戻る</a></div>
+</body>
+</html>

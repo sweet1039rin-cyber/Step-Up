@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>中3数学 暗記シート｜相似な図形</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 16px;
+    background: #ffffff;
+    color: #222;
+    font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Noto Sans JP", "Yu Gothic", sans-serif;
+    font-size: 16px;
+    line-height: 1.8;
+  }
+  .sheet { max-width: 760px; margin: 0 auto; }
+  h1 {
+    font-size: 24px;
+    text-align: center;
+    color: #ffffff;
+    background: #2f6fb2;
+    border-radius: 10px;
+    padding: 12px 8px;
+    margin: 0 0 6px;
+  }
+  .subtitle { text-align: center; color: #555; font-size: 14px; margin: 0 0 20px; }
+  h2 {
+    font-size: 19px;
+    color: #2f6fb2;
+    border-left: 8px solid #2f6fb2;
+    padding: 2px 0 2px 10px;
+    margin: 28px 0 10px;
+  }
+  h2.green { color: #2e7d4f; border-left-color: #2e7d4f; }
+  h2.orange { color: #c05a17; border-left-color: #e07b39; }
+  h2.purple { color: #6a3fa0; border-left-color: #8e5fc0; }
+  p { margin: 6px 0; }
+  .memo-box {
+    border: 2px solid #2f6fb2;
+    background: #eef5fc;
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin: 10px 0;
+  }
+  .memo-box.green { border-color: #2e7d4f; background: #edf7f0; }
+  .memo-box.orange { border-color: #e07b39; background: #fdf3ea; }
+  .memo-box.purple { border-color: #8e5fc0; background: #f4eefb; }
+  .memo-box .box-title { font-weight: bold; font-size: 17px; margin-bottom: 4px; }
+  .warn-box {
+    border: 2px solid #c0392b;
+    background: #fdf0ee;
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin: 10px 0;
+  }
+  .warn-box .box-title { font-weight: bold; color: #c0392b; font-size: 17px; margin-bottom: 4px; }
+  ul, ol { margin: 6px 0 6px 0; padding-left: 24px; }
+  li { margin: 4px 0; }
+  .eq {
+    font-size: 19px;
+    font-weight: bold;
+    text-align: center;
+    background: #fff8e1;
+    border: 1px solid #e0c96a;
+    border-radius: 8px;
+    padding: 8px 6px;
+    margin: 8px 0;
+    letter-spacing: 0.5px;
+  }
+  .figure { text-align: center; margin: 12px 0; }
+  .figure svg { max-width: 100%; height: auto; }
+  .figure .caption { font-size: 13px; color: #555; margin-top: 4px; }
+  .big { font-size: 18px; font-weight: bold; }
+  .point { color: #c0392b; font-weight: bold; }
+  table { border-collapse: collapse; width: 100%; margin: 10px 0; }
+  th, td { border: 1px solid #9db8d2; padding: 8px 10px; text-align: left; }
+  th { background: #eef5fc; color: #2f6fb2; }
+  .footer { text-align: center; color: #777; font-size: 13px; margin-top: 32px; }
+  @media print {
+    body { padding: 0; font-size: 14px; }
+    h1 { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .memo-box, .warn-box, .eq, th { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .memo-box, .warn-box, .figure, table { page-break-inside: avoid; }
+    h2 { page-break-after: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+<h1>中3数学 暗記シート｜相似な図形</h1>
+<p class="subtitle">期末テスト対策（範囲は予測です。本当の範囲が出たら直します）／ 読んで覚える → 問題で使えるようにしよう</p>
+
+<h2>1．相似って何？</h2>
+<p>2つの図形で、<span class="big">形が同じで大きさがちがう</span>とき、その2つの図形は<span class="big">相似</span>であるといいます。記号は <span class="big">∽</span>（Sを横にした形）を使います。</p>
+<div class="eq">△ABC ∽ △DEF　→　A↔D、B↔E、C↔F の順に対応する</div>
+<p>∽ の式では、<span class="point">書かれた順番どうしが対応</span>します。対応する辺の長さの比を<span class="big">相似比</span>といいます。</p>
+
+<h2 class="green">2．相似比と面積比・体積比（最重要）</h2>
+<div class="memo-box green">
+<div class="box-title">覚えること：比のきまり</div>
+<ul>
+<li>辺の長さの比・周の長さの比 ＝ <b>相似比そのまま</b></li>
+<li>面積比 ＝ 相似比の <b>2乗</b></li>
+<li>体積比 ＝ 相似比の <b>3乗</b></li>
+</ul>
+<div class="eq">相似比 2：3 → 面積比 4：9 → 体積比 8：27</div>
+<p>「長さは1乗、面積は2乗、体積は3乗」と、図形の広がり方で乗の数が変わります。</p>
+</div>
+
+<h2>3．辺の長さの求め方</h2>
+<p>対応する辺が分かれば、<span class="big">「何倍になっているか」</span>を出して、他の辺にも同じ倍率をかけます。</p>
+<div class="figure">
+<svg width="420" height="190" viewBox="0 0 420 190" role="img" aria-label="相似な三角形の図">
+  <polygon points="60,150 180,150 120,50" fill="#eef5fc" stroke="#2f6fb2" stroke-width="2.5"/>
+  <text x="46" y="168" font-size="15" fill="#222">A</text>
+  <text x="182" y="168" font-size="15" fill="#222">B</text>
+  <text x="112" y="42" font-size="15" fill="#222">C</text>
+  <text x="105" y="175" font-size="14" fill="#2f6fb2" font-weight="bold">6cm</text>
+  <polygon points="250,150 400,150 325,25" fill="#fdf3ea" stroke="#e07b39" stroke-width="2.5"/>
+  <text x="234" y="168" font-size="15" fill="#222">D</text>
+  <text x="404" y="168" font-size="15" fill="#222">E</text>
+  <text x="318" y="17" font-size="15" fill="#222">F</text>
+  <text x="300" y="175" font-size="14" fill="#c05a17" font-weight="bold">9cm</text>
+  <text x="205" y="100" font-size="22" fill="#555">→</text>
+</svg>
+<div class="caption">辺が 6cm → 9cm なら、倍率は 9÷6＝1.5倍（相似比 2：3）</div>
+</div>
+<div class="memo-box">
+<div class="box-title">覚えること：計算の手順</div>
+<ol>
+<li>対応する辺のペアを1組見つける</li>
+<li>倍率（相手 ÷ 自分）を出す</li>
+<li>知りたい辺も同じ倍率で計算する</li>
+</ol>
+</div>
+
+<h2 class="orange">4．平行線と線分の比</h2>
+<p>三角形の中に底辺と平行な線があると、<span class="big">小さい三角形と大きい三角形が相似</span>になり、辺の比が等しくなります。</p>
+<div class="eq">DE ∥ BC のとき　AD：AB ＝ AE：AC ＝ DE：BC</div>
+<div class="memo-box orange">
+<div class="box-title">覚えること：中点連結定理</div>
+<p>2辺の<b>中点</b>を結んだ線分は、残りの辺の<b>半分</b>の長さで、その辺に<b>平行</b>になります。</p>
+<div class="eq">M・Nが中点 → MN ＝ (1/2)BC、MN ∥ BC</div>
+</div>
+
+<h2 class="purple">5．関数 y＝ax² の復習ポイント</h2>
+<div class="memo-box purple">
+<div class="box-title">覚えること：y＝ax²（中間の復習）</div>
+<ul>
+<li>x がマイナスでも、2乗すれば<b>プラス</b>になる　例：(−3)²＝9</li>
+<li>a＞0 のグラフは<b>下に頂点</b>のある放物線。変域に x＝0 があれば最小値は 0</li>
+<li>変化の割合 ＝ (yの増加量) ÷ (xの増加量)</li>
+<li>式の求め方：y＝ax² に分かっている x・y を代入して a を求める</li>
+</ul>
+</div>
+
+<div class="warn-box">
+<div class="box-title">⚠ 間違えやすい点（ここをチェック！）</div>
+<ul>
+<li>面積比・体積比で<b>2乗・3乗をし忘れる</b></li>
+<li>対応の順番を取り違える（∽ の式は<b>順番どうし</b>が対応）</li>
+<li>相似比の向きを逆にする（どちらの図形を基準にした比か確認）</li>
+<li>平行線の問題で、比を作る辺のペアを間違える（小さい三角形どうしでそろえる）</li>
+<li>(−3)² を −9 と書いてしまう（かっこごと2乗する）</li>
+</ul>
+</div>
+
+<p class="footer">中3数学 暗記シート｜相似な図形（期末テスト対策・範囲は予測）</p>
+
+</div>
+
+<div style="max-width:880px;margin:24px auto 8px;padding:0 16px 24px;font-family:sans-serif;text-align:center"><a href="iori.html" style="display:inline-block;background:#ff6b9d;color:#fff;font-weight:700;text-decoration:none;padding:14px 22px;border-radius:999px;font-size:16px">← 教材トップへ戻る</a></div>
+</body>
+</html>
