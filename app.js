@@ -2507,6 +2507,65 @@ function refreshBulkCompleteBtn(){
  btn.disabled=pendingCount===0;
  btn.textContent=pendingCount?`未完了をすべて完了にする（${pendingCount}件）`:'未完了の課題はありません';
 }
+// ============================================================
+// 期末対策課題の自動登録（第3次改修）
+// アプリ起動時に1回だけ、期末テスト対策の課題（期限は全て2026-11-15）を、
+// 通常の「課題を追加」と同じ形のカスタム課題として登録する。
+// 実行済みかどうかは localStorage のフラグキーで管理し、
+// 同じタイトルの課題が既にある子どもには、その項目は入れない。
+// 数値（ページ）型の目標ページ数は未設定（total=null）で登録する。
+// 実際のページ数は、課題カードの「編集」から後で入力する想定。
+// （total=null の項目は、既存の表示・計画ロジックで安全に扱われる）
+// ============================================================
+const FINALS_2026_SEED_FLAG_KEY='stepup-seeded-finals-2026';
+const FINALS_2026_DEADLINE='2026-11-15';
+const FINALS_2026_SEED_ITEMS={
+ iori:[
+  {subject:'数学',title:'相似な図形（性質と相似比）',material:'教科書・数学の友',progressType:'numeric'},
+  {subject:'数学',title:'関数y＝ax²の復習と利用',material:'教科書・数学の友',progressType:'numeric'},
+  {subject:'英語',title:'分詞と関係代名詞の文法',material:'教科書・ジョイフルワーク',progressType:'numeric'},
+  {subject:'英語',title:'文法の復習（不定詞・間接疑問文）',material:'新研究',progressType:'check'},
+  {subject:'理科',title:'運動とエネルギー（力・仕事）',material:'教科書・理科の完全学習',progressType:'numeric'},
+  {subject:'社会',title:'歴史の続き（戦後〜現代）',material:'歴史の教科書・歴史の学習',progressType:'numeric'},
+  {subject:'社会',title:'公民（政治のしくみ）',material:'公民の教科書・公民の学習',progressType:'numeric'},
+  {subject:'国語',title:'漢字と文法（ことばのきまり）',material:'10問漢字・ことばのきまり',progressType:'numeric'}
+ ],
+ sakuya:[
+  {subject:'数学',title:'方程式の計算と利用',material:'教科書・数学の友',progressType:'numeric'},
+  {subject:'数学',title:'比例・反比例',material:'教科書',progressType:'numeric'},
+  {subject:'英語',title:'三単現のsとUnit5〜の文法',material:'教科書・ジョイフルワーク',progressType:'numeric'},
+  {subject:'英語',title:'単語・文法の復習（1学期〜中間）',material:'語順トレーニング',progressType:'check'},
+  {subject:'理科',title:'状態変化と密度',material:'教科書・理科の完全学習',progressType:'numeric'},
+  {subject:'社会',title:'歴史の続き（中世）',material:'歴史の教科書・歴史の学習',progressType:'numeric'},
+  {subject:'国語',title:'次の単元と漢字',material:'教科書・漢字スキル',progressType:'numeric'}
+ ]
+};
+function seedFinals2026Assignments(){
+ try{
+  if(localStorage.getItem(FINALS_2026_SEED_FLAG_KEY))return;
+  const now=new Date().toISOString();
+  Object.keys(FINALS_2026_SEED_ITEMS).forEach(childId=>{
+   const existingTitles=new Set(ProgressEngine.getAll(childId).map(it=>it.title));
+   const customs=getCustomAssignments(childId);
+   FINALS_2026_SEED_ITEMS[childId].forEach((def,index)=>{
+    if(existingTitles.has(def.title))return;
+    const entry={
+     id:`${childId}-custom-finals2026-${index+1}`,subject:def.subject,title:def.title,scope:'',
+     deadline:FINALS_2026_DEADLINE,category:'',status:'not-started',done:false,
+     progress:'',remaining:'',note:'',progressType:def.progressType,source:'finals2026-seed',
+     material:def.material,pageStart:null,pageEnd:null,problemRange:'',priority:'normal',
+     updatedAt:now,createdAt:now
+    };
+    if(def.progressType==='numeric'){entry.current=0;entry.total=null;entry.unit='ページ'}
+    customs.push(entry);
+    existingTitles.add(def.title);
+   });
+   saveCustomAssignments(childId,customs);
+  });
+  localStorage.setItem(FINALS_2026_SEED_FLAG_KEY,'true');
+ }catch(e){console.error('期末対策課題の自動登録に失敗しました',e)}
+}
+seedFinals2026Assignments();
 function openAssignments(){assignmentForm.classList.add('hidden');materialForm.classList.add('hidden');renderAssignments();populateAssignmentMaterialList();renderMaterials();show(assignmentsScreen)}
 // 既存教材(教材ページのdefaultMaterials+保存済み教材)から候補一覧を作る。一覧にない場合は自由入力可。
 function populateAssignmentMaterialList(){
