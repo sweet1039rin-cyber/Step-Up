@@ -1030,6 +1030,29 @@ function autoStepUpFromChecklist(){
  if(checked.length===boxes.length)text+='。今日のミッションを全部達成！';
  return text;
 }
+function awardReflectionCoin(){
+ try{
+  var coinKey='stepup-coins-'+current;
+  var claimKey='stepup-coinclaims-'+current;
+  var today=dateKey(new Date());
+  var claims={};
+  try{claims=JSON.parse(localStorage.getItem(claimKey)||'{}')||{};}catch(e){claims={};}
+  var ck=today+':reflection';
+  if(claims[ck])return 0;
+  claims[ck]=1;
+  localStorage.setItem(claimKey,JSON.stringify(claims));
+  var data={total:0,history:[]};
+  try{var savedCoins=JSON.parse(localStorage.getItem(coinKey)||'null');if(savedCoins&&typeof savedCoins.total==='number'&&Array.isArray(savedCoins.history))data=savedCoins;}catch(e){}
+  data.total+=10;
+  data.history.push({date:today,source:'振り返り入力',amount:10});
+  if(data.history.length>200)data.history=data.history.slice(data.history.length-200);
+  localStorage.setItem(coinKey,JSON.stringify(data));
+  return 10;
+ }catch(e){
+  console.error('コインの付与に失敗しました',e);
+  return 0;
+ }
+}
 function saveDailyReportCard(){
  const doneEl=document.querySelector('#dailyReportDone');
  const stepUpEl=document.querySelector('#dailyReportStepUp');
@@ -1045,7 +1068,8 @@ function saveDailyReportCard(){
  const date=dateKey(new Date());
  try{
   localStorage.setItem(dailyReportKey(date),JSON.stringify({date,done,stepUp}));
-  if(statusEl)statusEl.textContent='今日の記録を保存しました。';
+  var coin=awardReflectionCoin();
+  if(statusEl)statusEl.textContent=coin>0?'今日の記録を保存しました。🪙 +10コイン！':'今日の記録を保存しました。';
  }catch(e){
   console.error('学習報告の保存に失敗しました',e);
   if(statusEl)statusEl.textContent='保存に失敗しました。もう一度お試しください。';
