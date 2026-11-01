@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>中1数学 暗記シート｜平面図形（予習）</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 16px;
+    background: #ffffff;
+    color: #222;
+    font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Noto Sans JP", "Yu Gothic", sans-serif;
+    font-size: 16px;
+    line-height: 1.8;
+  }
+  .sheet { max-width: 760px; margin: 0 auto; }
+  h1 {
+    font-size: 24px;
+    text-align: center;
+    color: #ffffff;
+    background: #2f6fb2;
+    border-radius: 10px;
+    padding: 12px 8px;
+    margin: 0 0 6px;
+  }
+  .subtitle { text-align: center; color: #555; font-size: 14px; margin: 0 0 20px; }
+  h2 {
+    font-size: 19px;
+    color: #2f6fb2;
+    border-left: 8px solid #2f6fb2;
+    padding: 2px 0 2px 10px;
+    margin: 28px 0 10px;
+  }
+  h2.green { color: #2e7d4f; border-left-color: #2e7d4f; }
+  h2.orange { color: #c05a17; border-left-color: #e07b39; }
+  h2.purple { color: #6a3fa0; border-left-color: #8e5fc0; }
+  p { margin: 6px 0; }
+  .memo-box {
+    border: 2px solid #2f6fb2;
+    background: #eef5fc;
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin: 10px 0;
+  }
+  .memo-box.green { border-color: #2e7d4f; background: #edf7f0; }
+  .memo-box.orange { border-color: #e07b39; background: #fdf3ea; }
+  .memo-box.purple { border-color: #8e5fc0; background: #f4eefb; }
+  .memo-box .box-title { font-weight: bold; font-size: 17px; margin-bottom: 4px; }
+  .warn-box {
+    border: 2px solid #c0392b;
+    background: #fdf0ee;
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin: 10px 0;
+  }
+  .warn-box .box-title { font-weight: bold; color: #c0392b; font-size: 17px; margin-bottom: 4px; }
+  ul, ol { margin: 6px 0 6px 0; padding-left: 24px; }
+  li { margin: 4px 0; }
+  .eq {
+    font-size: 19px;
+    font-weight: bold;
+    text-align: center;
+    background: #fff8e1;
+    border: 1px solid #e0c96a;
+    border-radius: 8px;
+    padding: 8px 6px;
+    margin: 8px 0;
+    letter-spacing: 0.5px;
+  }
+  .figure { text-align: center; margin: 12px 0; }
+  .figure svg { max-width: 100%; height: auto; }
+  .figure .caption { font-size: 13px; color: #555; margin-top: 4px; }
+  .big { font-size: 18px; font-weight: bold; }
+  .point { color: #c0392b; font-weight: bold; }
+  table { border-collapse: collapse; width: 100%; margin: 10px 0; }
+  th, td { border: 1px solid #9db8d2; padding: 8px 10px; text-align: left; }
+  th { background: #eef5fc; color: #2f6fb2; }
+  .footer { text-align: center; color: #777; font-size: 13px; margin-top: 32px; }
+  @media print {
+    body { padding: 0; font-size: 14px; }
+    h1 { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .memo-box, .warn-box, .eq, th { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .memo-box, .warn-box, .figure, table { page-break-inside: avoid; }
+    h2 { page-break-after: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+<h1>中1数学 暗記シート｜平面図形（予習）</h1>
+<p class="subtitle">予習用／これから習う単元を先取りしよう</p>
+
+<h2>これから学ぶこと</h2>
+<p>この単元では、図形を「折る」「回す」「ずらす」という見方でとらえ直します。線対称・点対称の性質を知ると、図形の形がぴったり重なる理由が分かるようになります。さらに、コンパスと定規だけを使って正確な図をかく「作図」にも挑戦します。言葉と性質を先に知っておくと、授業がぐっと分かりやすくなります。</p>
+
+<h2>1．線対称な図形</h2>
+<p>1本の直線を折り目にして折ったとき、両側がぴったり重なる図形を<span class="big">線対称な図形</span>といいます。その折り目の直線を<span class="big">対称の軸</span>といいます。</p>
+<div class="figure">
+<svg width="360" height="180" viewBox="0 0 360 180" role="img" aria-label="線対称の図">
+  <line x1="180" y1="10" x2="180" y2="170" stroke="#c0392b" stroke-width="2" stroke-dasharray="8 5"/>
+  <polygon points="180,30 90,150 180,150" fill="#eef5fc" stroke="#2f6fb2" stroke-width="2"/>
+  <polygon points="180,30 270,150 180,150" fill="#fdf3ea" stroke="#e07b39" stroke-width="2"/>
+  <circle cx="120" cy="110" r="5" fill="#2f6fb2"/>
+  <circle cx="240" cy="110" r="5" fill="#e07b39"/>
+  <text x="180" y="165" font-size="13" fill="#c0392b" text-anchor="middle">対称の軸</text>
+  <text x="105" y="100" font-size="13" fill="#2f6fb2">点A</text>
+  <text x="245" y="100" font-size="13" fill="#c05a17">点A′</text>
+</svg>
+<div class="caption">軸で折ると、点Aと点A′がぴったり重なる</div>
+</div>
+<div class="memo-box">
+<div class="box-title">用語メモ：対応する点・辺・角</div>
+<ul>
+<li>重なり合う2つの点を<b>対応する点</b>、重なり合う辺を<b>対応する辺</b>、重なり合う角を<b>対応する角</b>といいます。</li>
+<li>対応する辺の長さは<b>等しく</b>、対応する角の大きさも<b>等しく</b>なります。</li>
+</ul>
+</div>
+<p><span class="point">大事な性質：</span>対称の軸は、対応する2点を結ぶ線分の<span class="big">垂直二等分線</span>になります。つまり、軸はその線分を垂直に、真ん中で二等分します。</p>
+
+<h2 class="green">2．点対称な図形</h2>
+<p>ある点を中心に <span class="big">180°回転</span>させたとき、元の図形とぴったり重なる図形を<span class="big">点対称な図形</span>といいます。その中心の点を<span class="big">対称の中心</span>といいます。</p>
+<div class="figure">
+<svg width="360" height="180" viewBox="0 0 360 180" role="img" aria-label="点対称の図">
+  <polygon points="110,40 210,40 250,140 150,140" fill="#edf7f0" stroke="#2e7d4f" stroke-width="2"/>
+  <circle cx="180" cy="90" r="6" fill="#c0392b"/>
+  <circle cx="110" cy="40" r="5" fill="#2e7d4f"/>
+  <circle cx="250" cy="140" r="5" fill="#2e7d4f"/>
+  <line x1="110" y1="40" x2="250" y2="140" stroke="#888" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <text x="188" y="86" font-size="13" fill="#c0392b">O（中心）</text>
+  <text x="92" y="34" font-size="13" fill="#2e7d4f">点A</text>
+  <text x="252" y="152" font-size="13" fill="#2e7d4f">点A′</text>
+</svg>
+<div class="caption">平行四辺形は点対称な図形の代表例</div>
+</div>
+<p><span class="point">大事な性質：</span>対応する2点を結ぶ線分は、対称の中心を通り、中心によって<span class="big">二等分</span>されます。対応する辺の長さ、対応する角の大きさはそれぞれ等しくなります。</p>
+
+<div class="memo-box green">
+<div class="box-title">線対称と点対称の比較表</div>
+<table>
+<tr><th></th><th>線対称</th><th>点対称</th></tr>
+<tr><td><b>目印</b></td><td>対称の軸（直線）</td><td>対称の中心（点）</td></tr>
+<tr><td><b>重ね方</b></td><td>軸で折り返す</td><td>中心で180°回転させる</td></tr>
+<tr><td><b>対応する2点</b></td><td>軸がその線分の垂直二等分線になる</td><td>中心がその線分の中点になる</td></tr>
+<tr><td><b>例</b></td><td>正三角形、二等辺三角形、円</td><td>平行四辺形、正方形、円</td></tr>
+</table>
+<p>※ 正方形や円のように、線対称でもあり点対称でもある図形もあります。</p>
+</div>
+
+<h2 class="orange">3．図形の移動</h2>
+<p>図形の形や大きさを変えずに、位置だけを変えることを図形の<span class="big">移動</span>といいます。移動には3つの種類があります。</p>
+<table>
+<tr><th style="width:24%;">移動</th><th>決め方</th><th>ポイント</th></tr>
+<tr><td><b>平行移動</b></td><td>方向と距離で決まる</td><td>すべての点が同じ方向に、同じ距離だけ動く。対応する点を結ぶ線分は平行で長さが等しい</td></tr>
+<tr><td><b>回転移動</b></td><td>回転の中心と回転角で決まる</td><td>回転の中心と対応する点との距離は等しい</td></tr>
+<tr><td><b>対称移動</b></td><td>対称の軸で決まる</td><td>軸で折り返す移動。軸は対応する2点を結ぶ線分の垂直二等分線になる</td></tr>
+</table>
+<div class="memo-box orange">
+<div class="box-title">用語メモ：回転移動</div>
+<ul>
+<li>回転の中心を中心として、決まった角度だけ回す移動を<b>回転移動</b>といいます。</li>
+<li>180°の回転移動は、とくに<b>点対称移動</b>ともいいます。</li>
+</ul>
+</div>
+
+<h2 class="purple">4．基本の作図</h2>
+<p><span class="big">作図</span>とは、<span class="point">コンパスと定規だけ</span>を使って図をかくことです。定規は直線を引くためだけに使い、<b>作図では長さをはかりません</b>。コンパスは円をかいたり、長さを写し取ったりするために使います。</p>
+<div class="memo-box purple">
+<div class="box-title">覚えること：基本の作図 3つ</div>
+<ol>
+<li><b>線分の垂直二等分線</b>：線分の両端を中心に、同じ半径の円（弧）を2つかき、その交点を結ぶ</li>
+<li><b>角の二等分線</b>：角の頂点を中心に弧をかき、2辺との交点から同じ半径の弧をかいて交点を作り、頂点と結ぶ</li>
+<li><b>垂線</b>：点を通り、直線に垂直な直線をかく。垂直二等分線の考え方を応用する</li>
+</ol>
+</div>
+<div class="figure">
+<svg width="360" height="170" viewBox="0 0 360 170" role="img" aria-label="垂直二等分線の作図イメージ">
+  <line x1="60" y1="120" x2="300" y2="120" stroke="#222" stroke-width="2"/>
+  <circle cx="60" cy="120" r="5" fill="#2f6fb2"/><circle cx="300" cy="120" r="5" fill="#2f6fb2"/>
+  <circle cx="60" cy="120" r="110" fill="none" stroke="#8e5fc0" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <circle cx="300" cy="120" r="110" fill="none" stroke="#8e5fc0" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <line x1="180" y1="15" x2="180" y2="160" stroke="#c0392b" stroke-width="2"/>
+  <text x="48" y="140" font-size="13">A</text><text x="302" y="140" font-size="13">B</text>
+  <text x="188" y="30" font-size="13" fill="#c0392b">垂直二等分線</text>
+</svg>
+<div class="caption">AとBを中心に同じ半径の弧をかくと、交点を結んだ直線が垂直二等分線になる</div>
+</div>
+
+<h2>5．作図の考え方（なぜその方法でよいのか）</h2>
+<div class="memo-box">
+<div class="box-title">覚えること：2つの大事な性質</div>
+<ul>
+<li><b>垂直二等分線上の点</b>は、線分の両端から<b>等しい距離</b>にある</li>
+<li><b>角の二等分線上の点</b>は、角の2辺から<b>等しい距離</b>にある</li>
+</ul>
+<p>作図は、この2つの性質にもとづいています。「同じ半径の弧をかく」のは、等しい距離にある点を作るためです。</p>
+</div>
+
+<div class="memo-box orange">
+<div class="box-title">⭐ ここがポイント！</div>
+<ul>
+<li>線対称は「<b>軸で折る</b>」、点対称は「<b>中心で180°回す</b>」――まずこの違いを言えるようにしよう</li>
+<li>対称の軸 ＝ 対応する2点を結ぶ線分の<b>垂直二等分線</b>。この一文がテストでよく問われます</li>
+<li>作図は「コンパスと定規だけ、長さははからない」。手順と理由（等距離）をセットで覚えよう</li>
+</ul>
+</div>
+
+<div class="warn-box">
+<div class="box-title">⚠ 間違えやすい点（ここをチェック！）</div>
+<ul>
+<li>線対称の「軸」と点対称の「中心」を混同する（軸は直線、中心は点）</li>
+<li>点対称は90°回転ではなく、<b>180°回転</b>であること</li>
+<li>作図で定規の目盛りを使って長さをはかってしまう（作図でははからない）</li>
+<li>回転移動で、回転の中心からの距離が変わると思ってしまう（距離は等しいまま）</li>
+</ul>
+</div>
+
+<p class="footer">中1数学 暗記シート｜平面図形（予習用）</p>
+
+</div>
+</body>
+</html>
