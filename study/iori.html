@@ -58,6 +58,7 @@ footer{margin-top:10px}
 .daily-menu .dm-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .daily-menu a{display:block;text-align:center;background:#fff;border:2px solid var(--navy);border-radius:12px;padding:14px 8px;font-weight:700;color:var(--navy);text-decoration:none;font-size:1.05rem}
 .daily-menu a.hot{background:var(--accent);border-color:var(--accent);color:#fff}
+.daily-menu .dm-coins{text-align:center;font-weight:700;color:var(--navy);margin:.7em 0 0;font-size:1.05rem}
 </style>
 </head>
 <body>
@@ -72,7 +73,9 @@ footer{margin-top:10px}
 <a href="nighttest_iori.html">🌙 夜テスト</a>
 <a href="mistakes_iori.html">✍️ まちがい復習</a>
 <a href="timer.html">⏱️ 集中タイマー</a>
+<a href="rewards_iori.html">🎁 ご褒美</a>
 </div>
+<p class="dm-coins">🪙 <span id="coinTotal">0</span>コイン</p>
 </section>
 <div class="cards">
 <section class="card"><h2>技家</h2><p class="sub">技術・家庭</p><div class="btnrow"><a class="btn btn-quiz" href="quiz_chu3_gika.html">✏️ 予想問題</a><a class="btn btn-memo" href="memorization_chu3_gika.html">📖 暗記シート</a><a class="btn btn-memo" href="flash_chu3_gika.html">🃏 暗記カード</a></div></section>
@@ -87,5 +90,8 @@ footer{margin-top:10px}
 </div>
 <footer><a class="backlink" href="index.html">← えらぶ画面へ戻る</a> <a class="backlink" href="../index.html" style="background:#1a1a5e">🏠 アプリへ戻る</a></footer>
 </div>
+<script>
+(function(){var t=0;try{var v=JSON.parse(localStorage.getItem('stepup-coins-iori'));if(v&&typeof v.total==='number')t=v.total;}catch(e){}var el=document.getElementById('coinTotal');if(el)el.textContent=t;})();
+</script>
 </body>
 </html>

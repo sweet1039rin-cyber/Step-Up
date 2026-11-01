@@ -99,6 +99,7 @@ document.getElementById('moFlashLink').href=day[1];
 (function(){
   var box=document.getElementById('moMini');
   var start=(Math.floor(now.getTime()/86400000)*5)%MINI.length;
+  var miniOpened=0;
   for(var i=0;i<5;i++){
     (function(item){
       var d=document.createElement('div');d.className='qbox';
@@ -106,7 +107,7 @@ document.getElementById('moFlashLink').href=day[1];
       d.querySelector('.qsubj').textContent=item.s;
       d.querySelector('.qtext').textContent=item.q;
       d.querySelector('.atext').textContent=item.a;
-      d.addEventListener('click',function(){var a=d.querySelector('.atext');a.style.display=a.style.display==='none'?'block':'none';});
+      d.addEventListener('click',function(){var a=d.querySelector('.atext');var opening=a.style.display==='none';a.style.display=opening?'block':'none';if(opening&&!d.getAttribute('data-opened')){d.setAttribute('data-opened','1');miniOpened++;if(miniOpened>=5){coinAward(3,'朝活ミニ問題','morning-mini',1);}}});
       box.appendChild(d);
     })(MINI[(start+i)%MINI.length]);
   }
@@ -135,10 +136,44 @@ function renderRecord(){
 }
 document.getElementById('moDone').addEventListener('click',function(){
   var days=loadArr(MKEY);var today=todayStr();
-  if(days.indexOf(today)<0){days.push(today);localStorage.setItem(MKEY,JSON.stringify(days));}
+  if(days.indexOf(today)<0){days.push(today);localStorage.setItem(MKEY,JSON.stringify(days));coinAward(10,'朝活','morning',1);var st=streakOf(days);if(st>0&&st%7===0){coinAward(100,'朝活'+st+'日連続ボーナス','morning-streak',1);}}
   renderRecord();
 });
 renderRecord();
+/* ==== ご褒美コイン ==== */
+var COIN_CHILD='iori';
+var COIN_KEY='stepup-coins-'+COIN_CHILD;
+var CLAIM_KEY='stepup-coinclaims-'+COIN_CHILD;
+function coinLoad(){try{var v=JSON.parse(localStorage.getItem(COIN_KEY));if(v&&typeof v.total==='number'&&Array.isArray(v.history))return v;}catch(e){}return{total:0,history:[]};}
+function coinClaimsLoad(){try{var v=JSON.parse(localStorage.getItem(CLAIM_KEY));if(v&&typeof v==='object'&&v!==null)return v;}catch(e){}return{};}
+function coinAward(amount,sourceLabel,claimId,dailyCap){
+  if(!amount||amount<=0)return 0;
+  if(dailyCap==null)dailyCap=1;
+  if(claimId){
+    var claims=coinClaimsLoad();
+    var ck=todayStr()+':'+claimId;
+    var n=claims[ck]||0;
+    if(n>=dailyCap)return 0;
+    claims[ck]=n+1;
+    try{localStorage.setItem(CLAIM_KEY,JSON.stringify(claims));}catch(e){}
+  }
+  var data=coinLoad();
+  data.total+=amount;
+  data.history.push({date:todayStr(),source:sourceLabel,amount:amount});
+  if(data.history.length>200)data.history=data.history.slice(data.history.length-200);
+  try{localStorage.setItem(COIN_KEY,JSON.stringify(data));}catch(e){}
+  coinToast(amount);
+  return amount;
+}
+function coinToast(amount){
+  var t=document.createElement('div');
+  t.textContent='🪙 +'+amount+'コイン！';
+  t.setAttribute('style','position:fixed;right:16px;bottom:16px;z-index:9999;background:#1a1a5e;color:#fff;font-weight:700;font-size:1.1rem;padding:12px 20px;border-radius:999px;box-shadow:0 4px 14px rgba(0,0,0,.25);opacity:0;transition:opacity .3s;pointer-events:none');
+  document.body.appendChild(t);
+  setTimeout(function(){t.style.opacity='1';},10);
+  setTimeout(function(){t.style.opacity='0';},1700);
+  setTimeout(function(){if(t.parentNode)t.parentNode.removeChild(t);},2200);
+}
 </script>
 
 <footer><a class="backlink" href="iori.html">← 教材トップへ戻る</a></footer>

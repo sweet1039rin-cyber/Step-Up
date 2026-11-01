@@ -197,13 +197,14 @@ function init(){
   startRound();
 }
 function finish(){
+  coinAward(10,'暗記カード1周','flash:flash_chu1_math',1);
   el('playArea').style.display = 'none';
   el('doneArea').style.display = 'block';
   el('doneText').textContent = '全' + total + '枚のカードを全部おぼえました。おつかれさま！';
 }
 function judge(known){
   if(!flipped) return;
-  if(known){ knownCount++; deck.splice(pos, 1); }
+  if(known){ knownCount++; deck.splice(pos, 1); coinAward(1,'暗記カード','flashcard-each',20); }
   else { pos++; }
   updateProgress();
   if(pos >= deck.length){
@@ -222,6 +223,41 @@ el('btnKnown').addEventListener('click', function(){ judge(true); });
 el('btnStill').addEventListener('click', function(){ judge(false); });
 el('btnRestart').addEventListener('click', init);
 init();
+function todayStr(d){d=d||new Date();var m=('0'+(d.getMonth()+1)).slice(-2);var day=('0'+d.getDate()).slice(-2);return d.getFullYear()+'-'+m+'-'+day;}
+/* ==== ご褒美コイン ==== */
+var COIN_CHILD='sakuya';
+var COIN_KEY='stepup-coins-'+COIN_CHILD;
+var CLAIM_KEY='stepup-coinclaims-'+COIN_CHILD;
+function coinLoad(){try{var v=JSON.parse(localStorage.getItem(COIN_KEY));if(v&&typeof v.total==='number'&&Array.isArray(v.history))return v;}catch(e){}return{total:0,history:[]};}
+function coinClaimsLoad(){try{var v=JSON.parse(localStorage.getItem(CLAIM_KEY));if(v&&typeof v==='object'&&v!==null)return v;}catch(e){}return{};}
+function coinAward(amount,sourceLabel,claimId,dailyCap){
+  if(!amount||amount<=0)return 0;
+  if(dailyCap==null)dailyCap=1;
+  if(claimId){
+    var claims=coinClaimsLoad();
+    var ck=todayStr()+':'+claimId;
+    var n=claims[ck]||0;
+    if(n>=dailyCap)return 0;
+    claims[ck]=n+1;
+    try{localStorage.setItem(CLAIM_KEY,JSON.stringify(claims));}catch(e){}
+  }
+  var data=coinLoad();
+  data.total+=amount;
+  data.history.push({date:todayStr(),source:sourceLabel,amount:amount});
+  if(data.history.length>200)data.history=data.history.slice(data.history.length-200);
+  try{localStorage.setItem(COIN_KEY,JSON.stringify(data));}catch(e){}
+  coinToast(amount);
+  return amount;
+}
+function coinToast(amount){
+  var t=document.createElement('div');
+  t.textContent='🪙 +'+amount+'コイン！';
+  t.setAttribute('style','position:fixed;right:16px;bottom:16px;z-index:9999;background:#1a1a5e;color:#fff;font-weight:700;font-size:1.1rem;padding:12px 20px;border-radius:999px;box-shadow:0 4px 14px rgba(0,0,0,.25);opacity:0;transition:opacity .3s;pointer-events:none');
+  document.body.appendChild(t);
+  setTimeout(function(){t.style.opacity='1';},10);
+  setTimeout(function(){t.style.opacity='0';},1700);
+  setTimeout(function(){if(t.parentNode)t.parentNode.removeChild(t);},2200);
+}
 </script>
 </body>
 </html>
