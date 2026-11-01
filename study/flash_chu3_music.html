@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>中3音楽 暗記カード｜楽典と鑑賞｜Step Up テスト対策</title>
+<style>
+:root{--ink:#1c2733;--accent:#ff6b9d;--navy:#1a1a5e;--line:#d9e2ec;--soft:#f4f7fb}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:var(--ink);
+ font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP","Yu Gothic",sans-serif;
+ font-size:18px;line-height:1.85;-webkit-text-size-adjust:100%}
+.wrap{max-width:880px;margin:0 auto;padding:20px 18px 56px}
+h1{font-size:1.55rem;line-height:1.45;border-bottom:4px solid var(--accent);padding-bottom:.35em;margin:.4em 0 .8em}
+p{margin:.6em 0}
+.backlink{display:inline-block;margin-top:28px;background:var(--accent);color:#fff;font-weight:700;
+ text-decoration:none;padding:14px 22px;border-radius:999px;font-size:1.05rem}
+.toplink{font-size:.95rem;margin-bottom:4px}
+.toplink a{color:var(--navy)}
+footer{margin-top:10px}
+@media (max-width:600px){body{font-size:17px}.wrap{padding:14px 12px 48px}h1{font-size:1.35rem}}
+.progress-text{font-weight:700;margin:16px 0 6px;font-size:1.1rem}
+.progress-bar{height:16px;background:var(--soft);border:2px solid var(--line);border-radius:999px;overflow:hidden}
+.progress-fill{height:100%;background:var(--accent);width:0;transition:width .3s}
+.card-scene{perspective:1200px;margin:20px 0 6px}
+.fcard{position:relative;width:100%;height:400px;cursor:pointer;transform-style:preserve-3d;transition:transform .45s;-webkit-tap-highlight-color:transparent}
+.fcard.flipped{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+ border:3px solid var(--navy);border-radius:18px;padding:24px 18px;overflow:hidden;
+ display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:#fff}
+.face.back{transform:rotateY(180deg);background:var(--soft);border-color:var(--accent)}
+.face-label{font-size:.85rem;font-weight:700;color:var(--accent);letter-spacing:.2em;margin-bottom:12px}
+.face-label.ans{color:var(--navy)}
+.face-text{font-size:1.3rem;font-weight:700;line-height:1.65}
+.face-note{margin-top:14px;font-size:.98rem;color:#54677a;line-height:1.65}
+.tap-hint{margin-top:16px;font-size:.9rem;color:#8a97a5}
+.judge{display:flex;gap:12px;margin-top:16px}
+.jbtn{flex:1;font-family:inherit;font-size:1.25rem;font-weight:700;padding:18px 10px;border-radius:14px;
+ border:3px solid var(--navy);background:#fff;color:var(--navy);cursor:pointer;min-height:64px}
+.jbtn.known{background:var(--accent);border-color:var(--accent);color:#fff}
+.jbtn:active{transform:scale(.98)}
+.round-info{text-align:center;color:#54677a;font-size:.95rem;margin-top:12px}
+.done-box{border:3px solid var(--accent);border-radius:18px;padding:32px 20px;text-align:center;background:#fff5f8;margin-top:22px}
+.done-title{font-size:1.5rem;font-weight:700;color:#c2255c;margin:.2em 0}
+.restart{max-width:340px;margin:16px auto 0;display:block;width:100%}
+</style>
+</head>
+<body>
+<div class="wrap">
+<p class="toplink"><a href="iori.html">← 中3トップへ戻る</a></p>
+<h1>中3音楽 暗記カード｜楽典と鑑賞</h1>
+<p>カードをタップすると答えが見えます。答えを見たら「覚えた」「まだ」で教えてください。「まだ」のカードだけが次の周に出てきます。</p>
+<div class="progress-text" id="progressText"></div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+<div id="playArea">
+<div class="card-scene"><div class="fcard" id="fcard">
+<div class="face front"><div class="face-label">も　ん　だ　い</div><div class="face-text" id="frontText"></div><div class="tap-hint">タップで答えを見る</div></div>
+<div class="face back"><div class="face-label ans">こ　た　え</div><div class="face-text" id="backText"></div><div class="face-note" id="backNote"></div></div>
+</div></div>
+<div class="judge" id="judgeBtns" style="visibility:hidden">
+<button class="jbtn still" id="btnStill" type="button">まだ</button>
+<button class="jbtn known" id="btnKnown" type="button">覚えた</button>
+</div>
+<p class="round-info" id="roundInfo"></p>
+</div>
+<div id="doneArea" style="display:none">
+<div class="done-box"><p class="done-title">🎉 全部おぼえた！</p><p id="doneText"></p>
+<button class="jbtn known restart" id="btnRestart" type="button">最初からもう一度</button></div>
+</div>
+<footer><a class="backlink" href="iori.html">← 中3トップへ戻る</a> <a class="backlink" href="../index.html" style="background:#1a1a5e">🏠 アプリへ戻る</a></footer>
+</div>
+<script>
+var CARDS = [
+ {
+  "q": "♯（シャープ）の意味は？",
+  "a": "音を半音上げます",
+  "n": "変化記号は音符の左側に付けます"
+ },
+ {
+  "q": "♭（フラット）の意味は？",
+  "a": "音を半音下げます",
+  "n": ""
+ },
+ {
+  "q": "♮（ナチュラル）の意味は？",
+  "a": "♯や♭を消して、元の音に戻します",
+  "n": ""
+ },
+ {
+  "q": "変化記号の働きが続く範囲は？",
+  "a": "原則として、同じ小節の中の、同じ高さの音までです",
+  "n": "次の小節に入ると、原則として働きは終わります"
+ },
+ {
+  "q": "ト音記号で、線の音は下からどう並ぶ？",
+  "a": "ミ・ソ・シ・レ・ファ",
+  "n": "間の音は下から ファ・ラ・ド・ミ です"
+ },
+ {
+  "q": "全音符は、四分音符を1拍として何拍分？",
+  "a": "4拍分",
+  "n": "全音符には棒（符幹）がありません"
+ },
+ {
+  "q": "二分音符は、何拍分？",
+  "a": "2拍分",
+  "n": "白い音符に棒がある形です"
+ },
+ {
+  "q": "八分音符は、何拍分？",
+  "a": "0.5拍分",
+  "n": "黒い音符に棒と旗が1つあります。十六分音符は0.25拍分で旗が2つです"
+ },
+ {
+  "q": "付点四分音符は、何拍分？",
+  "a": "1.5拍分（1拍＋0.5拍）",
+  "n": "付点は「元の半分を足す」。2倍ではありません"
+ },
+ {
+  "q": "付点二分音符は、何拍分？",
+  "a": "3拍分（2拍＋1拍）",
+  "n": ""
+ },
+ {
+  "q": "6/8 拍子の読み方は？",
+  "a": "8分の6拍子",
+  "n": "八分音符を1拍として、1小節に6拍分という意味です"
+ },
+ {
+  "q": "調号がない長調と短調は？",
+  "a": "長調はハ長調、短調はイ短調",
+  "n": "変化記号なしの調です"
+ },
+ {
+  "q": "♯が1つの長調は？",
+  "a": "ト長調（♯はファにつく）",
+  "n": "♭が1つなら ヘ長調（♭はシにつく）です"
+ },
+ {
+  "q": "♯が付く順番は？",
+  "a": "ファ・ド・ソ・レ・ラ・ミ・シ",
+  "n": "♭が付く順番は シ・ミ・ラ・レ・ソ・ド・ファ です"
+ },
+ {
+  "q": "長音階の「全・半」の並びは？",
+  "a": "全・全・半・全・全・全・半",
+  "n": "ドから始まる並びで覚えます"
+ },
+ {
+  "q": "Allegro（アレグロ）の意味は？",
+  "a": "速く",
+  "n": "Andanteは「歩くような速さ」、Moderatoは「中くらいの速さ」です"
+ },
+ {
+  "q": "rit.（リタルダンド）の意味は？",
+  "a": "だんだん遅く",
+  "n": "a tempo は「元の速さに戻る」です"
+ },
+ {
+  "q": "mf（メッゾ・フォルテ）の意味は？",
+  "a": "やや強く",
+  "n": "mp（メッゾ・ピアノ）は「やや弱く」です"
+ },
+ {
+  "q": "クレッシェンド（＜）の意味は？",
+  "a": "だんだん強く",
+  "n": "急に強くすることではありません"
+ },
+ {
+  "q": "D.C. al Fine の進み方は？",
+  "a": "最初（頭）に戻り、Fine の場所で終わります",
+  "n": "最後まで繰り返すのではありません"
+ },
+ {
+  "q": "「交響曲第9番」の作曲者は？",
+  "a": "ベートーヴェン（ドイツの作曲家）",
+  "n": "合唱が入るのは第4楽章。詩はシラーの『歓喜に寄す』です"
+ },
+ {
+  "q": "フルートが木管楽器なのは、なぜ？",
+  "a": "楽器の分類は材料ではなく「どのように音を出すか」で決まるからです",
+  "n": "金属製のフルートも木管楽器です"
+ },
+ {
+  "q": "アリアとレチタティーヴォの違いは？",
+  "a": "アリアは気持ちを旋律豊かに独唱する曲、レチタティーヴォは会話のように歌って物語を進める部分です",
+  "n": "序曲は始まりにオーケストラだけで演奏される曲です"
+ }
+];
+var total = CARDS.length;
+var knownCount = 0;
+var deck = [];
+var pos = 0;
+var flipped = false;
+var round = 1;
+function el(id){ return document.getElementById(id); }
+function shuffle(a){ for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+function updateProgress(){
+  el('progressText').textContent = '覚えた ' + knownCount + ' / ' + total + ' 枚';
+  el('progressFill').style.width = (total ? (knownCount/total*100) : 0) + '%';
+}
+function updateRoundInfo(){
+  el('roundInfo').textContent = '第' + round + '周目｜この周はあと ' + (deck.length - pos) + ' 枚';
+}
+function showCard(){
+  flipped = false;
+  el('fcard').classList.remove('flipped');
+  var c = CARDS[deck[pos]];
+  el('frontText').textContent = c.q;
+  el('backText').textContent = c.a;
+  el('backNote').textContent = c.n || '';
+  el('judgeBtns').style.visibility = 'hidden';
+  updateRoundInfo();
+}
+function startRound(){ shuffle(deck); pos = 0; showCard(); }
+function init(){
+  knownCount = 0; round = 1;
+  deck = CARDS.map(function(_, i){ return i; });
+  el('doneArea').style.display = 'none';
+  el('playArea').style.display = 'block';
+  updateProgress();
+  startRound();
+}
+function finish(){
+  el('playArea').style.display = 'none';
+  el('doneArea').style.display = 'block';
+  el('doneText').textContent = '全' + total + '枚のカードを全部おぼえました。おつかれさま！';
+}
+function judge(known){
+  if(!flipped) return;
+  if(known){ knownCount++; deck.splice(pos, 1); }
+  else { pos++; }
+  updateProgress();
+  if(pos >= deck.length){
+    if(deck.length === 0){ finish(); return; }
+    round++; startRound(); return;
+  }
+  showCard();
+}
+el('fcard').addEventListener('click', function(){
+  if(flipped) return;
+  flipped = true;
+  this.classList.add('flipped');
+  el('judgeBtns').style.visibility = 'visible';
+});
+el('btnKnown').addEventListener('click', function(){ judge(true); });
+el('btnStill').addEventListener('click', function(){ judge(false); });
+el('btnRestart').addEventListener('click', init);
+init();
+</script>
+</body>
+</html>

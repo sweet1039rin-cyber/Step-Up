@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>中3技家 暗記カード｜情報の技術・消費生活・幼児の発達｜Step Up テスト対策</title>
+<style>
+:root{--ink:#1c2733;--accent:#ff6b9d;--navy:#1a1a5e;--line:#d9e2ec;--soft:#f4f7fb}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:var(--ink);
+ font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP","Yu Gothic",sans-serif;
+ font-size:18px;line-height:1.85;-webkit-text-size-adjust:100%}
+.wrap{max-width:880px;margin:0 auto;padding:20px 18px 56px}
+h1{font-size:1.55rem;line-height:1.45;border-bottom:4px solid var(--accent);padding-bottom:.35em;margin:.4em 0 .8em}
+p{margin:.6em 0}
+.backlink{display:inline-block;margin-top:28px;background:var(--accent);color:#fff;font-weight:700;
+ text-decoration:none;padding:14px 22px;border-radius:999px;font-size:1.05rem}
+.toplink{font-size:.95rem;margin-bottom:4px}
+.toplink a{color:var(--navy)}
+footer{margin-top:10px}
+@media (max-width:600px){body{font-size:17px}.wrap{padding:14px 12px 48px}h1{font-size:1.35rem}}
+.progress-text{font-weight:700;margin:16px 0 6px;font-size:1.1rem}
+.progress-bar{height:16px;background:var(--soft);border:2px solid var(--line);border-radius:999px;overflow:hidden}
+.progress-fill{height:100%;background:var(--accent);width:0;transition:width .3s}
+.card-scene{perspective:1200px;margin:20px 0 6px}
+.fcard{position:relative;width:100%;height:400px;cursor:pointer;transform-style:preserve-3d;transition:transform .45s;-webkit-tap-highlight-color:transparent}
+.fcard.flipped{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+ border:3px solid var(--navy);border-radius:18px;padding:24px 18px;overflow:hidden;
+ display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:#fff}
+.face.back{transform:rotateY(180deg);background:var(--soft);border-color:var(--accent)}
+.face-label{font-size:.85rem;font-weight:700;color:var(--accent);letter-spacing:.2em;margin-bottom:12px}
+.face-label.ans{color:var(--navy)}
+.face-text{font-size:1.3rem;font-weight:700;line-height:1.65}
+.face-note{margin-top:14px;font-size:.98rem;color:#54677a;line-height:1.65}
+.tap-hint{margin-top:16px;font-size:.9rem;color:#8a97a5}
+.judge{display:flex;gap:12px;margin-top:16px}
+.jbtn{flex:1;font-family:inherit;font-size:1.25rem;font-weight:700;padding:18px 10px;border-radius:14px;
+ border:3px solid var(--navy);background:#fff;color:var(--navy);cursor:pointer;min-height:64px}
+.jbtn.known{background:var(--accent);border-color:var(--accent);color:#fff}
+.jbtn:active{transform:scale(.98)}
+.round-info{text-align:center;color:#54677a;font-size:.95rem;margin-top:12px}
+.done-box{border:3px solid var(--accent);border-radius:18px;padding:32px 20px;text-align:center;background:#fff5f8;margin-top:22px}
+.done-title{font-size:1.5rem;font-weight:700;color:#c2255c;margin:.2em 0}
+.restart{max-width:340px;margin:16px auto 0;display:block;width:100%}
+</style>
+</head>
+<body>
+<div class="wrap">
+<p class="toplink"><a href="iori.html">← 中3トップへ戻る</a></p>
+<h1>中3技家 暗記カード｜情報の技術・消費生活・幼児の発達</h1>
+<p>カードをタップすると答えが見えます。答えを見たら「覚えた」「まだ」で教えてください。「まだ」のカードだけが次の周に出てきます。</p>
+<div class="progress-text" id="progressText"></div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+<div id="playArea">
+<div class="card-scene"><div class="fcard" id="fcard">
+<div class="face front"><div class="face-label">も　ん　だ　い</div><div class="face-text" id="frontText"></div><div class="tap-hint">タップで答えを見る</div></div>
+<div class="face back"><div class="face-label ans">こ　た　え</div><div class="face-text" id="backText"></div><div class="face-note" id="backNote"></div></div>
+</div></div>
+<div class="judge" id="judgeBtns" style="visibility:hidden">
+<button class="jbtn still" id="btnStill" type="button">まだ</button>
+<button class="jbtn known" id="btnKnown" type="button">覚えた</button>
+</div>
+<p class="round-info" id="roundInfo"></p>
+</div>
+<div id="doneArea" style="display:none">
+<div class="done-box"><p class="done-title">🎉 全部おぼえた！</p><p id="doneText"></p>
+<button class="jbtn known restart" id="btnRestart" type="button">最初からもう一度</button></div>
+</div>
+<footer><a class="backlink" href="iori.html">← 中3トップへ戻る</a> <a class="backlink" href="../index.html" style="background:#1a1a5e">🏠 アプリへ戻る</a></footer>
+</div>
+<script>
+var CARDS = [
+ {
+  "q": "CPU（中央処理装置）の役割は？",
+  "a": "演算（計算）と制御（命令を出す）を行う、コンピュータの頭脳です",
+  "n": ""
+ },
+ {
+  "q": "主記憶装置（メモリ）の特徴は？",
+  "a": "作業中のデータを一時的に置きます。電源を切ると消えます",
+  "n": "データを長く保存するのは補助記憶装置（SSD・HDDなど）です"
+ },
+ {
+  "q": "1バイトは何ビット？",
+  "a": "8ビット",
+  "n": "「10ビット」は間違いです"
+ },
+ {
+  "q": "ビットとは？",
+  "a": "情報の最小の単位（0か1のどちらか）です",
+  "n": "情報は「0」と「1」の組み合わせで表されます"
+ },
+ {
+  "q": "白黒画像は、1画素＝何ビット？",
+  "a": "1ビット（白＝0、黒＝1）",
+  "n": ""
+ },
+ {
+  "q": "画素（ピクセル）の数が多いと、どうなる？",
+  "a": "解像度が高くなめらかに見えますが、データ量も大きくなります",
+  "n": "きれいだが「重い」ということです"
+ },
+ {
+  "q": "色を表す、光の三原色は？",
+  "a": "赤（R）・緑（G）・青（B）",
+  "n": ""
+ },
+ {
+  "q": "LAN と WAN の違いは？",
+  "a": "LANは家庭や学校など限られた範囲、WANは広い範囲をつなぐネットワークです",
+  "n": ""
+ },
+ {
+  "q": "サーバとクライアントの違いは？",
+  "a": "サーバは情報を提供する側、クライアントはもらって使う側です",
+  "n": ""
+ },
+ {
+  "q": "IPアドレスとは？",
+  "a": "ネットワーク上の「住所」で、機器1台ごとに決まっています",
+  "n": ""
+ },
+ {
+  "q": "プロトコルとは？",
+  "a": "通信の約束ごと（ルール）です",
+  "n": ""
+ },
+ {
+  "q": "フィッシングとは？",
+  "a": "本物を装った偽メール・偽サイトで、パスワードなどを盗む手口です",
+  "n": "ウイルス対策ソフトの利用と、OS・アプリの更新も大切です"
+ },
+ {
+  "q": "パスワードの安全な使い方は？",
+  "a": "長くする・使い回しをしない・他人に教えない",
+  "n": ""
+ },
+ {
+  "q": "センサの役割は？",
+  "a": "明るさ・温度・距離などを測って伝えることです",
+  "n": "測る→コンピュータが判断→アクチュエータが動かす、の流れです"
+ },
+ {
+  "q": "アクチュエータとは？",
+  "a": "モーターなど、実際に動きを生み出す装置です",
+  "n": ""
+ },
+ {
+  "q": "プログラムの基本構造3つは？",
+  "a": "順次（順番に）・分岐（条件で分かれる）・反復（くり返す）",
+  "n": "処理の流れを図にしたものはフローチャート（流れ図）です"
+ },
+ {
+  "q": "契約が成立するのは、どんなとき？",
+  "a": "「申し込み」と「承諾」の意思が合わさったときです",
+  "n": "口約束でも成立します。日常の買い物もすべて売買契約です"
+ },
+ {
+  "q": "未成年者が親の同意なしに結んだ契約は、どうなる？",
+  "a": "原則として取り消すことができます（未成年者取消権）",
+  "n": "小遣いの範囲の買い物など、取り消せない場合もあります"
+ },
+ {
+  "q": "クレジットカードの支払いタイミングは？",
+  "a": "後払い",
+  "n": "カード会社が店に立て替え払いし、後から請求されます。使いすぎは借金と同じです"
+ },
+ {
+  "q": "交通系ICカードへのチャージは、前払い？後払い？",
+  "a": "前払い（プリペイド型）",
+  "n": "デビットカードは即時払い（使った瞬間に口座から引き落とし）です"
+ },
+ {
+  "q": "クーリング・オフ（訪問販売・電話勧誘販売）の期間は？",
+  "a": "8日間（契約書を受け取った日から数える）",
+  "n": "通知は証拠が残るよう書面（はがき等）で行い、コピーを残します"
+ },
+ {
+  "q": "消費者トラブルの相談先「188」は何の番号？",
+  "a": "消費者ホットライン",
+  "n": "近くの消費生活センターにつながります。「188＝いやや」と覚えます"
+ },
+ {
+  "q": "生後3〜4か月ころに、できるようになることは？",
+  "a": "首がすわる",
+  "n": "発達の順序は決まっていますが、時期には個人差が大きいです"
+ },
+ {
+  "q": "幼児にとって「遊び」とは？",
+  "a": "学びそのものです",
+  "n": "体の動かし方・言葉・人との関わり方が、遊びの中で育ちます"
+ }
+];
+var total = CARDS.length;
+var knownCount = 0;
+var deck = [];
+var pos = 0;
+var flipped = false;
+var round = 1;
+function el(id){ return document.getElementById(id); }
+function shuffle(a){ for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+function updateProgress(){
+  el('progressText').textContent = '覚えた ' + knownCount + ' / ' + total + ' 枚';
+  el('progressFill').style.width = (total ? (knownCount/total*100) : 0) + '%';
+}
+function updateRoundInfo(){
+  el('roundInfo').textContent = '第' + round + '周目｜この周はあと ' + (deck.length - pos) + ' 枚';
+}
+function showCard(){
+  flipped = false;
+  el('fcard').classList.remove('flipped');
+  var c = CARDS[deck[pos]];
+  el('frontText').textContent = c.q;
+  el('backText').textContent = c.a;
+  el('backNote').textContent = c.n || '';
+  el('judgeBtns').style.visibility = 'hidden';
+  updateRoundInfo();
+}
+function startRound(){ shuffle(deck); pos = 0; showCard(); }
+function init(){
+  knownCount = 0; round = 1;
+  deck = CARDS.map(function(_, i){ return i; });
+  el('doneArea').style.display = 'none';
+  el('playArea').style.display = 'block';
+  updateProgress();
+  startRound();
+}
+function finish(){
+  el('playArea').style.display = 'none';
+  el('doneArea').style.display = 'block';
+  el('doneText').textContent = '全' + total + '枚のカードを全部おぼえました。おつかれさま！';
+}
+function judge(known){
+  if(!flipped) return;
+  if(known){ knownCount++; deck.splice(pos, 1); }
+  else { pos++; }
+  updateProgress();
+  if(pos >= deck.length){
+    if(deck.length === 0){ finish(); return; }
+    round++; startRound(); return;
+  }
+  showCard();
+}
+el('fcard').addEventListener('click', function(){
+  if(flipped) return;
+  flipped = true;
+  this.classList.add('flipped');
+  el('judgeBtns').style.visibility = 'visible';
+});
+el('btnKnown').addEventListener('click', function(){ judge(true); });
+el('btnStill').addEventListener('click', function(){ judge(false); });
+el('btnRestart').addEventListener('click', init);
+init();
+</script>
+</body>
+</html>

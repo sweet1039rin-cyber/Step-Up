@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>中3保体 暗記カード｜保健分野｜Step Up テスト対策</title>
+<style>
+:root{--ink:#1c2733;--accent:#ff6b9d;--navy:#1a1a5e;--line:#d9e2ec;--soft:#f4f7fb}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:var(--ink);
+ font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP","Yu Gothic",sans-serif;
+ font-size:18px;line-height:1.85;-webkit-text-size-adjust:100%}
+.wrap{max-width:880px;margin:0 auto;padding:20px 18px 56px}
+h1{font-size:1.55rem;line-height:1.45;border-bottom:4px solid var(--accent);padding-bottom:.35em;margin:.4em 0 .8em}
+p{margin:.6em 0}
+.backlink{display:inline-block;margin-top:28px;background:var(--accent);color:#fff;font-weight:700;
+ text-decoration:none;padding:14px 22px;border-radius:999px;font-size:1.05rem}
+.toplink{font-size:.95rem;margin-bottom:4px}
+.toplink a{color:var(--navy)}
+footer{margin-top:10px}
+@media (max-width:600px){body{font-size:17px}.wrap{padding:14px 12px 48px}h1{font-size:1.35rem}}
+.progress-text{font-weight:700;margin:16px 0 6px;font-size:1.1rem}
+.progress-bar{height:16px;background:var(--soft);border:2px solid var(--line);border-radius:999px;overflow:hidden}
+.progress-fill{height:100%;background:var(--accent);width:0;transition:width .3s}
+.card-scene{perspective:1200px;margin:20px 0 6px}
+.fcard{position:relative;width:100%;height:400px;cursor:pointer;transform-style:preserve-3d;transition:transform .45s;-webkit-tap-highlight-color:transparent}
+.fcard.flipped{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+ border:3px solid var(--navy);border-radius:18px;padding:24px 18px;overflow:hidden;
+ display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:#fff}
+.face.back{transform:rotateY(180deg);background:var(--soft);border-color:var(--accent)}
+.face-label{font-size:.85rem;font-weight:700;color:var(--accent);letter-spacing:.2em;margin-bottom:12px}
+.face-label.ans{color:var(--navy)}
+.face-text{font-size:1.3rem;font-weight:700;line-height:1.65}
+.face-note{margin-top:14px;font-size:.98rem;color:#54677a;line-height:1.65}
+.tap-hint{margin-top:16px;font-size:.9rem;color:#8a97a5}
+.judge{display:flex;gap:12px;margin-top:16px}
+.jbtn{flex:1;font-family:inherit;font-size:1.25rem;font-weight:700;padding:18px 10px;border-radius:14px;
+ border:3px solid var(--navy);background:#fff;color:var(--navy);cursor:pointer;min-height:64px}
+.jbtn.known{background:var(--accent);border-color:var(--accent);color:#fff}
+.jbtn:active{transform:scale(.98)}
+.round-info{text-align:center;color:#54677a;font-size:.95rem;margin-top:12px}
+.done-box{border:3px solid var(--accent);border-radius:18px;padding:32px 20px;text-align:center;background:#fff5f8;margin-top:22px}
+.done-title{font-size:1.5rem;font-weight:700;color:#c2255c;margin:.2em 0}
+.restart{max-width:340px;margin:16px auto 0;display:block;width:100%}
+</style>
+</head>
+<body>
+<div class="wrap">
+<p class="toplink"><a href="iori.html">← 中3トップへ戻る</a></p>
+<h1>中3保体 暗記カード｜保健分野</h1>
+<p>カードをタップすると答えが見えます。答えを見たら「覚えた」「まだ」で教えてください。「まだ」のカードだけが次の周に出てきます。</p>
+<div class="progress-text" id="progressText"></div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+<div id="playArea">
+<div class="card-scene"><div class="fcard" id="fcard">
+<div class="face front"><div class="face-label">も　ん　だ　い</div><div class="face-text" id="frontText"></div><div class="tap-hint">タップで答えを見る</div></div>
+<div class="face back"><div class="face-label ans">こ　た　え</div><div class="face-text" id="backText"></div><div class="face-note" id="backNote"></div></div>
+</div></div>
+<div class="judge" id="judgeBtns" style="visibility:hidden">
+<button class="jbtn still" id="btnStill" type="button">まだ</button>
+<button class="jbtn known" id="btnKnown" type="button">覚えた</button>
+</div>
+<p class="round-info" id="roundInfo"></p>
+</div>
+<div id="doneArea" style="display:none">
+<div class="done-box"><p class="done-title">🎉 全部おぼえた！</p><p id="doneText"></p>
+<button class="jbtn known restart" id="btnRestart" type="button">最初からもう一度</button></div>
+</div>
+<footer><a class="backlink" href="iori.html">← 中3トップへ戻る</a> <a class="backlink" href="../index.html" style="background:#1a1a5e">🏠 アプリへ戻る</a></footer>
+</div>
+<script>
+var CARDS = [
+ {
+  "q": "ストレスとは？",
+  "a": "心や体に負担をかける刺激（ストレッサー）と、それへの反応のことです",
+  "n": "強すぎる・長く続くストレスは心身の不調のもとになります"
+ },
+ {
+  "q": "コーピングとは？",
+  "a": "ストレスへの対処法のことです",
+  "n": "相談する・運動する・趣味で気分転換・十分な睡眠が望ましい例。暴飲暴食や夜更かしは対処とはいえません"
+ },
+ {
+  "q": "欲求不満（フラストレーション）とは？",
+  "a": "欲求が障害で満たされず、葛藤が生じている状態です",
+  "n": ""
+ },
+ {
+  "q": "適応機制（てきおうきせい）とは？",
+  "a": "欲求不満や不安をやわらげる、無意識の心の働きです",
+  "n": ""
+ },
+ {
+  "q": "「くやしさをバネに練習に打ち込む」は、どの適応機制？",
+  "a": "昇華（しょうか）",
+  "n": "欲求を価値ある活動に向ける、望ましい適応機制の代表例です"
+ },
+ {
+  "q": "「負けたのは運が悪かったから」と言い訳をするのは、どの適応機制？",
+  "a": "合理化",
+  "n": "都合のよい理由をつけて正当化することです"
+ },
+ {
+  "q": "感染症が成立する3条件は？",
+  "a": "感染源・感染経路・感受性",
+  "n": "どれか1つを断てば予防できます"
+ },
+ {
+  "q": "予防接種は、3条件のどれを断つ対策？",
+  "a": "感受性（抵抗力の弱さ）を断つ対策です",
+  "n": "手洗い・マスクは「感染経路」を断つ対策です"
+ },
+ {
+  "q": "エイズの原因ウイルスは？",
+  "a": "HIV",
+  "n": "握手・食器の共用など日常的な接触では感染しません"
+ },
+ {
+  "q": "交通事故の要因の2つの面は？",
+  "a": "人的要因と環境的要因",
+  "n": "人的＝わき見・飲酒運転など、環境的＝見通しの悪い道路・設備の不備など"
+ },
+ {
+  "q": "反応も呼吸もない人を見たら、まず何をする？",
+  "a": "119番通報とAEDの手配をして、ただちに胸骨圧迫を始めます",
+  "n": "胸骨圧迫は救急隊に引き継ぐまで続けます"
+ },
+ {
+  "q": "胸骨圧迫の強さと速さは？",
+  "a": "胸の真ん中を約5cm沈む強さで、1分間に100〜120回",
+  "n": "合言葉は「強く・速く・絶え間なく」。押す場所は左側ではなく真ん中です"
+ },
+ {
+  "q": "出血が多いときの止血法は？",
+  "a": "直接圧迫止血法",
+  "n": "清潔な布を当てて強く押さえます"
+ },
+ {
+  "q": "AEDは子どもにも使える？",
+  "a": "使えます（年齢を問わず）",
+  "n": "電気ショックが必要かどうかは、AEDが自動で判断します"
+ },
+ {
+  "q": "飲料水が家庭に届くまでの流れは？",
+  "a": "水源 → 浄水場で浄化と消毒 → 配水池 → 各家庭",
+  "n": "浄化は沈殿・ろ過、消毒には塩素を使います"
+ },
+ {
+  "q": "ごみ処理の基本「3R」とは？",
+  "a": "リデュース（減らす）・リユース（繰り返し使う）・リサイクル（再生利用）",
+  "n": ""
+ },
+ {
+  "q": "人間の環境への適応能力は？",
+  "a": "限界があります",
+  "n": "限界を超えると熱中症などの健康障害が起こります"
+ },
+ {
+  "q": "大気汚染の主な原因は？",
+  "a": "工場や自動車の排ガスなどです",
+  "n": "光化学スモッグにも注意します"
+ },
+ {
+  "q": "自然災害への備えで確認しておくことは？",
+  "a": "ハザードマップ・非常持ち出し品・避難場所と避難経路です",
+  "n": ""
+ }
+];
+var total = CARDS.length;
+var knownCount = 0;
+var deck = [];
+var pos = 0;
+var flipped = false;
+var round = 1;
+function el(id){ return document.getElementById(id); }
+function shuffle(a){ for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+function updateProgress(){
+  el('progressText').textContent = '覚えた ' + knownCount + ' / ' + total + ' 枚';
+  el('progressFill').style.width = (total ? (knownCount/total*100) : 0) + '%';
+}
+function updateRoundInfo(){
+  el('roundInfo').textContent = '第' + round + '周目｜この周はあと ' + (deck.length - pos) + ' 枚';
+}
+function showCard(){
+  flipped = false;
+  el('fcard').classList.remove('flipped');
+  var c = CARDS[deck[pos]];
+  el('frontText').textContent = c.q;
+  el('backText').textContent = c.a;
+  el('backNote').textContent = c.n || '';
+  el('judgeBtns').style.visibility = 'hidden';
+  updateRoundInfo();
+}
+function startRound(){ shuffle(deck); pos = 0; showCard(); }
+function init(){
+  knownCount = 0; round = 1;
+  deck = CARDS.map(function(_, i){ return i; });
+  el('doneArea').style.display = 'none';
+  el('playArea').style.display = 'block';
+  updateProgress();
+  startRound();
+}
+function finish(){
+  el('playArea').style.display = 'none';
+  el('doneArea').style.display = 'block';
+  el('doneText').textContent = '全' + total + '枚のカードを全部おぼえました。おつかれさま！';
+}
+function judge(known){
+  if(!flipped) return;
+  if(known){ knownCount++; deck.splice(pos, 1); }
+  else { pos++; }
+  updateProgress();
+  if(pos >= deck.length){
+    if(deck.length === 0){ finish(); return; }
+    round++; startRound(); return;
+  }
+  showCard();
+}
+el('fcard').addEventListener('click', function(){
+  if(flipped) return;
+  flipped = true;
+  this.classList.add('flipped');
+  el('judgeBtns').style.visibility = 'visible';
+});
+el('btnKnown').addEventListener('click', function(){ judge(true); });
+el('btnStill').addEventListener('click', function(){ judge(false); });
+el('btnRestart').addEventListener('click', init);
+init();
+</script>
+</body>
+</html>

@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>中3数学 暗記カード｜相似な図形｜Step Up テスト対策</title>
+<style>
+:root{--ink:#1c2733;--accent:#ff6b9d;--navy:#1a1a5e;--line:#d9e2ec;--soft:#f4f7fb}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:var(--ink);
+ font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP","Yu Gothic",sans-serif;
+ font-size:18px;line-height:1.85;-webkit-text-size-adjust:100%}
+.wrap{max-width:880px;margin:0 auto;padding:20px 18px 56px}
+h1{font-size:1.55rem;line-height:1.45;border-bottom:4px solid var(--accent);padding-bottom:.35em;margin:.4em 0 .8em}
+p{margin:.6em 0}
+.backlink{display:inline-block;margin-top:28px;background:var(--accent);color:#fff;font-weight:700;
+ text-decoration:none;padding:14px 22px;border-radius:999px;font-size:1.05rem}
+.toplink{font-size:.95rem;margin-bottom:4px}
+.toplink a{color:var(--navy)}
+footer{margin-top:10px}
+@media (max-width:600px){body{font-size:17px}.wrap{padding:14px 12px 48px}h1{font-size:1.35rem}}
+.progress-text{font-weight:700;margin:16px 0 6px;font-size:1.1rem}
+.progress-bar{height:16px;background:var(--soft);border:2px solid var(--line);border-radius:999px;overflow:hidden}
+.progress-fill{height:100%;background:var(--accent);width:0;transition:width .3s}
+.card-scene{perspective:1200px;margin:20px 0 6px}
+.fcard{position:relative;width:100%;height:400px;cursor:pointer;transform-style:preserve-3d;transition:transform .45s;-webkit-tap-highlight-color:transparent}
+.fcard.flipped{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+ border:3px solid var(--navy);border-radius:18px;padding:24px 18px;overflow:hidden;
+ display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:#fff}
+.face.back{transform:rotateY(180deg);background:var(--soft);border-color:var(--accent)}
+.face-label{font-size:.85rem;font-weight:700;color:var(--accent);letter-spacing:.2em;margin-bottom:12px}
+.face-label.ans{color:var(--navy)}
+.face-text{font-size:1.3rem;font-weight:700;line-height:1.65}
+.face-note{margin-top:14px;font-size:.98rem;color:#54677a;line-height:1.65}
+.tap-hint{margin-top:16px;font-size:.9rem;color:#8a97a5}
+.judge{display:flex;gap:12px;margin-top:16px}
+.jbtn{flex:1;font-family:inherit;font-size:1.25rem;font-weight:700;padding:18px 10px;border-radius:14px;
+ border:3px solid var(--navy);background:#fff;color:var(--navy);cursor:pointer;min-height:64px}
+.jbtn.known{background:var(--accent);border-color:var(--accent);color:#fff}
+.jbtn:active{transform:scale(.98)}
+.round-info{text-align:center;color:#54677a;font-size:.95rem;margin-top:12px}
+.done-box{border:3px solid var(--accent);border-radius:18px;padding:32px 20px;text-align:center;background:#fff5f8;margin-top:22px}
+.done-title{font-size:1.5rem;font-weight:700;color:#c2255c;margin:.2em 0}
+.restart{max-width:340px;margin:16px auto 0;display:block;width:100%}
+</style>
+</head>
+<body>
+<div class="wrap">
+<p class="toplink"><a href="iori.html">← 中3トップへ戻る</a></p>
+<h1>中3数学 暗記カード｜相似な図形</h1>
+<p>カードをタップすると答えが見えます。答えを見たら「覚えた」「まだ」で教えてください。「まだ」のカードだけが次の周に出てきます。</p>
+<div class="progress-text" id="progressText"></div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+<div id="playArea">
+<div class="card-scene"><div class="fcard" id="fcard">
+<div class="face front"><div class="face-label">も　ん　だ　い</div><div class="face-text" id="frontText"></div><div class="tap-hint">タップで答えを見る</div></div>
+<div class="face back"><div class="face-label ans">こ　た　え</div><div class="face-text" id="backText"></div><div class="face-note" id="backNote"></div></div>
+</div></div>
+<div class="judge" id="judgeBtns" style="visibility:hidden">
+<button class="jbtn still" id="btnStill" type="button">まだ</button>
+<button class="jbtn known" id="btnKnown" type="button">覚えた</button>
+</div>
+<p class="round-info" id="roundInfo"></p>
+</div>
+<div id="doneArea" style="display:none">
+<div class="done-box"><p class="done-title">🎉 全部おぼえた！</p><p id="doneText"></p>
+<button class="jbtn known restart" id="btnRestart" type="button">最初からもう一度</button></div>
+</div>
+<footer><a class="backlink" href="iori.html">← 中3トップへ戻る</a> <a class="backlink" href="../index.html" style="background:#1a1a5e">🏠 アプリへ戻る</a></footer>
+</div>
+<script>
+var CARDS = [
+ {
+  "q": "相似（そうじ）とは、どんな関係？",
+  "a": "形が同じで、大きさがちがう図形の関係です",
+  "n": "記号は ∽（Sを横にした形）を使います"
+ },
+ {
+  "q": "相似比とは？",
+  "a": "対応する辺の長さの比です",
+  "n": ""
+ },
+ {
+  "q": "△ABC ∽ △DEF のとき、頂点の対応は？",
+  "a": "A↔D、B↔E、C↔F の順に対応します",
+  "n": "∽ の式では、書かれた順番どうしが対応します"
+ },
+ {
+  "q": "面積比は、相似比とどう関係する？",
+  "a": "面積比 ＝ 相似比の2乗",
+  "n": "例：相似比 2：3 → 面積比 4：9"
+ },
+ {
+  "q": "体積比は、相似比とどう関係する？",
+  "a": "体積比 ＝ 相似比の3乗",
+  "n": "例：相似比 2：3 → 体積比 8：27"
+ },
+ {
+  "q": "辺の長さや周の長さの比は、相似比とどうなる？",
+  "a": "相似比そのままです",
+  "n": "「長さは1乗、面積は2乗、体積は3乗」と覚えます"
+ },
+ {
+  "q": "辺の長さを求める手順の最初は？",
+  "a": "対応する辺のペアを1組見つけることです",
+  "n": "次に倍率（相手 ÷ 自分）を出して、他の辺にも同じ倍率をかけます"
+ },
+ {
+  "q": "辺が 6cm → 9cm になったときの倍率は？",
+  "a": "1.5倍（相似比 2：3）",
+  "n": "9 ÷ 6 ＝ 1.5"
+ },
+ {
+  "q": "DE ∥ BC のとき、成り立つ辺の比は？",
+  "a": "AD：AB ＝ AE：AC ＝ DE：BC",
+  "n": "小さい三角形と大きい三角形が相似になります"
+ },
+ {
+  "q": "中点連結定理とは？",
+  "a": "2辺の中点を結んだ線分は、残りの辺の半分の長さで、その辺に平行になることです",
+  "n": "M・Nが中点なら MN ＝ （1/2）BC、MN ∥ BC です"
+ },
+ {
+  "q": "（−3）² の値は？",
+  "a": "9",
+  "n": "−9 は間違い。かっこごと2乗します"
+ },
+ {
+  "q": "y＝ax² で a＞0 のグラフの形は？",
+  "a": "下に頂点のある放物線です",
+  "n": "x がマイナスでも、2乗すればプラスになります"
+ },
+ {
+  "q": "y＝ax² の変化の割合の公式は？",
+  "a": "変化の割合 ＝ （yの増加量）÷（xの増加量）",
+  "n": ""
+ },
+ {
+  "q": "y＝ax² の式（a）の求め方は？",
+  "a": "分かっている x・y を式に代入して a を求めます",
+  "n": ""
+ },
+ {
+  "q": "変域に x＝0 がふくまれるとき、y＝ax²（a＞0）の最小値は？",
+  "a": "0 です",
+  "n": "頂点が最小値になります"
+ },
+ {
+  "q": "相似比の向きで気をつけることは？",
+  "a": "どちらの図形を基準にした比かを確認することです",
+  "n": "逆にすると答えも逆になってしまいます"
+ },
+ {
+  "q": "平行線の問題で比を作るときのコツは？",
+  "a": "小さい三角形と大きい三角形で、対応する辺どうしをそろえることです",
+  "n": ""
+ },
+ {
+  "q": "面積比・体積比で一番多いミスは？",
+  "a": "2乗・3乗をし忘れることです",
+  "n": ""
+ }
+];
+var total = CARDS.length;
+var knownCount = 0;
+var deck = [];
+var pos = 0;
+var flipped = false;
+var round = 1;
+function el(id){ return document.getElementById(id); }
+function shuffle(a){ for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+function updateProgress(){
+  el('progressText').textContent = '覚えた ' + knownCount + ' / ' + total + ' 枚';
+  el('progressFill').style.width = (total ? (knownCount/total*100) : 0) + '%';
+}
+function updateRoundInfo(){
+  el('roundInfo').textContent = '第' + round + '周目｜この周はあと ' + (deck.length - pos) + ' 枚';
+}
+function showCard(){
+  flipped = false;
+  el('fcard').classList.remove('flipped');
+  var c = CARDS[deck[pos]];
+  el('frontText').textContent = c.q;
+  el('backText').textContent = c.a;
+  el('backNote').textContent = c.n || '';
+  el('judgeBtns').style.visibility = 'hidden';
+  updateRoundInfo();
+}
+function startRound(){ shuffle(deck); pos = 0; showCard(); }
+function init(){
+  knownCount = 0; round = 1;
+  deck = CARDS.map(function(_, i){ return i; });
+  el('doneArea').style.display = 'none';
+  el('playArea').style.display = 'block';
+  updateProgress();
+  startRound();
+}
+function finish(){
+  el('playArea').style.display = 'none';
+  el('doneArea').style.display = 'block';
+  el('doneText').textContent = '全' + total + '枚のカードを全部おぼえました。おつかれさま！';
+}
+function judge(known){
+  if(!flipped) return;
+  if(known){ knownCount++; deck.splice(pos, 1); }
+  else { pos++; }
+  updateProgress();
+  if(pos >= deck.length){
+    if(deck.length === 0){ finish(); return; }
+    round++; startRound(); return;
+  }
+  showCard();
+}
+el('fcard').addEventListener('click', function(){
+  if(flipped) return;
+  flipped = true;
+  this.classList.add('flipped');
+  el('judgeBtns').style.visibility = 'visible';
+});
+el('btnKnown').addEventListener('click', function(){ judge(true); });
+el('btnStill').addEventListener('click', function(){ judge(false); });
+el('btnRestart').addEventListener('click', init);
+init();
+</script>
+</body>
+</html>

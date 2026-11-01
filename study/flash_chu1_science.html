@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>中1理科 暗記カード｜状態変化と密度｜Step Up テスト対策</title>
+<style>
+:root{--ink:#1c2733;--accent:#ff6b9d;--navy:#1a1a5e;--line:#d9e2ec;--soft:#f4f7fb}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:var(--ink);
+ font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP","Yu Gothic",sans-serif;
+ font-size:18px;line-height:1.85;-webkit-text-size-adjust:100%}
+.wrap{max-width:880px;margin:0 auto;padding:20px 18px 56px}
+h1{font-size:1.55rem;line-height:1.45;border-bottom:4px solid var(--accent);padding-bottom:.35em;margin:.4em 0 .8em}
+p{margin:.6em 0}
+.backlink{display:inline-block;margin-top:28px;background:var(--accent);color:#fff;font-weight:700;
+ text-decoration:none;padding:14px 22px;border-radius:999px;font-size:1.05rem}
+.toplink{font-size:.95rem;margin-bottom:4px}
+.toplink a{color:var(--navy)}
+footer{margin-top:10px}
+@media (max-width:600px){body{font-size:17px}.wrap{padding:14px 12px 48px}h1{font-size:1.35rem}}
+.progress-text{font-weight:700;margin:16px 0 6px;font-size:1.1rem}
+.progress-bar{height:16px;background:var(--soft);border:2px solid var(--line);border-radius:999px;overflow:hidden}
+.progress-fill{height:100%;background:var(--accent);width:0;transition:width .3s}
+.card-scene{perspective:1200px;margin:20px 0 6px}
+.fcard{position:relative;width:100%;height:400px;cursor:pointer;transform-style:preserve-3d;transition:transform .45s;-webkit-tap-highlight-color:transparent}
+.fcard.flipped{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+ border:3px solid var(--navy);border-radius:18px;padding:24px 18px;overflow:hidden;
+ display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:#fff}
+.face.back{transform:rotateY(180deg);background:var(--soft);border-color:var(--accent)}
+.face-label{font-size:.85rem;font-weight:700;color:var(--accent);letter-spacing:.2em;margin-bottom:12px}
+.face-label.ans{color:var(--navy)}
+.face-text{font-size:1.3rem;font-weight:700;line-height:1.65}
+.face-note{margin-top:14px;font-size:.98rem;color:#54677a;line-height:1.65}
+.tap-hint{margin-top:16px;font-size:.9rem;color:#8a97a5}
+.judge{display:flex;gap:12px;margin-top:16px}
+.jbtn{flex:1;font-family:inherit;font-size:1.25rem;font-weight:700;padding:18px 10px;border-radius:14px;
+ border:3px solid var(--navy);background:#fff;color:var(--navy);cursor:pointer;min-height:64px}
+.jbtn.known{background:var(--accent);border-color:var(--accent);color:#fff}
+.jbtn:active{transform:scale(.98)}
+.round-info{text-align:center;color:#54677a;font-size:.95rem;margin-top:12px}
+.done-box{border:3px solid var(--accent);border-radius:18px;padding:32px 20px;text-align:center;background:#fff5f8;margin-top:22px}
+.done-title{font-size:1.5rem;font-weight:700;color:#c2255c;margin:.2em 0}
+.restart{max-width:340px;margin:16px auto 0;display:block;width:100%}
+</style>
+</head>
+<body>
+<div class="wrap">
+<p class="toplink"><a href="sakuya.html">← 中1トップへ戻る</a></p>
+<h1>中1理科 暗記カード｜状態変化と密度</h1>
+<p>カードをタップすると答えが見えます。答えを見たら「覚えた」「まだ」で教えてください。「まだ」のカードだけが次の周に出てきます。</p>
+<div class="progress-text" id="progressText"></div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+<div id="playArea">
+<div class="card-scene"><div class="fcard" id="fcard">
+<div class="face front"><div class="face-label">も　ん　だ　い</div><div class="face-text" id="frontText"></div><div class="tap-hint">タップで答えを見る</div></div>
+<div class="face back"><div class="face-label ans">こ　た　え</div><div class="face-text" id="backText"></div><div class="face-note" id="backNote"></div></div>
+</div></div>
+<div class="judge" id="judgeBtns" style="visibility:hidden">
+<button class="jbtn still" id="btnStill" type="button">まだ</button>
+<button class="jbtn known" id="btnKnown" type="button">覚えた</button>
+</div>
+<p class="round-info" id="roundInfo"></p>
+</div>
+<div id="doneArea" style="display:none">
+<div class="done-box"><p class="done-title">🎉 全部おぼえた！</p><p id="doneText"></p>
+<button class="jbtn known restart" id="btnRestart" type="button">最初からもう一度</button></div>
+</div>
+<footer><a class="backlink" href="sakuya.html">← 中1トップへ戻る</a> <a class="backlink" href="../index.html" style="background:#1a1a5e">🏠 アプリへ戻る</a></footer>
+</div>
+<script>
+var CARDS = [
+ {
+  "q": "物質の三態とは？",
+  "a": "固体・液体・気体の3つの状態です",
+  "n": "水でいうと 氷・水・水蒸気 です"
+ },
+ {
+  "q": "状態変化で変わらないものは？",
+  "a": "粒子の種類と数（＝質量）です",
+  "n": "変わるのは粒子の集まり方と体積です"
+ },
+ {
+  "q": "粒子の間隔が大きい順に並べると？",
+  "a": "気体 ＞ 液体 ＞ 固体",
+  "n": ""
+ },
+ {
+  "q": "融点（ゆうてん）とは？",
+  "a": "固体がとけて液体になるときの温度です",
+  "n": "水の融点は 0℃ です"
+ },
+ {
+  "q": "沸点（ふってん）とは？",
+  "a": "液体が沸騰して気体になるときの温度です",
+  "n": "水の沸点は 100℃ です"
+ },
+ {
+  "q": "とけている最中・沸騰している最中に温度が上がらないのはなぜ？",
+  "a": "加えた熱が「状態を変えること」に使われるからです",
+  "n": "加熱曲線で温度が横ばいになる部分が融点・沸点です"
+ },
+ {
+  "q": "エタノールの沸点は？",
+  "a": "78℃",
+  "n": ""
+ },
+ {
+  "q": "水が氷（固体）になると体積はどうなる？",
+  "a": "大きくなります",
+  "n": "水は例外です。多くの物質は固体になると体積が小さくなります"
+ },
+ {
+  "q": "氷が水に浮くのはなぜ？",
+  "a": "体積が増えて、水より密度が小さくなるからです",
+  "n": "質量は変わりません"
+ },
+ {
+  "q": "蒸留（じょうりゅう）とはどんな方法？",
+  "a": "沸点の差を利用して、混ざった液体を分ける方法です",
+  "n": ""
+ },
+ {
+  "q": "水とエタノールの混合物を蒸留すると、先に出てくるのは？",
+  "a": "エタノールが多くふくまれる液体です",
+  "n": "沸点の低い方（78℃）が先に気体になります"
+ },
+ {
+  "q": "密度の公式は？",
+  "a": "密度（g/cm³）＝ 質量（g）÷ 体積（cm³）",
+  "n": "単位 g/cm³ を書き忘れないこと"
+ },
+ {
+  "q": "密度と体積から質量を求める式は？",
+  "a": "質量 ＝ 密度 × 体積",
+  "n": ""
+ },
+ {
+  "q": "質量と密度から体積を求める式は？",
+  "a": "体積 ＝ 質量 ÷ 密度",
+  "n": ""
+ },
+ {
+  "q": "質量60g・体積20cm³の金属の密度は？",
+  "a": "3.0 g/cm³",
+  "n": "60 ÷ 20 ＝ 3.0"
+ },
+ {
+  "q": "密度0.9g/cm³の油45gの体積は？",
+  "a": "50 cm³",
+  "n": "45 ÷ 0.9 ＝ 50"
+ },
+ {
+  "q": "水（密度1.0）より密度が小さいものは、浮く？沈む？",
+  "a": "浮きます",
+  "n": "水より大きいものは沈みます（例：金属）"
+ },
+ {
+  "q": "質量パーセント濃度の公式は？",
+  "a": "濃度（％）＝ 溶質の質量 ÷ 水溶液全体の質量 × 100",
+  "n": "分母は「水だけ」でなく「水溶液全体」です"
+ },
+ {
+  "q": "食塩20gを水80gに溶かしたときの濃度は？",
+  "a": "20％",
+  "n": "全体は 20＋80＝100g。20 ÷ 100 × 100 ＝ 20％"
+ },
+ {
+  "q": "質量が同じ2つの物質では、体積が小さい方の密度は？",
+  "a": "大きいです",
+  "n": "密度は「どれだけぎゅっと詰まっているか」を表す量です"
+ }
+];
+var total = CARDS.length;
+var knownCount = 0;
+var deck = [];
+var pos = 0;
+var flipped = false;
+var round = 1;
+function el(id){ return document.getElementById(id); }
+function shuffle(a){ for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+function updateProgress(){
+  el('progressText').textContent = '覚えた ' + knownCount + ' / ' + total + ' 枚';
+  el('progressFill').style.width = (total ? (knownCount/total*100) : 0) + '%';
+}
+function updateRoundInfo(){
+  el('roundInfo').textContent = '第' + round + '周目｜この周はあと ' + (deck.length - pos) + ' 枚';
+}
+function showCard(){
+  flipped = false;
+  el('fcard').classList.remove('flipped');
+  var c = CARDS[deck[pos]];
+  el('frontText').textContent = c.q;
+  el('backText').textContent = c.a;
+  el('backNote').textContent = c.n || '';
+  el('judgeBtns').style.visibility = 'hidden';
+  updateRoundInfo();
+}
+function startRound(){ shuffle(deck); pos = 0; showCard(); }
+function init(){
+  knownCount = 0; round = 1;
+  deck = CARDS.map(function(_, i){ return i; });
+  el('doneArea').style.display = 'none';
+  el('playArea').style.display = 'block';
+  updateProgress();
+  startRound();
+}
+function finish(){
+  el('playArea').style.display = 'none';
+  el('doneArea').style.display = 'block';
+  el('doneText').textContent = '全' + total + '枚のカードを全部おぼえました。おつかれさま！';
+}
+function judge(known){
+  if(!flipped) return;
+  if(known){ knownCount++; deck.splice(pos, 1); }
+  else { pos++; }
+  updateProgress();
+  if(pos >= deck.length){
+    if(deck.length === 0){ finish(); return; }
+    round++; startRound(); return;
+  }
+  showCard();
+}
+el('fcard').addEventListener('click', function(){
+  if(flipped) return;
+  flipped = true;
+  this.classList.add('flipped');
+  el('judgeBtns').style.visibility = 'visible';
+});
+el('btnKnown').addEventListener('click', function(){ judge(true); });
+el('btnStill').addEventListener('click', function(){ judge(false); });
+el('btnRestart').addEventListener('click', init);
+init();
+</script>
+</body>
+</html>

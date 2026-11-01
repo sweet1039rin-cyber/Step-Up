@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>中3美術 暗記カード｜鑑賞・色彩・デザイン｜Step Up テスト対策</title>
+<style>
+:root{--ink:#1c2733;--accent:#ff6b9d;--navy:#1a1a5e;--line:#d9e2ec;--soft:#f4f7fb}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:var(--ink);
+ font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP","Yu Gothic",sans-serif;
+ font-size:18px;line-height:1.85;-webkit-text-size-adjust:100%}
+.wrap{max-width:880px;margin:0 auto;padding:20px 18px 56px}
+h1{font-size:1.55rem;line-height:1.45;border-bottom:4px solid var(--accent);padding-bottom:.35em;margin:.4em 0 .8em}
+p{margin:.6em 0}
+.backlink{display:inline-block;margin-top:28px;background:var(--accent);color:#fff;font-weight:700;
+ text-decoration:none;padding:14px 22px;border-radius:999px;font-size:1.05rem}
+.toplink{font-size:.95rem;margin-bottom:4px}
+.toplink a{color:var(--navy)}
+footer{margin-top:10px}
+@media (max-width:600px){body{font-size:17px}.wrap{padding:14px 12px 48px}h1{font-size:1.35rem}}
+.progress-text{font-weight:700;margin:16px 0 6px;font-size:1.1rem}
+.progress-bar{height:16px;background:var(--soft);border:2px solid var(--line);border-radius:999px;overflow:hidden}
+.progress-fill{height:100%;background:var(--accent);width:0;transition:width .3s}
+.card-scene{perspective:1200px;margin:20px 0 6px}
+.fcard{position:relative;width:100%;height:400px;cursor:pointer;transform-style:preserve-3d;transition:transform .45s;-webkit-tap-highlight-color:transparent}
+.fcard.flipped{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+ border:3px solid var(--navy);border-radius:18px;padding:24px 18px;overflow:hidden;
+ display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:#fff}
+.face.back{transform:rotateY(180deg);background:var(--soft);border-color:var(--accent)}
+.face-label{font-size:.85rem;font-weight:700;color:var(--accent);letter-spacing:.2em;margin-bottom:12px}
+.face-label.ans{color:var(--navy)}
+.face-text{font-size:1.3rem;font-weight:700;line-height:1.65}
+.face-note{margin-top:14px;font-size:.98rem;color:#54677a;line-height:1.65}
+.tap-hint{margin-top:16px;font-size:.9rem;color:#8a97a5}
+.judge{display:flex;gap:12px;margin-top:16px}
+.jbtn{flex:1;font-family:inherit;font-size:1.25rem;font-weight:700;padding:18px 10px;border-radius:14px;
+ border:3px solid var(--navy);background:#fff;color:var(--navy);cursor:pointer;min-height:64px}
+.jbtn.known{background:var(--accent);border-color:var(--accent);color:#fff}
+.jbtn:active{transform:scale(.98)}
+.round-info{text-align:center;color:#54677a;font-size:.95rem;margin-top:12px}
+.done-box{border:3px solid var(--accent);border-radius:18px;padding:32px 20px;text-align:center;background:#fff5f8;margin-top:22px}
+.done-title{font-size:1.5rem;font-weight:700;color:#c2255c;margin:.2em 0}
+.restart{max-width:340px;margin:16px auto 0;display:block;width:100%}
+</style>
+</head>
+<body>
+<div class="wrap">
+<p class="toplink"><a href="iori.html">← 中3トップへ戻る</a></p>
+<h1>中3美術 暗記カード｜鑑賞・色彩・デザイン</h1>
+<p>カードをタップすると答えが見えます。答えを見たら「覚えた」「まだ」で教えてください。「まだ」のカードだけが次の周に出てきます。</p>
+<div class="progress-text" id="progressText"></div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+<div id="playArea">
+<div class="card-scene"><div class="fcard" id="fcard">
+<div class="face front"><div class="face-label">も　ん　だ　い</div><div class="face-text" id="frontText"></div><div class="tap-hint">タップで答えを見る</div></div>
+<div class="face back"><div class="face-label ans">こ　た　え</div><div class="face-text" id="backText"></div><div class="face-note" id="backNote"></div></div>
+</div></div>
+<div class="judge" id="judgeBtns" style="visibility:hidden">
+<button class="jbtn still" id="btnStill" type="button">まだ</button>
+<button class="jbtn known" id="btnKnown" type="button">覚えた</button>
+</div>
+<p class="round-info" id="roundInfo"></p>
+</div>
+<div id="doneArea" style="display:none">
+<div class="done-box"><p class="done-title">🎉 全部おぼえた！</p><p id="doneText"></p>
+<button class="jbtn known restart" id="btnRestart" type="button">最初からもう一度</button></div>
+</div>
+<footer><a class="backlink" href="iori.html">← 中3トップへ戻る</a> <a class="backlink" href="../index.html" style="background:#1a1a5e">🏠 アプリへ戻る</a></footer>
+</div>
+<script>
+var CARDS = [
+ {
+  "q": "法隆寺金堂の仏像で知られる、飛鳥時代の仏師は？",
+  "a": "鞍作鳥（止利仏師）",
+  "n": "法隆寺は日本最古級の寺院。金堂壁画は仏教美術の傑作です"
+ },
+ {
+  "q": "『鳥獣人物戯画』が伝わる寺は？",
+  "a": "京都・高山寺",
+  "n": "鳥羽僧正（覚猷）の作と伝わります。動物を人に見立てた絵巻物です"
+ },
+ {
+  "q": "水墨画『秋冬山水図』『天橋立図』の作者は？",
+  "a": "雪舟（室町時代）",
+  "n": "中国で学んだ水墨画を、日本の風景で完成させました"
+ },
+ {
+  "q": "『風神雷神図屏風』の作者は？",
+  "a": "俵屋宗達",
+  "n": "琳派の始祖。同じ琳派の尾形光琳は『紅白梅図屏風』です"
+ },
+ {
+  "q": "『富嶽三十六景』の作者は？",
+  "a": "葛飾北斎",
+  "n": "「神奈川沖浪裏」が有名な、富士山の連作です"
+ },
+ {
+  "q": "『東海道五拾三次』の作者は？",
+  "a": "歌川広重",
+  "n": "北斎と混同しやすいので、作品名で判別します"
+ },
+ {
+  "q": "『モナ・リザ』『最後の晩餐』の作者は？",
+  "a": "レオナルド・ダ・ヴィンチ",
+  "n": "ルネサンスの「万能の天才」です"
+ },
+ {
+  "q": "『ダビデ像』『アダムの創造』の作者は？",
+  "a": "ミケランジェロ",
+  "n": "彫刻と絵画の両方で活躍した、ダ・ヴィンチのライバルです"
+ },
+ {
+  "q": "「印象派」の名前の由来になった作品は？",
+  "a": "モネの『印象・日の出』",
+  "n": "光と色の変化を描きました"
+ },
+ {
+  "q": "ゴッホは、印象派？ポスト印象派？",
+  "a": "ポスト印象派です",
+  "n": "代表作は『ひまわり』『星月夜』。モネが印象派の代表です"
+ },
+ {
+  "q": "ピカソの『ゲルニカ』は、どんな作品？",
+  "a": "空爆への抗議を、白黒で描いた壁画です",
+  "n": "ピカソはキュビスム（立体派）を始めました"
+ },
+ {
+  "q": "暖色の例と特徴は？",
+  "a": "赤・だいだい・黄。暖かく感じ、前に出て（進出色）大きく見えます（膨張色）",
+  "n": ""
+ },
+ {
+  "q": "寒色の例と特徴は？",
+  "a": "青・青紫・青緑。冷たく感じ、後ろに引っ込み（後退色）小さく見えます（収縮色）",
+  "n": "緑・紫は中性色です"
+ },
+ {
+  "q": "色の三属性は？",
+  "a": "色相・明度・彩度",
+  "n": ""
+ },
+ {
+  "q": "明度と彩度、それぞれ何を表す？",
+  "a": "明度は色の明るさ、彩度は色の鮮やかさです",
+  "n": "逆に覚えないこと"
+ },
+ {
+  "q": "補色とは？",
+  "a": "色相環で向かい合う色です",
+  "n": "例：赤↔青緑、青↔だいだい、黄↔青紫"
+ },
+ {
+  "q": "補色対比とは？",
+  "a": "補色同士を並べると、お互いがより鮮やかに見えることです",
+  "n": "鮮やか過ぎて目がちかちかする現象はハレーションです"
+ },
+ {
+  "q": "ピクトグラムとは？",
+  "a": "文字を使わず、絵で情報を伝える図記号です",
+  "n": "非常口の「走る人」のマークは、日本のデザインが国際標準になりました"
+ },
+ {
+  "q": "ユニバーサルデザインとは？",
+  "a": "年齢や障がいの有無にかかわらず、できるだけ多くの人が使いやすいようにする考え方です",
+  "n": "「障がいのある人専用」の考え方ではありません"
+ },
+ {
+  "q": "「ルビンの壺」はどんな錯視？",
+  "a": "壺と、向かい合う顔が入れ替わって見える「図と地」の錯視です",
+  "n": "ミュラー・リヤー錯視は「線の長さ」の錯視です"
+ }
+];
+var total = CARDS.length;
+var knownCount = 0;
+var deck = [];
+var pos = 0;
+var flipped = false;
+var round = 1;
+function el(id){ return document.getElementById(id); }
+function shuffle(a){ for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+function updateProgress(){
+  el('progressText').textContent = '覚えた ' + knownCount + ' / ' + total + ' 枚';
+  el('progressFill').style.width = (total ? (knownCount/total*100) : 0) + '%';
+}
+function updateRoundInfo(){
+  el('roundInfo').textContent = '第' + round + '周目｜この周はあと ' + (deck.length - pos) + ' 枚';
+}
+function showCard(){
+  flipped = false;
+  el('fcard').classList.remove('flipped');
+  var c = CARDS[deck[pos]];
+  el('frontText').textContent = c.q;
+  el('backText').textContent = c.a;
+  el('backNote').textContent = c.n || '';
+  el('judgeBtns').style.visibility = 'hidden';
+  updateRoundInfo();
+}
+function startRound(){ shuffle(deck); pos = 0; showCard(); }
+function init(){
+  knownCount = 0; round = 1;
+  deck = CARDS.map(function(_, i){ return i; });
+  el('doneArea').style.display = 'none';
+  el('playArea').style.display = 'block';
+  updateProgress();
+  startRound();
+}
+function finish(){
+  el('playArea').style.display = 'none';
+  el('doneArea').style.display = 'block';
+  el('doneText').textContent = '全' + total + '枚のカードを全部おぼえました。おつかれさま！';
+}
+function judge(known){
+  if(!flipped) return;
+  if(known){ knownCount++; deck.splice(pos, 1); }
+  else { pos++; }
+  updateProgress();
+  if(pos >= deck.length){
+    if(deck.length === 0){ finish(); return; }
+    round++; startRound(); return;
+  }
+  showCard();
+}
+el('fcard').addEventListener('click', function(){
+  if(flipped) return;
+  flipped = true;
+  this.classList.add('flipped');
+  el('judgeBtns').style.visibility = 'visible';
+});
+el('btnKnown').addEventListener('click', function(){ judge(true); });
+el('btnStill').addEventListener('click', function(){ judge(false); });
+el('btnRestart').addEventListener('click', init);
+init();
+</script>
+</body>
+</html>

@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>中1理科 暗記カード｜溶解度と再結晶｜Step Up テスト対策</title>
+<style>
+:root{--ink:#1c2733;--accent:#ff6b9d;--navy:#1a1a5e;--line:#d9e2ec;--soft:#f4f7fb}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:var(--ink);
+ font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP","Yu Gothic",sans-serif;
+ font-size:18px;line-height:1.85;-webkit-text-size-adjust:100%}
+.wrap{max-width:880px;margin:0 auto;padding:20px 18px 56px}
+h1{font-size:1.55rem;line-height:1.45;border-bottom:4px solid var(--accent);padding-bottom:.35em;margin:.4em 0 .8em}
+p{margin:.6em 0}
+.backlink{display:inline-block;margin-top:28px;background:var(--accent);color:#fff;font-weight:700;
+ text-decoration:none;padding:14px 22px;border-radius:999px;font-size:1.05rem}
+.toplink{font-size:.95rem;margin-bottom:4px}
+.toplink a{color:var(--navy)}
+footer{margin-top:10px}
+@media (max-width:600px){body{font-size:17px}.wrap{padding:14px 12px 48px}h1{font-size:1.35rem}}
+.progress-text{font-weight:700;margin:16px 0 6px;font-size:1.1rem}
+.progress-bar{height:16px;background:var(--soft);border:2px solid var(--line);border-radius:999px;overflow:hidden}
+.progress-fill{height:100%;background:var(--accent);width:0;transition:width .3s}
+.card-scene{perspective:1200px;margin:20px 0 6px}
+.fcard{position:relative;width:100%;height:400px;cursor:pointer;transform-style:preserve-3d;transition:transform .45s;-webkit-tap-highlight-color:transparent}
+.fcard.flipped{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+ border:3px solid var(--navy);border-radius:18px;padding:24px 18px;overflow:hidden;
+ display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:#fff}
+.face.back{transform:rotateY(180deg);background:var(--soft);border-color:var(--accent)}
+.face-label{font-size:.85rem;font-weight:700;color:var(--accent);letter-spacing:.2em;margin-bottom:12px}
+.face-label.ans{color:var(--navy)}
+.face-text{font-size:1.3rem;font-weight:700;line-height:1.65}
+.face-note{margin-top:14px;font-size:.98rem;color:#54677a;line-height:1.65}
+.tap-hint{margin-top:16px;font-size:.9rem;color:#8a97a5}
+.judge{display:flex;gap:12px;margin-top:16px}
+.jbtn{flex:1;font-family:inherit;font-size:1.25rem;font-weight:700;padding:18px 10px;border-radius:14px;
+ border:3px solid var(--navy);background:#fff;color:var(--navy);cursor:pointer;min-height:64px}
+.jbtn.known{background:var(--accent);border-color:var(--accent);color:#fff}
+.jbtn:active{transform:scale(.98)}
+.round-info{text-align:center;color:#54677a;font-size:.95rem;margin-top:12px}
+.done-box{border:3px solid var(--accent);border-radius:18px;padding:32px 20px;text-align:center;background:#fff5f8;margin-top:22px}
+.done-title{font-size:1.5rem;font-weight:700;color:#c2255c;margin:.2em 0}
+.restart{max-width:340px;margin:16px auto 0;display:block;width:100%}
+</style>
+</head>
+<body>
+<div class="wrap">
+<p class="toplink"><a href="sakuya.html">← 中1トップへ戻る</a></p>
+<h1>中1理科 暗記カード｜溶解度と再結晶</h1>
+<p>カードをタップすると答えが見えます。答えを見たら「覚えた」「まだ」で教えてください。「まだ」のカードだけが次の周に出てきます。</p>
+<div class="progress-text" id="progressText"></div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+<div id="playArea">
+<div class="card-scene"><div class="fcard" id="fcard">
+<div class="face front"><div class="face-label">も　ん　だ　い</div><div class="face-text" id="frontText"></div><div class="tap-hint">タップで答えを見る</div></div>
+<div class="face back"><div class="face-label ans">こ　た　え</div><div class="face-text" id="backText"></div><div class="face-note" id="backNote"></div></div>
+</div></div>
+<div class="judge" id="judgeBtns" style="visibility:hidden">
+<button class="jbtn still" id="btnStill" type="button">まだ</button>
+<button class="jbtn known" id="btnKnown" type="button">覚えた</button>
+</div>
+<p class="round-info" id="roundInfo"></p>
+</div>
+<div id="doneArea" style="display:none">
+<div class="done-box"><p class="done-title">🎉 全部おぼえた！</p><p id="doneText"></p>
+<button class="jbtn known restart" id="btnRestart" type="button">最初からもう一度</button></div>
+</div>
+<footer><a class="backlink" href="sakuya.html">← 中1トップへ戻る</a> <a class="backlink" href="../index.html" style="background:#1a1a5e">🏠 アプリへ戻る</a></footer>
+</div>
+<script>
+var CARDS = [
+ {
+  "q": "溶解度（ようかいど）とは？",
+  "a": "ある温度で、水100gに限界まで溶ける物質の質量（g）です",
+  "n": "「水溶液100g」ではなく「水100g」あたり、がポイントです"
+ },
+ {
+  "q": "溶解度は、何によって決まる？",
+  "a": "物質の種類と温度で決まります",
+  "n": ""
+ },
+ {
+  "q": "飽和水溶液（ほうわすいようえき）とは？",
+  "a": "溶解度いっぱいまで物質が溶けた水溶液です",
+  "n": "これ以上入れると溶け残りが出ます"
+ },
+ {
+  "q": "硝酸カリウムの溶解度は？（水100g・20℃）",
+  "a": "32g",
+  "n": "40℃では64g、60℃では110g です"
+ },
+ {
+  "q": "食塩の溶解度の特徴は？",
+  "a": "温度が変わっても ほとんど変わりません（約36g）",
+  "n": "そのため食塩は、冷やしても結晶がほとんど出てきません"
+ },
+ {
+  "q": "溶解度曲線とは？",
+  "a": "温度と溶解度の関係を表したグラフです",
+  "n": "急なカーブ＝硝酸カリウム型、横ばい＝食塩型です"
+ },
+ {
+  "q": "40℃の水200gに、硝酸カリウムは最大で何g溶ける？",
+  "a": "128g",
+  "n": "64 × 2 ＝ 128。溶ける量は水の量に比例します"
+ },
+ {
+  "q": "溶け残りの計算式は？",
+  "a": "溶け残り ＝ 入れた量 － 溶解度",
+  "n": "入れた量が溶解度以下なら、溶け残りは 0g です"
+ },
+ {
+  "q": "20℃の水100gに硝酸カリウムを40g入れたときの溶け残りは？",
+  "a": "8g",
+  "n": "40 － 32 ＝ 8"
+ },
+ {
+  "q": "再結晶（さいけっしょう）とは？",
+  "a": "一度溶かした物質を、再び結晶として取り出すことです",
+  "n": "方法は「冷やす方法」と「蒸発法」の2つです"
+ },
+ {
+  "q": "硝酸カリウムの再結晶に向いている方法は？",
+  "a": "冷やす方法（熱い飽和水溶液を冷やす）",
+  "n": "溶解度が温度で大きく変わる物質に向いています"
+ },
+ {
+  "q": "食塩の再結晶に向いている方法は？",
+  "a": "蒸発法（加熱して水を蒸発させる）",
+  "n": "塩田で塩を作るのもこの方法です"
+ },
+ {
+  "q": "冷やして出てくる結晶の量の計算式は？",
+  "a": "結晶（g）＝ 溶解度（もとの温度）－ 溶解度（冷やした温度）",
+  "n": "もとの量をそのまま答えないこと"
+ },
+ {
+  "q": "60℃で硝酸カリウム110gを溶かした飽和水溶液（水100g）を20℃まで冷やすと、結晶は何g出る？",
+  "a": "78g",
+  "n": "110 － 32 ＝ 78"
+ },
+ {
+  "q": "純粋な結晶を取り出すとき、熱いうちに ろ過 するのはなぜ？",
+  "a": "熱い水に溶けなかった不純物を取り除くためです",
+  "n": "その後、冷やして結晶を出し、ろ過して分けます"
+ },
+ {
+  "q": "食塩の飽和水溶液を冷やしても結晶が出ない理由は？",
+  "a": "温度による溶解度の変化がほとんどないからです",
+  "n": ""
+ }
+];
+var total = CARDS.length;
+var knownCount = 0;
+var deck = [];
+var pos = 0;
+var flipped = false;
+var round = 1;
+function el(id){ return document.getElementById(id); }
+function shuffle(a){ for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+function updateProgress(){
+  el('progressText').textContent = '覚えた ' + knownCount + ' / ' + total + ' 枚';
+  el('progressFill').style.width = (total ? (knownCount/total*100) : 0) + '%';
+}
+function updateRoundInfo(){
+  el('roundInfo').textContent = '第' + round + '周目｜この周はあと ' + (deck.length - pos) + ' 枚';
+}
+function showCard(){
+  flipped = false;
+  el('fcard').classList.remove('flipped');
+  var c = CARDS[deck[pos]];
+  el('frontText').textContent = c.q;
+  el('backText').textContent = c.a;
+  el('backNote').textContent = c.n || '';
+  el('judgeBtns').style.visibility = 'hidden';
+  updateRoundInfo();
+}
+function startRound(){ shuffle(deck); pos = 0; showCard(); }
+function init(){
+  knownCount = 0; round = 1;
+  deck = CARDS.map(function(_, i){ return i; });
+  el('doneArea').style.display = 'none';
+  el('playArea').style.display = 'block';
+  updateProgress();
+  startRound();
+}
+function finish(){
+  el('playArea').style.display = 'none';
+  el('doneArea').style.display = 'block';
+  el('doneText').textContent = '全' + total + '枚のカードを全部おぼえました。おつかれさま！';
+}
+function judge(known){
+  if(!flipped) return;
+  if(known){ knownCount++; deck.splice(pos, 1); }
+  else { pos++; }
+  updateProgress();
+  if(pos >= deck.length){
+    if(deck.length === 0){ finish(); return; }
+    round++; startRound(); return;
+  }
+  showCard();
+}
+el('fcard').addEventListener('click', function(){
+  if(flipped) return;
+  flipped = true;
+  this.classList.add('flipped');
+  el('judgeBtns').style.visibility = 'visible';
+});
+el('btnKnown').addEventListener('click', function(){ judge(true); });
+el('btnStill').addEventListener('click', function(){ judge(false); });
+el('btnRestart').addEventListener('click', init);
+init();
+</script>
+</body>
+</html>
