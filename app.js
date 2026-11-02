@@ -1,5 +1,12 @@
 const data=window.StepUpData.children;
 const testEvents=window.StepUpData.testEvents;
+// 表示整理（2026-11）: 過去のテスト予定（8月・9月分）を消し、両方の子どもとも
+// 次回の期末テスト（2026-11-16〜18）のみを表示する。data 側の定義をここで差し替える。
+const FINALS_2026_TEST_EVENT={subject:'9教科',title:'期末テスト（11/16〜18）',date:'2026-11-16'};
+if(testEvents&&typeof testEvents==='object'){
+ ['iori','sakuya'].forEach(id=>{testEvents[id]=[{...FINALS_2026_TEST_EVENT}]});
+ Object.keys(testEvents).forEach(id=>{if(id!=='iori'&&id!=='sakuya')delete testEvents[id]});
+}
  let checkSyncStop=null,checkSyncKey="",checkSyncRetry=null;
 // Sprint 47: 固定日付を廃止し、端末の現在日付を基準にする。
 // 日付キーはローカル時刻のYYYY-MM-DD形式で統一する。
