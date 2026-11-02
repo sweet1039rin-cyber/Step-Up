@@ -2660,6 +2660,54 @@ function seedNov2026Iori(){
  }catch(e){console.error('11月家庭学習課題の自動登録に失敗しました',e)}
 }
 seedNov2026Iori();
+// ============================================================
+// 中1社会・期末確定範囲への課題差し替え（朔埜のみ）
+// 先生の口頭発表で、社会の期末範囲は「歴史は平安時代のみ、
+// 地理はアジア州・ヨーロッパ州・アフリカ州のみ」と判明したため、
+// 予測で登録した「社会 歴史の続き（中世）」を確定範囲の2件に差し替える。
+// 旧課題は未着手（進捗なし・未完了）の場合だけ取り除き、
+// 少しでも進めている場合は消さずに残す。
+// ============================================================
+const FINALS_SCOPE_SAKUYA_SOCIAL_FLAG_KEY='stepup-seeded-finals-scope-sakuya-social';
+const FINALS_SCOPE_SAKUYA_SOCIAL_REMOVE_TITLE='社会 歴史の続き（中世）';
+const FINALS_SCOPE_SAKUYA_SOCIAL_DEADLINE='2026-11-15';
+const FINALS_SCOPE_SAKUYA_SOCIAL_ITEMS=[
+ {subject:'社会',title:'社会 地理（アジア州・ヨーロッパ州・アフリカ州）',material:'地理の教科書・地理の学習',progressType:'check'},
+ {subject:'社会',title:'社会 歴史（平安時代）',material:'歴史の教科書・歴史の学習',progressType:'check'}
+];
+function seedFinalsScopeSakuyaSocial(){
+ try{
+  if(localStorage.getItem(FINALS_SCOPE_SAKUYA_SOCIAL_FLAG_KEY))return;
+  const now=new Date().toISOString();
+  const childId='sakuya';
+  let customs=getCustomAssignments(childId);
+  // 処理1：予測の中世課題が未着手なら取り除く（進捗がある場合は残す）
+  customs=customs.filter(it=>{
+   if(it.source==='finals2026-seed'&&it.title===FINALS_SCOPE_SAKUYA_SOCIAL_REMOVE_TITLE){
+    const started=(typeof it.current==='number'&&it.current>0)||it.done;
+    if(!started)return false;
+   }
+   return true;
+  });
+  // 処理2：確定範囲の2件を追加（同タイトルがあればスキップ）
+  const existingTitles=new Set(ProgressEngine.getAll(childId).map(it=>it.title));
+  FINALS_SCOPE_SAKUYA_SOCIAL_ITEMS.forEach((def,index)=>{
+   if(existingTitles.has(def.title))return;
+   const entry={
+    id:`${childId}-custom-finals-scope-${index+1}`,subject:def.subject,title:def.title,scope:'',
+    deadline:FINALS_SCOPE_SAKUYA_SOCIAL_DEADLINE,category:'',status:'not-started',done:false,
+    progress:'',remaining:'',note:'',progressType:def.progressType,source:'finals-scope-seed',
+    material:def.material,pageStart:null,pageEnd:null,problemRange:'',priority:'normal',
+    updatedAt:now,createdAt:now
+   };
+   customs.push(entry);
+   existingTitles.add(def.title);
+  });
+  saveCustomAssignments(childId,customs);
+  localStorage.setItem(FINALS_SCOPE_SAKUYA_SOCIAL_FLAG_KEY,'true');
+ }catch(e){console.error('中1社会の確定範囲への課題差し替えに失敗しました',e)}
+}
+seedFinalsScopeSakuyaSocial();
 function openAssignments(){assignmentForm.classList.add('hidden');materialForm.classList.add('hidden');renderAssignments();populateAssignmentMaterialList();renderMaterials();show(assignmentsScreen)}
 // 既存教材(教材ページのdefaultMaterials+保存済み教材)から候補一覧を作る。一覧にない場合は自由入力可。
 function populateAssignmentMaterialList(){
