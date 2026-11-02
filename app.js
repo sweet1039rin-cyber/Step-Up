@@ -2590,6 +2590,69 @@ function seedFinals2026Assignments(){
  }catch(e){console.error('期末対策課題の自動登録に失敗しました',e)}
 }
 seedFinals2026Assignments();
+// ============================================================
+// 11月家庭学習課題の自動登録（新研究・壱凰のみ）
+// アプリ起動時に1回だけ、中3・11月の家庭学習予定表にある新研究の
+// 「家でやる」分と「学校で出す（提出）」分を、期末対策シードと同じ形の
+// カスタム課題として登録する。期限・目標ページ数は予定表どおりに設定する。
+// 実行済みかどうかは localStorage のフラグキーで管理し、
+// 同じタイトルの課題が既にある場合は、その項目は入れない。
+// ============================================================
+const NOV_2026_IORI_SEED_FLAG_KEY='stepup-seeded-nov2026-iori';
+const NOV_2026_IORI_SEED_ITEMS=[
+ {subject:'英語',title:'新研究 英語⑤ P28〜31',deadline:'2026-11-02',total:4},
+ {subject:'英語',title:'新研究 英語⑥〜⑦ P32〜39',deadline:'2026-11-03',total:8},
+ {subject:'数学',title:'新研究 数学⑨ P44〜53',deadline:'2026-11-04',total:10},
+ {subject:'理科',title:'新研究 理科㉓ P126〜131',deadline:'2026-11-05',total:6},
+ {subject:'英語',title:'新研究 英語⑧ P40〜43',deadline:'2026-11-06',total:4},
+ {subject:'英語',title:'新研究 英語⑨〜⑩ P44〜57',deadline:'2026-11-07',total:14},
+ {subject:'国語',title:'新研究 国語⑥ P36〜39',deadline:'2026-11-18',total:4},
+ {subject:'数学',title:'新研究 数学㉓ P120〜123',deadline:'2026-11-19',total:4},
+ {subject:'社会',title:'新研究 社会⑥ P30〜35',deadline:'2026-11-20',total:6},
+ {subject:'社会',title:'新研究 社会⑦ P36〜39',deadline:'2026-11-21',total:4},
+ {subject:'社会',title:'新研究 社会⑧〜⑩ P40〜55',deadline:'2026-11-22',total:16},
+ {subject:'理科',title:'新研究 理科④ P18〜21',deadline:'2026-11-25',total:4},
+ {subject:'国語',title:'新研究 国語⑦ P40〜43',deadline:'2026-11-26',total:4},
+ {subject:'理科',title:'新研究 理科⑤ P32〜35',deadline:'2026-11-27',total:4},
+ {subject:'理科',title:'新研究 理科⑥〜⑧ P36〜49',deadline:'2026-11-28',total:14},
+ {subject:'社会',title:'新研究 社会⑪ P56〜59',deadline:'2026-11-30',total:4},
+ {subject:'数学',title:'【提出】新研究 数学④〜⑧ P20〜43',deadline:'2026-11-02',total:24},
+ {subject:'英語',title:'【提出】新研究 英語⑤〜⑦ P28〜39',deadline:'2026-11-04',total:12},
+ {subject:'数学',title:'【提出】新研究 数学⑨ P44〜53',deadline:'2026-11-05',total:10},
+ {subject:'理科',title:'【提出】新研究 理科㉓ P126〜131',deadline:'2026-11-06',total:6},
+ {subject:'英語',title:'【提出】新研究 英語⑧〜⑩ P40〜57',deadline:'2026-11-09',total:18},
+ {subject:'国語',title:'【提出】新研究 国語⑥ P36〜39',deadline:'2026-11-19',total:4},
+ {subject:'数学',title:'【提出】新研究 数学㉓ P120〜123',deadline:'2026-11-20',total:4},
+ {subject:'社会',title:'【提出】新研究 社会⑥〜⑩ P30〜55',deadline:'2026-11-25',total:26},
+ {subject:'理科',title:'【提出】新研究 理科④ P18〜21',deadline:'2026-11-26',total:4},
+ {subject:'国語',title:'【提出】新研究 国語⑦ P40〜43',deadline:'2026-11-27',total:4},
+ {subject:'理科',title:'【提出】新研究 理科⑤〜⑧ P32〜49',deadline:'2026-11-30',total:18}
+];
+function seedNov2026Iori(){
+ try{
+  if(localStorage.getItem(NOV_2026_IORI_SEED_FLAG_KEY))return;
+  const now=new Date().toISOString();
+  const childId='iori';
+  const existingTitles=new Set(ProgressEngine.getAll(childId).map(it=>it.title));
+  const customs=getCustomAssignments(childId);
+  NOV_2026_IORI_SEED_ITEMS.forEach((def,index)=>{
+   if(existingTitles.has(def.title))return;
+   const entry={
+    id:`${childId}-custom-nov2026-${index+1}`,subject:def.subject,title:def.title,scope:'',
+    deadline:def.deadline,category:'',status:'not-started',done:false,
+    progress:'',remaining:'',note:'',progressType:'numeric',source:'nov2026-seed',
+    material:'新研究',pageStart:null,pageEnd:null,problemRange:'',priority:'normal',
+    updatedAt:now,createdAt:now
+   };
+   entry.current=0;entry.total=def.total;entry.unit='ページ';
+   customs.push(entry);
+   existingTitles.add(def.title);
+  });
+  saveCustomAssignments(childId,customs);
+  localStorage.setItem(NOV_2026_IORI_SEED_FLAG_KEY,'true');
+ }catch(e){console.error('11月家庭学習課題の自動登録に失敗しました',e)}
+}
+seedNov2026Iori();
 function openAssignments(){assignmentForm.classList.add('hidden');materialForm.classList.add('hidden');renderAssignments();populateAssignmentMaterialList();renderMaterials();show(assignmentsScreen)}
 // 既存教材(教材ページのdefaultMaterials+保存済み教材)から候補一覧を作る。一覧にない場合は自由入力可。
 function populateAssignmentMaterialList(){
