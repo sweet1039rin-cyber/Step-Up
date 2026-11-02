@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>中3数学 一問一答｜相似な図形｜Step Up テスト対策</title>
+<style>
+:root{--ink:#1c2733;--accent:#ff6b9d;--navy:#1a1a5e;--line:#d9e2ec;--soft:#f4f7fb}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:var(--ink);
+ font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP","Yu Gothic",sans-serif;
+ font-size:18px;line-height:1.85;-webkit-text-size-adjust:100%}
+.wrap{max-width:880px;margin:0 auto;padding:20px 18px 56px}
+h1{font-size:1.55rem;line-height:1.45;border-bottom:4px solid var(--accent);padding-bottom:.35em;margin:.4em 0 .8em}
+p{margin:.6em 0}
+.backlink{display:inline-block;margin-top:28px;background:var(--accent);color:#fff;font-weight:700;
+ text-decoration:none;padding:14px 22px;border-radius:999px;font-size:1.05rem}
+.toplink{font-size:.95rem;margin-bottom:4px}
+.toplink a{color:var(--navy)}
+footer{margin-top:10px}
+@media (max-width:600px){body{font-size:17px}.wrap{padding:14px 12px 48px}h1{font-size:1.35rem}}
+.progress-text{font-weight:700;margin:16px 0 6px;font-size:1.1rem}
+.progress-bar{height:16px;background:var(--soft);border:2px solid var(--line);border-radius:999px;overflow:hidden}
+.progress-fill{height:100%;background:var(--accent);width:0;transition:width .3s}
+.qbox{border:3px solid var(--navy);border-radius:18px;padding:26px 20px;margin:20px 0 6px;background:#fff;text-align:center}
+.qbox-label{font-size:.85rem;font-weight:700;color:var(--accent);letter-spacing:.2em;margin-bottom:12px}
+.qbox-label.ans{color:var(--navy)}
+.qbox-text{font-size:1.3rem;font-weight:700;line-height:1.65}
+.abox{border:3px solid var(--accent);border-radius:18px;padding:26px 20px;margin:14px 0 6px;background:var(--soft);text-align:center}
+.abox-note{margin-top:14px;font-size:.98rem;color:#54677a;line-height:1.65}
+.showbtn{display:block;width:100%;font-family:inherit;font-size:1.25rem;font-weight:700;padding:18px 10px;border-radius:14px;
+ border:3px solid var(--navy);background:var(--navy);color:#fff;cursor:pointer;min-height:64px;margin-top:16px}
+.showbtn:active{transform:scale(.98)}
+.judge{display:flex;gap:12px;margin-top:16px}
+.jbtn{flex:1;font-family:inherit;font-size:1.25rem;font-weight:700;padding:18px 10px;border-radius:14px;
+ border:3px solid var(--navy);background:#fff;color:var(--navy);cursor:pointer;min-height:64px}
+.jbtn.known{background:var(--accent);border-color:var(--accent);color:#fff}
+.jbtn:active{transform:scale(.98)}
+.done-box{border:3px solid var(--accent);border-radius:18px;padding:32px 20px;text-align:center;background:#fff5f8;margin-top:22px}
+.done-title{font-size:1.5rem;font-weight:700;color:#c2255c;margin:.2em 0}
+.done-score{font-size:1.3rem;font-weight:700;color:var(--navy)}
+.restart{max-width:340px;margin:16px auto 0;display:block;width:100%}
+.retry{max-width:340px;margin:16px auto 0;display:block;width:100%;background:var(--navy);border-color:var(--navy);color:#fff}
+</style>
+</head>
+<body>
+<div class="wrap">
+<p class="toplink"><a href="iori.html">← 中3トップへ戻る</a></p>
+<h1>中3数学 一問一答｜相似な図形</h1>
+<p>1問ずつ出ます。まず頭の中で答えてから「答えを見る」を押して、「できた」「できなかった」で教えてください。できなかった問題は、まちがい復習ボックスに残ります。</p>
+<div class="progress-text" id="progressText"></div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+<div id="playArea">
+<div class="qbox"><div class="qbox-label">も　ん　だ　い</div><div class="qbox-text" id="qText"></div></div>
+<button class="showbtn" id="btnShow" type="button">答えを見る</button>
+<div class="abox" id="answerArea" style="display:none"><div class="qbox-label ans">こ　た　え</div><div class="qbox-text" id="aText"></div><div class="abox-note" id="aNote"></div></div>
+<div class="judge" id="judgeBtns" style="visibility:hidden">
+<button class="jbtn still" id="btnNg" type="button">できなかった</button>
+<button class="jbtn known" id="btnOk" type="button">できた</button>
+</div>
+</div>
+<div id="doneArea" style="display:none">
+<div class="done-box"><p class="done-title" id="doneTitle">🎉 おつかれさま！</p><p class="done-score" id="doneText"></p>
+<button class="jbtn known retry" id="btnRetry" type="button" style="display:none">できなかった問題だけもう一度</button>
+<button class="jbtn known restart" id="btnRestart" type="button">最初からもう一度</button></div>
+</div>
+<footer><a class="backlink" href="iori.html">← 中3トップへ戻る</a> <a class="backlink" href="../index.html" style="background:#1a1a5e">🏠 アプリへ戻る</a></footer>
+</div>
+<script>
+var CARDS = [
+ {
+  "q": "相似（そうじ）とは、どんな関係？",
+  "a": "形が同じで、大きさがちがう図形の関係です",
+  "n": "記号は ∽（Sを横にした形）を使います"
+ },
+ {
+  "q": "相似比とは？",
+  "a": "対応する辺の長さの比です",
+  "n": ""
+ },
+ {
+  "q": "△ABC ∽ △DEF のとき、頂点の対応は？",
+  "a": "A↔D、B↔E、C↔F の順に対応します",
+  "n": "∽ の式では、書かれた順番どうしが対応します"
+ },
+ {
+  "q": "面積比は、相似比とどう関係する？",
+  "a": "面積比 ＝ 相似比の2乗",
+  "n": "例：相似比 2：3 → 面積比 4：9"
+ },
+ {
+  "q": "体積比は、相似比とどう関係する？",
+  "a": "体積比 ＝ 相似比の3乗",
+  "n": "例：相似比 2：3 → 体積比 8：27"
+ },
+ {
+  "q": "辺の長さや周の長さの比は、相似比とどうなる？",
+  "a": "相似比そのままです",
+  "n": "「長さは1乗、面積は2乗、体積は3乗」と覚えます"
+ },
+ {
+  "q": "辺の長さを求める手順の最初は？",
+  "a": "対応する辺のペアを1組見つけることです",
+  "n": "次に倍率（相手 ÷ 自分）を出して、他の辺にも同じ倍率をかけます"
+ },
+ {
+  "q": "辺が 6cm → 9cm になったときの倍率は？",
+  "a": "1.5倍（相似比 2：3）",
+  "n": "9 ÷ 6 ＝ 1.5"
+ },
+ {
+  "q": "DE ∥ BC のとき、成り立つ辺の比は？",
+  "a": "AD：AB ＝ AE：AC ＝ DE：BC",
+  "n": "小さい三角形と大きい三角形が相似になります"
+ },
+ {
+  "q": "中点連結定理とは？",
+  "a": "2辺の中点を結んだ線分は、残りの辺の半分の長さで、その辺に平行になることです",
+  "n": "M・Nが中点なら MN ＝ （1/2）BC、MN ∥ BC です"
+ },
+ {
+  "q": "（−3）² の値は？",
+  "a": "9",
+  "n": "−9 は間違い。かっこごと2乗します"
+ },
+ {
+  "q": "y＝ax² で a＞0 のグラフの形は？",
+  "a": "下に頂点のある放物線です",
+  "n": "x がマイナスでも、2乗すればプラスになります"
+ },
+ {
+  "q": "y＝ax² の変化の割合の公式は？",
+  "a": "変化の割合 ＝ （yの増加量）÷（xの増加量）",
+  "n": ""
+ },
+ {
+  "q": "y＝ax² の式（a）の求め方は？",
+  "a": "分かっている x・y を式に代入して a を求めます",
+  "n": ""
+ },
+ {
+  "q": "変域に x＝0 がふくまれるとき、y＝ax²（a＞0）の最小値は？",
+  "a": "0 です",
+  "n": "頂点が最小値になります"
+ },
+ {
+  "q": "相似比の向きで気をつけることは？",
+  "a": "どちらの図形を基準にした比かを確認することです",
+  "n": "逆にすると答えも逆になってしまいます"
+ },
+ {
+  "q": "平行線の問題で比を作るときのコツは？",
+  "a": "小さい三角形と大きい三角形で、対応する辺どうしをそろえることです",
+  "n": ""
+ },
+ {
+  "q": "面積比・体積比で一番多いミスは？",
+  "a": "2乗・3乗をし忘れることです",
+  "n": ""
+ }
+];
+var MPAGE="ichimon_chu3_math.html", MTITLE="中3数学 一問一答｜相似な図形", MCHILD="iori";
+var MKEY='stepup-mistakes-'+MCHILD;
+var total = CARDS.length;
+var deck = [];
+var pos = 0;
+var revealed = false;
+var roundOk = 0;
+var missed = [];
+var isFullRound = true;
+function el(id){ return document.getElementById(id); }
+function todayStr(d){d=d||new Date();var m=('0'+(d.getMonth()+1)).slice(-2);var day=('0'+d.getDate()).slice(-2);return d.getFullYear()+'-'+m+'-'+day;}
+function loadMistakes(){try{var v=JSON.parse(localStorage.getItem(MKEY));return Array.isArray(v)?v:[];}catch(e){return[];}}
+function saveMistake(q){
+  var a=loadMistakes();var t=todayStr();var idx=-1;
+  for(var i=0;i<a.length;i++){if(a[i].page===MPAGE&&a[i].q===q){idx=i;break;}}
+  if(idx>=0){a[idx].count+=1;a[idx].last=t;}
+  else{a.push({page:MPAGE,title:MTITLE,q:q,count:1,first:t,last:t});}
+  try{localStorage.setItem(MKEY,JSON.stringify(a));}catch(e){}
+}
+function updateProgress(){
+  el('progressText').textContent = (pos+1) + '問目 / 全' + deck.length + '問　できた ' + roundOk + '問';
+  el('progressFill').style.width = (deck.length ? (pos/deck.length*100) : 0) + '%';
+}
+function showQuestion(){
+  revealed = false;
+  var c = CARDS[deck[pos]];
+  el('qText').textContent = c.q;
+  el('aText').textContent = c.a;
+  el('aNote').textContent = c.n || '';
+  el('answerArea').style.display = 'none';
+  el('btnShow').style.display = 'block';
+  el('judgeBtns').style.visibility = 'hidden';
+  updateProgress();
+}
+function startRound(indices, full){
+  deck = indices.slice(); pos = 0; roundOk = 0; missed = []; isFullRound = full;
+  el('doneArea').style.display = 'none';
+  el('playArea').style.display = 'block';
+  showQuestion();
+}
+function init(){
+  var all = CARDS.map(function(_, i){ return i; });
+  startRound(all, true);
+}
+function finish(){
+  if(isFullRound){ coinAward(10,'一問一答1周','ichimon:ichimon_chu3_math',1); }
+  el('playArea').style.display = 'none';
+  el('doneArea').style.display = 'block';
+  el('progressText').textContent = 'できた ' + roundOk + ' / ' + deck.length + ' 問';
+  el('progressFill').style.width = '100%';
+  if(missed.length === 0){
+    el('doneTitle').textContent = '🎉 全問できた！';
+    el('doneText').textContent = '全' + deck.length + '問、全部できました。おつかれさま！';
+    el('btnRetry').style.display = 'none';
+  } else {
+    el('doneTitle').textContent = 'おつかれさま！';
+    el('doneText').textContent = deck.length + '問中 ' + roundOk + '問できました。できなかった' + missed.length + '問は、まちがい復習ボックスに残しました。';
+    el('btnRetry').style.display = 'block';
+  }
+}
+function judge(ok){
+  if(!revealed) return;
+  var origIdx = deck[pos];
+  if(ok){ roundOk++; coinAward(1,'一問一答','ichimon-math',20); }
+  else { missed.push(origIdx); saveMistake(origIdx + 1); }
+  pos++;
+  if(pos >= deck.length){ finish(); return; }
+  showQuestion();
+}
+el('btnShow').addEventListener('click', function(){
+  if(revealed) return;
+  revealed = true;
+  el('answerArea').style.display = 'block';
+  el('btnShow').style.display = 'none';
+  el('judgeBtns').style.visibility = 'visible';
+});
+el('btnOk').addEventListener('click', function(){ judge(true); });
+el('btnNg').addEventListener('click', function(){ judge(false); });
+el('btnRetry').addEventListener('click', function(){ startRound(missed, false); });
+el('btnRestart').addEventListener('click', init);
+init();
+/* ==== ご褒美コイン ==== */
+var COIN_CHILD='iori';
+var COIN_KEY='stepup-coins-'+COIN_CHILD;
+var CLAIM_KEY='stepup-coinclaims-'+COIN_CHILD;
+function coinLoad(){try{var v=JSON.parse(localStorage.getItem(COIN_KEY));if(v&&typeof v.total==='number'&&Array.isArray(v.history))return v;}catch(e){}return{total:0,history:[]};}
+function coinClaimsLoad(){try{var v=JSON.parse(localStorage.getItem(CLAIM_KEY));if(v&&typeof v==='object'&&v!==null)return v;}catch(e){}return{};}
+function coinAward(amount,sourceLabel,claimId,dailyCap){
+  if(!amount||amount<=0)return 0;
+  if(dailyCap==null)dailyCap=1;
+  if(claimId){
+    var claims=coinClaimsLoad();
+    var ck=todayStr()+':'+claimId;
+    var n=claims[ck]||0;
+    if(n>=dailyCap)return 0;
+    claims[ck]=n+1;
+    try{localStorage.setItem(CLAIM_KEY,JSON.stringify(claims));}catch(e){}
+  }
+  var data=coinLoad();
+  data.total+=amount;
+  data.history.push({date:todayStr(),source:sourceLabel,amount:amount});
+  if(data.history.length>200)data.history=data.history.slice(data.history.length-200);
+  try{localStorage.setItem(COIN_KEY,JSON.stringify(data));}catch(e){}
+  coinToast(amount);
+  return amount;
+}
+function coinToast(amount){
+  var t=document.createElement('div');
+  t.textContent='🪙 +'+amount+'コイン！';
+  t.setAttribute('style','position:fixed;right:16px;bottom:16px;z-index:9999;background:#1a1a5e;color:#fff;font-weight:700;font-size:1.1rem;padding:12px 20px;border-radius:999px;box-shadow:0 4px 14px rgba(0,0,0,.25);opacity:0;transition:opacity .3s;pointer-events:none');
+  document.body.appendChild(t);
+  setTimeout(function(){t.style.opacity='1';},10);
+  setTimeout(function(){t.style.opacity='0';},1700);
+  setTimeout(function(){if(t.parentNode)t.parentNode.removeChild(t);},2200);
+}
+</script>
+</body>
+</html>
