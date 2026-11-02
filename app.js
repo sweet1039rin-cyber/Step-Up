@@ -875,7 +875,7 @@ if(t[5]){
 }
 const cat=classifyScheduleCategory(t[1]);
 const assignment=t[3]?linkedItems.find(x=>x.id===t[3]):null;const assignmentText=assignment?`課題：${assignment.done?'完了済み':assignment.status==='in-progress'?'進行中':'未着手'}${assignment.total!=null?`・${assignment.current}/${assignment.total}`:''}`:(saved.checks?.[i]?'完了 ✓':'タップで完了');const familyEntry=normalizeFamilyReactionEntry(familyReactions[taskReactionKey(t)]);const familyMeta=familyEntry?familyReactionMeta(familyEntry.reaction):null;const familyLikeBadge=familyEntry?`<span class="family-like-badge" title="おうちの人から">${familyMeta.emoji} ${escapeHtml(familyMeta.label)}${familyEntry.comment?'<br class=\"family-like-badge-break\">'+escapeHtml(familyEntry.comment):''}</span>`:'';return `<label class="task cat-${cat} ${saved.checks?.[i]?'done':''}"><input type="checkbox" data-i="${i}" data-assignment-id="${t[3]||''}" ${saved.checks?.[i]?'checked':''}><time class="cat-${cat}">${t[0]}</time><span><strong>${t[1]}</strong><small class="task-tag cat-${cat}">${SCHEDULE_CATEGORY_LABELS[cat]}</small></span><span class="task-state">${assignmentText}</span><span class="duration">${t[2]}</span>${familyLikeBadge}</label>`;
-}).join('');stepMessage.textContent=saved.step||'今日の記録はまだありません。「今日の記録を保存する」を押すと、ここに表示されます。';bindChecks();update();setTimeout(()=>{try{startCheckSync()}catch(e){alert("同期開始エラー: "+(e.code||e.message))}},1500);renderPersonalCoach();renderHomeDeadlineCard();loadDailyReportCard();renderSakuyaTestRulesCard();renderDokosutaHistory()}
+}).join('');stepMessage.textContent=saved.step||'今日の記録はまだありません。「今日の記録を保存する」を押すと、ここに表示されます。';bindChecks();update();setTimeout(()=>{try{startCheckSync()}catch(e){alert("同期開始エラー: "+(e.code||e.message))}},1500);renderPersonalCoach();renderHomeDeadlineCard();loadDailyReportCard();renderSakuyaTestRulesCard();renderDokosutaHistory();renderFinalsDoneToday()}
 // Sprint 12-3/12-4: 今日の学習報告カード（提出物・課題データとは別のlocalStorageキーで管理）
 function dailyReportKey(date){return `stepup_daily_report_${date}_${current}`}
 // Sprint 43: さくや専用「課題テストのマイルール」カード。
@@ -957,6 +957,44 @@ document.querySelector('#sakuyaTestRulesSave')?.addEventListener('click',()=>{
   window.sakuyaTestRulesStatusTimer=setTimeout(()=>{if(statusEl.textContent==='記録を保存しました')statusEl.textContent=''},2500);
  }
 });
+// 期末テスト対策の完了記録（study/ トップページの「今日やった ✓」ボタンで記録される）。
+// 保存先は stepup-finals-done-{childId}（{日付: [教科名]} 形式、stepup- キーなので同期対象）。
+// 既存のミッションのチェック処理・達成率には一切影響させず、今日の計画の下に表示として足すだけにする。
+function finalsDoneKey(childId){return `stepup-finals-done-${childId}`}
+function getFinalsDoneToday(childId){
+ try{
+  const all=JSON.parse(localStorage.getItem(finalsDoneKey(childId))||'{}');
+  const list=all?all[formatDateKey(TODAY)]:null;
+  return Array.isArray(list)?list.filter(x=>typeof x==='string'&&x):[];
+ }catch(e){return[]}
+}
+function ensureFinalsDoneStyles(){
+ if(document.querySelector('#finalsDoneStyle'))return;
+ const style=document.createElement('style');
+ style.id='finalsDoneStyle';
+ style.textContent='.finals-done-today{margin-top:14px;padding-top:12px;border-top:2px dashed rgba(127,127,127,.35)}'
+  +'.finals-done-today h3{margin:0 0 8px;font-size:15px}'
+  +'.finals-done-chips{display:flex;flex-wrap:wrap;gap:8px}'
+  +'.finals-done-chip{display:inline-flex;align-items:center;padding:7px 14px;border-radius:999px;background:#e7f7ee;border:2px solid #2ea86a;color:#146c3c;font-weight:700;font-size:14px}';
+ document.head.appendChild(style);
+}
+function renderFinalsDoneToday(){
+ try{
+  const list=getFinalsDoneToday(current);
+  let box=document.querySelector('#finalsDoneToday');
+  if(!list.length){if(box)box.remove();return}
+  const anchor=document.querySelector('#scheduleReflectStatus')||document.querySelector('#scheduleList');
+  if(!anchor)return;
+  ensureFinalsDoneStyles();
+  if(!box){
+   box=document.createElement('div');
+   box.id='finalsDoneToday';
+   box.className='finals-done-today';
+   anchor.insertAdjacentElement('afterend',box);
+  }
+  box.innerHTML=`<h3>📚 今日の期末テスト対策</h3><div class="finals-done-chips">${list.map(s=>`<span class="finals-done-chip">✓ 完了 ${escapeHtml(s)}</span>`).join('')}</div>`;
+ }catch(e){/* 表示だけの機能のため、失敗しても既存の描画は止めない */}
+}
 // Sprint 44: さくや専用「今日の計画」の自動連動。
 // children.jsの静的なfocus/subの代わりに、実際の課題進捗(ProgressEngine)から
 // 「まだ終わっていない課題」を優先順で探し、完了した課題は自動的に計画から外れる。
