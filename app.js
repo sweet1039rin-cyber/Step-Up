@@ -2145,7 +2145,21 @@ function getLinks(childId){
  try{const parsed=JSON.parse(localStorage.getItem(linkShelfKey(childId))||'[]');return Array.isArray(parsed)?parsed:[]}catch(e){return []}
 }
 function saveLinks(childId,list){localStorage.setItem(linkShelfKey(childId),JSON.stringify(list))}
+function ensureLinkShelfStyles(){
+ // 登録済みリンクを「幅いっぱいの大きなボタン」として表示するためのスタイル。
+ // styles.css と index.html は変更しないため、カード生成時に一度だけ差し込む。
+ if(document.querySelector('#linkShelfStyle'))return;
+ const style=document.createElement('style');
+ style.id='linkShelfStyle';
+ style.textContent='.link-shelf-list{display:flex;flex-direction:column;gap:10px}'
+  +'.link-shelf-row{display:flex;align-items:center;gap:8px}'
+  +'.link-shelf-open-btn{flex:1 1 auto;display:flex;align-items:center;justify-content:center;min-height:58px;padding:14px 16px;border-radius:14px;background:#d70725;color:#fff!important;font-size:17px;font-weight:700;line-height:1.35;text-align:center;text-decoration:none!important;box-shadow:0 6px 16px rgba(215,7,37,.28)}'
+  +'.link-shelf-open-btn:active{opacity:.85}'
+  +'.link-shelf-delete{flex:0 0 auto;width:40px;height:40px;border-radius:10px;border:1px solid rgba(127,127,127,.5);background:transparent;color:inherit;opacity:.6;font-size:15px;line-height:1;cursor:pointer}';
+ document.head.appendChild(style);
+}
 function ensureLinkShelfCard(){
+ ensureLinkShelfStyles();
  let card=document.querySelector('#linkShelfCard');
  if(card)return card;
  card=document.createElement('section');
@@ -2181,7 +2195,7 @@ function renderLinkShelf(){
  const list=getLinks(current);
  listEl.innerHTML=list.length?list.map((link,i)=>`
   <div class="link-shelf-row">
-   <a class="link-shelf-open" href="${escapeHtml(link.url||'')}" target="_blank" rel="noopener noreferrer">${escapeHtml(link.name||'リンク')}</a>
+   <a class="link-shelf-open link-shelf-open-btn" href="${escapeHtml(link.url||'')}" target="_blank" rel="noopener noreferrer">${escapeHtml(link.name||'リンク')}</a>
    <button type="button" class="link-shelf-delete" data-link-delete="${i}" aria-label="このリンクを削除">✕</button>
   </div>`).join(''):'<div class="empty-state">リンクはまだありません。下の欄から追加できます。</div>';
  listEl.querySelectorAll('[data-link-delete]').forEach(b=>b.onclick=()=>{
