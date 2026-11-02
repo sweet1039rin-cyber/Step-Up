@@ -58,7 +58,6 @@ footer{margin-top:10px}
 <p class="toplink"><a href="sakuya.html">← 教材トップへ戻る</a></p>
 
 <h1>🌙 夜テスト｜中1 朔埜 SAKUYA</h1>
-<div class="note">朔埜のマイルール：夜に全教科10問ずつテストする／8点以上を目指す／できなかった所は次の日に復習する／夜9時〜9時30分までに行う。</div>
 <div id="startArea">
 <p>全教科まぜて10問出ます。1問ずつ、答えを見てから「できた／できなかった」で自己判定しよう。</p>
 <button type="button" class="bigbtn pink" id="ntStart">テストを始める</button>
@@ -124,8 +123,6 @@ function judge(ok){
     document.getElementById('ntScore').textContent=score+'点 / 10点';
     document.getElementById('ntComment').textContent=score>=8?'8点以上！よくできました。この調子で続けよう。':'おつかれさま。できなかった問題は、まちがい復習や暗記カードで復習しよう。';
     var h=loadArr(KEY);h.push({date:todayStr(),score:score});localStorage.setItem(KEY,JSON.stringify(h));
-    coinAward(score*2,'夜テスト '+score+'点','nighttest',1);
-    if(score>=10){coinAward(30,'夜テスト満点ボーナス','nighttest-perfect',1);}
     renderHistory();
   }else{showQ();}
 }
@@ -139,40 +136,6 @@ document.getElementById('ntShow').addEventListener('click',function(){
 document.getElementById('ntOk').addEventListener('click',function(){judge(true);});
 document.getElementById('ntNg').addEventListener('click',function(){judge(false);});
 renderHistory();
-/* ==== ご褒美コイン ==== */
-var COIN_CHILD='sakuya';
-var COIN_KEY='stepup-coins-'+COIN_CHILD;
-var CLAIM_KEY='stepup-coinclaims-'+COIN_CHILD;
-function coinLoad(){try{var v=JSON.parse(localStorage.getItem(COIN_KEY));if(v&&typeof v.total==='number'&&Array.isArray(v.history))return v;}catch(e){}return{total:0,history:[]};}
-function coinClaimsLoad(){try{var v=JSON.parse(localStorage.getItem(CLAIM_KEY));if(v&&typeof v==='object'&&v!==null)return v;}catch(e){}return{};}
-function coinAward(amount,sourceLabel,claimId,dailyCap){
-  if(!amount||amount<=0)return 0;
-  if(dailyCap==null)dailyCap=1;
-  if(claimId){
-    var claims=coinClaimsLoad();
-    var ck=todayStr()+':'+claimId;
-    var n=claims[ck]||0;
-    if(n>=dailyCap)return 0;
-    claims[ck]=n+1;
-    try{localStorage.setItem(CLAIM_KEY,JSON.stringify(claims));}catch(e){}
-  }
-  var data=coinLoad();
-  data.total+=amount;
-  data.history.push({date:todayStr(),source:sourceLabel,amount:amount});
-  if(data.history.length>200)data.history=data.history.slice(data.history.length-200);
-  try{localStorage.setItem(COIN_KEY,JSON.stringify(data));}catch(e){}
-  coinToast(amount);
-  return amount;
-}
-function coinToast(amount){
-  var t=document.createElement('div');
-  t.textContent='🪙 +'+amount+'コイン！';
-  t.setAttribute('style','position:fixed;right:16px;bottom:16px;z-index:9999;background:#1a1a5e;color:#fff;font-weight:700;font-size:1.1rem;padding:12px 20px;border-radius:999px;box-shadow:0 4px 14px rgba(0,0,0,.25);opacity:0;transition:opacity .3s;pointer-events:none');
-  document.body.appendChild(t);
-  setTimeout(function(){t.style.opacity='1';},10);
-  setTimeout(function(){t.style.opacity='0';},1700);
-  setTimeout(function(){if(t.parentNode)t.parentNode.removeChild(t);},2200);
-}
 </script>
 
 <footer><a class="backlink" href="sakuya.html">← 教材トップへ戻る</a></footer>
