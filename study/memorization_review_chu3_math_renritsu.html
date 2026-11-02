@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>中3数学 復習｜連立方程式（中2） 暗記シート｜Step Up</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 16px;
+    background: #ffffff;
+    color: #222;
+    font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Noto Sans JP", "Yu Gothic", sans-serif;
+    font-size: 16px;
+    line-height: 1.8;
+  }
+  .sheet { max-width: 760px; margin: 0 auto; }
+  h1 {
+    font-size: 24px;
+    text-align: center;
+    color: #ffffff;
+    background: #2f6fb2;
+    border-radius: 10px;
+    padding: 12px 8px;
+    margin: 0 0 6px;
+  }
+  .subtitle { text-align: center; color: #555; font-size: 14px; margin: 0 0 20px; }
+  h2 {
+    font-size: 19px;
+    color: #2f6fb2;
+    border-left: 8px solid #2f6fb2;
+    padding: 2px 0 2px 10px;
+    margin: 28px 0 10px;
+  }
+  h2.green { color: #2e7d4f; border-left-color: #2e7d4f; }
+  h2.orange { color: #c05a17; border-left-color: #e07b39; }
+  h2.purple { color: #6a3fa0; border-left-color: #8e5fc0; }
+  p { margin: 6px 0; }
+  .memo-box {
+    border: 2px solid #2f6fb2;
+    background: #eef5fc;
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin: 10px 0;
+  }
+  .memo-box.green { border-color: #2e7d4f; background: #edf7f0; }
+  .memo-box.orange { border-color: #e07b39; background: #fdf3ea; }
+  .memo-box.purple { border-color: #8e5fc0; background: #f4eefb; }
+  .memo-box .box-title { font-weight: bold; font-size: 17px; margin-bottom: 4px; }
+  .warn-box {
+    border: 2px solid #c0392b;
+    background: #fdf0ee;
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin: 10px 0;
+  }
+  .warn-box .box-title { font-weight: bold; color: #c0392b; font-size: 17px; margin-bottom: 4px; }
+  ul, ol { margin: 6px 0 6px 0; padding-left: 24px; }
+  li { margin: 4px 0; }
+  .eq {
+    font-size: 19px;
+    font-weight: bold;
+    text-align: center;
+    background: #fff8e1;
+    border: 1px solid #e0c96a;
+    border-radius: 8px;
+    padding: 8px 6px;
+    margin: 8px 0;
+    letter-spacing: 0.5px;
+  }
+  .figure { text-align: center; margin: 12px 0; }
+  .figure svg { max-width: 100%; height: auto; }
+  .figure .caption { font-size: 13px; color: #555; margin-top: 4px; }
+  .big { font-size: 18px; font-weight: bold; }
+  .point { color: #c0392b; font-weight: bold; }
+  table { border-collapse: collapse; width: 100%; margin: 10px 0; }
+  th, td { border: 1px solid #9db8d2; padding: 8px 10px; text-align: left; }
+  th { background: #eef5fc; color: #2f6fb2; }
+  .footer { text-align: center; color: #777; font-size: 13px; margin-top: 32px; }
+  @media print {
+    body { padding: 0; font-size: 14px; }
+    h1 { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .memo-box, .warn-box, .eq, th { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .memo-box, .warn-box, .figure, table { page-break-inside: avoid; }
+    h2 { page-break-after: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+<p style="margin:0 0 8px"><a href="iori.html">← 教材トップへ戻る</a></p>
+<h1>中3数学 復習｜連立方程式（中2） 暗記シート</h1>
+<p class="subtitle">🔁 復習用｜中2・連立方程式（加減法・代入法・利用）／ 読んで覚える → 問題で使えるようにしよう</p>
+
+<h2>1．連立方程式の解とは</h2>
+<p>2つの方程式を<span class="big">両方とも成り立たせる</span> x、y の組が、その連立方程式の<span class="big">解</span>です。求めるものが2つあるので、式も<span class="point">2本</span>必要です。</p>
+<div class="eq">解の検算 ＝ 答えを 2本とも の式に代入して、両方成り立つか確認</div>
+
+<h2 class="green">2．加減法（最重要）</h2>
+<div class="memo-box green">
+<div class="box-title">覚えること：加減法の手順</div>
+<ol>
+<li>消したい文字の<strong>係数の絶対値をそろえる</strong>（一方、または両方を何倍かする）</li>
+<li>符号が逆なら<strong>たす</strong>、同じなら<strong>ひく</strong> → 1文字消える</li>
+<li>残った文字を求め、もとの式のどちらかに代入してもう一方を求める</li>
+</ol>
+<div class="eq">例：2x＋3y＝16、x－2y＝1 → 下を2倍してひくと 7y＝14 → y＝2、x＝5</div>
+<p>何倍かするときは、<span class="point">右辺も含めて全部の項</span>を倍にすること。</p>
+</div>
+
+<h2>3．代入法</h2>
+<div class="memo-box">
+<div class="box-title">覚えること：代入法の手順</div>
+<ol>
+<li>一方の式を「y＝（xの式）」または「x＝（yの式）」の形にする（最初からその形ならそのまま）</li>
+<li>もう一方の式のその文字に、<strong>かっこをつけて</strong>代入する</li>
+<li>1文字だけの式を解き、出た値を代入した式に戻して、もう一方を求める</li>
+</ol>
+<div class="eq">y＝x＋1 を 2x＋y＝10 に代入 → 2x＋(x＋1)＝10 → x＝3、y＝4</div>
+<p><b>選び方：</b>係数が1の文字がある／すでに y＝… の形 → 代入法が速い。それ以外は加減法が基本。</p>
+</div>
+
+<h2 class="orange">4．かっこ・小数・分数の処理</h2>
+<div class="memo-box orange">
+<div class="box-title">覚えること：解く前に形を整える</div>
+<ul>
+<li><b>かっこ</b> → 先に展開して整理する。例：3(y－1)＝3y－3（中の全部にかける）</li>
+<li><b>小数</b> → 両辺を10倍・100倍して整数にする。例：0.2x＋0.3y＝1.2 → 2x＋3y＝12</li>
+<li><b>分数</b> → 両辺に分母の最小公倍数をかける。例：(x/3)＋(y/2)＝4 → ×6 → 2x＋3y＝24</li>
+<li><b>A＝B＝C の形</b> → A＝B と B＝C（または A＝C）の2本の式に分ける</li>
+</ul>
+</div>
+
+<h2 class="purple">5．利用（文章題）の型</h2>
+<div class="memo-box purple">
+<div class="box-title">覚えること：文章題は「何を x、y とするか」から</div>
+<ul>
+<li><b>個数と代金</b>：式1＝個数の合計、式2＝代金の合計（単価×個数）</li>
+<li><b>2けたの数</b>：十の位 x、一の位 y → もとの数＝<b>10x＋y</b>、入れかえた数＝10y＋x</li>
+<li><b>速さ</b>：道のり＝速さ×時間、時間＝道のり÷速さ。そろえる量（道のり・時間）で式を立てる</li>
+<li><b>食塩水・割合</b>：式1＝全体の重さ、式2＝食塩の重さ（重さ×濃度、濃度は 6％＝0.06）</li>
+</ul>
+<p>答えが出たら、問題文の条件に両方合うか<span class="point">必ず検算</span>する。</p>
+</div>
+
+<div class="warn-box">
+<div class="box-title">🎯 ここが出る！</div>
+<ul>
+<li>係数をそろえるために<strong>片方を2倍・3倍する加減法</strong>（そのままでは消えない形）</li>
+<li><strong>y＝… の形からの代入法</strong>と、かっこ付きの代入の展開</li>
+<li><strong>小数・分数を整数になおしてから</strong>解く問題</li>
+<li>文章題は<strong>個数と代金</strong>と<strong>食塩水</strong>が鉄板。2けたの数の 10x＋y も要チェック</li>
+</ul>
+</div>
+
+<div class="warn-box">
+<div class="box-title">⚠ 間違えやすい点（ここをチェック！）</div>
+<ul>
+<li>式を何倍かするとき、<b>右辺を倍にし忘れる</b></li>
+<li>代入でかっこを付けず、符号や展開を落とす（3(2y－1)＝6y－3）</li>
+<li>ひき算で －(－4y) の符号ミス</li>
+<li>文章題で答えの<strong>単位や聞かれたもの</strong>（x、y ではなく「もとの数」など）を取り違える</li>
+</ul>
+</div>
+
+<p class="footer">中3数学 復習｜連立方程式（中2） 暗記シート（🔁 復習用）</p>
+</div>
+</body>
+</html>
