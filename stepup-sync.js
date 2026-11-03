@@ -14,6 +14,10 @@
 //   / startCheckSync)は本モジュールへの委譲に置き換えた。
 // 競合ルール:
 //   キーごとに updatedAt(ミリ秒) が新しい方を優先する。
+//   例外: stepup-v4-* キーは、両方の値が JSON オブジェクトなら
+//   フィールド単位でマージする(下記 mergeV4Values を参照)。部分的な
+//   状態しか持たない端末の保存が、他の端末のカスタム計画(customTasks)
+//   を丸ごと消してしまうのを防ぐため。
 // オフライン時:
 //   localStorage のみで動作し、オンライン復帰時に自動で送る。
 // 前提:
@@ -156,6 +160,54 @@
     });
   }, 5000);
 
+  // ---------- stepup-v4-* のフィールド単位マージ ----------
+  // 本体の状態(stepup-v4-{日付}-{子ども})は、端末ごとに部分的な内容で
+  // 保存され得る(例: チェック操作だけをした端末の状態には customTasks が
+  // 無い)。キー単位の Last-Writer-Wins では、その部分状態が新しい
+  // updatedAt で push された瞬間、子どもの端末にあるカスタム計画を含む
+  // 状態が丸ごと上書きされて消えてしまう。
+  // そこで v4 キーに限り、ローカル値とリモート値がどちらも JSON
+  // オブジェクトならフィールド単位でマージする:
+  //   - 片方にしか無いフィールドは残す
+  //   - 両方にあるフィールドは updatedAt が新しい側の値を採用する
+  // マージはリモート受信時の適用にのみ行い、マージ結果がリモート値と
+  // 内容的に異なる場合(=ローカル固有のフィールドが残った場合)は、
+  // 新しい updatedAt を付けて通常の push 経路で送り返し、全体を収束
+  // させる。内容比較はキー順に依存しない canonical 形式で行うため、
+  // 収束後はこちらから再送は発生せず、ループにはならない。
+  function parseJsonObject(s) {
+    if (typeof s !== 'string') return null;
+    try {
+      var o = JSON.parse(s);
+      if (o && typeof o === 'object' && !Array.isArray(o)) return o;
+    } catch (e) { /* JSON ではない */ }
+    return null;
+  }
+  function isV4Key(k) { return typeof k === 'string' && k.indexOf('stepup-v4-') === 0; }
+  function canonicalJson(o) {
+    if (o === null || typeof o !== 'object') return JSON.stringify(o);
+    if (Array.isArray(o)) return '[' + o.map(canonicalJson).join(',') + ']';
+    return '{' + Object.keys(o).sort().map(function (k) {
+      return JSON.stringify(k) + ':' + canonicalJson(o[k]);
+    }).join(',') + '}';
+  }
+  // マージ結果のオブジェクトを返す。対象外(v4キーでない・どちらかが
+  // JSONオブジェクトでない)なら null を返し、呼び出し側は従来の
+  // Last-Writer-Wins にフォールバックする。
+  function mergeV4Values(key, localStr, remoteStr, localTs, remoteTs) {
+    if (!isV4Key(key)) return null;
+    var lo = parseJsonObject(localStr);
+    var ro = parseJsonObject(remoteStr);
+    if (!lo || !ro) return null;
+    var winner = remoteTs >= localTs ? ro : lo;
+    var loser = winner === ro ? lo : ro;
+    var merged = {};
+    var k;
+    for (k in loser) { if (Object.prototype.hasOwnProperty.call(loser, k)) merged[k] = loser[k]; }
+    for (k in winner) { if (Object.prototype.hasOwnProperty.call(winner, k)) merged[k] = winner[k]; }
+    return merged;
+  }
+
   // ---------- サーバー → ローカル ----------
   function scheduleRefresh() {
     if (state.refreshTimer) return;
@@ -202,18 +254,40 @@
         var lts = metaUpdatedAt(d.id);
         if (rts > lts) {
           // サーバーの方が新しい → ローカルへ反映
+          var pushBack = false;
           state.applyingRemote = true;
           try {
             if (data.deleted) {
               if (localStorage.getItem(d.id) !== null) origRemove(d.id);
             } else if (typeof data.value === 'string') {
-              if (localStorage.getItem(d.id) !== data.value) origSet(d.id, data.value);
+              var curVal = localStorage.getItem(d.id);
+              var mergedObj = mergeV4Values(d.id, curVal, data.value, lts, rts);
+              if (mergedObj && canonicalJson(mergedObj) !== canonicalJson(parseJsonObject(data.value))) {
+                // v4 マージの結果、ローカル固有のフィールドが残った。
+                // ローカルへ反映し、下で送り返しを予約する。
+                var mergedStr = JSON.stringify(mergedObj);
+                if (curVal !== mergedStr) origSet(d.id, mergedStr);
+                pushBack = true;
+              } else if (curVal !== data.value) {
+                origSet(d.id, data.value);
+              }
             }
           } finally {
             state.applyingRemote = false;
           }
-          setMetaUpdatedAt(d.id, rts);
-          state.lastHash[d.id] = hashOf(localStorage.getItem(d.id));
+          if (pushBack) {
+            // マージ結果はサーバーの値と内容が異なるため、このままでは
+            // 他端末に届かない。updatedAt を両者より新しくして通常の
+            // push 経路で送り返し、全体を同じ内容に収束させる。
+            // lastHash にはサーバー値のハッシュを入れておく(ローカル値と
+            // ハッシュが異なるため pushKey が送信対象と判定する)。
+            setMetaUpdatedAt(d.id, Math.max(Date.now(), rts + 1));
+            state.lastHash[d.id] = hashOf(data.value);
+            schedulePush(d.id);
+          } else {
+            setMetaUpdatedAt(d.id, rts);
+            state.lastHash[d.id] = hashOf(localStorage.getItem(d.id));
+          }
           changed = true;
         } else if (rts === lts) {
           state.lastHash[d.id] = hashOf(localStorage.getItem(d.id));

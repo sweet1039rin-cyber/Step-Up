@@ -14,6 +14,49 @@ function computeTodayDateOnly(){const d=new Date();return new Date(d.getFullYear
 function formatDateKey(d){const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');return `${y}-${m}-${day}`}
 const TODAY=computeTodayDateOnly();
 const PLAN_DATE=formatDateKey(TODAY);
+// ==== 日付またぎ対策(ここから) ====
+// PLAN_DATE はこのスクリプトの読み込み時点で固定される。タブを開いたまま
+// 日付が変わると、開きっぱなしのタブは昨日のキー(stepup-v4-{昨日}-{子ども})に
+// 書き続け、新しく開いた端末は今日のキーを読んでデフォルト計画を表示して
+// しまう食い違いが起きる。そこで、タブが再表示された時と定期チェックで
+// 日付のずれを検知し、ページを再読み込みして PLAN_DATE を正す。
+// ただし編集中(入力フォーカス中・編集フォーム表示中)に再読み込みすると
+// 未保存の入力が消えるため、その回は見送り、少し置いて再確認する。
+(function watchPlanDate(){
+ const loadedPlanDate=PLAN_DATE;
+ let retryTimer=null;
+ function currentPlanDate(){return formatDateKey(computeTodayDateOnly())}
+ function isEditingNow(){
+  const ae=document.activeElement;
+  if(ae&&/^(INPUT|TEXTAREA|SELECT)$/.test(ae.tagName))return true;
+  // 編集フォームが開いている間は編集中とみなす
+  const forms=document.querySelectorAll('.material-form,.dokosuta-form');
+  for(let i=0;i<forms.length;i++){if(!forms[i].classList.contains('hidden'))return true}
+  // 表示中のテキスト入力・テキストエリアに未保存の文字が残っていれば編集中とみなす
+  const fields=document.querySelectorAll('textarea,input');
+  for(let i=0;i<fields.length;i++){
+   const el=fields[i];
+   if(el.offsetParent===null)continue; // 非表示(別画面・閉じたフォーム内)は対象外
+   if(el.tagName==='TEXTAREA'){if(el.value&&el.value.trim())return true}
+   else if(el.tagName==='INPUT'){
+    const t=(el.getAttribute('type')||'text').toLowerCase();
+    if((t==='text'||t==='search')&&el.value&&el.value.trim())return true;
+   }
+  }
+  return false;
+ }
+ function checkPlanDate(){
+  if(currentPlanDate()===loadedPlanDate)return;
+  if(isEditingNow()){
+   if(!retryTimer)retryTimer=setTimeout(()=>{retryTimer=null;checkPlanDate()},30000);
+   return;
+  }
+  location.reload();
+ }
+ document.addEventListener('visibilitychange',()=>{if(!document.hidden)checkPlanDate()});
+ setInterval(checkPlanDate,180000);
+})();
+// ==== 日付またぎ対策(ここまで) ====
 const assignmentData=window.StepUpData.assignments;
 const assignmentProgressKey=id=>`stepup-assignment-progress-${id}`;
 const nextPlanKey=id=>`stepup-next-plan-${id}`;
