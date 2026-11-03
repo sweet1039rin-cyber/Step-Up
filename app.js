@@ -1446,10 +1446,64 @@ function childSummary(id){
  const mins=tasks.reduce((sum,t,i)=>sum+(checks[i]?parseInt(t[2])||0:0),0);
  return {done,total,rate,mins,step:saved.step||'まだ記録なし'};
 }
+// 家族ビュー用：教材ページ（study/）での学習記録を日付で集計して表示する（表示のみ。既存の保存データ・達成率計算には一切触れない）。
+// 各キーの形式は教材ページ側の実装に合わせる：
+//  朝活 stepup-morning-{childId}=日付文字列の配列／期末対策 stepup-finals-done-{childId}={日付:[教科名]}
+//  夜テスト stepup-nighttest-{childId}={date,score}の配列／コイン stepup-coins-{childId}={total,history:[{date,source,amount}]}
+//  振り返り stepup_daily_report_{日付}_{childId}（内容を入力して保存したときだけキーが作られる）
+function studyLogDateKey(offsetDays){
+ const d=new Date(TODAY);d.setDate(d.getDate()+offsetDays);return formatDateKey(d);
+}
+function collectStudyLog(childId,dateStr){
+ const items=[];
+ try{
+  const morning=JSON.parse(localStorage.getItem(`stepup-morning-${childId}`)||'[]');
+  if(Array.isArray(morning)&&morning.includes(dateStr))items.push('朝活 ✓');
+ }catch(e){}
+ try{
+  const finals=JSON.parse(localStorage.getItem(finalsDoneKey(childId))||'{}');
+  const list=finals?finals[dateStr]:null;
+  if(Array.isArray(list)&&list.length){const subjects=list.filter(s=>typeof s==='string'&&s);if(subjects.length)items.push('期末対策：'+subjects.join('・'))}
+ }catch(e){}
+ try{
+  const nt=JSON.parse(localStorage.getItem(`stepup-nighttest-${childId}`)||'[]');
+  if(Array.isArray(nt)){
+   const todays=nt.filter(e=>e&&e.date===dateStr&&typeof e.score==='number');
+   if(todays.length)items.push(`夜テスト ${todays[todays.length-1].score}点`);
+  }
+ }catch(e){}
+ try{
+  const coins=JSON.parse(localStorage.getItem(`stepup-coins-${childId}`)||'null');
+  if(coins&&Array.isArray(coins.history)){
+   const sum=coins.history.filter(h=>h&&h.date===dateStr&&typeof h.amount==='number').reduce((s,h)=>s+h.amount,0);
+   if(sum>0)items.push(`+${sum}コイン`);
+  }
+ }catch(e){}
+ try{
+  const rep=JSON.parse(localStorage.getItem(`stepup_daily_report_${dateStr}_${childId}`)||'null');
+  if(rep&&(rep.done||rep.stepUp))items.push('振り返り ✓');
+ }catch(e){}
+ return items;
+}
+function ensureFamilyStudyLogStyles(){
+ if(document.querySelector('#familyStudyLogStyle'))return;
+ const style=document.createElement('style');
+ style.id='familyStudyLogStyle';
+ style.textContent='.family-study-log{margin-top:10px;padding-top:8px;border-top:1px dashed rgba(127,127,127,.45);text-align:left}'
+  +'.family-study-log h4{margin:0 0 3px;font-size:12px;letter-spacing:.05em;opacity:.7}'
+  +'.family-study-log p{margin:0;font-size:13px;line-height:1.55}';
+ document.head.appendChild(style);
+}
+function studyLogHtml(childId,offsetDays,label){
+ const items=collectStudyLog(childId,studyLogDateKey(offsetDays));
+ const body=items.length?items.map(s=>escapeHtml(s)).join(' ・ '):'記録なし';
+ return `<div class="family-study-log"><h4>${label}</h4><p>${body}</p></div>`;
+}
 function renderFamily(){
  const a=childSummary('iori'),b=childSummary('sakuya'),allDone=a.done+b.done,allTotal=a.total+b.total,rate=Math.round(allDone/allTotal*100),mins=a.mins+b.mins;
  familyStats.innerHTML=`<div><b>${rate}%</b><span>今日の達成率</span></div><div><b>${Math.floor(mins/60)}h ${mins%60}m</b><span>完了した学習時間</span></div><div><b>${allTotal-allDone}</b><span>残りミッション</span></div>`;
- childOverview.innerHTML=[['壱凰','IORI','iori',a,'#d70725'],['朔埜','SAKUYA','sakuya',b,'#146aff']].map(([name,en,key,x,color])=>`<article style="--child:${color}" data-child-open="${key}" role="button" tabindex="0" aria-label="${name}の個人ページを見る"><small>${en}</small><h2>${name}</h2><div class="child-rate"><b>${x.rate}%</b><span>${x.done}/${x.total} COMPLETE</span></div><div class="child-bar"><i style="width:${x.rate}%"></i></div><p>${x.step}</p></article>`).join('');
+ try{ensureFamilyStudyLogStyles()}catch(e){}
+ childOverview.innerHTML=[['壱凰','IORI','iori',a,'#d70725'],['朔埜','SAKUYA','sakuya',b,'#146aff']].map(([name,en,key,x,color])=>`<article style="--child:${color}" data-child-open="${key}" role="button" tabindex="0" aria-label="${name}の個人ページを見る"><small>${en}</small><h2>${name}</h2><div class="child-rate"><b>${x.rate}%</b><span>${x.done}/${x.total} COMPLETE</span></div><div class="child-bar"><i style="width:${x.rate}%"></i></div><p>${x.step}</p>${studyLogHtml(key,0,'今日の勉強記録')}${studyLogHtml(key,-1,'昨日の勉強記録')}</article>`).join('');
  childOverview.querySelectorAll('[data-child-open]').forEach(card=>{const open=()=>{current=card.dataset.childOpen;render();show(mission)};card.onclick=open;card.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open()}}});
  renderFamilyTodayActivity();
  renderFamilyDeadlineAlert();
