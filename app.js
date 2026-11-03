@@ -959,7 +959,8 @@ document.querySelector('#sakuyaTestRulesSave')?.addEventListener('click',()=>{
 });
 // 期末テスト対策の完了記録（study/ トップページの「今日やった ✓」ボタンで記録される）。
 // 保存先は stepup-finals-done-{childId}（{日付: [教科名]} 形式、stepup- キーなので同期対象）。
-// 既存のミッションのチェック処理・達成率には一切影響させず、今日の計画の下に表示として足すだけにする。
+// 今日の計画の下への表示に加え、今日の達成率にも分子・分母として加算する（finalsRateParts）。
+// チェック保存や課題への反映の仕組みには触れず、記録は日付キーで読み取るだけ。
 function finalsDoneKey(childId){return `stepup-finals-done-${childId}`}
 function getFinalsDoneToday(childId){
  try{
@@ -967,6 +968,15 @@ function getFinalsDoneToday(childId){
   const list=all?all[formatDateKey(TODAY)]:null;
   return Array.isArray(list)?list.filter(x=>typeof x==='string'&&x):[];
  }catch(e){return[]}
+}
+// 今日の達成率の統一式：分子＝計画タスクのチェック数＋期末対策の完了教科数／分母＝計画タスク数＋期末対策の教科総数。
+// 教科総数は study/ トップページの「今日やった ✓」ボタンの数（iori=9教科、sakuya=6区分）。
+// 想定外の教科名が記録されていた場合は、その distinct 数まで分母を広げる。
+const FINALS_SUBJECT_TOTALS={iori:9,sakuya:6};
+function finalsRateParts(childId){
+ const distinct=new Set(getFinalsDoneToday(childId)).size;
+ const base=FINALS_SUBJECT_TOTALS[childId]||0;
+ return {done:distinct,total:Math.max(base,distinct)};
 }
 function ensureFinalsDoneStyles(){
  if(document.querySelector('#finalsDoneStyle'))return;
@@ -1304,10 +1314,11 @@ function updateMobileMission(tasks,checks,done){
  const activeIndex=Number.isInteger(saved.activeTaskIndex)?saved.activeTaskIndex:null;
  const isActive=next>=0&&activeIndex===next;
  const count=document.querySelector('#mobileMissionCount'),time=document.querySelector('#mobileMissionTime'),title=document.querySelector('#mobileMissionTitle'),duration=document.querySelector('#mobileMissionDuration'),button=document.querySelector('#completeCurrentMission'),label=document.querySelector('#mobileMissionLabel'),progress=document.querySelector('#mobileProgressBar'),remainingText=document.querySelector('#mobileRemainingText'),remainingList=document.querySelector('#mobileRemainingList'),tag=document.querySelector('#mobileMissionTag'),remainingBadge=document.querySelector('#mobileMissionRemaining');
- const percentValue=tasks.length?Math.round(done/tasks.length*100):0;
- if(count)count.textContent=`${done} / ${tasks.length} 完了`;
+ const fin=finalsRateParts(current),allDone=done+fin.done,allTotal=checks.length+fin.total; // 達成率は計画＋期末対策の統一式（update()と同じ数え方）
+ const percentValue=allTotal?Math.round(allDone/allTotal*100):0;
+ if(count)count.textContent=`${allDone} / ${allTotal} 完了`;
  if(progress)progress.style.width=percentValue+'%';
- if(remainingText)remainingText.textContent=next<0?'今日のミッションはすべて完了！':`今日はあと${tasks.length-done}個`;
+ if(remainingText)remainingText.textContent=(next<0&&allDone>=allTotal)?'今日のミッションはすべて完了！':`今日はあと${allTotal-allDone}個`;
  if(remainingList)remainingList.innerHTML=next<0?'':tasks.map((t,i)=>!checks[i]&&i!==next?`<span>${escapeHtml(t[1])}</span>`:'').join('');
  if(next<0){
   if(label)label.textContent='TODAY COMPLETE';if(time){time.textContent='DONE';time.className='cat-study';}if(title)title.textContent='今日の計画をすべて完了！';if(duration)duration.textContent='今日のStep Upを残して、しっかり休もう。';if(tag){tag.textContent='';tag.className='task-tag hidden';}if(remainingBadge)remainingBadge.classList.add('hidden');if(button){button.textContent='MISSION COMPLETE ✓';button.disabled=true;delete button.dataset.taskIndex;}
@@ -1329,7 +1340,7 @@ function updateMobileMission(tasks,checks,done){
  }
  if(button){button.textContent=isActive?'完了する ✓':'開始する';button.disabled=false;button.dataset.taskIndex=String(next);button.dataset.action=isActive?'complete':'start';}
 }
-function update(){const cs=[...document.querySelectorAll('.task input')],done=cs.filter(x=>x.checked).length,p=cs.length?Math.round(done/cs.length*100):0;percent.textContent=p+'%';const doneCountEl=document.querySelector('#doneCount'),totalCountEl=document.querySelector('#totalCount'),barEl=document.querySelector('#bar');if(doneCountEl)doneCountEl.textContent=done;if(totalCountEl)totalCountEl.textContent=cs.length;if(barEl)barEl.style.width=p+'%';const tasks=activeTasks(),checks=cs.map(x=>x.checked);updateMobileMission(tasks,checks,done);renderPersonalCoach();}
+function update(){const cs=[...document.querySelectorAll('.task input')],planDone=cs.filter(x=>x.checked).length;const fin=finalsRateParts(current),done=planDone+fin.done,total=cs.length+fin.total,p=total?Math.round(done/total*100):0;percent.textContent=p+'%';const doneCountEl=document.querySelector('#doneCount'),totalCountEl=document.querySelector('#totalCount'),barEl=document.querySelector('#bar');if(doneCountEl)doneCountEl.textContent=done;if(totalCountEl)totalCountEl.textContent=total;if(barEl)barEl.style.width=p+'%';const tasks=activeTasks(),checks=cs.map(x=>x.checked);updateMobileMission(tasks,checks,planDone);renderPersonalCoach();}
 
 function showMissionCelebration(taskTitle,allDone){
  const box=document.querySelector('#missionCelebration'),title=document.querySelector('#celebrationTitle'),text=document.querySelector('#celebrationText');
@@ -1440,8 +1451,9 @@ function childSummary(id){
  const saved=JSON.parse(localStorage.getItem('stepup-v4-'+PLAN_DATE+'-'+id)||'{}');
  const tasks=activeTasks(id).filter(t=>!t[5]); // イベント(固定予定)は達成率の分母に含めない(子ども側update()と同じ基準)
  const checks=saved.checks||{};
- const total=tasks.length;
- const done=tasks.filter((t,i)=>checks[i]).length;
+ const fin=finalsRateParts(id); // 期末対策の完了も達成率に加算する(子ども側update()と同じ統一式)
+ const total=tasks.length+fin.total;
+ const done=tasks.filter((t,i)=>checks[i]).length+fin.done;
  const rate=total?Math.round(done/total*100):0;
  const mins=tasks.reduce((sum,t,i)=>sum+(checks[i]?parseInt(t[2])||0:0),0);
  return {done,total,rate,mins,step:saved.step||'まだ記録なし'};
@@ -2305,7 +2317,7 @@ saveMaterialBtn.onclick=()=>{const name=newMaterialName.value.trim();if(!name)re
 function openGrowth(){renderGrowth();renderPersonalCoach();show(growthScreen)}
 function renderGrowth(){
  growthPerson.textContent=data[current].name+' / 成長記録';
- const saved=JSON.parse(localStorage.getItem(key())||'{}');const checks=saved.checks||{};const total=activeTasks().length;const done=Object.values(checks).filter(Boolean).length;const rate=Math.round(done/total*100);
+ const saved=JSON.parse(localStorage.getItem(key())||'{}');const checks=saved.checks||{};const total=activeTasks().length;const done=Object.values(checks).filter(Boolean).length;const fin=finalsRateParts(current);const rate=(total+fin.total)?Math.round((done+fin.done)/(total+fin.total)*100):0; // 達成率(%)のみ期末対策も含めた統一式にする(done=完了ミッション数は計画分のみのまま)
  growthRate.textContent=rate+'%';growthDone.textContent=done;growthStreak.textContent=(done?3:1)+'日';growthStep.textContent=saved.step||'まだ記録がありません。小さな成長を一つ残そう。';
  const base=current==='iori'?[42,58,35,71,64,50,rate]:[30,45,52,40,68,55,rate];const days=['月','火','水','木','金','土','今日'];
  weekBars.innerHTML=base.map((v,i)=>`<div class="week-bar ${i===6?'today':''}"><span>${v}%</span><i style="height:${Math.max(v,4)}%"></i><b>${days[i]}</b></div>`).join('');
