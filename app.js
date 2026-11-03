@@ -634,6 +634,11 @@ const FAMILY_COMMENT_PRESETS=[
  '毎日続けられているね！',
  'あと少し、応援してるよ！'
 ];
+// 未完了タスクに応援を送る場合は、完了した時専用の言い回し(「最後までできてすごい！」)を除く。
+// 保存済みコメントの判定には従来どおり FAMILY_COMMENT_PRESETS 全体を使う。
+function familyCommentPresetsFor(isDone){
+ return isDone?FAMILY_COMMENT_PRESETS:FAMILY_COMMENT_PRESETS.filter(c=>c!=='最後までできてすごい！');
+}
 // 保存データを表示用に正規化する。既存の{liked:true}のみのデータは、
 // reaction:'like'（👍いいね）として安全に読み替える(後方互換)。
 function normalizeFamilyReactionEntry(entry){
@@ -1574,18 +1579,18 @@ function renderFamilyTodayActivity(){
      const rKey=taskReactionKey(t);
      const current=normalizeFamilyReactionEntry(reactions[rKey]);
      const meta2=familyReactionMeta(current?.reaction);
-     const cheerBtn=isDone
-      ?`<button type="button" class="family-cheer-toggle-btn ${current?'has-reaction':''}" data-cheer-toggle="fam-cheer-${childId}-${i}">${current?meta2.emoji+' '+meta2.label+'を送信済み':'応援する'}</button>`
-      :`<button type="button" class="family-cheer-toggle-btn is-disabled" disabled title="完了したら応援できます">応援する</button>`;
-     const cheerPanel=isDone?`<div id="fam-cheer-${childId}-${i}" class="family-cheer-panel hidden">
+     // 完了・未完了を問わず応援できる(頑張っている途中にもエールを送れるように)。
+     // パネル・保存先(stepup-family-reactions-…)・子ども側への届き方は完了時と共通。
+     const cheerBtn=`<button type="button" class="family-cheer-toggle-btn ${current?'has-reaction':''}" data-cheer-toggle="fam-cheer-${childId}-${i}">${current?meta2.emoji+' '+meta2.label+'を送信済み':'応援する'}</button>`;
+     const cheerPanel=`<div id="fam-cheer-${childId}-${i}" class="family-cheer-panel hidden">
       <div class="family-cheer-reactions">${FAMILY_REACTION_TYPES.map(r=>`<button type="button" class="family-cheer-reaction-btn ${current&&current.reaction===r.id?'is-selected':''}" data-cheer-reaction="${r.id}">${r.emoji}<small>${r.label}</small></button>`).join('')}</div>
-      <div class="family-cheer-comments">${FAMILY_COMMENT_PRESETS.map(c=>`<button type="button" class="family-cheer-comment-btn ${current&&current.comment===c?'is-selected':''}" data-cheer-comment="${escapeHtml(c)}">${escapeHtml(c)}</button>`).join('')}</div>
+      <div class="family-cheer-comments">${familyCommentPresetsFor(isDone).map(c=>`<button type="button" class="family-cheer-comment-btn ${current&&current.comment===c?'is-selected':''}" data-cheer-comment="${escapeHtml(c)}">${escapeHtml(c)}</button>`).join('')}</div>
       <input type="text" class="family-cheer-free-comment" maxlength="50" placeholder="自由コメント（任意・50文字まで）" value="${escapeHtml(current&&!FAMILY_COMMENT_PRESETS.includes(current.comment)?current.comment||'':'')}">
       <div class="family-cheer-actions">
        <button type="button" class="family-cheer-send-btn" data-cheer-send="${childId}" data-cheer-key="${escapeHtml(rKey)}" data-cheer-panel="fam-cheer-${childId}-${i}">送信</button>
        ${current?`<button type="button" class="family-cheer-remove-btn" data-cheer-remove="${childId}" data-cheer-key="${escapeHtml(rKey)}">取り消す</button>`:''}
       </div>
-     </div>`:'';
+     </div>`;
      return `<div class="family-activity-row"><b>${t[0]||'--:--'} ${escapeHtml(t[1])}</b><span>${escapeHtml(t[2]||'')}${pageText?'／'+escapeHtml(pageText):''}</span><small>完了：${isDone?'済み':'未'}${meta.updatedAt?'／更新：'+new Date(meta.updatedAt).toLocaleString('ja-JP'):''}</small>${cheerBtn}${cheerPanel}</div>`;
     }).join('')
    :'<p class="family-activity-empty">今日の計画はまだありません。</p>';
