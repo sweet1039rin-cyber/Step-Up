@@ -38,24 +38,29 @@ details.answers .answers-body{padding:6px 18px 20px}
 footer{margin-top:10px}
 @media (max-width:600px){body{font-size:17px}.wrap{padding:14px 12px 48px}h1{font-size:1.35rem}h2{font-size:1.18rem}}
 </style>
+<style>
+.qcard{border:2px solid var(--line);border-radius:14px;padding:16px 18px;margin:1.2em 0;background:#fff}
+.qhead{margin:.1em 0 .5em}
+.qsec{display:inline-block;font-size:.8rem;color:var(--navy);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:2px 10px;margin-left:.4em;vertical-align:middle}
+details.qans{margin:.9em 0 .4em;border:2px solid var(--navy);border-radius:10px;overflow:hidden;background:#fff}
+details.qans>summary{cursor:pointer;list-style:none;background:var(--soft);color:var(--navy);font-weight:700;padding:10px 14px;-webkit-tap-highlight-color:transparent}
+details.qans>summary::-webkit-details-marker{display:none}
+details.qans>summary::after{content:" ▼"}
+details.qans[open ]>summary::after{content:" ▲"}
+.qans-body{padding:4px 14px 12px}
+.qchk{display:inline-flex;align-items:center;gap:6px;margin-top:.6em;border:2px solid #c2255c;border-radius:999px;padding:7px 14px;font-size:.95rem;color:#c2255c;font-weight:700;cursor:pointer;background:#fff5f8}
+.qchk input{width:20px;height:20px;accent-color:#c2255c}
+</style>
 </head>
 <body>
 <div class="wrap">
 <p class="toplink"><a href="sakuya.html">← 教材トップへ戻る</a></p>
 <h1>中1美術 予想問題｜期末テスト正式範囲</h1>
 <p>※期末テスト対策の問題です。範囲は、美術資料P3〜6「色の整理」、P114〜115「光に色をみつけた」、手のデッサンです。間違えたところは「まちがい記録」に残して復習しましょう。</p>
+<blockquote><p>🔀 <strong>ランダム出題</strong>：このページは全18問の問題バンクから、開くたびに15問をランダムに選んで出しています。ページを開き直すと、別の問題・別の順番になります。まず自分で考えてから「答えを見る」を開きましょう。間違えた問題は「まちがえた」にチェックして、下の「記録する」を押してください。</p></blockquote>
 <hr />
-<h1>問題編</h1>
-<h2>A 色の整理</h2>
-<p><strong>問1</strong> 色の三属性を3つ答えなさい。</p>
-<p><strong>問2</strong> 色相環で向かい合う位置にある色の組み合わせを何というか。また、その組み合わせの効果を答えなさい。</p>
-<p><strong>問3</strong> 白・灰色・黒をまとめて何色というか。また、その理由を答えなさい。</p>
-<p><strong>問4</strong> 同じ赤でも、鮮やかな赤とくすんだ赤がある。この違いは三属性のどれによるものか。</p>
-<p><strong>問5</strong> 配色を落ち着いた印象にしたいとき、色相環の位置関係でいうとどのような色の組み合わせが向いているか。</p>
-<p><strong>問6</strong> トーンとは何を組み合わせたものか答えなさい。</p>
-<h2>B 光に色をみつけた</h2>
-<p><strong>問7</strong> 印象派の画家たちは、なぜ戸外で描くことを大切にしたのか答えなさい。</p>
-<p><strong>問8</strong> 筆触分割とはどのような技法か答えなさい。</p>
+<h2>問題（ランダム15問）</h2>
+<div id="quizArea"></div>
 <h2>C 手のデッサン（実技チェック）</h2>
 <p>手のデッサンは実技です。描く前に・描きながら、次の点を確認しましょう。</p>
 <ul>
@@ -66,31 +71,8 @@ footer{margin-top:10px}
 <li>□ つめ・しわ・骨の出っぱりなど、細部の特徴を観察して描き分けているか</li>
 <li>□ 影の部分にも濃淡の差をつけているか（全部同じ濃さで塗っていないか）</li>
 </ul>
-<hr />
-<details class="answers"><summary>答えを見る（解答・解説）</summary><div class="answers-body">
-<h1>解答・解説編</h1>
-<h2>Aの解答</h2>
-<p><strong>問1</strong> <strong>色相、明度、彩度</strong><br />
-色は「どんな色合いか（色相）」「明るさ（明度）」「鮮やかさ（彩度）」の3つの性質で表すことができる。</p>
-<p><strong>問2</strong> <strong>補色。互いの色を鮮やかに引き立て合う効果がある</strong><br />
-補色同士を並べると対比が強くなり、両方の色が目立って見える。</p>
-<p><strong>問3</strong> <strong>無彩色。色相と彩度をもたず、明度だけで表されるから</strong><br />
-無彩色に対して、色相をもつ色は有彩色という。</p>
-<p><strong>問4</strong> <strong>彩度</strong><br />
-彩度が高いほど鮮やかで、低いほど灰色みを帯びてくすんだ色になる。</p>
-<p><strong>問5</strong> <strong>色相環で近くにある類似色の組み合わせ</strong><br />
-類似色は色合いの差が小さいため対比が弱く、調和して落ち着いた印象になる。</p>
-<p><strong>問6</strong> <strong>明度と彩度</strong><br />
-トーンは色の調子を表す考え方で、同じ色相でもトーンを変えると作品の印象が大きく変わる。</p>
-<h2>Bの解答</h2>
-<p><strong>問7</strong> <strong>太陽の光の下で刻々と変わる風景の色や空気の様子を、その場でとらえるため</strong><br />
-印象派はアトリエで仕上げる従来の描き方から離れ、屋外の光の変化そのものを主題にした。</p>
-<p><strong>問8</strong> <strong>混色せずに純色に近い色を小さなタッチで並べ、離れて見たときに目の中で色が混ざって見えるようにする技法</strong><br />
-パレットで混ぜるより色が濁りにくく、光のきらめきのような効果が得られる。</p>
 <h2>手のデッサンの解説</h2>
 <p>デッサンは「上手に描く」前に「よく見る」ことが大切。形の割合と光の向きを先に決めると、全体が整いやすい。</p>
-</div></details>
-
 <style>
 .mpanel{margin:2em 0 1em;border:3px solid #c2255c;border-radius:14px;padding:18px;background:#fff5f8}
 .mpanel h2{border:none;background:none;margin:.1em 0 .4em;padding:0;font-size:1.25rem;color:#c2255c}
@@ -102,18 +84,33 @@ footer{margin-top:10px}
 .mbtn{display:inline-block;background:#c2255c;color:#fff;font-weight:700;border:none;border-radius:999px;padding:14px 26px;font-size:1.05rem;cursor:pointer}
 .mmsg{font-weight:700;color:#c2255c;margin-top:.6em}
 </style>
-
 <section class="mpanel" id="mistakePanel">
 <h2>✍️ まちがい記録</h2>
-<p>まちがえた問題にチェックを入れて「記録する」を押すと、まちがい復習ボックスに残ります。あとで復習ページに出てきます。</p>
+<p>まちがえた問題の「まちがえた」チェック（または下の番号）にチェックを入れて「記録する」を押すと、まちがい復習ボックスに残ります。あとで復習ページに出てきます。</p>
 <div class="mgrid" id="mpGrid"></div>
 <button type="button" class="mbtn" id="mpSave">記録する</button>
 <p class="mmsg" id="mpMsg"></p>
 </section>
 <script>
-(function(){
-var MPAGE="quiz_chu1_finals_art.html", MTITLE="中1美術 予想問題｜期末テスト正式範囲", MCHILD="sakuya", MN=8;
+var BANK = [{"id": 1, "sec": "A 色の整理", "q": "色の三属性を3つ答えなさい。", "a": "<strong>色相、明度、彩度<\/strong><br />\n色は「どんな色合いか（色相）」「明るさ（明度）」「鮮やかさ（彩度）」の3つの性質で表すことができる。"}, {"id": 2, "sec": "A 色の整理", "q": "色相環で向かい合う位置にある色の組み合わせを何というか。また、その組み合わせの効果を答えなさい。", "a": "<strong>補色。互いの色を鮮やかに引き立て合う効果がある<\/strong><br />\n補色同士を並べると対比が強くなり、両方の色が目立って見える。"}, {"id": 3, "sec": "A 色の整理", "q": "白・灰色・黒をまとめて何色というか。また、その理由を答えなさい。", "a": "<strong>無彩色。色相と彩度をもたず、明度だけで表されるから<\/strong><br />\n無彩色に対して、色相をもつ色は有彩色という。"}, {"id": 4, "sec": "A 色の整理", "q": "同じ赤でも、鮮やかな赤とくすんだ赤がある。この違いは三属性のどれによるものか。", "a": "<strong>彩度<\/strong><br />\n彩度が高いほど鮮やかで、低いほど灰色みを帯びてくすんだ色になる。"}, {"id": 5, "sec": "A 色の整理", "q": "配色を落ち着いた印象にしたいとき、色相環の位置関係でいうとどのような色の組み合わせが向いているか。", "a": "<strong>色相環で近くにある類似色の組み合わせ<\/strong><br />\n類似色は色合いの差が小さいため対比が弱く、調和して落ち着いた印象になる。"}, {"id": 6, "sec": "A 色の整理", "q": "トーンとは何を組み合わせたものか答えなさい。", "a": "<strong>明度と彩度<\/strong><br />\nトーンは色の調子を表す考え方で、同じ色相でもトーンを変えると作品の印象が大きく変わる。"}, {"id": 7, "sec": "B 光に色をみつけた", "q": "印象派の画家たちは、なぜ戸外で描くことを大切にしたのか答えなさい。", "a": "<strong>太陽の光の下で刻々と変わる風景の色や空気の様子を、その場でとらえるため<\/strong><br />\n印象派はアトリエで仕上げる従来の描き方から離れ、屋外の光の変化そのものを主題にした。"}, {"id": 8, "sec": "B 光に色をみつけた", "q": "筆触分割とはどのような技法か答えなさい。", "a": "<strong>混色せずに純色に近い色を小さなタッチで並べ、離れて見たときに目の中で色が混ざって見えるようにする技法<\/strong><br />\nパレットで混ぜるより色が濁りにくく、光のきらめきのような効果が得られる。"}, {"id": 9, "sec": "A 色の整理", "q": "色の明度とは何か答えなさい。また、明度が最も高い色と最も低い色は、それぞれ何色か答えなさい。", "a": "<strong>明度は色の明るさのこと。最も高いのは白、最も低いのは黒<\/strong><br />\n明度は無彩色にも有彩色にもある性質で、白に近いほど高く、黒に近いほど低くなります。"}, {"id": 10, "sec": "A 色の整理", "q": "色相環で、赤と向かい合う位置にある補色は何色か答えなさい。", "a": "<strong>青緑<\/strong><br />\n補色は色相環の正反対の位置にある色同士です。赤の補色は青緑で、並べると互いを鮮やかに見せます。"}, {"id": 11, "sec": "A 色の整理", "q": "暖色と寒色とは、どのような色のことか。それぞれ例を1つずつ挙げて答えなさい。", "a": "<strong>暖色は暖かく感じる色（例：赤、橙、黄など）、寒色は冷たく感じる色（例：青、青緑、青紫など）<\/strong><br />\n色には温度を感じさせる働きがあります。緑や紫は、どちらにも偏らない中性色とされます。"}, {"id": 12, "sec": "A 色の整理", "q": "同じ灰色の紙を、白い紙の上に置いたときと、黒い紙の上に置いたときとでは、灰色の見え方はどう変わるか答えなさい。", "a": "<strong>白い紙の上では暗く見え、黒い紙の上では明るく見える<\/strong><br />\nまわりの色との明度の対比によって、同じ色でも明るさが違って見える現象です（明度対比）。"}, {"id": 13, "sec": "A 色の整理", "q": "色相の違う色同士でも、トーンをそろえて配色すると、全体はどのような印象になるか答えなさい。", "a": "<strong>明度や彩度が近いので、統一感のある、まとまった印象になる<\/strong><br />\nトーンをそろえることは、色数が多い配色をまとめるための大切な考え方です。"}, {"id": 14, "sec": "A 色の整理", "q": "絵の具の赤と青を混ぜると、何色になるか答えなさい。", "a": "<strong>紫<\/strong><br />\n色相環では、赤と青の間に紫が位置しています。混ぜる量によって、赤紫や青紫にもなります。"}, {"id": 15, "sec": "B 光に色をみつけた", "q": "「印象派」という呼び名のもとになった作品と、その作者を答えなさい。", "a": "<strong>モネの「印象・日の出」<\/strong><br />\nモネの作品の題名から「印象派」という呼び名が生まれました。印象派を代表する画家の一人です。"}, {"id": 16, "sec": "B 光に色をみつけた", "q": "印象派の画家たちは、物の影の部分を、黒や茶色ではなく何色を使って表すことが多かったか答えなさい。", "a": "<strong>青や紫などの色<\/strong><br />\n戸外の光を観察すると、影にも空の色などが映り込んで見えます。印象派は影を色で表しました。"}, {"id": 17, "sec": "B 光に色をみつけた", "q": "同じ風景でも、朝と夕方とでは色が違って見えるのはなぜか答えなさい。", "a": "<strong>太陽の光の色や強さ、当たる角度が時刻によって変わるため<\/strong><br />\n印象派の画家たちは、移り変わる光の色そのものを描こうとしました。"}, {"id": 18, "sec": "B 光に色をみつけた", "q": "印象派の画家たちが戸外で描けるようになった背景として、絵の具にどのような改良があったか答えなさい。", "a": "<strong>金属製のチューブ入りの絵の具ができ、持ち運びしやすくなった<\/strong><br />\n道具の改良が、戸外でその場の光を描く制作の仕方を後押ししました。"}];
+var MPAGE="quiz_chu1_finals_art.html", MTITLE="中1美術 予想問題｜期末テスト正式範囲", MCHILD="sakuya", MN=BANK.length;
 var KEY='stepup-mistakes-'+MCHILD;
+var SHOW=Math.min(15, BANK.length);
+(function(){
+var order=BANK.map(function(_,i){return i;});
+for(var i=order.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=order[i];order[i]=order[j];order[j]=t;}
+var DISPLAY=order.slice(0,SHOW).map(function(i){return BANK[i];});
+var area=document.getElementById('quizArea');
+var html='';
+DISPLAY.forEach(function(item,idx){
+  html+='<section class="qcard">'
+    +'<p class="qhead"><strong>問'+(idx+1)+'</strong><span class="qsec">'+item.sec+'</span></p>'
+    +'<div class="qbody">'+item.q+'</div>'
+    +'<details class="qans"><summary>答えを見る</summary><div class="qans-body">'+item.a+'</div></details>'
+    +'<label class="qchk"><input type="checkbox" class="mchk" data-qid="'+item.id+'"> まちがえた</label>'
+    +'</section>';
+});
+area.innerHTML=html;
 function todayStr(){var d=new Date();var m=('0'+(d.getMonth()+1)).slice(-2);var day=('0'+d.getDate()).slice(-2);return d.getFullYear()+'-'+m+'-'+day;}
 function load(){try{var v=JSON.parse(localStorage.getItem(KEY));return Array.isArray(v)?v:[];}catch(e){return[];}}
 function saveAll(a){localStorage.setItem(KEY,JSON.stringify(a));}
@@ -121,18 +118,26 @@ function findIdx(a,q){for(var i=0;i<a.length;i++){if(a[i].page===MPAGE&&a[i].q==
 var grid=document.getElementById('mpGrid');
 function render(){
   var a=load();grid.innerHTML='';
-  for(var q=1;q<=MN;q++){
-    (function(q){
-      var idx=findIdx(a,q);
-      var lab=document.createElement('label');
-      var cb=document.createElement('input');cb.type='checkbox';cb.value=q;
-      lab.appendChild(cb);
-      lab.appendChild(document.createTextNode('問'+q));
-      if(idx>=0){var s=document.createElement('span');s.className='rec';s.textContent='記録済み×'+a[idx].count;lab.appendChild(s);}
-      grid.appendChild(lab);
-    })(q);
-  }
+  DISPLAY.forEach(function(item,idx){
+    var rec=findIdx(a,item.id);
+    var lab=document.createElement('label');
+    var cb=document.createElement('input');cb.type='checkbox';cb.value=item.id;cb.className='gchk';cb.setAttribute('data-qid',item.id);
+    var card=area.querySelector('.mchk[data-qid="'+item.id+'"]');
+    if(card&&card.checked)cb.checked=true;
+    lab.appendChild(cb);
+    lab.appendChild(document.createTextNode('問'+(idx+1)));
+    if(rec>=0){var s=document.createElement('span');s.className='rec';s.textContent='記録済み×'+a[rec].count;lab.appendChild(s);}
+    grid.appendChild(lab);
+  });
 }
+document.addEventListener('change',function(e){
+  var t=e.target;
+  if(t&&t.getAttribute&&t.getAttribute('data-qid')){
+    var qid=t.getAttribute('data-qid');
+    var boxes=document.querySelectorAll('[data-qid="'+qid+'"]');
+    for(var i=0;i<boxes.length;i++){boxes[i].checked=t.checked;}
+  }
+});
 document.getElementById('mpSave').addEventListener('click',function(){
   var cbs=grid.querySelectorAll('input[type=checkbox]:checked');
   var msg=document.getElementById('mpMsg');
@@ -143,7 +148,10 @@ document.getElementById('mpSave').addEventListener('click',function(){
     if(idx>=0){a[idx].count+=1;a[idx].last=t;}
     else{a.push({page:MPAGE,title:MTITLE,q:q,count:1,first:t,last:t});}
   }
-  saveAll(a);render();
+  saveAll(a);
+  var all=document.querySelectorAll('[data-qid]');
+  for(var k=0;k<all.length;k++){all[k].checked=false;}
+  render();
   msg.textContent=cbs.length+'件を記録しました。まちがい復習ページで待っています。';
 });
 render();
