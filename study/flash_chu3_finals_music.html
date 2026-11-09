@@ -1,0 +1,443 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>中3音楽 暗記カード｜期末テスト正式範囲（音楽の約束・鑑賞）｜Step Up テスト対策</title>
+<style>
+:root{--ink:#1c2733;--accent:#ff6b9d;--navy:#1a1a5e;--line:#d9e2ec;--soft:#f4f7fb}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:var(--ink);
+ font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP","Yu Gothic",sans-serif;
+ font-size:18px;line-height:1.85;-webkit-text-size-adjust:100%}
+.wrap{max-width:880px;margin:0 auto;padding:20px 18px 56px}
+h1{font-size:1.55rem;line-height:1.45;border-bottom:4px solid var(--accent);padding-bottom:.35em;margin:.4em 0 .8em}
+p{margin:.6em 0}
+.backlink{display:inline-block;margin-top:28px;background:var(--accent);color:#fff;font-weight:700;
+ text-decoration:none;padding:14px 22px;border-radius:999px;font-size:1.05rem}
+.toplink{font-size:.95rem;margin-bottom:4px}
+.toplink a{color:var(--navy)}
+footer{margin-top:10px}
+@media (max-width:600px){body{font-size:17px}.wrap{padding:14px 12px 48px}h1{font-size:1.35rem}}
+.progress-text{font-weight:700;margin:16px 0 6px;font-size:1.1rem}
+.progress-bar{height:16px;background:var(--soft);border:2px solid var(--line);border-radius:999px;overflow:hidden}
+.progress-fill{height:100%;background:var(--accent);width:0;transition:width .3s}
+.card-scene{perspective:1200px;margin:20px 0 6px}
+.fcard{position:relative;width:100%;height:400px;cursor:pointer;transform-style:preserve-3d;transition:transform .45s;-webkit-tap-highlight-color:transparent}
+.fcard.flipped{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+ border:3px solid var(--navy);border-radius:18px;padding:24px 18px;overflow:hidden;
+ display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:#fff}
+.face.back{transform:rotateY(180deg);background:var(--soft);border-color:var(--accent)}
+.face-label{font-size:.85rem;font-weight:700;color:var(--accent);letter-spacing:.2em;margin-bottom:12px}
+.face-label.ans{color:var(--navy)}
+.face-text{font-size:1.3rem;font-weight:700;line-height:1.65}
+.face-note{margin-top:14px;font-size:.98rem;color:#54677a;line-height:1.65}
+.tap-hint{margin-top:16px;font-size:.9rem;color:#8a97a5}
+.judge{display:flex;gap:12px;margin-top:16px}
+.jbtn{flex:1;font-family:inherit;font-size:1.25rem;font-weight:700;padding:18px 10px;border-radius:14px;
+ border:3px solid var(--navy);background:#fff;color:var(--navy);cursor:pointer;min-height:64px}
+.jbtn.known{background:var(--accent);border-color:var(--accent);color:#fff}
+.jbtn:active{transform:scale(.98)}
+.round-info{text-align:center;color:#54677a;font-size:.95rem;margin-top:12px}
+.done-box{border:3px solid var(--accent);border-radius:18px;padding:32px 20px;text-align:center;background:#fff5f8;margin-top:22px}
+.done-title{font-size:1.5rem;font-weight:700;color:#c2255c;margin:.2em 0}
+.restart{max-width:340px;margin:16px auto 0;display:block;width:100%}
+</style>
+</head>
+<body>
+<div class="wrap">
+<p class="toplink"><a href="iori.html">← 中3トップへ戻る</a></p>
+<h1>中3音楽 暗記カード｜期末テスト正式範囲（音楽の約束・鑑賞）</h1>
+<p>カードをタップすると答えが見えます。答えを見たら「覚えた」「まだ」で教えてください。「まだ」のカードだけが次の周に出てきます。</p>
+<div class="progress-text" id="progressText"></div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+<div id="playArea">
+<div class="card-scene"><div class="fcard" id="fcard">
+<div class="face front"><div class="face-label">も　ん　だ　い</div><div class="face-text" id="frontText"></div><div class="tap-hint">タップで答えを見る</div></div>
+<div class="face back"><div class="face-label ans">こ　た　え</div><div class="face-text" id="backText"></div><div class="face-note" id="backNote"></div></div>
+</div></div>
+<div class="judge" id="judgeBtns" style="visibility:hidden">
+<button class="jbtn still" id="btnStill" type="button">まだ</button>
+<button class="jbtn known" id="btnKnown" type="button">覚えた</button>
+</div>
+<p class="round-info" id="roundInfo"></p>
+</div>
+<div id="doneArea" style="display:none">
+<div class="done-box"><p class="done-title">🎉 全部おぼえた！</p><p id="doneText"></p>
+<button class="jbtn known restart" id="btnRestart" type="button">最初からもう一度</button></div>
+</div>
+<footer><a class="backlink" href="iori.html">← 中3トップへ戻る</a> <a class="backlink" href="../index.html" style="background:#1a1a5e">🏠 アプリへ戻る</a></footer>
+</div>
+<script>
+var CARDS = [
+ {
+  "q": "音符の長さで、全音符は何拍分か（4分の4拍子で）",
+  "a": "4拍分",
+  "n": ""
+ },
+ {
+  "q": "2分音符、4分音符、8分音符の長さの関係",
+  "a": "2分音符＝2拍、4分音符＝1拍、8分音符＝半拍（4分の4拍子・4分音符を1拍とした場合）",
+  "n": ""
+ },
+ {
+  "q": "付点音符の「付点」は音の長さをどう変えるか",
+  "a": "もとの音符の長さの半分を加える（付点4分音符＝1.5拍)",
+  "n": ""
+ },
+ {
+  "q": "休符とは何か",
+  "a": "音を出さない時間を表す記号",
+  "n": ""
+ },
+ {
+  "q": "音をだんだん強くする記号・用語",
+  "a": "クレシェンド（cresc.）。記号は「＜」のように開く形",
+  "n": ""
+ },
+ {
+  "q": "音をだんだん弱くする記号・用語",
+  "a": "デクレシェンド（デクレッシェンド、decresc.）またはディミヌエンド（dim.)",
+  "n": ""
+ },
+ {
+  "q": "「フォルテ（f）」の意味",
+  "a": "強く",
+  "n": ""
+ },
+ {
+  "q": "「ピアノ（p）」の意味",
+  "a": "弱く",
+  "n": ""
+ },
+ {
+  "q": "「メッゾフォルテ（mf）」と「メッゾピアノ（mp）」の意味",
+  "a": "mf：やや強く／mp：やや弱く",
+  "n": ""
+ },
+ {
+  "q": "「フォルティシモ（ff）」と「ピアニシモ（pp）」の意味",
+  "a": "ff：とても強く／pp：とても弱く",
+  "n": ""
+ },
+ {
+  "q": "速度を表す言葉「アレグロ」の意味",
+  "a": "速く、明るく",
+  "n": ""
+ },
+ {
+  "q": "速度を表す言葉「アンダンテ」の意味",
+  "a": "歩くような速さで",
+  "n": ""
+ },
+ {
+  "q": "速度を表す言葉「モデラート」の意味",
+  "a": "中くらいの速さで",
+  "n": ""
+ },
+ {
+  "q": "もとの速さに戻ることを表す言葉（ア・テンポ）",
+  "a": "a tempo（ア テンポ）",
+  "n": ""
+ },
+ {
+  "q": "曲の終わりなどで、少しずつ遅くすることを表す言葉",
+  "a": "リタルダンド（rit.）",
+  "n": ""
+ },
+ {
+  "q": "音を短く切って演奏する記号を何というか",
+  "a": "スタッカート（音符につける点）",
+  "n": ""
+ },
+ {
+  "q": "2つの音をなめらかにつなげて演奏する記号を何というか",
+  "a": "スラー（弧線の記号）",
+  "n": ""
+ },
+ {
+  "q": "同じ高さの2つの音符をつなぎ、長さを合計して演奏する記号は",
+  "a": "タイ",
+  "n": ""
+ },
+ {
+  "q": "音を十分に延ばして止める記号（フェルマータ）は何を表すか",
+  "a": "その音（や休符）を適宜に延ばすこと",
+  "n": ""
+ },
+ {
+  "q": "1小節を区切る縦線と、曲の終わりを示す終止線の違い",
+  "a": "小節線は1本の縦線。終止線は細い線と太い線の組み合わせで曲の終わりを示す",
+  "n": ""
+ },
+ {
+  "q": "拍子記号「4分の3拍子（3/4）」の意味",
+  "a": "1小節に4分音符が3つ分入る拍子",
+  "n": ""
+ },
+ {
+  "q": "ト音記号はどの音の位置を決める記号か",
+  "a": "第2線の「ソ」の音の位置を決める記号",
+  "n": ""
+ },
+ {
+  "q": "ヘ音記号はどの音の位置を決める記号か",
+  "a": "第4線の「ファ」の音の位置を決める記号",
+  "n": ""
+ },
+ {
+  "q": "シャープ（♯）とフラット（♭）は、音の高さをどう変えるか",
+  "a": "♯：半音上げる／♭：半音下げる",
+  "n": ""
+ },
+ {
+  "q": "シャープやフラットを打ち消して元の音に戻す記号は",
+  "a": "ナチュラル（♮）",
+  "n": ""
+ },
+ {
+  "q": "楽譜の左端に書かれ、曲の調を決めるシャープやフラットの集まりを何というか",
+  "a": "調号",
+  "n": ""
+ },
+ {
+  "q": "「アクセント（＞）」の意味",
+  "a": "その音を特に強く演奏する",
+  "n": ""
+ },
+ {
+  "q": "なめらかに、歌うように演奏することを表す言葉",
+  "a": "レガート",
+  "n": ""
+ },
+ {
+  "q": "自分の学級の合唱コンクール曲の曲名は",
+  "a": "（自分のクラスの曲名を書き込む）",
+  "n": ""
+ },
+ {
+  "q": "その曲の作詞者は誰か",
+  "a": "（楽譜・プリントで確認して書き込む）",
+  "n": ""
+ },
+ {
+  "q": "その曲の作曲者は誰か",
+  "a": "（楽譜・プリントで確認して書き込む）",
+  "n": ""
+ },
+ {
+  "q": "その曲の拍子は何分の何拍子か",
+  "a": "（楽譜の拍子記号を確認。よくあるのは4分の4拍子や4分の3拍子）",
+  "n": ""
+ },
+ {
+  "q": "その曲で、最も強く（f）歌う部分と、最も弱く（p）歌う部分はどこか",
+  "a": "（楽譜の強弱記号を確認。サビやクライマックスで強くなることが多い）",
+  "n": ""
+ },
+ {
+  "q": "合唱のパートの種類を4つ答えなさい",
+  "a": "ソプラノ、アルト、テノール、バス（混声四部合唱の場合）",
+  "n": ""
+ },
+ {
+  "q": "女声の高いパートと低いパートを何というか",
+  "a": "高い方：ソプラノ／低い方：アルト",
+  "n": ""
+ },
+ {
+  "q": "男声の高いパートと低いパートを何というか",
+  "a": "高い方：テノール／低い方：バス",
+  "n": ""
+ },
+ {
+  "q": "「きらきら星」は、どこの国の民謡をもとにした曲か",
+  "a": "フランスの民謡",
+  "n": ""
+ },
+ {
+  "q": "「きらきら星」の原題・もとの歌について答えなさい",
+  "a": "フランス民謡。母親をテーマにした歌がもとで、後に星の歌として親しまれた変奏曲も有名",
+  "n": ""
+ },
+ {
+  "q": "アルトリコーダーは、ソプラノリコーダーと比べてどのような楽器か",
+  "a": "一回り大きく、音が低い。基準の音が「ファ（F）」で、ヘ長調の曲が演奏しやすい",
+  "n": ""
+ },
+ {
+  "q": "リコーダーの属する楽器の分類は",
+  "a": "気鳴楽器（リードのない縦笛。管楽器の一種）",
+  "n": ""
+ },
+ {
+  "q": "アルトリコーダーでタンギングをするときの発音は",
+  "a": "「トゥ」や「ドゥ」と舌を使って音の立ち上がりをはっきりさせる",
+  "n": ""
+ },
+ {
+  "q": "「ブルタバ」の作曲者は誰か（カタカナで）",
+  "a": "スメタナ（ベドジフ・スメタナ）",
+  "n": ""
+ },
+ {
+  "q": "「ブルタバ」は、どの連作交響詩の第2曲か",
+  "a": "連作交響詩『我が祖国（マ・ヴラスト）』の第2曲",
+  "n": ""
+ },
+ {
+  "q": "スメタナはどこの国の作曲家か",
+  "a": "チェコ（ボヘミア）出身",
+  "n": ""
+ },
+ {
+  "q": "「ブルタバ（モルダウ）」は、何を音楽で表した曲か",
+  "a": "ブルタバ川（モルダウ川）の源流から、森や村、プラハの町を通って大河へ注ぐまでの流れ",
+  "n": ""
+ },
+ {
+  "q": "川の流れを表す主な旋律は、主にどの楽器で演奏されるか",
+  "a": "弦楽器（バイオリンなど）の流れるような旋律と、フルートの源流の表現が特徴",
+  "n": ""
+ },
+ {
+  "q": "作曲された時代背景として、スメタナの音楽の特徴は何か",
+  "a": "チェコの国民楽派の代表で、自国の自然や歴史を音楽で表し、民族の誇りを育てた",
+  "n": ""
+ },
+ {
+  "q": "標題音楽とは何か",
+  "a": "風景や物語など、音楽以外の題材をもとに、その内容を表そうとする音楽",
+  "n": ""
+ },
+ {
+  "q": "「ボレロ」の作曲者は誰か",
+  "a": "ラヴェル（モーリス・ラヴェル、フランスの作曲家）",
+  "n": ""
+ },
+ {
+  "q": "「ボレロ」の最大の特徴を答えなさい",
+  "a": "同じリズムと旋律が繰り返される中で、楽器が次々に加わり、少しずつ強く（クレシェンド）なっていく",
+  "n": ""
+ },
+ {
+  "q": "「ボレロ」のリズムを、最初から最後まで刻み続ける楽器は何か",
+  "a": "小太鼓（スネアドラム）",
+  "n": ""
+ },
+ {
+  "q": "「ボレロ」の2小節のリズムパターンの特徴は",
+  "a": "3連符を含む特徴的なリズムを、2小節のまとまりで繰り返す",
+  "n": ""
+ },
+ {
+  "q": "「ボレロ」はもともと何のために作曲された曲か",
+  "a": "バレエ（舞踊）のための音楽",
+  "n": ""
+ },
+ {
+  "q": "ブルタバ川が流れる町（首都）はどこか",
+  "a": "プラハ（チェコの首都）",
+  "n": ""
+ }
+];
+var total = CARDS.length;
+var knownCount = 0;
+var deck = [];
+var pos = 0;
+var flipped = false;
+var round = 1;
+function el(id){ return document.getElementById(id); }
+function shuffle(a){ for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+function updateProgress(){
+  el('progressText').textContent = '覚えた ' + knownCount + ' / ' + total + ' 枚';
+  el('progressFill').style.width = (total ? (knownCount/total*100) : 0) + '%';
+}
+function updateRoundInfo(){
+  el('roundInfo').textContent = '第' + round + '周目｜この周はあと ' + (deck.length - pos) + ' 枚';
+}
+function showCard(){
+  flipped = false;
+  el('fcard').classList.remove('flipped');
+  var c = CARDS[deck[pos]];
+  el('frontText').textContent = c.q;
+  el('backText').textContent = c.a;
+  el('backNote').textContent = c.n || '';
+  el('judgeBtns').style.visibility = 'hidden';
+  updateRoundInfo();
+}
+function startRound(){ shuffle(deck); pos = 0; showCard(); }
+function init(){
+  knownCount = 0; round = 1;
+  deck = CARDS.map(function(_, i){ return i; });
+  el('doneArea').style.display = 'none';
+  el('playArea').style.display = 'block';
+  updateProgress();
+  startRound();
+}
+function finish(){
+  coinAward(10,'暗記カード1周','flash:flash_chu1_finals_math',1);
+  el('playArea').style.display = 'none';
+  el('doneArea').style.display = 'block';
+  el('doneText').textContent = '全' + total + '枚のカードを全部おぼえました。おつかれさま！';
+}
+function judge(known){
+  if(!flipped) return;
+  if(known){ knownCount++; deck.splice(pos, 1); coinAward(1,'暗記カード','flashcard-each',20); }
+  else { pos++; }
+  updateProgress();
+  if(pos >= deck.length){
+    if(deck.length === 0){ finish(); return; }
+    round++; startRound(); return;
+  }
+  showCard();
+}
+el('fcard').addEventListener('click', function(){
+  if(flipped) return;
+  flipped = true;
+  this.classList.add('flipped');
+  el('judgeBtns').style.visibility = 'visible';
+});
+el('btnKnown').addEventListener('click', function(){ judge(true); });
+el('btnStill').addEventListener('click', function(){ judge(false); });
+el('btnRestart').addEventListener('click', init);
+init();
+function todayStr(d){d=d||new Date();var m=('0'+(d.getMonth()+1)).slice(-2);var day=('0'+d.getDate()).slice(-2);return d.getFullYear()+'-'+m+'-'+day;}
+/* ==== ご褒美コイン ==== */
+var COIN_CHILD='iori';
+var COIN_KEY='stepup-coins-'+COIN_CHILD;
+var CLAIM_KEY='stepup-coinclaims-'+COIN_CHILD;
+function coinLoad(){try{var v=JSON.parse(localStorage.getItem(COIN_KEY));if(v&&typeof v.total==='number'&&Array.isArray(v.history))return v;}catch(e){}return{total:0,history:[]};}
+function coinClaimsLoad(){try{var v=JSON.parse(localStorage.getItem(CLAIM_KEY));if(v&&typeof v==='object'&&v!==null)return v;}catch(e){}return{};}
+function coinAward(amount,sourceLabel,claimId,dailyCap){
+  if(!amount||amount<=0)return 0;
+  if(dailyCap==null)dailyCap=1;
+  if(claimId){
+    var claims=coinClaimsLoad();
+    var ck=todayStr()+':'+claimId;
+    var n=claims[ck]||0;
+    if(n>=dailyCap)return 0;
+    claims[ck]=n+1;
+    try{localStorage.setItem(CLAIM_KEY,JSON.stringify(claims));}catch(e){}
+  }
+  var data=coinLoad();
+  data.total+=amount;
+  data.history.push({date:todayStr(),source:sourceLabel,amount:amount});
+  if(data.history.length>200)data.history=data.history.slice(data.history.length-200);
+  try{localStorage.setItem(COIN_KEY,JSON.stringify(data));}catch(e){}
+  coinToast(amount);
+  return amount;
+}
+function coinToast(amount){
+  var t=document.createElement('div');
+  t.textContent='🪙 +'+amount+'コイン！';
+  t.setAttribute('style','position:fixed;right:16px;bottom:16px;z-index:9999;background:#1a1a5e;color:#fff;font-weight:700;font-size:1.1rem;padding:12px 20px;border-radius:999px;box-shadow:0 4px 14px rgba(0,0,0,.25);opacity:0;transition:opacity .3s;pointer-events:none');
+  document.body.appendChild(t);
+  setTimeout(function(){t.style.opacity='1';},10);
+  setTimeout(function(){t.style.opacity='0';},1700);
+  setTimeout(function(){if(t.parentNode)t.parentNode.removeChild(t);},2200);
+}
+</script>
+</body>
+</html>

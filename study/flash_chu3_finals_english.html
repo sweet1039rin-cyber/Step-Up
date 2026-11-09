@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>中3英語 暗記カード｜期末テスト正式範囲（分詞・関係代名詞）｜Step Up テスト対策</title>
+<style>
+:root{--ink:#1c2733;--accent:#ff6b9d;--navy:#1a1a5e;--line:#d9e2ec;--soft:#f4f7fb}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:var(--ink);
+ font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP","Yu Gothic",sans-serif;
+ font-size:18px;line-height:1.85;-webkit-text-size-adjust:100%}
+.wrap{max-width:880px;margin:0 auto;padding:20px 18px 56px}
+h1{font-size:1.55rem;line-height:1.45;border-bottom:4px solid var(--accent);padding-bottom:.35em;margin:.4em 0 .8em}
+p{margin:.6em 0}
+.backlink{display:inline-block;margin-top:28px;background:var(--accent);color:#fff;font-weight:700;
+ text-decoration:none;padding:14px 22px;border-radius:999px;font-size:1.05rem}
+.toplink{font-size:.95rem;margin-bottom:4px}
+.toplink a{color:var(--navy)}
+footer{margin-top:10px}
+@media (max-width:600px){body{font-size:17px}.wrap{padding:14px 12px 48px}h1{font-size:1.35rem}}
+.progress-text{font-weight:700;margin:16px 0 6px;font-size:1.1rem}
+.progress-bar{height:16px;background:var(--soft);border:2px solid var(--line);border-radius:999px;overflow:hidden}
+.progress-fill{height:100%;background:var(--accent);width:0;transition:width .3s}
+.card-scene{perspective:1200px;margin:20px 0 6px}
+.fcard{position:relative;width:100%;height:400px;cursor:pointer;transform-style:preserve-3d;transition:transform .45s;-webkit-tap-highlight-color:transparent}
+.fcard.flipped{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+ border:3px solid var(--navy);border-radius:18px;padding:24px 18px;overflow:hidden;
+ display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:#fff}
+.face.back{transform:rotateY(180deg);background:var(--soft);border-color:var(--accent)}
+.face-label{font-size:.85rem;font-weight:700;color:var(--accent);letter-spacing:.2em;margin-bottom:12px}
+.face-label.ans{color:var(--navy)}
+.face-text{font-size:1.3rem;font-weight:700;line-height:1.65}
+.face-note{margin-top:14px;font-size:.98rem;color:#54677a;line-height:1.65}
+.tap-hint{margin-top:16px;font-size:.9rem;color:#8a97a5}
+.judge{display:flex;gap:12px;margin-top:16px}
+.jbtn{flex:1;font-family:inherit;font-size:1.25rem;font-weight:700;padding:18px 10px;border-radius:14px;
+ border:3px solid var(--navy);background:#fff;color:var(--navy);cursor:pointer;min-height:64px}
+.jbtn.known{background:var(--accent);border-color:var(--accent);color:#fff}
+.jbtn:active{transform:scale(.98)}
+.round-info{text-align:center;color:#54677a;font-size:.95rem;margin-top:12px}
+.done-box{border:3px solid var(--accent);border-radius:18px;padding:32px 20px;text-align:center;background:#fff5f8;margin-top:22px}
+.done-title{font-size:1.5rem;font-weight:700;color:#c2255c;margin:.2em 0}
+.restart{max-width:340px;margin:16px auto 0;display:block;width:100%}
+</style>
+</head>
+<body>
+<div class="wrap">
+<p class="toplink"><a href="iori.html">← 中3トップへ戻る</a></p>
+<h1>中3英語 暗記カード｜期末テスト正式範囲（分詞・関係代名詞）</h1>
+<p>カードをタップすると答えが見えます。答えを見たら「覚えた」「まだ」で教えてください。「まだ」のカードだけが次の周に出てきます。</p>
+<div class="progress-text" id="progressText"></div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+<div id="playArea">
+<div class="card-scene"><div class="fcard" id="fcard">
+<div class="face front"><div class="face-label">も　ん　だ　い</div><div class="face-text" id="frontText"></div><div class="tap-hint">タップで答えを見る</div></div>
+<div class="face back"><div class="face-label ans">こ　た　え</div><div class="face-text" id="backText"></div><div class="face-note" id="backNote"></div></div>
+</div></div>
+<div class="judge" id="judgeBtns" style="visibility:hidden">
+<button class="jbtn still" id="btnStill" type="button">まだ</button>
+<button class="jbtn known" id="btnKnown" type="button">覚えた</button>
+</div>
+<p class="round-info" id="roundInfo"></p>
+</div>
+<div id="doneArea" style="display:none">
+<div class="done-box"><p class="done-title">🎉 全部おぼえた！</p><p id="doneText"></p>
+<button class="jbtn known restart" id="btnRestart" type="button">最初からもう一度</button></div>
+</div>
+<footer><a class="backlink" href="iori.html">← 中3トップへ戻る</a> <a class="backlink" href="../index.html" style="background:#1a1a5e">🏠 アプリへ戻る</a></footer>
+</div>
+<script>
+var CARDS = [
+ {
+  "q": "be動詞と一般動詞の違いは何か",
+  "a": "be動詞は「〜です・〜にいる」、一般動詞は動作を表す。「is running」のように組み合わせても使う",
+  "n": ""
+ },
+ {
+  "q": "三単現のsとは何か",
+  "a": "主語が3人称単数（he・she・it・1人の名前など）で現在形のとき、一般動詞に s をつける決まり",
+  "n": ""
+ },
+ {
+  "q": "「彼はテニスが好きです」を英語にすると",
+  "a": "He likes tennis.（主語が He なので like に s がつく）",
+  "n": ""
+ },
+ {
+  "q": "一般動詞の過去形で、規則変化の語尾は何か",
+  "a": "-ed をつける。play→played、study→studied（yをiに変えるものもある）",
+  "n": ""
+ },
+ {
+  "q": "不規則動詞 go・see・have・buy の過去形",
+  "a": "go→went、see→saw、have→had、buy→bought",
+  "n": ""
+ },
+ {
+  "q": "不規則動詞 run・sing・write・take の過去形",
+  "a": "run→ran、sing→sang、write→wrote、take→took",
+  "n": ""
+ },
+ {
+  "q": "過去分詞とは何か（形の作り方）",
+  "a": "動詞の変化形の一つ。規則変化は過去形と同じ -ed、不規則変化は独自の形（seen、gone、written など）。受動態や現在完了、分詞の修飾で使う",
+  "n": ""
+ },
+ {
+  "q": "現在完了の形と基本の意味",
+  "a": "have（has）＋過去分詞。「〜してしまった・〜したことがある・ずっと〜している」などを表す",
+  "n": ""
+ },
+ {
+  "q": "「私はこの本を前に読んだことがあります」を英語にすると",
+  "a": "I have read this book before.",
+  "n": ""
+ },
+ {
+  "q": "受動態（受け身）の形",
+  "a": "be動詞＋過去分詞。「〜される・〜された」と訳す",
+  "n": ""
+ },
+ {
+  "q": "「この橋は50年前に造られました」を英語にすると",
+  "a": "This bridge was built fifty years ago.",
+  "n": ""
+ },
+ {
+  "q": "比較級と最上級の作り方（長い単語の場合）",
+  "a": "比較級は more ＋形容詞、最上級は the most ＋形容詞。短い単語は -er／the -est",
+  "n": ""
+ },
+ {
+  "q": "「〜しなければならない」を表す表現",
+  "a": "must ＋動詞の原形、または have to ＋動詞の原形",
+  "n": ""
+ },
+ {
+  "q": "「〜してはいけない」を表す表現",
+  "a": "must not（mustn't）の短縮形もある ＋動詞の原形／Don't ＋動詞の原形",
+  "n": ""
+ },
+ {
+  "q": "不定詞の3つの用法とは",
+  "a": "名詞的用法（〜すること）、形容詞的用法（〜すべき・〜するための）、副詞的用法（〜するために・〜して）",
+  "n": ""
+ },
+ {
+  "q": "「It is … for 人 to ～」の意味と形",
+  "a": "「（人）にとって〜することは…だ」。It is important for us to study.",
+  "n": ""
+ },
+ {
+  "q": "「want 人 to ～」の意味",
+  "a": "「（人）に〜してほしい」。I want you to help me.",
+  "n": ""
+ },
+ {
+  "q": "間接疑問文の語順の決まり",
+  "a": "疑問詞の後は「主語＋動詞」の普通の文の語順に戻す。I don't know where he lives.",
+  "n": ""
+ },
+ {
+  "q": "「〜の仕方」を表す表現",
+  "a": "how to ＋動詞の原形。I know how to swim.",
+  "n": ""
+ },
+ {
+  "q": "接続詞 when・if・because の役目",
+  "a": "文と文をつなぐ。when＝〜とき、if＝もし〜なら、because＝〜だから",
+  "n": ""
+ },
+ {
+  "q": "現在分詞（〜ing形）で名詞を説明するときの意味",
+  "a": "「（今）〜している」と能動の意味。the singing girl＝歌っている少女",
+  "n": ""
+ },
+ {
+  "q": "過去分詞で名詞を説明するときの意味",
+  "a": "「〜された・〜してある」と受け身の意味。a broken watch＝壊れた（壊された）時計",
+  "n": ""
+ },
+ {
+  "q": "分詞が1語のときは名詞の前・後ろのどちらに置くか",
+  "a": "名詞の前に置く。a running boy、a used car",
+  "n": ""
+ },
+ {
+  "q": "分詞が2語以上のかたまりになると、名詞の前・後ろのどちらに置くか",
+  "a": "名詞の後ろに置く（後置修飾）。the boy running in the park",
+  "n": ""
+ },
+ {
+  "q": "「向こうで話している女性は私の先生です」を英語にすると",
+  "a": "The woman talking over there is my teacher.",
+  "n": ""
+ },
+ {
+  "q": "「日本で話されている言語は日本語です」を英語にすると",
+  "a": "The language spoken in Japan is Japanese.",
+  "n": ""
+ },
+ {
+  "q": "「笑っている赤ちゃん」を分詞を使って英語にすると",
+  "a": "a smiling baby（〜している＝現在分詞）",
+  "n": ""
+ },
+ {
+  "q": "「彼によって書かれた手紙」を英語にすると",
+  "a": "a letter written by him（〜された＝過去分詞）",
+  "n": ""
+ },
+ {
+  "q": "現在分詞か過去分詞か迷ったときの判断方法",
+  "a": "説明される名詞が「自分でする側」なら現在分詞、「される側」なら過去分詞",
+  "n": ""
+ },
+ {
+  "q": "関係代名詞とは何か",
+  "a": "名詞を後ろから説明する文をつなぐ言葉。先行詞（説明される名詞）によって形を選ぶ",
+  "n": ""
+ },
+ {
+  "q": "先行詞が人のとき使う関係代名詞",
+  "a": "who（主格・目的格）、that も使える",
+  "n": ""
+ },
+ {
+  "q": "先行詞が物・動物のとき使う関係代名詞",
+  "a": "which（主格・目的格）、that も使える",
+  "n": ""
+ },
+ {
+  "q": "先行詞が人でも物でも使える関係代名詞",
+  "a": "that",
+  "n": ""
+ },
+ {
+  "q": "主格の関係代名詞の後ろには何が続くか",
+  "a": "動詞が続く（関係代名詞が文の主語の働きをする）。the boy who runs fast",
+  "n": ""
+ },
+ {
+  "q": "目的格の関係代名詞の後ろには何が続くか",
+  "a": "「主語＋動詞（＋…）」の文が続き、本来はその後に目的語が入る場所が空いている。the book which I read",
+  "n": ""
+ },
+ {
+  "q": "目的格の関係代名詞は省略できるか",
+  "a": "できる。省略した文を「接触節」と呼ぶ言い方がある。the book I read yesterday",
+  "n": ""
+ },
+ {
+  "q": "主格の関係代名詞は省略できるか",
+  "a": "できない（主語がなくなるため）",
+  "n": ""
+ },
+ {
+  "q": "接触節とは何か",
+  "a": "関係代名詞（目的格）が省略され、先行詞に説明の文が直接くっついている形。The movie I saw was great. の I saw の部分",
+  "n": ""
+ },
+ {
+  "q": "接触節を見分けるポイント",
+  "a": "名詞の直後に「主語＋動詞」が続いたら、関係代名詞が省略された接触節だと判断する",
+  "n": ""
+ },
+ {
+  "q": "「私が昨日買った本は面白い」を英語にすると（接触節で）",
+  "a": "The book I bought yesterday is interesting.（which/that を入れてもよい）",
+  "n": ""
+ },
+ {
+  "q": "「彼が撮った写真を見せてください」を英語にすると",
+  "a": "Please show me the pictures he took.",
+  "n": ""
+ },
+ {
+  "q": "関係代名詞 whose の意味と使い方",
+  "a": "「〜の」を表す所有格。I know a boy whose father is a doctor.（お父さんが医者である少年）",
+  "n": ""
+ },
+ {
+  "q": "関係代名詞を使って2文を1文にする手順（主格）",
+  "a": "同じ名詞を指す語を関係代名詞に変え、先行詞の直後に説明の文を置く。the girl＋she sings → the girl who sings",
+  "n": ""
+ },
+ {
+  "q": "「これは私がずっと欲しかったカメラです」を英語にすると",
+  "a": "This is the camera which I have always wanted.（接触節：This is the camera I have always wanted. も可）",
+  "n": ""
+ }
+];
+var total = CARDS.length;
+var knownCount = 0;
+var deck = [];
+var pos = 0;
+var flipped = false;
+var round = 1;
+function el(id){ return document.getElementById(id); }
+function shuffle(a){ for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+function updateProgress(){
+  el('progressText').textContent = '覚えた ' + knownCount + ' / ' + total + ' 枚';
+  el('progressFill').style.width = (total ? (knownCount/total*100) : 0) + '%';
+}
+function updateRoundInfo(){
+  el('roundInfo').textContent = '第' + round + '周目｜この周はあと ' + (deck.length - pos) + ' 枚';
+}
+function showCard(){
+  flipped = false;
+  el('fcard').classList.remove('flipped');
+  var c = CARDS[deck[pos]];
+  el('frontText').textContent = c.q;
+  el('backText').textContent = c.a;
+  el('backNote').textContent = c.n || '';
+  el('judgeBtns').style.visibility = 'hidden';
+  updateRoundInfo();
+}
+function startRound(){ shuffle(deck); pos = 0; showCard(); }
+function init(){
+  knownCount = 0; round = 1;
+  deck = CARDS.map(function(_, i){ return i; });
+  el('doneArea').style.display = 'none';
+  el('playArea').style.display = 'block';
+  updateProgress();
+  startRound();
+}
+function finish(){
+  coinAward(10,'暗記カード1周','flash:flash_chu1_finals_math',1);
+  el('playArea').style.display = 'none';
+  el('doneArea').style.display = 'block';
+  el('doneText').textContent = '全' + total + '枚のカードを全部おぼえました。おつかれさま！';
+}
+function judge(known){
+  if(!flipped) return;
+  if(known){ knownCount++; deck.splice(pos, 1); coinAward(1,'暗記カード','flashcard-each',20); }
+  else { pos++; }
+  updateProgress();
+  if(pos >= deck.length){
+    if(deck.length === 0){ finish(); return; }
+    round++; startRound(); return;
+  }
+  showCard();
+}
+el('fcard').addEventListener('click', function(){
+  if(flipped) return;
+  flipped = true;
+  this.classList.add('flipped');
+  el('judgeBtns').style.visibility = 'visible';
+});
+el('btnKnown').addEventListener('click', function(){ judge(true); });
+el('btnStill').addEventListener('click', function(){ judge(false); });
+el('btnRestart').addEventListener('click', init);
+init();
+function todayStr(d){d=d||new Date();var m=('0'+(d.getMonth()+1)).slice(-2);var day=('0'+d.getDate()).slice(-2);return d.getFullYear()+'-'+m+'-'+day;}
+/* ==== ご褒美コイン ==== */
+var COIN_CHILD='iori';
+var COIN_KEY='stepup-coins-'+COIN_CHILD;
+var CLAIM_KEY='stepup-coinclaims-'+COIN_CHILD;
+function coinLoad(){try{var v=JSON.parse(localStorage.getItem(COIN_KEY));if(v&&typeof v.total==='number'&&Array.isArray(v.history))return v;}catch(e){}return{total:0,history:[]};}
+function coinClaimsLoad(){try{var v=JSON.parse(localStorage.getItem(CLAIM_KEY));if(v&&typeof v==='object'&&v!==null)return v;}catch(e){}return{};}
+function coinAward(amount,sourceLabel,claimId,dailyCap){
+  if(!amount||amount<=0)return 0;
+  if(dailyCap==null)dailyCap=1;
+  if(claimId){
+    var claims=coinClaimsLoad();
+    var ck=todayStr()+':'+claimId;
+    var n=claims[ck]||0;
+    if(n>=dailyCap)return 0;
+    claims[ck]=n+1;
+    try{localStorage.setItem(CLAIM_KEY,JSON.stringify(claims));}catch(e){}
+  }
+  var data=coinLoad();
+  data.total+=amount;
+  data.history.push({date:todayStr(),source:sourceLabel,amount:amount});
+  if(data.history.length>200)data.history=data.history.slice(data.history.length-200);
+  try{localStorage.setItem(COIN_KEY,JSON.stringify(data));}catch(e){}
+  coinToast(amount);
+  return amount;
+}
+function coinToast(amount){
+  var t=document.createElement('div');
+  t.textContent='🪙 +'+amount+'コイン！';
+  t.setAttribute('style','position:fixed;right:16px;bottom:16px;z-index:9999;background:#1a1a5e;color:#fff;font-weight:700;font-size:1.1rem;padding:12px 20px;border-radius:999px;box-shadow:0 4px 14px rgba(0,0,0,.25);opacity:0;transition:opacity .3s;pointer-events:none');
+  document.body.appendChild(t);
+  setTimeout(function(){t.style.opacity='1';},10);
+  setTimeout(function(){t.style.opacity='0';},1700);
+  setTimeout(function(){if(t.parentNode)t.parentNode.removeChild(t);},2200);
+}
+</script>
+</body>
+</html>

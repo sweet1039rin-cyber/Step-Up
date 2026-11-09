@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>中3技術・家庭 暗記カード｜期末テスト正式範囲（情報・フローチャート／食生活）｜Step Up テスト対策</title>
+<style>
+:root{--ink:#1c2733;--accent:#ff6b9d;--navy:#1a1a5e;--line:#d9e2ec;--soft:#f4f7fb}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:var(--ink);
+ font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP","Yu Gothic",sans-serif;
+ font-size:18px;line-height:1.85;-webkit-text-size-adjust:100%}
+.wrap{max-width:880px;margin:0 auto;padding:20px 18px 56px}
+h1{font-size:1.55rem;line-height:1.45;border-bottom:4px solid var(--accent);padding-bottom:.35em;margin:.4em 0 .8em}
+p{margin:.6em 0}
+.backlink{display:inline-block;margin-top:28px;background:var(--accent);color:#fff;font-weight:700;
+ text-decoration:none;padding:14px 22px;border-radius:999px;font-size:1.05rem}
+.toplink{font-size:.95rem;margin-bottom:4px}
+.toplink a{color:var(--navy)}
+footer{margin-top:10px}
+@media (max-width:600px){body{font-size:17px}.wrap{padding:14px 12px 48px}h1{font-size:1.35rem}}
+.progress-text{font-weight:700;margin:16px 0 6px;font-size:1.1rem}
+.progress-bar{height:16px;background:var(--soft);border:2px solid var(--line);border-radius:999px;overflow:hidden}
+.progress-fill{height:100%;background:var(--accent);width:0;transition:width .3s}
+.card-scene{perspective:1200px;margin:20px 0 6px}
+.fcard{position:relative;width:100%;height:400px;cursor:pointer;transform-style:preserve-3d;transition:transform .45s;-webkit-tap-highlight-color:transparent}
+.fcard.flipped{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+ border:3px solid var(--navy);border-radius:18px;padding:24px 18px;overflow:hidden;
+ display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:#fff}
+.face.back{transform:rotateY(180deg);background:var(--soft);border-color:var(--accent)}
+.face-label{font-size:.85rem;font-weight:700;color:var(--accent);letter-spacing:.2em;margin-bottom:12px}
+.face-label.ans{color:var(--navy)}
+.face-text{font-size:1.3rem;font-weight:700;line-height:1.65}
+.face-note{margin-top:14px;font-size:.98rem;color:#54677a;line-height:1.65}
+.tap-hint{margin-top:16px;font-size:.9rem;color:#8a97a5}
+.judge{display:flex;gap:12px;margin-top:16px}
+.jbtn{flex:1;font-family:inherit;font-size:1.25rem;font-weight:700;padding:18px 10px;border-radius:14px;
+ border:3px solid var(--navy);background:#fff;color:var(--navy);cursor:pointer;min-height:64px}
+.jbtn.known{background:var(--accent);border-color:var(--accent);color:#fff}
+.jbtn:active{transform:scale(.98)}
+.round-info{text-align:center;color:#54677a;font-size:.95rem;margin-top:12px}
+.done-box{border:3px solid var(--accent);border-radius:18px;padding:32px 20px;text-align:center;background:#fff5f8;margin-top:22px}
+.done-title{font-size:1.5rem;font-weight:700;color:#c2255c;margin:.2em 0}
+.restart{max-width:340px;margin:16px auto 0;display:block;width:100%}
+</style>
+</head>
+<body>
+<div class="wrap">
+<p class="toplink"><a href="iori.html">← 中3トップへ戻る</a></p>
+<h1>中3技術・家庭 暗記カード｜期末テスト正式範囲（情報・フローチャート／食生活）</h1>
+<p>カードをタップすると答えが見えます。答えを見たら「覚えた」「まだ」で教えてください。「まだ」のカードだけが次の周に出てきます。</p>
+<div class="progress-text" id="progressText"></div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+<div id="playArea">
+<div class="card-scene"><div class="fcard" id="fcard">
+<div class="face front"><div class="face-label">も　ん　だ　い</div><div class="face-text" id="frontText"></div><div class="tap-hint">タップで答えを見る</div></div>
+<div class="face back"><div class="face-label ans">こ　た　え</div><div class="face-text" id="backText"></div><div class="face-note" id="backNote"></div></div>
+</div></div>
+<div class="judge" id="judgeBtns" style="visibility:hidden">
+<button class="jbtn still" id="btnStill" type="button">まだ</button>
+<button class="jbtn known" id="btnKnown" type="button">覚えた</button>
+</div>
+<p class="round-info" id="roundInfo"></p>
+</div>
+<div id="doneArea" style="display:none">
+<div class="done-box"><p class="done-title">🎉 全部おぼえた！</p><p id="doneText"></p>
+<button class="jbtn known restart" id="btnRestart" type="button">最初からもう一度</button></div>
+</div>
+<footer><a class="backlink" href="iori.html">← 中3トップへ戻る</a> <a class="backlink" href="../index.html" style="background:#1a1a5e">🏠 アプリへ戻る</a></footer>
+</div>
+<script>
+var CARDS = [
+ {
+  "q": "情報を0と1の信号で表す方法を何というか",
+  "a": "デジタル（ディジタル）方式",
+  "n": ""
+ },
+ {
+  "q": "アナログの音声や画像をデジタルデータに変換することを何というか",
+  "a": "A/D変換（標本化・量子化・符号化の過程を経る）",
+  "n": ""
+ },
+ {
+  "q": "音声を取り込むとき、短い時間ごとに区切って値を取り出すことを何というか",
+  "a": "標本化（サンプリング）",
+  "n": ""
+ },
+ {
+  "q": "情報量の最小単位を何というか",
+  "a": "ビット（bit）。0か1かの1桁分",
+  "n": ""
+ },
+ {
+  "q": "8ビットで表される情報量の単位を何というか",
+  "a": "バイト（B）。1バイト＝8ビット",
+  "n": ""
+ },
+ {
+  "q": "フローチャートで、開始と終了を表す記号の形は",
+  "a": "端子（角の丸い長方形・小判型）",
+  "n": ""
+ },
+ {
+  "q": "フローチャートで、処理を表す記号の形は",
+  "a": "長方形",
+  "n": ""
+ },
+ {
+  "q": "フローチャートで、条件による判断（分岐）を表す記号の形は",
+  "a": "ひし形",
+  "n": ""
+ },
+ {
+  "q": "フローチャートで、データの入力や出力を表す記号の形は",
+  "a": "平行四辺形",
+  "n": ""
+ },
+ {
+  "q": "フローチャートで、処理の流れを表す線を何というか",
+  "a": "流れ線（矢印でつなぐ）",
+  "n": ""
+ },
+ {
+  "q": "プログラムの基本的な処理の流れ（構造）を3つ答えなさい",
+  "a": "順次（上から順に実行）、分岐（条件で分かれる）、反復（繰り返し）",
+  "n": ""
+ },
+ {
+  "q": "条件が満たされる間、同じ処理を繰り返す構造を何というか",
+  "a": "反復（ループ）構造",
+  "n": ""
+ },
+ {
+  "q": "「はい・いいえ」で処理が分かれる構造を何というか",
+  "a": "分岐（選択）構造",
+  "n": ""
+ },
+ {
+  "q": "他人になりすまして個人情報などをだまし取るネット上の詐欺を何というか",
+  "a": "フィッシング詐欺",
+  "n": ""
+ },
+ {
+  "q": "本物そっくりの偽サイトやメールで、パスワードなどを入力させる手口への対策を2つ答えなさい",
+  "a": "URLや送信元をよく確認する／メール内のリンクから直接ログインしない（公式サイトやアプリから開く）など",
+  "n": ""
+ },
+ {
+  "q": "コンピュータに侵入して害を与える不正なプログラムの総称を何というか",
+  "a": "コンピュータウイルス（マルウェア）",
+  "n": ""
+ },
+ {
+  "q": "パスワードの使い回しが危険な理由は何か",
+  "a": "1か所から漏れると、同じパスワードを使う他のサービスにも不正ログインされるおそれがあるから",
+  "n": ""
+ },
+ {
+  "q": "本人確認を2段階で行う方法を何というか",
+  "a": "二要素認証（二段階認証）。パスワードに加え、スマートフォンへの確認コードなどで確認する",
+  "n": ""
+ },
+ {
+  "q": "著作権で保護されるのはどのようなものか",
+  "a": "小説・音楽・絵画・写真・プログラムなどの著作物。アイデアそのものではなく、表現が保護される",
+  "n": ""
+ },
+ {
+  "q": "インターネット上に公開された写真を、無断で自分の作品として発表してよいか",
+  "a": "いけない。著作権の侵害になる。他人の著作物は許諾を得てから使う",
+  "n": ""
+ },
+ {
+  "q": "個人情報にあたるものを2つ答えなさい",
+  "a": "氏名、住所、生年月日、顔写真（個人が特定できる情報）などから2つ",
+  "n": ""
+ },
+ {
+  "q": "情報を失わないために、別の場所に複製を保存しておくことを何というか",
+  "a": "バックアップ",
+  "n": ""
+ },
+ {
+  "q": "トラブル事例：パソコンの動きが急に遅くなり、知らない広告が大量に表示される。原因として考えられることは",
+  "a": "ウイルス（マルウェア）への感染。対策はセキュリティソフトで検査・駆除し、OSやソフトを最新の状態に保つ",
+  "n": ""
+ },
+ {
+  "q": "トラブル事例：公共の無料Wi-Fiで買い物をしたら不安になった。気をつけることは",
+  "a": "通信が暗号化されていないと盗み見されるおそれがある。大切な情報の送受信は避け、正規の回線やVPNを使う",
+  "n": ""
+ },
+ {
+  "q": "ネットワークに接続された機器同士が、決まった約束事でデータをやりとりする決まりを何というか",
+  "a": "通信プロトコル",
+  "n": ""
+ },
+ {
+  "q": "インターネットで、情報を送る相手先を示す住所のような番号を何というか",
+  "a": "IPアドレス",
+  "n": ""
+ },
+ {
+  "q": "計測・制御の仕組みで、センサで読み取った値に応じて自動で動作を調整する制御を何というか",
+  "a": "フィードバック制御（1学期の復習）",
+  "n": ""
+ },
+ {
+  "q": "プログラムによって機器を動かすとき、センサ・コンピュータ・アクチュエータの役割の順序は",
+  "a": "センサ（入力）→コンピュータ（処理・判断）→アクチュエータ（出力・動作）",
+  "n": ""
+ },
+ {
+  "q": "五大栄養素をすべて答えなさい",
+  "a": "炭水化物、脂質、たんぱく質、無機質（ミネラル）、ビタミン",
+  "n": ""
+ },
+ {
+  "q": "エネルギー源になる三大栄養素を答えなさい",
+  "a": "炭水化物、脂質、たんぱく質",
+  "n": ""
+ },
+ {
+  "q": "炭水化物の主なはたらきと、多く含む食品の例",
+  "a": "体や脳のエネルギー源になる。ごはん・パン・麺類・いも類など",
+  "n": ""
+ },
+ {
+  "q": "たんぱく質の主なはたらきと、多く含む食品の例",
+  "a": "筋肉や血液など体をつくる材料になる。肉・魚・卵・大豆製品・乳製品など",
+  "n": ""
+ },
+ {
+  "q": "脂質のはたらきと、とりすぎたときの問題",
+  "a": "少量で大きなエネルギーになる。とりすぎると肥満や生活習慣病の原因になる",
+  "n": ""
+ },
+ {
+  "q": "無機質（ミネラル）のうち、骨や歯をつくるものは何か",
+  "a": "カルシウム",
+  "n": ""
+ },
+ {
+  "q": "鉄のはたらきと、多く含む食品の例",
+  "a": "血液（赤血球のヘモグロビン）の材料になり、貧血を防ぐ。レバー・赤身の肉や魚・あさり・ほうれんそうなど",
+  "n": ""
+ },
+ {
+  "q": "ビタミンAのはたらきと、多く含む食品の例",
+  "a": "皮膚や粘膜、目のはたらきを保つ。緑黄色野菜・レバー・うなぎなど",
+  "n": ""
+ },
+ {
+  "q": "ビタミンCのはたらきと、多く含む食品の例",
+  "a": "血管や皮膚を丈夫にし、鉄の吸収を助ける。野菜・果物（柑橘類）・いも類など",
+  "n": ""
+ },
+ {
+  "q": "ビタミンDのはたらきを答えなさい",
+  "a": "カルシウムの吸収を助け、骨を丈夫にする",
+  "n": ""
+ },
+ {
+  "q": "中学生の時期に特に必要な栄養素を2つ答えなさい",
+  "a": "たんぱく質とカルシウム（成長期に体づくりと骨の成長に必要）。鉄も不足しやすい",
+  "n": ""
+ },
+ {
+  "q": "食事バランスガイドは、何をもとに食事のバランスを考えるか",
+  "a": "1日に「何を」「どれだけ」食べたらよいかを、料理の数（SV＝サービング）で示したもの",
+  "n": ""
+ },
+ {
+  "q": "食品に含まれる栄養素やエネルギーを示した表示を何というか",
+  "a": "栄養成分表示",
+  "n": ""
+ },
+ {
+  "q": "賞味期限と消費期限の違い",
+  "a": "賞味期限：おいしく食べられる期限（品質の期限）／消費期限：過ぎたら食べない方がよい期限（安全の期限）",
+  "n": ""
+ },
+ {
+  "q": "食中毒を防ぐ三原則を答えなさい",
+  "a": "菌を「つけない」「増やさない」「やっつける（加熱などで殺菌する）」",
+  "n": ""
+ },
+ {
+  "q": "生の肉や魚を切った包丁・まな板を、そのまま生で食べる食品に使うと危険な理由",
+  "a": "食中毒の原因菌が移る（二次汚染）おそれがあるため",
+  "n": ""
+ },
+ {
+  "q": "食品添加物の役割の例を2つ答えなさい",
+  "a": "保存性を高める（保存料）、色や香りをつける、栄養を強化する、などから2つ",
+  "n": ""
+ },
+ {
+  "q": "地産地消の意味と利点を答えなさい",
+  "a": "地域で生産されたものを地域で消費すること。輸送距離（フードマイレージ）が短く、新鮮で、地域の農業が守られる",
+  "n": ""
+ },
+ {
+  "q": "フードマイレージとは何か",
+  "a": "食料の輸入量×輸送距離で表される指標。大きいほど輸送で多くのエネルギーが使われ、環境への負荷が大きい",
+  "n": ""
+ },
+ {
+  "q": "献立を立てるときのポイントを2つ答えなさい",
+  "a": "主食・主菜・副菜（＋汁物）をそろえる／栄養のバランス、彩り、調理法や味付けが重ならないようにする、旬の食材を使う、などから2つ",
+  "n": ""
+ },
+ {
+  "q": "主菜と副菜の違い",
+  "a": "主菜：肉・魚・卵・大豆製品などを中心にした、たんぱく質の供給源になる料理／副菜：野菜などを中心にした、ビタミン・無機質・食物繊維の供給源になる料理",
+  "n": ""
+ },
+ {
+  "q": "みそ汁や野菜を煮るときに使う水の量など、調理の基本で使う計量の単位",
+  "a": "液体はミリリットル（mL）や計量カップ（1カップ＝200mL）、大さじ1＝15mL、小さじ1＝5mL",
+  "n": ""
+ },
+ {
+  "q": "米のとぎ汁を流すと問題になる理由と、対策",
+  "a": "生活排水が川や海の水質汚濁の原因になる。とぎ汁は植木の水やりに使う、无洗米を使う、などの工夫ができる",
+  "n": ""
+ },
+ {
+  "q": "旬の食材を使う利点を2つ答えなさい",
+  "a": "栄養価が高い、味がよい、価格が安い、環境への負荷が少ない（輸送や冷暖房のエネルギーが少なくて済む）などから2つ",
+  "n": ""
+ }
+];
+var total = CARDS.length;
+var knownCount = 0;
+var deck = [];
+var pos = 0;
+var flipped = false;
+var round = 1;
+function el(id){ return document.getElementById(id); }
+function shuffle(a){ for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+function updateProgress(){
+  el('progressText').textContent = '覚えた ' + knownCount + ' / ' + total + ' 枚';
+  el('progressFill').style.width = (total ? (knownCount/total*100) : 0) + '%';
+}
+function updateRoundInfo(){
+  el('roundInfo').textContent = '第' + round + '周目｜この周はあと ' + (deck.length - pos) + ' 枚';
+}
+function showCard(){
+  flipped = false;
+  el('fcard').classList.remove('flipped');
+  var c = CARDS[deck[pos]];
+  el('frontText').textContent = c.q;
+  el('backText').textContent = c.a;
+  el('backNote').textContent = c.n || '';
+  el('judgeBtns').style.visibility = 'hidden';
+  updateRoundInfo();
+}
+function startRound(){ shuffle(deck); pos = 0; showCard(); }
+function init(){
+  knownCount = 0; round = 1;
+  deck = CARDS.map(function(_, i){ return i; });
+  el('doneArea').style.display = 'none';
+  el('playArea').style.display = 'block';
+  updateProgress();
+  startRound();
+}
+function finish(){
+  coinAward(10,'暗記カード1周','flash:flash_chu1_finals_math',1);
+  el('playArea').style.display = 'none';
+  el('doneArea').style.display = 'block';
+  el('doneText').textContent = '全' + total + '枚のカードを全部おぼえました。おつかれさま！';
+}
+function judge(known){
+  if(!flipped) return;
+  if(known){ knownCount++; deck.splice(pos, 1); coinAward(1,'暗記カード','flashcard-each',20); }
+  else { pos++; }
+  updateProgress();
+  if(pos >= deck.length){
+    if(deck.length === 0){ finish(); return; }
+    round++; startRound(); return;
+  }
+  showCard();
+}
+el('fcard').addEventListener('click', function(){
+  if(flipped) return;
+  flipped = true;
+  this.classList.add('flipped');
+  el('judgeBtns').style.visibility = 'visible';
+});
+el('btnKnown').addEventListener('click', function(){ judge(true); });
+el('btnStill').addEventListener('click', function(){ judge(false); });
+el('btnRestart').addEventListener('click', init);
+init();
+function todayStr(d){d=d||new Date();var m=('0'+(d.getMonth()+1)).slice(-2);var day=('0'+d.getDate()).slice(-2);return d.getFullYear()+'-'+m+'-'+day;}
+/* ==== ご褒美コイン ==== */
+var COIN_CHILD='iori';
+var COIN_KEY='stepup-coins-'+COIN_CHILD;
+var CLAIM_KEY='stepup-coinclaims-'+COIN_CHILD;
+function coinLoad(){try{var v=JSON.parse(localStorage.getItem(COIN_KEY));if(v&&typeof v.total==='number'&&Array.isArray(v.history))return v;}catch(e){}return{total:0,history:[]};}
+function coinClaimsLoad(){try{var v=JSON.parse(localStorage.getItem(CLAIM_KEY));if(v&&typeof v==='object'&&v!==null)return v;}catch(e){}return{};}
+function coinAward(amount,sourceLabel,claimId,dailyCap){
+  if(!amount||amount<=0)return 0;
+  if(dailyCap==null)dailyCap=1;
+  if(claimId){
+    var claims=coinClaimsLoad();
+    var ck=todayStr()+':'+claimId;
+    var n=claims[ck]||0;
+    if(n>=dailyCap)return 0;
+    claims[ck]=n+1;
+    try{localStorage.setItem(CLAIM_KEY,JSON.stringify(claims));}catch(e){}
+  }
+  var data=coinLoad();
+  data.total+=amount;
+  data.history.push({date:todayStr(),source:sourceLabel,amount:amount});
+  if(data.history.length>200)data.history=data.history.slice(data.history.length-200);
+  try{localStorage.setItem(COIN_KEY,JSON.stringify(data));}catch(e){}
+  coinToast(amount);
+  return amount;
+}
+function coinToast(amount){
+  var t=document.createElement('div');
+  t.textContent='🪙 +'+amount+'コイン！';
+  t.setAttribute('style','position:fixed;right:16px;bottom:16px;z-index:9999;background:#1a1a5e;color:#fff;font-weight:700;font-size:1.1rem;padding:12px 20px;border-radius:999px;box-shadow:0 4px 14px rgba(0,0,0,.25);opacity:0;transition:opacity .3s;pointer-events:none');
+  document.body.appendChild(t);
+  setTimeout(function(){t.style.opacity='1';},10);
+  setTimeout(function(){t.style.opacity='0';},1700);
+  setTimeout(function(){if(t.parentNode)t.parentNode.removeChild(t);},2200);
+}
+</script>
+</body>
+</html>

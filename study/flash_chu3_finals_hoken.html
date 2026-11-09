@@ -1,0 +1,443 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>中3保健体育 暗記カード｜期末テスト正式範囲（保健・体育分野）｜Step Up テスト対策</title>
+<style>
+:root{--ink:#1c2733;--accent:#ff6b9d;--navy:#1a1a5e;--line:#d9e2ec;--soft:#f4f7fb}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:var(--ink);
+ font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP","Yu Gothic",sans-serif;
+ font-size:18px;line-height:1.85;-webkit-text-size-adjust:100%}
+.wrap{max-width:880px;margin:0 auto;padding:20px 18px 56px}
+h1{font-size:1.55rem;line-height:1.45;border-bottom:4px solid var(--accent);padding-bottom:.35em;margin:.4em 0 .8em}
+p{margin:.6em 0}
+.backlink{display:inline-block;margin-top:28px;background:var(--accent);color:#fff;font-weight:700;
+ text-decoration:none;padding:14px 22px;border-radius:999px;font-size:1.05rem}
+.toplink{font-size:.95rem;margin-bottom:4px}
+.toplink a{color:var(--navy)}
+footer{margin-top:10px}
+@media (max-width:600px){body{font-size:17px}.wrap{padding:14px 12px 48px}h1{font-size:1.35rem}}
+.progress-text{font-weight:700;margin:16px 0 6px;font-size:1.1rem}
+.progress-bar{height:16px;background:var(--soft);border:2px solid var(--line);border-radius:999px;overflow:hidden}
+.progress-fill{height:100%;background:var(--accent);width:0;transition:width .3s}
+.card-scene{perspective:1200px;margin:20px 0 6px}
+.fcard{position:relative;width:100%;height:400px;cursor:pointer;transform-style:preserve-3d;transition:transform .45s;-webkit-tap-highlight-color:transparent}
+.fcard.flipped{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+ border:3px solid var(--navy);border-radius:18px;padding:24px 18px;overflow:hidden;
+ display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:#fff}
+.face.back{transform:rotateY(180deg);background:var(--soft);border-color:var(--accent)}
+.face-label{font-size:.85rem;font-weight:700;color:var(--accent);letter-spacing:.2em;margin-bottom:12px}
+.face-label.ans{color:var(--navy)}
+.face-text{font-size:1.3rem;font-weight:700;line-height:1.65}
+.face-note{margin-top:14px;font-size:.98rem;color:#54677a;line-height:1.65}
+.tap-hint{margin-top:16px;font-size:.9rem;color:#8a97a5}
+.judge{display:flex;gap:12px;margin-top:16px}
+.jbtn{flex:1;font-family:inherit;font-size:1.25rem;font-weight:700;padding:18px 10px;border-radius:14px;
+ border:3px solid var(--navy);background:#fff;color:var(--navy);cursor:pointer;min-height:64px}
+.jbtn.known{background:var(--accent);border-color:var(--accent);color:#fff}
+.jbtn:active{transform:scale(.98)}
+.round-info{text-align:center;color:#54677a;font-size:.95rem;margin-top:12px}
+.done-box{border:3px solid var(--accent);border-radius:18px;padding:32px 20px;text-align:center;background:#fff5f8;margin-top:22px}
+.done-title{font-size:1.5rem;font-weight:700;color:#c2255c;margin:.2em 0}
+.restart{max-width:340px;margin:16px auto 0;display:block;width:100%}
+</style>
+</head>
+<body>
+<div class="wrap">
+<p class="toplink"><a href="iori.html">← 中3トップへ戻る</a></p>
+<h1>中3保健体育 暗記カード｜期末テスト正式範囲（保健・体育分野）</h1>
+<p>カードをタップすると答えが見えます。答えを見たら「覚えた」「まだ」で教えてください。「まだ」のカードだけが次の周に出てきます。</p>
+<div class="progress-text" id="progressText"></div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+<div id="playArea">
+<div class="card-scene"><div class="fcard" id="fcard">
+<div class="face front"><div class="face-label">も　ん　だ　い</div><div class="face-text" id="frontText"></div><div class="tap-hint">タップで答えを見る</div></div>
+<div class="face back"><div class="face-label ans">こ　た　え</div><div class="face-text" id="backText"></div><div class="face-note" id="backNote"></div></div>
+</div></div>
+<div class="judge" id="judgeBtns" style="visibility:hidden">
+<button class="jbtn still" id="btnStill" type="button">まだ</button>
+<button class="jbtn known" id="btnKnown" type="button">覚えた</button>
+</div>
+<p class="round-info" id="roundInfo"></p>
+</div>
+<div id="doneArea" style="display:none">
+<div class="done-box"><p class="done-title">🎉 全部おぼえた！</p><p id="doneText"></p>
+<button class="jbtn known restart" id="btnRestart" type="button">最初からもう一度</button></div>
+</div>
+<footer><a class="backlink" href="iori.html">← 中3トップへ戻る</a> <a class="backlink" href="../index.html" style="background:#1a1a5e">🏠 アプリへ戻る</a></footer>
+</div>
+<script>
+var CARDS = [
+ {
+  "q": "食事・運動・喫煙などの生活習慣が主な原因となって起こる病気を何というか",
+  "a": "生活習慣病",
+  "n": ""
+ },
+ {
+  "q": "生活習慣病の例を3つ答えなさい",
+  "a": "がん、心臓病、脳卒中（ほか糖尿病・高血圧・脂質異常症など）",
+  "n": ""
+ },
+ {
+  "q": "日本人の死因の上位を占める三大疾病として、生活習慣とかかわりが深いものを答えなさい",
+  "a": "がん、心臓病、脳卒中",
+  "n": ""
+ },
+ {
+  "q": "がんとはどのような病気か",
+  "a": "細胞が異常に増殖して周囲の組織を破壊したり、他の臓器に転移したりする病気",
+  "n": ""
+ },
+ {
+  "q": "がんの予防で大切な生活習慣を2つ答えなさい",
+  "a": "禁煙（受動喫煙を避ける）、塩分や脂肪を控えたバランスのよい食事、適度な運動、節度ある飲酒などから2つ",
+  "n": ""
+ },
+ {
+  "q": "がん検診を受けることが大切な理由は何か",
+  "a": "早期に発見すれば、治療できる可能性が高くなるから",
+  "n": ""
+ },
+ {
+  "q": "糖尿病はどのような病気か",
+  "a": "血液中のブドウ糖の量（血糖値）を下げるインスリンの働きが不足し、血糖値が高い状態が続く病気",
+  "n": ""
+ },
+ {
+  "q": "メタボリックシンドロームとは何か",
+  "a": "内臓脂肪の蓄積に加え、高血圧・高血糖・脂質異常のうち2つ以上が重なった状態で、生活習慣病の危険性が高い",
+  "n": ""
+ },
+ {
+  "q": "たばこの煙に含まれる有害物質を3つ答えなさい",
+  "a": "ニコチン、タール、一酸化炭素",
+  "n": ""
+ },
+ {
+  "q": "ニコチンのはたらきは何か",
+  "a": "中枢神経に作用して依存性をもち、血管を収縮させて血圧を上げる",
+  "n": ""
+ },
+ {
+  "q": "タールのはたらき（害）は何か",
+  "a": "発がん性物質を含み、肺がんなどの原因になる",
+  "n": ""
+ },
+ {
+  "q": "一酸化炭素のはたらき（害）は何か",
+  "a": "血液の酸素運搬能力を低下させる（酸素よりヘモグロビンと結びつきやすい）",
+  "n": ""
+ },
+ {
+  "q": "本人が吸う煙（主流煙）と、たばこの先から出る煙（副流煙）では、どちらの方が有害物質が多いか",
+  "a": "副流煙の方が多いものが多い。このため受動喫煙が問題になる",
+  "n": ""
+ },
+ {
+  "q": "受動喫煙とは何か",
+  "a": "他人のたばこの煙を、自分の意思とは関係なく吸い込んでしまうこと",
+  "n": ""
+ },
+ {
+  "q": "未成年者の喫煙・飲酒が法律で禁止されている理由を答えなさい",
+  "a": "心身の発達の途上にあるため、健康への悪影響が大きく、依存症にもなりやすいから",
+  "n": ""
+ },
+ {
+  "q": "アルコールが体に入ると、まずどの器官に作用して影響が出るか",
+  "a": "脳（中枢神経）。判断力や運動機能が低下する",
+  "n": ""
+ },
+ {
+  "q": "急性アルコール中毒とは何か",
+  "a": "短時間に多量の飲酒をして、意識障害などを起こす危険な状態。死に至ることもある",
+  "n": ""
+ },
+ {
+  "q": "薬物乱用の「乱用」とはどういう意味か",
+  "a": "医療目的ではなく、法律で禁止された使い方や、本来の目的以外で薬物を使うこと",
+  "n": ""
+ },
+ {
+  "q": "覚醒剤・大麻などの薬物が特に危険な理由を2つ答えなさい",
+  "a": "強い依存性があり一度でも使うとやめられなくなる／脳を傷つけ、幻覚や妄想などの精神症状（フラッシュバック）を起こす、などから2つ",
+  "n": ""
+ },
+ {
+  "q": "依存症とは何か",
+  "a": "やめたいと思っても、自分の意思ではやめられない状態が続く病気",
+  "n": ""
+ },
+ {
+  "q": "薬物の誘いへの正しい対処を答えなさい",
+  "a": "きっぱり断る、その場を離れる、信頼できる大人に相談する。「一度だけ」は絶対にしない",
+  "n": ""
+ },
+ {
+  "q": "感染症が成り立つための3つの要素を答えなさい",
+  "a": "感染源（病原体）、感染経路、感受性（免疫力）をもつ宿主",
+  "n": ""
+ },
+ {
+  "q": "感染症の主な感染経路を3つ答えなさい",
+  "a": "空気感染（飛沫核感染）、飛沫感染、接触感染（ほか経口感染・媒介感染）",
+  "n": ""
+ },
+ {
+  "q": "ワクチンの予防接種で得られる抵抗力を何というか",
+  "a": "免疫（人工的に抗体を作らせる）",
+  "n": ""
+ },
+ {
+  "q": "HIVは何を攻撃するウイルスか",
+  "a": "免疫の中心となる細胞（白血球の一種）を攻撃し、免疫機能を低下させる",
+  "n": ""
+ },
+ {
+  "q": "AIDS（エイズ）とは何か",
+  "a": "HIVに感染して免疫機能が大きく低下し、様々な感染症や悪性腫瘍にかかりやすくなった状態",
+  "n": ""
+ },
+ {
+  "q": "性感染症の予防で最も確実な方法は何か",
+  "a": "性行為をしないこと（しない場合はコンドームを正しく使うことが有効）",
+  "n": ""
+ },
+ {
+  "q": "心肺蘇生法の中心となる手技を何というか",
+  "a": "胸骨圧迫（心臓マッサージ）",
+  "n": ""
+ },
+ {
+  "q": "胸骨圧迫のしかた（強さ・速さ・位置）を答えなさい",
+  "a": "胸の真ん中を、約5cm沈む強さで、1分間に100〜120回の速さで、絶え間なく圧迫する",
+  "n": ""
+ },
+ {
+  "q": "AEDとは何か",
+  "a": "自動体外式除細動器。心室細動などで止まった心臓に電気ショックを与え、正常な拍動に戻すための機器",
+  "n": ""
+ },
+ {
+  "q": "AEDを使う手順の概要を答えなさい",
+  "a": "電源を入れる→電極パッドを胸に貼る→音声の指示に従い、誰も触れていないことを確認してショックボタンを押す→すぐに胸骨圧迫を再開する",
+  "n": ""
+ },
+ {
+  "q": "倒れている人を見つけたとき、まず何を確認するか",
+  "a": "周囲の安全と、本人の反応（意識）を確認し、反応がなければ大声で助けを求めて119番通報とAEDの手配をする",
+  "n": ""
+ },
+ {
+  "q": "出血したときの応急手当の基本を答えなさい",
+  "a": "清潔な布などで傷口を強く押さえる直接圧迫止血。感染を防ぐため血液には素手で触れない",
+  "n": ""
+ },
+ {
+  "q": "ねんざや打撲の応急手当「RICE」の内容を答えなさい",
+  "a": "Rest（安静）、Ice（冷却）、Compression（圧迫）、Elevation（挙上＝心臓より高く保つ）",
+  "n": ""
+ },
+ {
+  "q": "熱中症が疑われるときの対応を答えなさい",
+  "a": "涼しい場所に移して衣服をゆるめ、水分・塩分を補給する。意識がない・自分で飲めない場合はすぐに救急車を呼ぶ",
+  "n": ""
+ },
+ {
+  "q": "タグラグビーで、タックルの代わりに行う防御の動きは何か",
+  "a": "相手の腰につけたタグ（ベルトのタグ）を取ること。「タグ！」と声を出す",
+  "n": ""
+ },
+ {
+  "q": "タグを取られた選手は、その後どうしなければならないか",
+  "a": "すぐに（3歩・3秒以内に）ボールをパスしなければならない。タグは相手から返してもらうまでプレーに戻れない部分にも注意する",
+  "n": ""
+ },
+ {
+  "q": "タグラグビーでパスを出す方向のルールは",
+  "a": "自分より前方へのパスは反則（スローフォワード）。パスは横か後方へのみ",
+  "n": ""
+ },
+ {
+  "q": "タグラグビーで得点する方法と点数は",
+  "a": "相手のゴールラインを越えてボールを地面につける（トライ）で1点",
+  "n": ""
+ },
+ {
+  "q": "タグラグビーで、ボールを持った選手が相手と体をぶつけ合って進むこと（コンタクト）はできるか",
+  "a": "できない。タグラグビーは接触プレーをしない（ノンコンタクト）スポーツ",
+  "n": ""
+ },
+ {
+  "q": "クロールの手の動き（かき）の特徴",
+  "a": "左右の腕を交互に水をかき、ローリング（体の回転）をともなう",
+  "n": ""
+ },
+ {
+  "q": "平泳ぎのキックの特徴を答えなさい",
+  "a": "両脚で水を挟むように蹴る（カエル脚のような動き）。キックの後に両脚をそろえて伸ばし、滑る時間を取る",
+  "n": ""
+ },
+ {
+  "q": "背泳ぎのスタートはどこから行うか",
+  "a": "水中からスタートする（壁を蹴って仰向けでスタート）",
+  "n": ""
+ },
+ {
+  "q": "バタフライの手と足の動きの特徴",
+  "a": "両腕を同時に回し、両脚をそろえて上下に打つドルフィンキックを使う",
+  "n": ""
+ },
+ {
+  "q": "リレーの引き継ぎ（タッチ）のルールを答えなさい",
+  "a": "前の泳者が壁にタッチしてから、次の泳者がスタートする。フライング（早すぎるスタート）は失格になる",
+  "n": ""
+ },
+ {
+  "q": "個人メドレーの泳ぐ順序を答えなさい",
+  "a": "バタフライ→背泳ぎ→平泳ぎ→自由形（クロール）の順",
+  "n": ""
+ },
+ {
+  "q": "メドレーリレーの泳ぐ順序を答えなさい",
+  "a": "背泳ぎ→平泳ぎ→バタフライ→自由形（個人メドレーとは順序が違う）",
+  "n": ""
+ },
+ {
+  "q": "ハンドボールの1チームの人数（コートプレーヤー＋ゴールキーパー）",
+  "a": "7人（コートプレーヤー6人＋ゴールキーパー1人）",
+  "n": ""
+ },
+ {
+  "q": "ハンドボールでボールを持って歩ける歩数は",
+  "a": "3歩まで。ボールは3秒まで持てる",
+  "n": ""
+ },
+ {
+  "q": "ハンドボールでドリブルをした後にボールを持ち、再びドリブルをするとどうなるか",
+  "a": "反則（ダブルドリブル）になる",
+  "n": ""
+ },
+ {
+  "q": "ハンドボールのゴールエリア（6mライン内）に入れるのは誰か",
+  "a": "ゴールキーパーだけ。攻撃側の選手が入ってシュートすると反則",
+  "n": ""
+ },
+ {
+  "q": "ハンドボールで、シュートがゴールキーパーに防がれるなどして得点にならなかった後、試合を再開するスローは",
+  "a": "ゴールキーパースロー（ゴールエリア内から）",
+  "n": ""
+ },
+ {
+  "q": "7mスローはどのような場合に与えられるか",
+  "a": "明らかな得点の機会を反則で奪われた場合に、7mラインからゴールキーパーと1対1でシュートできる",
+  "n": ""
+ },
+ {
+  "q": "ハンドボールの試合時間（中学生の標準的な規定）",
+  "a": "前後半に分かれて行われる（公式では前半30分・後半30分、休憩あり）",
+  "n": ""
+ }
+];
+var total = CARDS.length;
+var knownCount = 0;
+var deck = [];
+var pos = 0;
+var flipped = false;
+var round = 1;
+function el(id){ return document.getElementById(id); }
+function shuffle(a){ for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+function updateProgress(){
+  el('progressText').textContent = '覚えた ' + knownCount + ' / ' + total + ' 枚';
+  el('progressFill').style.width = (total ? (knownCount/total*100) : 0) + '%';
+}
+function updateRoundInfo(){
+  el('roundInfo').textContent = '第' + round + '周目｜この周はあと ' + (deck.length - pos) + ' 枚';
+}
+function showCard(){
+  flipped = false;
+  el('fcard').classList.remove('flipped');
+  var c = CARDS[deck[pos]];
+  el('frontText').textContent = c.q;
+  el('backText').textContent = c.a;
+  el('backNote').textContent = c.n || '';
+  el('judgeBtns').style.visibility = 'hidden';
+  updateRoundInfo();
+}
+function startRound(){ shuffle(deck); pos = 0; showCard(); }
+function init(){
+  knownCount = 0; round = 1;
+  deck = CARDS.map(function(_, i){ return i; });
+  el('doneArea').style.display = 'none';
+  el('playArea').style.display = 'block';
+  updateProgress();
+  startRound();
+}
+function finish(){
+  coinAward(10,'暗記カード1周','flash:flash_chu1_finals_math',1);
+  el('playArea').style.display = 'none';
+  el('doneArea').style.display = 'block';
+  el('doneText').textContent = '全' + total + '枚のカードを全部おぼえました。おつかれさま！';
+}
+function judge(known){
+  if(!flipped) return;
+  if(known){ knownCount++; deck.splice(pos, 1); coinAward(1,'暗記カード','flashcard-each',20); }
+  else { pos++; }
+  updateProgress();
+  if(pos >= deck.length){
+    if(deck.length === 0){ finish(); return; }
+    round++; startRound(); return;
+  }
+  showCard();
+}
+el('fcard').addEventListener('click', function(){
+  if(flipped) return;
+  flipped = true;
+  this.classList.add('flipped');
+  el('judgeBtns').style.visibility = 'visible';
+});
+el('btnKnown').addEventListener('click', function(){ judge(true); });
+el('btnStill').addEventListener('click', function(){ judge(false); });
+el('btnRestart').addEventListener('click', init);
+init();
+function todayStr(d){d=d||new Date();var m=('0'+(d.getMonth()+1)).slice(-2);var day=('0'+d.getDate()).slice(-2);return d.getFullYear()+'-'+m+'-'+day;}
+/* ==== ご褒美コイン ==== */
+var COIN_CHILD='iori';
+var COIN_KEY='stepup-coins-'+COIN_CHILD;
+var CLAIM_KEY='stepup-coinclaims-'+COIN_CHILD;
+function coinLoad(){try{var v=JSON.parse(localStorage.getItem(COIN_KEY));if(v&&typeof v.total==='number'&&Array.isArray(v.history))return v;}catch(e){}return{total:0,history:[]};}
+function coinClaimsLoad(){try{var v=JSON.parse(localStorage.getItem(CLAIM_KEY));if(v&&typeof v==='object'&&v!==null)return v;}catch(e){}return{};}
+function coinAward(amount,sourceLabel,claimId,dailyCap){
+  if(!amount||amount<=0)return 0;
+  if(dailyCap==null)dailyCap=1;
+  if(claimId){
+    var claims=coinClaimsLoad();
+    var ck=todayStr()+':'+claimId;
+    var n=claims[ck]||0;
+    if(n>=dailyCap)return 0;
+    claims[ck]=n+1;
+    try{localStorage.setItem(CLAIM_KEY,JSON.stringify(claims));}catch(e){}
+  }
+  var data=coinLoad();
+  data.total+=amount;
+  data.history.push({date:todayStr(),source:sourceLabel,amount:amount});
+  if(data.history.length>200)data.history=data.history.slice(data.history.length-200);
+  try{localStorage.setItem(COIN_KEY,JSON.stringify(data));}catch(e){}
+  coinToast(amount);
+  return amount;
+}
+function coinToast(amount){
+  var t=document.createElement('div');
+  t.textContent='🪙 +'+amount+'コイン！';
+  t.setAttribute('style','position:fixed;right:16px;bottom:16px;z-index:9999;background:#1a1a5e;color:#fff;font-weight:700;font-size:1.1rem;padding:12px 20px;border-radius:999px;box-shadow:0 4px 14px rgba(0,0,0,.25);opacity:0;transition:opacity .3s;pointer-events:none');
+  document.body.appendChild(t);
+  setTimeout(function(){t.style.opacity='1';},10);
+  setTimeout(function(){t.style.opacity='0';},1700);
+  setTimeout(function(){if(t.parentNode)t.parentNode.removeChild(t);},2200);
+}
+</script>
+</body>
+</html>

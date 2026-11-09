@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>中3国語 暗記カード｜期末テスト正式範囲（故郷・和歌・漢字）｜Step Up テスト対策</title>
+<style>
+:root{--ink:#1c2733;--accent:#ff6b9d;--navy:#1a1a5e;--line:#d9e2ec;--soft:#f4f7fb}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:var(--ink);
+ font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP","Yu Gothic",sans-serif;
+ font-size:18px;line-height:1.85;-webkit-text-size-adjust:100%}
+.wrap{max-width:880px;margin:0 auto;padding:20px 18px 56px}
+h1{font-size:1.55rem;line-height:1.45;border-bottom:4px solid var(--accent);padding-bottom:.35em;margin:.4em 0 .8em}
+p{margin:.6em 0}
+.backlink{display:inline-block;margin-top:28px;background:var(--accent);color:#fff;font-weight:700;
+ text-decoration:none;padding:14px 22px;border-radius:999px;font-size:1.05rem}
+.toplink{font-size:.95rem;margin-bottom:4px}
+.toplink a{color:var(--navy)}
+footer{margin-top:10px}
+@media (max-width:600px){body{font-size:17px}.wrap{padding:14px 12px 48px}h1{font-size:1.35rem}}
+.progress-text{font-weight:700;margin:16px 0 6px;font-size:1.1rem}
+.progress-bar{height:16px;background:var(--soft);border:2px solid var(--line);border-radius:999px;overflow:hidden}
+.progress-fill{height:100%;background:var(--accent);width:0;transition:width .3s}
+.card-scene{perspective:1200px;margin:20px 0 6px}
+.fcard{position:relative;width:100%;height:400px;cursor:pointer;transform-style:preserve-3d;transition:transform .45s;-webkit-tap-highlight-color:transparent}
+.fcard.flipped{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+ border:3px solid var(--navy);border-radius:18px;padding:24px 18px;overflow:hidden;
+ display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:#fff}
+.face.back{transform:rotateY(180deg);background:var(--soft);border-color:var(--accent)}
+.face-label{font-size:.85rem;font-weight:700;color:var(--accent);letter-spacing:.2em;margin-bottom:12px}
+.face-label.ans{color:var(--navy)}
+.face-text{font-size:1.3rem;font-weight:700;line-height:1.65}
+.face-note{margin-top:14px;font-size:.98rem;color:#54677a;line-height:1.65}
+.tap-hint{margin-top:16px;font-size:.9rem;color:#8a97a5}
+.judge{display:flex;gap:12px;margin-top:16px}
+.jbtn{flex:1;font-family:inherit;font-size:1.25rem;font-weight:700;padding:18px 10px;border-radius:14px;
+ border:3px solid var(--navy);background:#fff;color:var(--navy);cursor:pointer;min-height:64px}
+.jbtn.known{background:var(--accent);border-color:var(--accent);color:#fff}
+.jbtn:active{transform:scale(.98)}
+.round-info{text-align:center;color:#54677a;font-size:.95rem;margin-top:12px}
+.done-box{border:3px solid var(--accent);border-radius:18px;padding:32px 20px;text-align:center;background:#fff5f8;margin-top:22px}
+.done-title{font-size:1.5rem;font-weight:700;color:#c2255c;margin:.2em 0}
+.restart{max-width:340px;margin:16px auto 0;display:block;width:100%}
+</style>
+</head>
+<body>
+<div class="wrap">
+<p class="toplink"><a href="iori.html">← 中3トップへ戻る</a></p>
+<h1>中3国語 暗記カード｜期末テスト正式範囲（故郷・和歌・漢字）</h1>
+<p>カードをタップすると答えが見えます。答えを見たら「覚えた」「まだ」で教えてください。「まだ」のカードだけが次の周に出てきます。</p>
+<div class="progress-text" id="progressText"></div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+<div id="playArea">
+<div class="card-scene"><div class="fcard" id="fcard">
+<div class="face front"><div class="face-label">も　ん　だ　い</div><div class="face-text" id="frontText"></div><div class="tap-hint">タップで答えを見る</div></div>
+<div class="face back"><div class="face-label ans">こ　た　え</div><div class="face-text" id="backText"></div><div class="face-note" id="backNote"></div></div>
+</div></div>
+<div class="judge" id="judgeBtns" style="visibility:hidden">
+<button class="jbtn still" id="btnStill" type="button">まだ</button>
+<button class="jbtn known" id="btnKnown" type="button">覚えた</button>
+</div>
+<p class="round-info" id="roundInfo"></p>
+</div>
+<div id="doneArea" style="display:none">
+<div class="done-box"><p class="done-title">🎉 全部おぼえた！</p><p id="doneText"></p>
+<button class="jbtn known restart" id="btnRestart" type="button">最初からもう一度</button></div>
+</div>
+<footer><a class="backlink" href="iori.html">← 中3トップへ戻る</a> <a class="backlink" href="../index.html" style="background:#1a1a5e">🏠 アプリへ戻る</a></footer>
+</div>
+<script>
+var CARDS = [
+ {
+  "q": "「故郷」の作者は誰か（漢字で）",
+  "a": "魯迅（中国・清朝末期から中華民国時代の作家）",
+  "n": ""
+ },
+ {
+  "q": "「私」が故郷を訪れたのは、何年ぶりで、どんな季節だったか",
+  "a": "約20年ぶり。厳しい寒さの冬（旧暦の年末）",
+  "n": ""
+ },
+ {
+  "q": "「私」が故郷に帰った目的は何だったか",
+  "a": "引っ越しのため、家を明け渡して家族を迎えに行く（故郷を去る）ため",
+  "n": ""
+ },
+ {
+  "q": "子どものころの閏土（ルントウ）の姿を表す持ち物は何か",
+  "a": "銀の輪（首にかけた銀色の輪）と鋼叉（刺股）",
+  "n": ""
+ },
+ {
+  "q": "子どものころの閏土が語ってくれたことを2つ答えなさい",
+  "a": "雪の日に鳥を捕ること、西瓜畑でチャー（猹）という獣を刺すこと、浜辺で貝殻を拾うこと、などから2つ",
+  "n": ""
+ },
+ {
+  "q": "大人になった閏土が「私」を何と呼んだか。その言葉から分かることは",
+  "a": "「旦那様」。身分や立場の隔たり（壁）が生まれ、二人の間に距離ができてしまったこと",
+  "n": ""
+ },
+ {
+  "q": "楊おばさん（楊二嫂）はどのように描かれる人物か",
+  "a": "昔は「豆腐屋小町」と言われたが、今は口うるさく、他人の物を当てにするような人物に変わったと描かれる",
+  "n": ""
+ },
+ {
+  "q": "「私」の甥の名前と、閏土の五男の名前",
+  "a": "甥は宏児（ホンル）、閏土の五男は水生（シュイション）",
+  "n": ""
+ },
+ {
+  "q": "宏児と水生がすぐに仲良くなったことから、「私」が願ったことは何か",
+  "a": "子どもたちの世代には、自分たちのような隔たりのない、新しい生活を送ってほしいということ",
+  "n": ""
+ },
+ {
+  "q": "「私」が船の上で考えた、希望についての有名な例えを答えなさい",
+  "a": "希望は地上の道のようなもので、もともと地上に道はないが、歩く人が多くなれば道になる、という例え",
+  "n": ""
+ },
+ {
+  "q": "「故郷」で「私」の気持ちが最も高まる場面はどこか",
+  "a": "月夜の西瓜畑で鋼叉を構える美しい閏土の姿を思い出す場面（美しい故郷の記憶）",
+  "n": ""
+ },
+ {
+  "q": "「故郷」の主題として適切な考え方を答えなさい",
+  "a": "変わってしまった故郷や人々への悲しみを描きながらも、次の世代への希望を託していること",
+  "n": ""
+ },
+ {
+  "q": "閏土の生活が苦しくなった理由として挙げられるものを答えなさい",
+  "a": "戦乱や重い税（寄付）、凶作、子どもが多いことなど、社会の仕組みによる貧しさ",
+  "n": ""
+ },
+ {
+  "q": "「旦那様」と呼ばれたときの「私」の様子を表す言葉は何か",
+  "a": "身震いした（ぞっとした）ように描かれる。隔たりの大きさに衝撃を受けたこと",
+  "n": ""
+ },
+ {
+  "q": "和歌（短歌）の形式は何音で、全部で何音か",
+  "a": "五・七・五・七・七の31音",
+  "n": ""
+ },
+ {
+  "q": "和歌で、上の句と下の句はそれぞれ何音か",
+  "a": "上の句17音（五・七・五）、下の句14音（七・七）",
+  "n": ""
+ },
+ {
+  "q": "「古今和歌集」を編んだ中心人物は誰か（漢字で）",
+  "a": "紀貫之",
+  "n": ""
+ },
+ {
+  "q": "『古今和歌集』の仮名序を書いたのは誰か",
+  "a": "紀貫之",
+  "n": ""
+ },
+ {
+  "q": "仮名序で、和歌は「何を種として生まれる」と述べられているか",
+  "a": "人の心を種として、万の言の葉となった（心が種）",
+  "n": ""
+ },
+ {
+  "q": "仮名序で、和歌の力として挙げられていることを1つ答えなさい",
+  "a": "天地（あめつち）を動かす、神々をも感動させる、男女の仲をやわらげる、戦いに向かう武士を慰める、など",
+  "n": ""
+ },
+ {
+  "q": "「君待つと 吾が恋ひ居れば 我が宿の 簾動かし 秋の風吹く」――この歌の作者は誰か",
+  "a": "額田王（万葉集の歌人）",
+  "n": ""
+ },
+ {
+  "q": "「君待つと」の歌で、簾を動かしたものを作者が何だと思ったか",
+  "a": "秋の風の音を、待っている人（君）が来た気配だと思った",
+  "n": ""
+ },
+ {
+  "q": "和歌の表現技法で、特定の言葉にかかる決まった言葉を何というか",
+  "a": "枕詞",
+  "n": ""
+ },
+ {
+  "q": "枕詞の例を1つ答えなさい",
+  "a": "「あしひきの」（山にかかる）、「たらちねの」（母にかかる）、「ぬばたまの」（夜にかかる）など",
+  "n": ""
+ },
+ {
+  "q": "意味のうえで関連する言葉を同じ歌の中に詠み込む技法を何というか",
+  "a": "縁語",
+  "n": ""
+ },
+ {
+  "q": "一つの言葉に二つの意味を掛ける技法を何というか",
+  "a": "掛詞",
+  "n": ""
+ },
+ {
+  "q": "歌の本題の前に、自然などを詠んで本題を導く部分の技法を何というか",
+  "a": "序詞",
+  "n": ""
+ },
+ {
+  "q": "様子を直接言わず、物に託して表す比喩の技法を何というか",
+  "a": "見立て",
+  "n": ""
+ },
+ {
+  "q": "紀貫之が書いた、日本初の日記文学ともいわれる作品は何か",
+  "a": "『土佐日記』（女性のふりをして仮名で書かれた）",
+  "n": ""
+ },
+ {
+  "q": "「猫の手も借りたい」の意味",
+  "a": "非常に忙しく、どんな手伝いでもほしいこと",
+  "n": ""
+ },
+ {
+  "q": "「馬の耳に念仏」の意味",
+  "a": "いくら言い聞かせても、少しも効果がないこと",
+  "n": ""
+ },
+ {
+  "q": "「石の上にも三年」の意味（ことわざ）",
+  "a": "つらくても辛抱して続ければ、いつか成功することのたとえ",
+  "n": ""
+ },
+ {
+  "q": "「ちりも積もれば山となる」の意味（ことわざ）",
+  "a": "小さなものでも積み重なれば大きくなること",
+  "n": ""
+ },
+ {
+  "q": "「五十歩百歩」の意味（故事成語）",
+  "a": "程度の差はあっても、本質的には同じであること",
+  "n": ""
+ },
+ {
+  "q": "「矛盾」の故事の由来",
+  "a": "楚の国の商人が「どんな盾も突き通す矛」と「どんな矛も防ぐ盾」を売っていたことから、つじつまが合わないことのたとえ",
+  "n": ""
+ },
+ {
+  "q": "「推敲」の故事の由来",
+  "a": "唐の詩人・賈島が「推す」と「敲く」のどちらの語にするか迷ったという故事から、詩文を練り直すこと",
+  "n": ""
+ },
+ {
+  "q": "漢字の造語力で、熟語「影響」は何と何の組み合わせか",
+  "a": "影（かげ）と響（ひびき）。意味の似た漢字や、響き合う漢字を組み合わせて新しい語を作る",
+  "n": ""
+ },
+ {
+  "q": "二字熟語「増加」の構成（組み合わせ方）は",
+  "a": "増（ふえる・主語的に前に置かれる語）＋加（くわわる）。似た意味の漢字を重ねた構成",
+  "n": ""
+ },
+ {
+  "q": "熟語の構成で「読書」はどのような構成か",
+  "a": "読む（動詞）＋書（目的語）で、「書を読む」という述語と目的語の関係",
+  "n": ""
+ },
+ {
+  "q": "熟語の構成で「地震」はどのような構成か",
+  "a": "地（主語）＋震（述語）で、「地が震える」という主語と述語の関係",
+  "n": ""
+ },
+ {
+  "q": "漢字を組み合わせて語を作る力を何というか（漢字で）",
+  "a": "造語力",
+  "n": ""
+ },
+ {
+  "q": "文の中で、意味の切れ目がなく続く言葉のまとまりを何というか",
+  "a": "文節",
+  "n": ""
+ },
+ {
+  "q": "文節に分ける目印となる言い方",
+  "a": "「ネ」を入れて自然に切れるところが文節の切れ目（〜ネ、と区切る）",
+  "n": ""
+ },
+ {
+  "q": "文の成分のうち、文の中心となる述語にあたるものは",
+  "a": "主に動詞・形容詞・形容動詞＋助動詞などが述語になる",
+  "n": ""
+ },
+ {
+  "q": "敬語の種類を3つ答えなさい",
+  "a": "尊敬語、謙譲語、丁寧語",
+  "n": ""
+ }
+];
+var total = CARDS.length;
+var knownCount = 0;
+var deck = [];
+var pos = 0;
+var flipped = false;
+var round = 1;
+function el(id){ return document.getElementById(id); }
+function shuffle(a){ for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+function updateProgress(){
+  el('progressText').textContent = '覚えた ' + knownCount + ' / ' + total + ' 枚';
+  el('progressFill').style.width = (total ? (knownCount/total*100) : 0) + '%';
+}
+function updateRoundInfo(){
+  el('roundInfo').textContent = '第' + round + '周目｜この周はあと ' + (deck.length - pos) + ' 枚';
+}
+function showCard(){
+  flipped = false;
+  el('fcard').classList.remove('flipped');
+  var c = CARDS[deck[pos]];
+  el('frontText').textContent = c.q;
+  el('backText').textContent = c.a;
+  el('backNote').textContent = c.n || '';
+  el('judgeBtns').style.visibility = 'hidden';
+  updateRoundInfo();
+}
+function startRound(){ shuffle(deck); pos = 0; showCard(); }
+function init(){
+  knownCount = 0; round = 1;
+  deck = CARDS.map(function(_, i){ return i; });
+  el('doneArea').style.display = 'none';
+  el('playArea').style.display = 'block';
+  updateProgress();
+  startRound();
+}
+function finish(){
+  coinAward(10,'暗記カード1周','flash:flash_chu1_finals_math',1);
+  el('playArea').style.display = 'none';
+  el('doneArea').style.display = 'block';
+  el('doneText').textContent = '全' + total + '枚のカードを全部おぼえました。おつかれさま！';
+}
+function judge(known){
+  if(!flipped) return;
+  if(known){ knownCount++; deck.splice(pos, 1); coinAward(1,'暗記カード','flashcard-each',20); }
+  else { pos++; }
+  updateProgress();
+  if(pos >= deck.length){
+    if(deck.length === 0){ finish(); return; }
+    round++; startRound(); return;
+  }
+  showCard();
+}
+el('fcard').addEventListener('click', function(){
+  if(flipped) return;
+  flipped = true;
+  this.classList.add('flipped');
+  el('judgeBtns').style.visibility = 'visible';
+});
+el('btnKnown').addEventListener('click', function(){ judge(true); });
+el('btnStill').addEventListener('click', function(){ judge(false); });
+el('btnRestart').addEventListener('click', init);
+init();
+function todayStr(d){d=d||new Date();var m=('0'+(d.getMonth()+1)).slice(-2);var day=('0'+d.getDate()).slice(-2);return d.getFullYear()+'-'+m+'-'+day;}
+/* ==== ご褒美コイン ==== */
+var COIN_CHILD='iori';
+var COIN_KEY='stepup-coins-'+COIN_CHILD;
+var CLAIM_KEY='stepup-coinclaims-'+COIN_CHILD;
+function coinLoad(){try{var v=JSON.parse(localStorage.getItem(COIN_KEY));if(v&&typeof v.total==='number'&&Array.isArray(v.history))return v;}catch(e){}return{total:0,history:[]};}
+function coinClaimsLoad(){try{var v=JSON.parse(localStorage.getItem(CLAIM_KEY));if(v&&typeof v==='object'&&v!==null)return v;}catch(e){}return{};}
+function coinAward(amount,sourceLabel,claimId,dailyCap){
+  if(!amount||amount<=0)return 0;
+  if(dailyCap==null)dailyCap=1;
+  if(claimId){
+    var claims=coinClaimsLoad();
+    var ck=todayStr()+':'+claimId;
+    var n=claims[ck]||0;
+    if(n>=dailyCap)return 0;
+    claims[ck]=n+1;
+    try{localStorage.setItem(CLAIM_KEY,JSON.stringify(claims));}catch(e){}
+  }
+  var data=coinLoad();
+  data.total+=amount;
+  data.history.push({date:todayStr(),source:sourceLabel,amount:amount});
+  if(data.history.length>200)data.history=data.history.slice(data.history.length-200);
+  try{localStorage.setItem(COIN_KEY,JSON.stringify(data));}catch(e){}
+  coinToast(amount);
+  return amount;
+}
+function coinToast(amount){
+  var t=document.createElement('div');
+  t.textContent='🪙 +'+amount+'コイン！';
+  t.setAttribute('style','position:fixed;right:16px;bottom:16px;z-index:9999;background:#1a1a5e;color:#fff;font-weight:700;font-size:1.1rem;padding:12px 20px;border-radius:999px;box-shadow:0 4px 14px rgba(0,0,0,.25);opacity:0;transition:opacity .3s;pointer-events:none');
+  document.body.appendChild(t);
+  setTimeout(function(){t.style.opacity='1';},10);
+  setTimeout(function(){t.style.opacity='0';},1700);
+  setTimeout(function(){if(t.parentNode)t.parentNode.removeChild(t);},2200);
+}
+</script>
+</body>
+</html>
