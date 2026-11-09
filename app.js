@@ -2271,7 +2271,7 @@ function renderNotebookSection(){
   openNotebook(b.dataset.notebookChild,b.dataset.notebookMaterial,b.dataset.notebookSubject);
  });
 }
-function openMaterials(){materialsPerson.textContent=data[current].name+' / 学習ツール';renderNotebookSection();renderLinkShelf();show(materialsScreen)}
+function openMaterials(){materialsPerson.textContent=data[current].name+' / 学習ツール';renderNotebookSection();renderFinalsEntry();renderLinkShelf();show(materialsScreen)}
 materialsBack.onclick=()=>show(mission);
 
 // ============================================================
@@ -2290,10 +2290,10 @@ function defaultLinks(childId){
    {name:'NotebookLM 英語',url:nb.english},
    {name:'NotebookLM 数学',url:nb.math},
    {name:'NotebookLM 理科',url:nb.science},
-   {name:'📚 期末テスト対策',url:'study/sakuya.html'}
+   {name:'📚 テスト対策',url:'study/sakuya.html'}
   ];
  }
- return [{name:'📚 期末テスト対策',url:'study/iori.html'}];
+ return [{name:'📚 テスト対策',url:'study/iori.html'}];
 }
 function getLinks(childId){
  // キーが無い時だけ初期値を投入する（既存データは上書きしない）
@@ -2364,6 +2364,57 @@ function renderLinkShelf(){
   saveLinks(current,links);
   renderLinkShelf();
  });
+}
+// ============================================================
+// 期末テスト対策 入口カード（学習ツール画面の上部）
+// 一番よく使う入口なので、画面下部のリンク置き場とは別に、
+// ヒーロー直下・NotebookLMセクションの前にも大きな入口を出す。
+// index.htmlは変更しないため、カードはこのコードが生成して
+// #notebookSection の直前へ差し込む（無ければ #dokosutaCard の直前、
+// それも無ければ #materials .utility-wrap の末尾）。
+// リンク先は子ども別で、defaultLinks の「期末テスト対策」と同じURL。
+// カードは ensure 方式で再利用し、開くたびに href だけ現在の子ども用へ更新する。
+// ============================================================
+const FINALS_ENTRY_URL={sakuya:'study/sakuya.html',iori:'study/iori.html'};
+function ensureFinalsEntryStyles(){
+ if(document.querySelector('#finalsEntryStyle'))return;
+ const style=document.createElement('style');
+ style.id='finalsEntryStyle';
+ style.textContent='.finals-entry-card{margin-top:16px;padding:14px}'
+  +'.finals-entry-btn{display:flex;align-items:center;gap:12px;min-height:76px;padding:16px 18px;border-radius:14px;background:#d70725;color:#fff!important;text-decoration:none!important;box-shadow:0 8px 20px rgba(215,7,37,.32)}'
+  +'.finals-entry-btn:active{opacity:.88}'
+  +'.finals-entry-btn.is-sakuya{background:linear-gradient(135deg,#2563EB,#38B2F6);box-shadow:0 8px 20px rgba(37,99,235,.32)}'
+  +'.finals-entry-text{display:flex;flex-direction:column;gap:3px;flex:1 1 auto;min-width:0}'
+  +'.finals-entry-card .finals-entry-label{font-size:20px;font-weight:800;line-height:1.3;color:#fff}'
+  +'.finals-entry-card .finals-entry-caption{font-size:12.5px;font-weight:600;line-height:1.4;color:rgba(255,255,255,.92)}'
+  +'.finals-entry-arrow{flex:0 0 auto;font-size:22px;font-weight:800;color:#fff}';
+ document.head.appendChild(style);
+}
+function ensureFinalsEntryCard(){
+ ensureFinalsEntryStyles();
+ let card=document.querySelector('#finalsEntryCard');
+ if(card)return card;
+ card=document.createElement('section');
+ card.id='finalsEntryCard';
+ card.className='card finals-entry-card';
+ card.innerHTML=`
+  <a class="finals-entry-btn" href="${FINALS_ENTRY_URL[current]||FINALS_ENTRY_URL.sakuya}" target="_blank" rel="noopener noreferrer">
+   <span class="finals-entry-text"><span class="finals-entry-label">📚 テスト対策</span><span class="finals-entry-caption">暗記シート・予想問題・模擬テストはこちら</span></span>
+   <span class="finals-entry-arrow">→</span>
+  </a>`;
+ const nb=document.querySelector('#notebookSection');
+ if(nb&&nb.parentNode){nb.parentNode.insertBefore(card,nb)}
+ else{
+  const doko=document.querySelector('#dokosutaCard');
+  if(doko&&doko.parentNode){doko.parentNode.insertBefore(card,doko)}
+  else{document.querySelector('#materials .utility-wrap')?.appendChild(card)}
+ }
+ return card;
+}
+function renderFinalsEntry(){
+ const card=ensureFinalsEntryCard();
+ const btn=card.querySelector('a.finals-entry-btn');
+ if(btn){btn.href=FINALS_ENTRY_URL[current]||FINALS_ENTRY_URL.sakuya;btn.classList.toggle('is-sakuya',current==='sakuya')}
 }
 addMaterialBtn.onclick=()=>materialForm.classList.toggle('hidden');
 materialFilters.querySelectorAll('button').forEach(b=>b.onclick=()=>{materialFilter=b.dataset.filter;materialFilters.querySelectorAll('button').forEach(x=>x.classList.toggle('active',x===b));renderMaterials()});
