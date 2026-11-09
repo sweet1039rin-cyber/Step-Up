@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>中1社会 暗記カード｜期末テスト正式範囲｜Step Up テスト対策</title>
+<style>
+:root{--ink:#1c2733;--accent:#ff6b9d;--navy:#1a1a5e;--line:#d9e2ec;--soft:#f4f7fb}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:var(--ink);
+ font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP","Yu Gothic",sans-serif;
+ font-size:18px;line-height:1.85;-webkit-text-size-adjust:100%}
+.wrap{max-width:880px;margin:0 auto;padding:20px 18px 56px}
+h1{font-size:1.55rem;line-height:1.45;border-bottom:4px solid var(--accent);padding-bottom:.35em;margin:.4em 0 .8em}
+p{margin:.6em 0}
+.backlink{display:inline-block;margin-top:28px;background:var(--accent);color:#fff;font-weight:700;
+ text-decoration:none;padding:14px 22px;border-radius:999px;font-size:1.05rem}
+.toplink{font-size:.95rem;margin-bottom:4px}
+.toplink a{color:var(--navy)}
+footer{margin-top:10px}
+@media (max-width:600px){body{font-size:17px}.wrap{padding:14px 12px 48px}h1{font-size:1.35rem}}
+.progress-text{font-weight:700;margin:16px 0 6px;font-size:1.1rem}
+.progress-bar{height:16px;background:var(--soft);border:2px solid var(--line);border-radius:999px;overflow:hidden}
+.progress-fill{height:100%;background:var(--accent);width:0;transition:width .3s}
+.card-scene{perspective:1200px;margin:20px 0 6px}
+.fcard{position:relative;width:100%;height:500px;cursor:pointer;transform-style:preserve-3d;transition:transform .45s;-webkit-tap-highlight-color:transparent}
+.fcard.flipped{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+ border:3px solid var(--navy);border-radius:18px;padding:24px 18px;overflow:hidden;
+ display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:#fff}
+.face.back{transform:rotateY(180deg);background:var(--soft);border-color:var(--accent)}
+.face-label{font-size:.85rem;font-weight:700;color:var(--accent);letter-spacing:.2em;margin-bottom:12px}
+.face-label.ans{color:var(--navy)}
+.face-text{font-size:1.3rem;font-weight:700;line-height:1.65}
+.face-note{margin-top:14px;font-size:.98rem;color:#54677a;line-height:1.65}
+.face-img{margin:4px 0 6px;max-width:100%}
+.face-img svg{max-width:100%;height:auto}
+.face{overflow-y:auto}
+.tap-hint{margin-top:16px;font-size:.9rem;color:#8a97a5}
+.judge{display:flex;gap:12px;margin-top:16px}
+.jbtn{flex:1;font-family:inherit;font-size:1.25rem;font-weight:700;padding:18px 10px;border-radius:14px;
+ border:3px solid var(--navy);background:#fff;color:var(--navy);cursor:pointer;min-height:64px}
+.jbtn.known{background:var(--accent);border-color:var(--accent);color:#fff}
+.jbtn:active{transform:scale(.98)}
+.round-info{text-align:center;color:#54677a;font-size:.95rem;margin-top:12px}
+.done-box{border:3px solid var(--accent);border-radius:18px;padding:32px 20px;text-align:center;background:#fff5f8;margin-top:22px}
+.done-title{font-size:1.5rem;font-weight:700;color:#c2255c;margin:.2em 0}
+.restart{max-width:340px;margin:16px auto 0;display:block;width:100%}
+</style>
+</head>
+<body>
+<div class="wrap">
+<p class="toplink"><a href="sakuya.html">← 中1トップへ戻る</a></p>
+<h1>中1社会 暗記カード｜期末テスト正式範囲</h1>
+<p>カードをタップすると答えが見えます。答えを見たら「覚えた」「まだ」で教えてください。「まだ」のカードだけが次の周に出てきます。</p>
+<div class="progress-text" id="progressText"></div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+<div id="playArea">
+<div class="card-scene"><div class="fcard" id="fcard">
+<div class="face front"><div class="face-label">も　ん　だ　い</div><div class="face-img" id="frontImg"></div><div class="face-text" id="frontText"></div><div class="tap-hint">タップで答えを見る</div></div>
+<div class="face back"><div class="face-label ans">こ　た　え</div><div class="face-text" id="backText"></div><div class="face-note" id="backNote"></div></div>
+</div></div>
+<div class="judge" id="judgeBtns" style="visibility:hidden">
+<button class="jbtn still" id="btnStill" type="button">まだ</button>
+<button class="jbtn known" id="btnKnown" type="button">覚えた</button>
+</div>
+<p class="round-info" id="roundInfo"></p>
+</div>
+<div id="doneArea" style="display:none">
+<div class="done-box"><p class="done-title">🎉 全部おぼえた！</p><p id="doneText"></p>
+<button class="jbtn known restart" id="btnRestart" type="button">最初からもう一度</button></div>
+</div>
+<footer><a class="backlink" href="sakuya.html">← 中1トップへ戻る</a> <a class="backlink" href="../index.html" style="background:#1a1a5e">🏠 アプリへ戻る</a></footer>
+</div>
+<script>
+var CARDS = [
+ {
+  "q": "アジア州を大きく分けると、どの地域があるか",
+  "a": "東アジア・東南アジア・南アジア・西アジア・中央アジア・北アジア",
+  "n": "アジアは広いので、地域ごとに分けて覚えます"
+ },
+ {
+  "q": "季節によって吹く向きが変わる風を何というか（漢字で）",
+  "a": "季節風（モンスーン）",
+  "n": "モンスーンともいいます"
+ },
+ {
+  "q": "東アジアで、夏に海から湿った季節風が吹くと、天気はどうなりやすいか",
+  "a": "雨が多くなりやすい",
+  "n": "夏の季節風は海から湿った空気を運びます"
+ },
+ {
+  "q": "中国の首都はどこか（漢字で）",
+  "a": "北京",
+  "n": "漢字で書けるようにしましょう"
+ },
+ {
+  "q": "中国を流れる、流域に平野や都市が広がる大きな河川で、「揚子江」とも呼ばれる川は何か（漢字で）",
+  "a": "長江",
+  "n": "揚子江とも呼ばれます"
+ },
+ {
+  "q": "中国北部を流れ、土砂を多く含む川は何か（漢字で）",
+  "a": "黄河",
+  "n": "中国北部を流れ、土砂を多く含みます"
+ },
+ {
+  "q": "中国で工業が発達し、「世界の工場」と呼ばれるようになった大きな理由は何か",
+  "a": "労働力や工業団地が集まり、多くの製品がつくられて輸出されたから",
+  "n": "「世界の工場」と呼ばれる理由です"
+ },
+ {
+  "q": "東南アジア諸国が協力するために結成した組織をアルファベットで何というか",
+  "a": "ASEAN",
+  "n": "東南アジア諸国連合のことです"
+ },
+ {
+  "q": "タイやベトナムで、大きな川の下流の平野を中心に盛んな農業は何か",
+  "a": "米作（稲作）",
+  "n": "タイ・ベトナムは米の輸出国でもあります"
+ },
+ {
+  "q": "メコン川やチャオプラヤ川の下流に広がる、川が運んだ土砂でできた平坦な土地を何というか",
+  "a": "三角州（デルタ）",
+  "n": "川の下流に土砂が積もってできた土地です"
+ },
+ {
+  "q": "インドネシアの気候の特徴は何か",
+  "a": "赤道付近にあり、一年を通して暑く雨の多い熱帯の気候",
+  "n": "一年を通して気温が高い気候です"
+ },
+ {
+  "q": "インドネシアなどで生産される、食品や洗剤の原料にもなる油は何か",
+  "a": "パーム油",
+  "n": "あぶらやしから取れる油です"
+ },
+ {
+  "q": "シンガポールが貿易で重要な位置にある理由は何か",
+  "a": "アジアとヨーロッパなどを結ぶ海上交通の要所にあり、大きな港があるから",
+  "n": "港が発達した都市国家です"
+ },
+ {
+  "q": "南アジアを流れる2つの大きな川は何か（漢字で）",
+  "a": "インダス川・ガンジス川",
+  "n": "南アジアの2大河川です"
+ },
+ {
+  "q": "インドでIT産業の中心として知られる都市はどこか",
+  "a": "ベンガルール",
+  "n": "バンガロールとも呼ばれます"
+ },
+ {
+  "q": "インドで最も信者が多い宗教は何か（漢字で）",
+  "a": "ヒンドゥー教",
+  "n": "インドで最も多い宗教です"
+ },
+ {
+  "q": "西アジアで広く信仰されている宗教は何か（漢字で）",
+  "a": "イスラム教",
+  "n": "西アジアで広く信仰されています"
+ },
+ {
+  "q": "西アジアや北アフリカに多い気候の特徴は何か",
+  "a": "雨が少なく、乾燥している",
+  "n": "砂漠が広がる地域も多いです"
+ },
+ {
+  "q": "アフリカ北部に広がる、世界最大級の砂漠は何か（漢字で）",
+  "a": "サハラ砂漠",
+  "n": "アフリカ北部にある世界最大級の砂漠です"
+ },
+ {
+  "q": "エジプトを流れ、地中海に注ぐ長い川は何か（漢字で）",
+  "a": "ナイル川",
+  "n": "地中海に注ぐ長い川です"
+ },
+ {
+  "q": "地中海と紅海を結び、アジアとヨーロッパの航路を短くした運河は何か",
+  "a": "スエズ運河",
+  "n": "地中海と紅海を結びます"
+ },
+ {
+  "q": "アフリカ中央部、赤道付近に広がる森林の気候帯は何か（漢字で）",
+  "a": "熱帯雨林帯",
+  "n": "赤道付近の気候帯です"
+ },
+ {
+  "q": "熱帯雨林帯の南北に広がる、木がまばらで草原が広がる地域を何というか",
+  "a": "サバナ",
+  "n": "熱帯雨林帯の南北に広がります"
+ },
+ {
+  "q": "東アフリカに連なる、大地が裂けたような大きな谷を何というか（漢字で）",
+  "a": "大地溝帯",
+  "n": "東アフリカに連なる大きな谷です"
+ },
+ {
+  "q": "アフリカ南東の沖に浮かぶ大きな島国はどこか",
+  "a": "マダガスカル",
+  "n": "アフリカ大陸の南東沖の島国です"
+ },
+ {
+  "q": "ガーナやコートジボワールで生産が盛んで、チョコレートの原料になる作物は何か",
+  "a": "カカオ",
+  "n": "チョコレートの原料です"
+ },
+ {
+  "q": "ナイジェリアで産出され、国の収入を支える資源は何か（漢字で）",
+  "a": "石油",
+  "n": "ナイジェリアの重要な資源です"
+ },
+ {
+  "q": "南アフリカ共和国で産出される鉱産資源の例を1つ答えなさい",
+  "a": "金・ダイヤモンド・プラチナのいずれか",
+  "n": "南アフリカの鉱産資源です"
+ },
+ {
+  "q": "アフリカに直線的な国境が多い理由として考えられることは何か",
+  "a": "植民地時代に、ヨーロッパの国々が現地の人々の暮らしを考えずに境界を引いたから",
+  "n": "直線的な国境が多い理由です"
+ },
+ {
+  "q": "ケニアやタンザニアで、野生動物を見に来る観光を何というか",
+  "a": "サファリ観光",
+  "n": "野生動物を見る観光です"
+ },
+ {
+  "q": "アフリカで多くの国が、特定の農産物や鉱産資源の輸出に頼る経済を何というか（漢字で）",
+  "a": "モノカルチャー経済",
+  "n": "特定の産品に頼る経済で、価格変動に弱いです"
+ },
+ {
+  "q": "アジアやアフリカの地図で国名を答える問題で大切なことは何か",
+  "a": "国の位置、首都、周辺の海や川との関係をセットで覚えること",
+  "n": "地図問題は位置関係がカギです"
+ },
+ {
+  "q": "図は緯度と気候帯の模式図です。赤道付近の気候帯は？",
+  "a": "熱帯",
+  "n": "模式図です。赤道付近は一年を通して暑く、雨の多い熱帯です",
+  "img": "<svg viewBox='0 0 320 190' width='320' role='img' aria-label='緯度と気候帯の模式図'>\n<rect x='10' y='10' width='300' height='180' fill='none' stroke='#1a1a5e' stroke-width='2'/>\n<rect x='10' y='10' width='300' height='32' fill='#c9d4f2'/>\n<rect x='10' y='42' width='300' height='32' fill='#e8e8ef'/>\n<rect x='10' y='74' width='300' height='42' fill='#ffb9d2'/>\n<rect x='10' y='116' width='300' height='32' fill='#e8e8ef'/>\n<rect x='10' y='148' width='300' height='32' fill='#c9d4f2'/>\n<line x1='10' y1='95' x2='310' y2='95' stroke='#ff6b9d' stroke-width='3' stroke-dasharray='8 5'/>\n<g font-size='15' font-weight='700' fill='#1a1a5e' text-anchor='middle'>\n<text x='150' y='32'>温帯</text>\n<text x='150' y='64'>乾燥帯</text>\n<text x='150' y='101'>熱帯</text>\n<text x='150' y='138'>乾燥帯</text>\n<text x='150' y='170'>温帯</text>\n</g>\n<text x='302' y='88' font-size='14' font-weight='700' fill='#c2255c' text-anchor='end'>赤道</text>\n</svg>"
+ },
+ {
+  "q": "図はモンスーン（季節風）の模式図です。夏の風向きはどちらですか。",
+  "a": "海から陸へ吹く",
+  "n": "模式図です。冬は反対に、陸から海へ吹きます",
+  "img": "<svg viewBox='0 0 340 170' width='330' role='img' aria-label='モンスーンの風向きの模式図'>\n<defs><marker id='ah1' markerWidth='8' markerHeight='8' refX='6' refY='3' orient='auto'><path d='M0,0 L7,3 L0,6 Z' fill='#ff6b9d'/></marker></defs>\n<rect x='5' y='5' width='160' height='160' fill='#f4f7fb' stroke='#1a1a5e' stroke-width='2'/>\n<rect x='175' y='5' width='160' height='160' fill='#f4f7fb' stroke='#1a1a5e' stroke-width='2'/>\n<g font-size='16' font-weight='700' text-anchor='middle'>\n<text x='85' y='30' fill='#c2255c'>夏</text>\n<text x='255' y='30' fill='#1a1a5e'>冬</text>\n</g>\n<line x1='55' y1='70' x2='120' y2='70' stroke='#ff6b9d' stroke-width='4' marker-end='url(#ah1)'/>\n<line x1='290' y1='70' x2='225' y2='70' stroke='#ff6b9d' stroke-width='4' marker-end='url(#ah1)'/>\n<text x='85' y='60' font-size='12' fill='#54677a' text-anchor='middle'>風</text>\n<text x='255' y='60' font-size='12' fill='#54677a' text-anchor='middle'>風</text>\n<rect x='15' y='100' width='60' height='48' fill='#b9d2f0'/>\n<rect x='95' y='100' width='60' height='48' fill='#dcdce6'/>\n<rect x='185' y='100' width='60' height='48' fill='#dcdce6'/>\n<rect x='265' y='100' width='60' height='48' fill='#b9d2f0'/>\n<g font-size='15' font-weight='700' fill='#1a1a5e' text-anchor='middle'>\n<text x='45' y='130'>海</text>\n<text x='125' y='130'>陸</text>\n<text x='215' y='130'>陸</text>\n<text x='295' y='130'>海</text>\n</g>\n</svg>"
+ },
+ {
+  "q": "図はアフリカの模式図です。北部に広がる砂漠と、エジプトを流れる川は？",
+  "a": "サハラ砂漠とナイル川",
+  "n": "模式図です。大まかな位置関係をつかみましょう",
+  "img": "<svg viewBox='0 0 260 250' width='250' role='img' aria-label='アフリカの模式図'>\n<path d='M70 15 L150 8 L205 25 L228 62 L212 100 L222 138 L195 195 L168 232 L138 220 L118 168 L80 145 L52 100 L48 48 Z' fill='#eef1f8' stroke='#1a1a5e' stroke-width='2'/>\n<path d='M56 42 L214 40 L226 62 L212 94 L118 102 L68 90 L50 72 Z' fill='#ffc7da'/>\n<path d='M168 205 C 176 165, 164 120, 173 58' fill='none' stroke='#1a1a5e' stroke-width='3'/>\n<ellipse cx='228' cy='205' rx='9' ry='19' fill='#eef1f8' stroke='#1a1a5e' stroke-width='1.5'/>\n<text x='128' y='70' font-size='14' font-weight='700' fill='#c2255c' text-anchor='middle'>サハラ砂漠</text>\n<text x='196' y='128' font-size='12' font-weight='700' fill='#1a1a5e'>ナイル川</text>\n</svg>"
+ },
+ {
+  "q": "図のように、川が運んだ土砂が下流に積もってできた平坦な土地を何というか",
+  "a": "三角州（デルタ）",
+  "n": "模式図です。メコン川やチャオプラヤ川の下流にも広がります",
+  "img": "<svg viewBox='0 0 320 180' width='320' role='img' aria-label='三角州の模式図'>\n<rect x='0' y='0' width='320' height='112' fill='#eef1f8'/>\n<rect x='0' y='112' width='320' height='68' fill='#b9d2f0'/>\n<path d='M160 2 L160 58' stroke='#7aa7d9' stroke-width='9' fill='none'/>\n<path d='M160 58 C 130 80, 105 95, 88 114' stroke='#7aa7d9' stroke-width='7' fill='none'/>\n<path d='M160 58 C 160 85, 160 98, 160 116' stroke='#7aa7d9' stroke-width='7' fill='none'/>\n<path d='M160 58 C 190 80, 215 95, 232 114' stroke='#7aa7d9' stroke-width='7' fill='none'/>\n<polygon points='84,116 236,116 160,74' fill='#ffd9e4' stroke='#ff6b9d' stroke-width='2'/>\n<text x='160' y='24' font-size='14' font-weight='700' fill='#1a1a5e' text-anchor='middle'>川</text>\n<text x='160' y='152' font-size='15' font-weight='700' fill='#1a1a5e' text-anchor='middle'>海</text>\n</svg>"
+ },
+ {
+  "q": "図の★の位置にある、地中海と紅海を結ぶ運河は？",
+  "a": "スエズ運河",
+  "n": "模式図です。アジアとヨーロッパの航路を短くしました",
+  "img": "<svg viewBox='0 0 320 180' width='320' role='img' aria-label='スエズ運河の位置の模式図'>\n<rect x='0' y='0' width='320' height='180' fill='#eef1f8'/>\n<path d='M0 0 L150 0 C 140 35, 120 55, 92 68 L0 78 Z' fill='#b9d2f0'/>\n<path d='M320 180 L205 180 C 215 140, 235 120, 262 108 L320 96 Z' fill='#b9d2f0'/>\n<line x1='98' y1='72' x2='228' y2='122' stroke='#ff6b9d' stroke-width='6'/>\n<text x='52' y='34' font-size='15' font-weight='700' fill='#1a1a5e'>地中海</text>\n<text x='268' y='152' font-size='15' font-weight='700' fill='#1a1a5e'>紅海</text>\n<text x='163' y='92' font-size='24' fill='#c2255c' text-anchor='middle'>★</text>\n</svg>"
+ },
+ {
+  "q": "古墳とは何か（漢字で）",
+  "a": "王や豪族などの有力者の大きな墓",
+  "n": "古墳時代を象徴する大きな墓です"
+ },
+ {
+  "q": "前方後円墳の形の特徴は何か",
+  "a": "前が四角形、後ろが円形の形をした古墳",
+  "n": "日本で発達した古墳の形です"
+ },
+ {
+  "q": "大阪府堺市にある、日本最大級の前方後円墳は何と呼ばれるか",
+  "a": "大仙古墳（仁徳天皇陵古墳）",
+  "n": "日本最大級の前方後円墳です"
+ },
+ {
+  "q": "古墳のまわりや上に置かれた、素焼きの人形や建物などの形をしたものを何というか（漢字で）",
+  "a": "埴輪",
+  "n": "人物・家・動物などの形があります"
+ },
+ {
+  "q": "古墳から出土する、副葬品の例を2つ答えなさい",
+  "a": "銅鏡・鉄製の剣（刀）・勾玉・馬具などから2つ",
+  "n": "副葬品は力の強さを表します"
+ },
+ {
+  "q": "3〜6世紀ごろ、近畿地方を中心に各地の豪族を従えた政権を何というか（漢字で）",
+  "a": "大和政権",
+  "n": "近畿地方を中心とした政権です"
+ },
+ {
+  "q": "大和政権の王を何と呼んだか（漢字で）",
+  "a": "大王",
+  "n": "大和政権の王の呼び名です"
+ },
+ {
+  "q": "地方で強い力をもち、土地や人々を支配した有力者を何というか（漢字で）",
+  "a": "豪族",
+  "n": "地方の有力者です"
+ },
+ {
+  "q": "全国に古墳が広がったことから分かることは何か",
+  "a": "大和政権の影響が各地に及んだこと",
+  "n": "古墳の広がりから読み取ります"
+ },
+ {
+  "q": "大陸や朝鮮半島から日本に移り住み、進んだ技術や文化を伝えた人々を何というか（漢字で）",
+  "a": "渡来人",
+  "n": "大陸・朝鮮半島から来た人々です"
+ },
+ {
+  "q": "渡来人が伝えた技術の例を2つ答えなさい",
+  "a": "須恵器づくり・機織り・金属加工・土木技術などから2つ",
+  "n": "進んだ技術や文化を伝えました"
+ },
+ {
+  "q": "鉄製の農具が広がると、農業はどう変わったか",
+  "a": "土地を深く耕せるようになり、生産量が増えた",
+  "n": "鉄製農具の普及の効果です"
+ },
+ {
+  "q": "豪族が力をもつうえで、鉄製の武器や農具が重要だったのはなぜか",
+  "a": "戦いの力と食料生産の力を高めることができたから",
+  "n": "鉄は武器にも農具にもなりました"
+ },
+ {
+  "q": "古墳の規模や副葬品の違いから分かることは何か",
+  "a": "王や豪族の力の大きさや、身分の差が大きくなっていたこと",
+  "n": "古墳の規模の違いから分かります"
+ },
+ {
+  "q": "絵を見て答えなさい。図の形をした古墳を何という？",
+  "a": "前方後円墳",
+  "n": "模式図です。前が四角形、後ろが円形の形をしています",
+  "img": "<svg viewBox='0 0 320 170' width='320' role='img' aria-label='前方後円墳の模式図'>\n<rect x='38' y='45' width='95' height='80' fill='#c9d4f2' stroke='#1a1a5e' stroke-width='2.5'/>\n<circle cx='218' cy='85' r='60' fill='#ffb9d2' stroke='#1a1a5e' stroke-width='2.5'/>\n<text x='85' y='90' font-size='14' font-weight='700' fill='#1a1a5e' text-anchor='middle'>前方部</text>\n<text x='218' y='90' font-size='14' font-weight='700' fill='#1a1a5e' text-anchor='middle'>後円部</text>\n</svg>"
+ },
+ {
+  "q": "絵を見て答えなさい。図のように、大王を中心として各地の豪族を従えた政権を何という？",
+  "a": "大和政権",
+  "n": "関係を表した模式図です。大王を中心に、豪族と結びつきました",
+  "img": "<svg viewBox='0 0 320 195' width='320' role='img' aria-label='大和政権と豪族の関係図'>\n<line x1='140' y1='82' x2='72' y2='128' stroke='#1a1a5e' stroke-width='2'/>\n<line x1='160' y1='92' x2='160' y2='126' stroke='#1a1a5e' stroke-width='2'/>\n<line x1='180' y1='82' x2='248' y2='128' stroke='#1a1a5e' stroke-width='2'/>\n<circle cx='160' cy='55' r='37' fill='#ffb9d2' stroke='#1a1a5e' stroke-width='2.5'/>\n<g font-size='14' font-weight='700' fill='#1a1a5e' text-anchor='middle'>\n<text x='160' y='50'>大和政権</text>\n<text x='160' y='70'>（大王）</text>\n</g>\n<circle cx='60' cy='155' r='27' fill='#eef1f8' stroke='#1a1a5e' stroke-width='2'/>\n<circle cx='160' cy='155' r='27' fill='#eef1f8' stroke='#1a1a5e' stroke-width='2'/>\n<circle cx='260' cy='155' r='27' fill='#eef1f8' stroke='#1a1a5e' stroke-width='2'/>\n<g font-size='14' font-weight='700' fill='#1a1a5e' text-anchor='middle'>\n<text x='60' y='161'>豪族</text>\n<text x='160' y='161'>豪族</text>\n<text x='260' y='161'>豪族</text>\n</g>\n</svg>"
+ }
+];
+var total = CARDS.length;
+var knownCount = 0;
+var deck = [];
+var pos = 0;
+var flipped = false;
+var round = 1;
+function el(id){ return document.getElementById(id); }
+function shuffle(a){ for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+function updateProgress(){
+  el('progressText').textContent = '覚えた ' + knownCount + ' / ' + total + ' 枚';
+  el('progressFill').style.width = (total ? (knownCount/total*100) : 0) + '%';
+}
+function updateRoundInfo(){
+  el('roundInfo').textContent = '第' + round + '周目｜この周はあと ' + (deck.length - pos) + ' 枚';
+}
+function showCard(){
+  flipped = false;
+  el('fcard').classList.remove('flipped');
+  var c = CARDS[deck[pos]];
+  el('frontText').textContent = c.q;
+  el('frontImg').innerHTML = c.img || '';
+  el('backText').textContent = c.a;
+  el('backNote').textContent = c.n || '';
+  el('judgeBtns').style.visibility = 'hidden';
+  updateRoundInfo();
+}
+function startRound(){ shuffle(deck); pos = 0; showCard(); }
+function init(){
+  knownCount = 0; round = 1;
+  deck = CARDS.map(function(_, i){ return i; });
+  el('doneArea').style.display = 'none';
+  el('playArea').style.display = 'block';
+  updateProgress();
+  startRound();
+}
+function finish(){
+  coinAward(10,'暗記カード1周','flash:flash_chu1_finals_social',1);
+  el('playArea').style.display = 'none';
+  el('doneArea').style.display = 'block';
+  el('doneText').textContent = '全' + total + '枚のカードを全部おぼえました。おつかれさま！';
+}
+function judge(known){
+  if(!flipped) return;
+  if(known){ knownCount++; deck.splice(pos, 1); coinAward(1,'暗記カード','flashcard-each',20); }
+  else { pos++; }
+  updateProgress();
+  if(pos >= deck.length){
+    if(deck.length === 0){ finish(); return; }
+    round++; startRound(); return;
+  }
+  showCard();
+}
+el('fcard').addEventListener('click', function(){
+  if(flipped) return;
+  flipped = true;
+  this.classList.add('flipped');
+  el('judgeBtns').style.visibility = 'visible';
+});
+el('btnKnown').addEventListener('click', function(){ judge(true); });
+el('btnStill').addEventListener('click', function(){ judge(false); });
+el('btnRestart').addEventListener('click', init);
+init();
+function todayStr(d){d=d||new Date();var m=('0'+(d.getMonth()+1)).slice(-2);var day=('0'+d.getDate()).slice(-2);return d.getFullYear()+'-'+m+'-'+day;}
+/* ==== ご褒美コイン ==== */
+var COIN_CHILD='sakuya';
+var COIN_KEY='stepup-coins-'+COIN_CHILD;
+var CLAIM_KEY='stepup-coinclaims-'+COIN_CHILD;
+function coinLoad(){try{var v=JSON.parse(localStorage.getItem(COIN_KEY));if(v&&typeof v.total==='number'&&Array.isArray(v.history))return v;}catch(e){}return{total:0,history:[]};}
+function coinClaimsLoad(){try{var v=JSON.parse(localStorage.getItem(CLAIM_KEY));if(v&&typeof v==='object'&&v!==null)return v;}catch(e){}return{};}
+function coinAward(amount,sourceLabel,claimId,dailyCap){
+  if(!amount||amount<=0)return 0;
+  if(dailyCap==null)dailyCap=1;
+  if(claimId){
+    var claims=coinClaimsLoad();
+    var ck=todayStr()+':'+claimId;
+    var n=claims[ck]||0;
+    if(n>=dailyCap)return 0;
+    claims[ck]=n+1;
+    try{localStorage.setItem(CLAIM_KEY,JSON.stringify(claims));}catch(e){}
+  }
+  var data=coinLoad();
+  data.total+=amount;
+  data.history.push({date:todayStr(),source:sourceLabel,amount:amount});
+  if(data.history.length>200)data.history=data.history.slice(data.history.length-200);
+  try{localStorage.setItem(COIN_KEY,JSON.stringify(data));}catch(e){}
+  coinToast(amount);
+  return amount;
+}
+function coinToast(amount){
+  var t=document.createElement('div');
+  t.textContent='🪙 +'+amount+'コイン！';
+  t.setAttribute('style','position:fixed;right:16px;bottom:16px;z-index:9999;background:#1a1a5e;color:#fff;font-weight:700;font-size:1.1rem;padding:12px 20px;border-radius:999px;box-shadow:0 4px 14px rgba(0,0,0,.25);opacity:0;transition:opacity .3s;pointer-events:none');
+  document.body.appendChild(t);
+  setTimeout(function(){t.style.opacity='1';},10);
+  setTimeout(function(){t.style.opacity='0';},1700);
+  setTimeout(function(){if(t.parentNode)t.parentNode.removeChild(t);},2200);
+}
+</script>
+</body>
+</html>

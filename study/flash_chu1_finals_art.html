@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>中1美術 暗記カード｜期末テスト正式範囲｜Step Up テスト対策</title>
+<style>
+:root{--ink:#1c2733;--accent:#ff6b9d;--navy:#1a1a5e;--line:#d9e2ec;--soft:#f4f7fb}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:var(--ink);
+ font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP","Yu Gothic",sans-serif;
+ font-size:18px;line-height:1.85;-webkit-text-size-adjust:100%}
+.wrap{max-width:880px;margin:0 auto;padding:20px 18px 56px}
+h1{font-size:1.55rem;line-height:1.45;border-bottom:4px solid var(--accent);padding-bottom:.35em;margin:.4em 0 .8em}
+p{margin:.6em 0}
+.backlink{display:inline-block;margin-top:28px;background:var(--accent);color:#fff;font-weight:700;
+ text-decoration:none;padding:14px 22px;border-radius:999px;font-size:1.05rem}
+.toplink{font-size:.95rem;margin-bottom:4px}
+.toplink a{color:var(--navy)}
+footer{margin-top:10px}
+@media (max-width:600px){body{font-size:17px}.wrap{padding:14px 12px 48px}h1{font-size:1.35rem}}
+.progress-text{font-weight:700;margin:16px 0 6px;font-size:1.1rem}
+.progress-bar{height:16px;background:var(--soft);border:2px solid var(--line);border-radius:999px;overflow:hidden}
+.progress-fill{height:100%;background:var(--accent);width:0;transition:width .3s}
+.card-scene{perspective:1200px;margin:20px 0 6px}
+.fcard{position:relative;width:100%;height:470px;cursor:pointer;transform-style:preserve-3d;transition:transform .45s;-webkit-tap-highlight-color:transparent}
+.fcard.flipped{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+ border:3px solid var(--navy);border-radius:18px;padding:24px 18px;overflow:hidden;
+ display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:#fff}
+.face.back{transform:rotateY(180deg);background:var(--soft);border-color:var(--accent)}
+.face-label{font-size:.85rem;font-weight:700;color:var(--accent);letter-spacing:.2em;margin-bottom:12px}
+.face-label.ans{color:var(--navy)}
+.front-img{margin-bottom:10px;line-height:0}
+.front-img svg{width:100%;max-width:225px;height:auto}
+.face-text{font-size:1.3rem;font-weight:700;line-height:1.65}
+.face-note{margin-top:14px;font-size:.98rem;color:#54677a;line-height:1.65}
+.tap-hint{margin-top:16px;font-size:.9rem;color:#8a97a5}
+.judge{display:flex;gap:12px;margin-top:16px}
+.jbtn{flex:1;font-family:inherit;font-size:1.25rem;font-weight:700;padding:18px 10px;border-radius:14px;
+ border:3px solid var(--navy);background:#fff;color:var(--navy);cursor:pointer;min-height:64px}
+.jbtn.known{background:var(--accent);border-color:var(--accent);color:#fff}
+.jbtn:active{transform:scale(.98)}
+.round-info{text-align:center;color:#54677a;font-size:.95rem;margin-top:12px}
+.done-box{border:3px solid var(--accent);border-radius:18px;padding:32px 20px;text-align:center;background:#fff5f8;margin-top:22px}
+.done-title{font-size:1.5rem;font-weight:700;color:#c2255c;margin:.2em 0}
+.restart{max-width:340px;margin:16px auto 0;display:block;width:100%}
+</style>
+</head>
+<body>
+<div class="wrap">
+<p class="toplink"><a href="sakuya.html">← 中1トップへ戻る</a></p>
+<h1>中1美術 暗記カード｜期末テスト正式範囲</h1>
+<p>カードをタップすると答えが見えます。答えを見たら「覚えた」「まだ」で教えてください。「まだ」のカードだけが次の周に出てきます。</p>
+<div class="progress-text" id="progressText"></div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+<div id="playArea">
+<div class="card-scene"><div class="fcard" id="fcard">
+<div class="face front"><div class="face-label">も　ん　だ　い</div><div class="front-img" id="frontImg"></div><div class="face-text" id="frontText"></div><div class="tap-hint">タップで答えを見る</div></div>
+<div class="face back"><div class="face-label ans">こ　た　え</div><div class="face-text" id="backText"></div><div class="face-note" id="backNote"></div></div>
+</div></div>
+<div class="judge" id="judgeBtns" style="visibility:hidden">
+<button class="jbtn still" id="btnStill" type="button">まだ</button>
+<button class="jbtn known" id="btnKnown" type="button">覚えた</button>
+</div>
+<p class="round-info" id="roundInfo"></p>
+</div>
+<div id="doneArea" style="display:none">
+<div class="done-box"><p class="done-title">🎉 全部おぼえた！</p><p id="doneText"></p>
+<button class="jbtn known restart" id="btnRestart" type="button">最初からもう一度</button></div>
+</div>
+<footer><a class="backlink" href="sakuya.html">← 中1トップへ戻る</a> <a class="backlink" href="../index.html" style="background:#1a1a5e">🏠 アプリへ戻る</a></footer>
+</div>
+<script>
+var CARDS = [
+ {
+  "q": "色の三属性とは何か",
+  "a": "色相・明度・彩度の3つ",
+  "n": "色はこの3つの性質で表せます"
+ },
+ {
+  "q": "色相とは何か",
+  "a": "赤・黄・青のように、色合いを区別する性質",
+  "n": "色合いそのものを区別します"
+ },
+ {
+  "q": "明度とは何か",
+  "a": "色の明るさの程度。高いほど明るく、低いほど暗い",
+  "n": "明るさの度合いです"
+ },
+ {
+  "q": "彩度とは何か",
+  "a": "色の鮮やかさの程度。高いほど鮮やかで、低いほどくすむ",
+  "n": "灰色みが強いほど低くなります"
+ },
+ {
+  "q": "色相環とは何か",
+  "a": "色相を順序よく円の形に並べたもの",
+  "n": "色相を円に並べたものです"
+ },
+ {
+  "q": "補色とは何か",
+  "a": "色相環で向かい合いに位置する色の組み合わせ。互いの色を引き立て合う",
+  "n": "並べると互いが目立ちます"
+ },
+ {
+  "q": "類似色とは何か",
+  "a": "色相環で近くに位置する色の組み合わせ。調和しやすく、落ち着いた印象になる",
+  "n": "対比が弱く、調和しやすい組み合わせです"
+ },
+ {
+  "q": "無彩色とは何か",
+  "a": "白・灰色・黒のように、色相と彩度をもたない色",
+  "n": "明度だけで表されます"
+ },
+ {
+  "q": "有彩色とは何か",
+  "a": "赤・黄・青など、色相をもつ色",
+  "n": "無彩色と対比して覚えましょう"
+ },
+ {
+  "q": "トーンとは何か",
+  "a": "明度と彩度の組み合わせで表す色の調子（色調）",
+  "n": "色の調子を表す考え方です"
+ },
+ {
+  "q": "同じ色相でも印象が変わるのはなぜか",
+  "a": "トーン（明度・彩度）が変わると、明るい・落ち着いたなど受ける印象が変わるから",
+  "n": "同じ色でもトーンで印象が変わります"
+ },
+ {
+  "q": "暖色とは何か",
+  "a": "赤・橙・黄など、暖かさを感じる色",
+  "n": "暖かさを感じる色のグループです"
+ },
+ {
+  "q": "寒色とは何か",
+  "a": "青・青緑・青紫など、涼しさや寒さを感じる色",
+  "n": "涼しさを感じる色のグループです"
+ },
+ {
+  "q": "印象派の画家たちは何を描こうとしたか",
+  "a": "刻々と変化する光の様子と、その中での色の見え方",
+  "n": "光と色の変化をとらえようとしました"
+ },
+ {
+  "q": "印象派の技法「筆触分割」とは何か",
+  "a": "色を混ぜずに、小さな筆のタッチを並べて置く技法。見る人の目の中で色が混ざって見える",
+  "n": "目の中で色が混ざって見えます"
+ },
+ {
+  "q": "印象派が影を描くときの特徴は",
+  "a": "影を黒や茶だけで塗らず、青や紫など色みのある色で表現した",
+  "n": "影にも色みを見つけました"
+ },
+ {
+  "q": "印象派の代表的な画家は誰か",
+  "a": "モネ、ルノワールなど（19世紀後半のフランスを中心に活動）",
+  "n": "19世紀後半のフランスが中心です"
+ },
+ {
+  "q": "「印象派」という名前の由来になった作品は",
+  "a": "モネの「印象・日の出」",
+  "n": "「印象派」の名の由来です"
+ },
+ {
+  "q": "この図は何を表している？",
+  "a": "色相環（色相を順序よく円の形に並べたもの）",
+  "n": "向かい合う色同士が補色、隣り合う色が類似色です。色の関係が一目で分かります",
+  "img": '<svg viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="色相環"><path d="M110.0,38.0 A72,72 0 0 1 146.0,47.6 L130.0,75.4 A40,40 0 0 0 110.0,70.0 Z" fill="#e60012" stroke="#ffffff" stroke-width="1.5"/><text x="134" y="23" font-size="10" fill="#1c2733" text-anchor="middle">赤</text><path d="M146.0,47.6 A72,72 0 0 1 172.4,74.0 L144.6,90.0 A40,40 0 0 0 130.0,75.4 Z" fill="#f05a24" stroke="#ffffff" stroke-width="1.5"/><text x="176" y="47" font-size="10" fill="#1c2733" text-anchor="middle">赤橙</text><path d="M172.4,74.0 A72,72 0 0 1 182.0,110.0 L150.0,110.0 A40,40 0 0 0 144.6,90.0 Z" fill="#f39800" stroke="#ffffff" stroke-width="1.5"/><text x="200" y="89" font-size="10" fill="#1c2733" text-anchor="middle">橙</text><path d="M182.0,110.0 A72,72 0 0 1 172.4,146.0 L144.6,130.0 A40,40 0 0 0 150.0,110.0 Z" fill="#f9bd00" stroke="#ffffff" stroke-width="1.5"/><text x="200" y="137" font-size="10" fill="#1c2733" text-anchor="middle">黄橙</text><path d="M172.4,146.0 A72,72 0 0 1 146.0,172.4 L130.0,144.6 A40,40 0 0 0 144.6,130.0 Z" fill="#ffdc00" stroke="#ffffff" stroke-width="1.5"/><text x="176" y="179" font-size="10" fill="#1c2733" text-anchor="middle">黄</text><path d="M146.0,172.4 A72,72 0 0 1 110.0,182.0 L110.0,150.0 A40,40 0 0 0 130.0,144.6 Z" fill="#8fc31f" stroke="#ffffff" stroke-width="1.5"/><text x="134" y="203" font-size="10" fill="#1c2733" text-anchor="middle">黄緑</text><path d="M110.0,182.0 A72,72 0 0 1 74.0,172.4 L90.0,144.6 A40,40 0 0 0 110.0,150.0 Z" fill="#009944" stroke="#ffffff" stroke-width="1.5"/><text x="86" y="203" font-size="10" fill="#1c2733" text-anchor="middle">緑</text><path d="M74.0,172.4 A72,72 0 0 1 47.6,146.0 L75.4,130.0 A40,40 0 0 0 90.0,144.6 Z" fill="#009e96" stroke="#ffffff" stroke-width="1.5"/><text x="44" y="179" font-size="10" fill="#1c2733" text-anchor="middle">青緑</text><path d="M47.6,146.0 A72,72 0 0 1 38.0,110.0 L70.0,110.0 A40,40 0 0 0 75.4,130.0 Z" fill="#0068b7" stroke="#ffffff" stroke-width="1.5"/><text x="20" y="137" font-size="10" fill="#1c2733" text-anchor="middle">青</text><path d="M38.0,110.0 A72,72 0 0 1 47.6,74.0 L75.4,90.0 A40,40 0 0 0 70.0,110.0 Z" fill="#35419e" stroke="#ffffff" stroke-width="1.5"/><text x="20" y="89" font-size="10" fill="#1c2733" text-anchor="middle">青紫</text><path d="M47.6,74.0 A72,72 0 0 1 74.0,47.6 L90.0,75.4 A40,40 0 0 0 75.4,90.0 Z" fill="#8e3090" stroke="#ffffff" stroke-width="1.5"/><text x="44" y="47" font-size="10" fill="#1c2733" text-anchor="middle">紫</text><path d="M74.0,47.6 A72,72 0 0 1 110.0,38.0 L110.0,70.0 A40,40 0 0 0 90.0,75.4 Z" fill="#c2187a" stroke="#ffffff" stroke-width="1.5"/><text x="86" y="23" font-size="10" fill="#1c2733" text-anchor="middle">赤紫</text></svg>'
+ },
+ {
+  "q": "図で、赤と矢印で結ばれた向かい側の色（赤の補色）はどの色？",
+  "a": "青緑",
+  "n": "色相環で向かい合いに位置する色同士が補色です。並べると互いの色を引き立て合います",
+  "img": '<svg viewBox="0 0 200 168" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="補色の位置関係"><path d="M100.0,24.0 A58,58 0 0 1 129.0,31.8 L116.0,54.3 A32,32 0 0 0 100.0,50.0 Z" fill="#e60012" stroke="#ffffff" stroke-width="1.5"/><path d="M129.0,31.8 A58,58 0 0 1 150.2,53.0 L127.7,66.0 A32,32 0 0 0 116.0,54.3 Z" fill="#dfe5ec" stroke="#ffffff" stroke-width="1.5"/><path d="M150.2,53.0 A58,58 0 0 1 158.0,82.0 L132.0,82.0 A32,32 0 0 0 127.7,66.0 Z" fill="#dfe5ec" stroke="#ffffff" stroke-width="1.5"/><path d="M158.0,82.0 A58,58 0 0 1 150.2,111.0 L127.7,98.0 A32,32 0 0 0 132.0,82.0 Z" fill="#dfe5ec" stroke="#ffffff" stroke-width="1.5"/><path d="M150.2,111.0 A58,58 0 0 1 129.0,132.2 L116.0,109.7 A32,32 0 0 0 127.7,98.0 Z" fill="#dfe5ec" stroke="#ffffff" stroke-width="1.5"/><path d="M129.0,132.2 A58,58 0 0 1 100.0,140.0 L100.0,114.0 A32,32 0 0 0 116.0,109.7 Z" fill="#dfe5ec" stroke="#ffffff" stroke-width="1.5"/><path d="M100.0,140.0 A58,58 0 0 1 71.0,132.2 L84.0,109.7 A32,32 0 0 0 100.0,114.0 Z" fill="#dfe5ec" stroke="#ffffff" stroke-width="1.5"/><path d="M71.0,132.2 A58,58 0 0 1 49.8,111.0 L72.3,98.0 A32,32 0 0 0 84.0,109.7 Z" fill="#009e96" stroke="#ffffff" stroke-width="1.5"/><path d="M49.8,111.0 A58,58 0 0 1 42.0,82.0 L68.0,82.0 A32,32 0 0 0 72.3,98.0 Z" fill="#dfe5ec" stroke="#ffffff" stroke-width="1.5"/><path d="M42.0,82.0 A58,58 0 0 1 49.8,53.0 L72.3,66.0 A32,32 0 0 0 68.0,82.0 Z" fill="#dfe5ec" stroke="#ffffff" stroke-width="1.5"/><path d="M49.8,53.0 A58,58 0 0 1 71.0,31.8 L84.0,54.3 A32,32 0 0 0 72.3,66.0 Z" fill="#dfe5ec" stroke="#ffffff" stroke-width="1.5"/><path d="M71.0,31.8 A58,58 0 0 1 100.0,24.0 L100.0,50.0 A32,32 0 0 0 84.0,54.3 Z" fill="#dfe5ec" stroke="#ffffff" stroke-width="1.5"/><defs><marker id="ah" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#1a1a5e"/></marker></defs><line x1="100" y1="52" x2="100" y2="112" stroke="#1a1a5e" stroke-width="3" marker-start="url(#ah)" marker-end="url(#ah)"/><text x="100" y="12" font-size="11" fill="#1c2733" text-anchor="middle" font-weight="bold">赤</text><text x="100" y="162" font-size="11" fill="#1c2733" text-anchor="middle" font-weight="bold">青緑</text></svg>'
+ },
+ {
+  "q": "図のいちばん上の段のように、明度が高い色にはどんな特徴がある？",
+  "a": "明るく、軽い感じがする（白に近い色になる）",
+  "n": "明度は色の明るさの程度。高いほど明るく、低いほど暗くなります。この図は上が明度が高く、右へ行くほど彩度が高い並びです",
+  "img": '<svg viewBox="0 0 200 176" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="明度と彩度の段階図"><rect x="46" y="16" width="42" height="42" rx="4" fill="#c3cbd8"/><rect x="91" y="16" width="42" height="42" rx="4" fill="#93b8ee"/><rect x="136" y="16" width="42" height="42" rx="4" fill="#2f8bff"/><rect x="46" y="61" width="42" height="42" rx="4" fill="#8a93a6"/><rect x="91" y="61" width="42" height="42" rx="4" fill="#5b83cc"/><rect x="136" y="61" width="42" height="42" rx="4" fill="#0057e7"/><rect x="46" y="106" width="42" height="42" rx="4" fill="#565e6e"/><rect x="91" y="106" width="42" height="42" rx="4" fill="#33549c"/><rect x="136" y="106" width="42" height="42" rx="4" fill="#002fa3"/><text x="30" y="30" font-size="10" fill="#1c2733">明度</text><text x="30" y="44" font-size="10" fill="#1c2733">高い</text><text x="30" y="140" font-size="10" fill="#1c2733">低い</text><text x="100" y="168" font-size="10" fill="#1c2733" text-anchor="middle">彩度 低い → 高い</text></svg>'
+ },
+ {
+  "q": "図の1〜6の色見本のうち、暖色だけを集めた組み合わせはどれ？",
+  "a": "1・3・5（赤・橙・黄）",
+  "n": "暖色は赤・橙・黄など暖かさを感じる色。2・4・6（青・青緑・青紫）は寒色です",
+  "img": '<svg viewBox="0 0 200 128" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="色見本1から6"><rect x="8" y="8" width="56" height="48" rx="6" fill="#e60012"/><text x="36" y="38" font-size="15" fill="#ffffff" text-anchor="middle" font-weight="bold">1</text><rect x="72" y="8" width="56" height="48" rx="6" fill="#0068b7"/><text x="100" y="38" font-size="15" fill="#ffffff" text-anchor="middle" font-weight="bold">2</text><rect x="136" y="8" width="56" height="48" rx="6" fill="#f39800"/><text x="164" y="38" font-size="15" fill="#ffffff" text-anchor="middle" font-weight="bold">3</text><rect x="8" y="68" width="56" height="48" rx="6" fill="#009e96"/><text x="36" y="98" font-size="15" fill="#ffffff" text-anchor="middle" font-weight="bold">4</text><rect x="72" y="68" width="56" height="48" rx="6" fill="#ffdc00"/><text x="100" y="98" font-size="15" fill="#1c2733" text-anchor="middle" font-weight="bold">5</text><rect x="136" y="68" width="56" height="48" rx="6" fill="#35419e"/><text x="164" y="98" font-size="15" fill="#ffffff" text-anchor="middle" font-weight="bold">6</text></svg>'
+ },
+ {
+  "q": "この描き方（小さな色のタッチの集まり）の特徴は？",
+  "a": "筆触分割。色を混ぜずに小さなタッチを並べて置く技法で、見る人の目の中で色が混ざって見える",
+  "n": "印象派の技法です。光の変化やきらめきを表すのに使われました",
+  "img": '<svg viewBox="0 0 200 124" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="筆触分割のイメージ"><rect x="0" y="0" width="200" height="124" fill="#eef3e6"/><rect x="22" y="9" width="14" height="5" rx="2.5" fill="#ffffff" transform="rotate(-13 22 9)"/><rect x="117" y="40" width="10" height="5" rx="2.5" fill="#a8c8ec" transform="rotate(-5 117 40)"/><rect x="154" y="9" width="10" height="5" rx="2.5" fill="#a8c8ec" transform="rotate(-4 154 9)"/><rect x="15" y="23" width="14" height="5" rx="2.5" fill="#dcebfb" transform="rotate(16 15 23)"/><rect x="34" y="49" width="14" height="5" rx="2.5" fill="#ffffff" transform="rotate(8 34 49)"/><rect x="51" y="14" width="12" height="5" rx="2.5" fill="#5b93d6" transform="rotate(-14 51 14)"/><rect x="170" y="16" width="11" height="5" rx="2.5" fill="#5b93d6" transform="rotate(1 170 16)"/><rect x="166" y="16" width="13" height="5" rx="2.5" fill="#7fb2e5" transform="rotate(19 166 16)"/><rect x="38" y="5" width="14" height="5" rx="2.5" fill="#f2c9d8" transform="rotate(15 38 5)"/><rect x="69" y="21" width="15" height="5" rx="2.5" fill="#dcebfb" transform="rotate(-5 69 21)"/><rect x="93" y="36" width="10" height="5" rx="2.5" fill="#a8c8ec" transform="rotate(13 93 36)"/><rect x="36" y="36" width="16" height="5" rx="2.5" fill="#f2c9d8" transform="rotate(-13 36 36)"/><rect x="13" y="50" width="14" height="5" rx="2.5" fill="#dcebfb" transform="rotate(13 13 50)"/><rect x="74" y="27" width="14" height="5" rx="2.5" fill="#a8c8ec" transform="rotate(1 74 27)"/><rect x="100" y="24" width="10" height="5" rx="2.5" fill="#f2c9d8" transform="rotate(-4 100 24)"/><rect x="86" y="48" width="11" height="5" rx="2.5" fill="#f2c9d8" transform="rotate(22 86 48)"/><rect x="5" y="22" width="11" height="5" rx="2.5" fill="#ffffff" transform="rotate(-17 5 22)"/><rect x="155" y="28" width="14" height="5" rx="2.5" fill="#7fb2e5" transform="rotate(-2 155 28)"/><rect x="123" y="6" width="10" height="5" rx="2.5" fill="#f2c9d8" transform="rotate(-19 123 6)"/><rect x="26" y="36" width="15" height="5" rx="2.5" fill="#dcebfb" transform="rotate(5 26 36)"/><rect x="82" y="10" width="10" height="5" rx="2.5" fill="#a8c8ec" transform="rotate(1 82 10)"/><rect x="18" y="27" width="12" height="5" rx="2.5" fill="#ffffff" transform="rotate(11 18 27)"/><rect x="145" y="22" width="15" height="5" rx="2.5" fill="#f2c9d8" transform="rotate(-21 145 22)"/><rect x="45" y="29" width="13" height="5" rx="2.5" fill="#ffffff" transform="rotate(1 45 29)"/><rect x="97" y="44" width="14" height="5" rx="2.5" fill="#7fb2e5" transform="rotate(-5 97 44)"/><rect x="73" y="25" width="14" height="5" rx="2.5" fill="#a8c8ec" transform="rotate(-20 73 25)"/><rect x="46" y="5" width="12" height="5" rx="2.5" fill="#dcebfb" transform="rotate(22 46 5)"/><rect x="39" y="36" width="13" height="5" rx="2.5" fill="#a8c8ec" transform="rotate(-1 39 36)"/><rect x="8" y="3" width="10" height="5" rx="2.5" fill="#7fb2e5" transform="rotate(24 8 3)"/><rect x="9" y="38" width="12" height="5" rx="2.5" fill="#dcebfb" transform="rotate(-8 9 38)"/><rect x="73" y="12" width="16" height="5" rx="2.5" fill="#7fb2e5" transform="rotate(13 73 12)"/><rect x="145" y="36" width="9" height="5" rx="2.5" fill="#a8c8ec" transform="rotate(24 145 36)"/><rect x="23" y="21" width="13" height="5" rx="2.5" fill="#7fb2e5" transform="rotate(3 23 21)"/><rect x="100" y="36" width="13" height="5" rx="2.5" fill="#f2c9d8" transform="rotate(-0 100 36)"/><rect x="135" y="49" width="15" height="5" rx="2.5" fill="#a8c8ec" transform="rotate(-5 135 49)"/><rect x="47" y="21" width="15" height="5" rx="2.5" fill="#dcebfb" transform="rotate(0 47 21)"/><rect x="69" y="34" width="13" height="5" rx="2.5" fill="#dcebfb" transform="rotate(1 69 34)"/><rect x="169" y="51" width="13" height="5" rx="2.5" fill="#7fb2e5" transform="rotate(18 169 51)"/><rect x="143" y="35" width="12" height="5" rx="2.5" fill="#ffffff" transform="rotate(23 143 35)"/><rect x="62" y="29" width="15" height="5" rx="2.5" fill="#dcebfb" transform="rotate(-0 62 29)"/><rect x="129" y="51" width="13" height="5" rx="2.5" fill="#7fb2e5" transform="rotate(1 129 51)"/><rect x="91" y="43" width="13" height="5" rx="2.5" fill="#5b93d6" transform="rotate(15 91 43)"/><rect x="181" y="16" width="10" height="5" rx="2.5" fill="#f2c9d8" transform="rotate(-16 181 16)"/><rect x="13" y="44" width="11" height="5" rx="2.5" fill="#dcebfb" transform="rotate(16 13 44)"/><rect x="96" y="47" width="10" height="5" rx="2.5" fill="#5b93d6" transform="rotate(-11 96 47)"/><rect x="70" y="27" width="16" height="5" rx="2.5" fill="#f2c9d8" transform="rotate(22 70 27)"/><rect x="145" y="32" width="10" height="5" rx="2.5" fill="#a8c8ec" transform="rotate(-4 145 32)"/><rect x="137" y="12" width="11" height="5" rx="2.5" fill="#a8c8ec" transform="rotate(4 137 12)"/><rect x="42" y="108" width="11" height="5" rx="2.5" fill="#6db84a" transform="rotate(-13 42 108)"/><rect x="30" y="107" width="15" height="5" rx="2.5" fill="#f2d13c" transform="rotate(-5 30 107)"/><rect x="142" y="81" width="14" height="5" rx="2.5" fill="#6db84a" transform="rotate(5 142 81)"/><rect x="15" y="103" width="12" height="5" rx="2.5" fill="#c8d94e" transform="rotate(17 15 103)"/><rect x="47" y="105" width="11" height="5" rx="2.5" fill="#f2d13c" transform="rotate(16 47 105)"/><rect x="36" y="96" width="12" height="5" rx="2.5" fill="#c8d94e" transform="rotate(-13 36 96)"/><rect x="11" y="61" width="16" height="5" rx="2.5" fill="#8fc31f" transform="rotate(-8 11 61)"/><rect x="142" y="73" width="15" height="5" rx="2.5" fill="#57a639" transform="rotate(-13 142 73)"/><rect x="153" y="69" width="9" height="5" rx="2.5" fill="#6db84a" transform="rotate(-8 153 69)"/><rect x="4" y="103" width="11" height="5" rx="2.5" fill="#c8d94e" transform="rotate(9 4 103)"/><rect x="96" y="101" width="14" height="5" rx="2.5" fill="#f2d13c" transform="rotate(4 96 101)"/><rect x="53" y="78" width="16" height="5" rx="2.5" fill="#3f8f2f" transform="rotate(-1 53 78)"/><rect x="52" y="105" width="11" height="5" rx="2.5" fill="#c8d94e" transform="rotate(-21 52 105)"/><rect x="21" y="93" width="15" height="5" rx="2.5" fill="#8fc31f" transform="rotate(2 21 93)"/><rect x="177" y="60" width="10" height="5" rx="2.5" fill="#c8d94e" transform="rotate(-6 177 60)"/><rect x="65" y="70" width="13" height="5" rx="2.5" fill="#f2d13c" transform="rotate(-10 65 70)"/><rect x="64" y="65" width="11" height="5" rx="2.5" fill="#3f8f2f" transform="rotate(2 64 65)"/><rect x="10" y="106" width="13" height="5" rx="2.5" fill="#6db84a" transform="rotate(17 10 106)"/><rect x="125" y="95" width="13" height="5" rx="2.5" fill="#3f8f2f" transform="rotate(10 125 95)"/><rect x="119" y="109" width="12" height="5" rx="2.5" fill="#8fc31f" transform="rotate(9 119 109)"/><rect x="103" y="61" width="13" height="5" rx="2.5" fill="#c8d94e" transform="rotate(-3 103 61)"/><rect x="70" y="88" width="13" height="5" rx="2.5" fill="#6db84a" transform="rotate(-19 70 88)"/><rect x="70" y="65" width="14" height="5" rx="2.5" fill="#6db84a" transform="rotate(-18 70 65)"/><rect x="174" y="77" width="15" height="5" rx="2.5" fill="#57a639" transform="rotate(10 174 77)"/><rect x="21" y="63" width="13" height="5" rx="2.5" fill="#57a639" transform="rotate(6 21 63)"/><rect x="53" y="102" width="13" height="5" rx="2.5" fill="#57a639" transform="rotate(8 53 102)"/><rect x="46" y="80" width="12" height="5" rx="2.5" fill="#6db84a" transform="rotate(22 46 80)"/><rect x="108" y="65" width="10" height="5" rx="2.5" fill="#c8d94e" transform="rotate(-11 108 65)"/><rect x="28" y="110" width="12" height="5" rx="2.5" fill="#c8d94e" transform="rotate(22 28 110)"/><rect x="38" y="66" width="11" height="5" rx="2.5" fill="#3f8f2f" transform="rotate(-10 38 66)"/><rect x="21" y="64" width="10" height="5" rx="2.5" fill="#57a639" transform="rotate(19 21 64)"/><rect x="26" y="98" width="12" height="5" rx="2.5" fill="#57a639" transform="rotate(14 26 98)"/><rect x="119" y="76" width="13" height="5" rx="2.5" fill="#57a639" transform="rotate(20 119 76)"/><rect x="39" y="66" width="10" height="5" rx="2.5" fill="#8fc31f" transform="rotate(-1 39 66)"/><rect x="61" y="98" width="10" height="5" rx="2.5" fill="#c8d94e" transform="rotate(-2 61 98)"/><rect x="103" y="65" width="9" height="5" rx="2.5" fill="#8fc31f" transform="rotate(20 103 65)"/><rect x="169" y="86" width="15" height="5" rx="2.5" fill="#c8d94e" transform="rotate(14 169 86)"/><rect x="18" y="103" width="15" height="5" rx="2.5" fill="#57a639" transform="rotate(-15 18 103)"/><rect x="95" y="89" width="11" height="5" rx="2.5" fill="#8fc31f" transform="rotate(-21 95 89)"/><rect x="150" y="99" width="11" height="5" rx="2.5" fill="#c8d94e" transform="rotate(23 150 99)"/><rect x="24" y="63" width="12" height="5" rx="2.5" fill="#3f8f2f" transform="rotate(-4 24 63)"/><rect x="100" y="92" width="15" height="5" rx="2.5" fill="#8fc31f" transform="rotate(23 100 92)"/><rect x="62" y="102" width="15" height="5" rx="2.5" fill="#f2d13c" transform="rotate(23 62 102)"/><rect x="47" y="69" width="16" height="5" rx="2.5" fill="#3f8f2f" transform="rotate(20 47 69)"/><rect x="55" y="100" width="11" height="5" rx="2.5" fill="#8fc31f" transform="rotate(-13 55 100)"/><rect x="162" y="105" width="12" height="5" rx="2.5" fill="#8fc31f" transform="rotate(-24 162 105)"/><rect x="121" y="74" width="13" height="5" rx="2.5" fill="#c8d94e" transform="rotate(18 121 74)"/><rect x="173" y="76" width="13" height="5" rx="2.5" fill="#f2d13c" transform="rotate(10 173 76)"/><rect x="64" y="69" width="9" height="5" rx="2.5" fill="#c8d94e" transform="rotate(5 64 69)"/><rect x="30" y="78" width="9" height="5" rx="2.5" fill="#c8d94e" transform="rotate(3 30 78)"/><rect x="90" y="64" width="16" height="5" rx="2.5" fill="#57a639" transform="rotate(15 90 64)"/><rect x="61" y="77" width="12" height="5" rx="2.5" fill="#8fc31f" transform="rotate(-14 61 77)"/><rect x="8" y="76" width="15" height="5" rx="2.5" fill="#6db84a" transform="rotate(-16 8 76)"/><rect x="24" y="96" width="16" height="5" rx="2.5" fill="#3f8f2f" transform="rotate(6 24 96)"/><rect x="12" y="82" width="13" height="5" rx="2.5" fill="#f2d13c" transform="rotate(-6 12 82)"/><rect x="164" y="90" width="16" height="5" rx="2.5" fill="#8fc31f" transform="rotate(15 164 90)"/><rect x="162" y="108" width="13" height="5" rx="2.5" fill="#3f8f2f" transform="rotate(4 162 108)"/><rect x="112" y="79" width="16" height="5" rx="2.5" fill="#6db84a" transform="rotate(18 112 79)"/><rect x="43" y="69" width="14" height="5" rx="2.5" fill="#8fc31f" transform="rotate(-7 43 69)"/><rect x="114" y="75" width="15" height="5" rx="2.5" fill="#f2d13c" transform="rotate(-5 114 75)"/><rect x="11" y="74" width="14" height="5" rx="2.5" fill="#6db84a" transform="rotate(-2 11 74)"/><rect x="39" y="73" width="13" height="5" rx="2.5" fill="#c8d94e" transform="rotate(-19 39 73)"/></svg>'
+ }
+];
+var total = CARDS.length;
+var knownCount = 0;
+var deck = [];
+var pos = 0;
+var flipped = false;
+var round = 1;
+function el(id){ return document.getElementById(id); }
+function shuffle(a){ for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+function updateProgress(){
+  el('progressText').textContent = '覚えた ' + knownCount + ' / ' + total + ' 枚';
+  el('progressFill').style.width = (total ? (knownCount/total*100) : 0) + '%';
+}
+function updateRoundInfo(){
+  el('roundInfo').textContent = '第' + round + '周目｜この周はあと ' + (deck.length - pos) + ' 枚';
+}
+function showCard(){
+  flipped = false;
+  el('fcard').classList.remove('flipped');
+  var c = CARDS[deck[pos]];
+  el('frontImg').innerHTML = c.img || '';
+  el('frontText').textContent = c.q;
+  el('backText').textContent = c.a;
+  el('backNote').textContent = c.n || '';
+  el('judgeBtns').style.visibility = 'hidden';
+  updateRoundInfo();
+}
+function startRound(){ shuffle(deck); pos = 0; showCard(); }
+function init(){
+  knownCount = 0; round = 1;
+  deck = CARDS.map(function(_, i){ return i; });
+  el('doneArea').style.display = 'none';
+  el('playArea').style.display = 'block';
+  updateProgress();
+  startRound();
+}
+function finish(){
+  coinAward(10,'暗記カード1周','flash:flash_chu1_finals_art',1);
+  el('playArea').style.display = 'none';
+  el('doneArea').style.display = 'block';
+  el('doneText').textContent = '全' + total + '枚のカードを全部おぼえました。おつかれさま！';
+}
+function judge(known){
+  if(!flipped) return;
+  if(known){ knownCount++; deck.splice(pos, 1); coinAward(1,'暗記カード','flashcard-each',20); }
+  else { pos++; }
+  updateProgress();
+  if(pos >= deck.length){
+    if(deck.length === 0){ finish(); return; }
+    round++; startRound(); return;
+  }
+  showCard();
+}
+el('fcard').addEventListener('click', function(){
+  if(flipped) return;
+  flipped = true;
+  this.classList.add('flipped');
+  el('judgeBtns').style.visibility = 'visible';
+});
+el('btnKnown').addEventListener('click', function(){ judge(true); });
+el('btnStill').addEventListener('click', function(){ judge(false); });
+el('btnRestart').addEventListener('click', init);
+init();
+function todayStr(d){d=d||new Date();var m=('0'+(d.getMonth()+1)).slice(-2);var day=('0'+d.getDate()).slice(-2);return d.getFullYear()+'-'+m+'-'+day;}
+/* ==== ご褒美コイン ==== */
+var COIN_CHILD='sakuya';
+var COIN_KEY='stepup-coins-'+COIN_CHILD;
+var CLAIM_KEY='stepup-coinclaims-'+COIN_CHILD;
+function coinLoad(){try{var v=JSON.parse(localStorage.getItem(COIN_KEY));if(v&&typeof v.total==='number'&&Array.isArray(v.history))return v;}catch(e){}return{total:0,history:[]};}
+function coinClaimsLoad(){try{var v=JSON.parse(localStorage.getItem(CLAIM_KEY));if(v&&typeof v==='object'&&v!==null)return v;}catch(e){}return{};}
+function coinAward(amount,sourceLabel,claimId,dailyCap){
+  if(!amount||amount<=0)return 0;
+  if(dailyCap==null)dailyCap=1;
+  if(claimId){
+    var claims=coinClaimsLoad();
+    var ck=todayStr()+':'+claimId;
+    var n=claims[ck]||0;
+    if(n>=dailyCap)return 0;
+    claims[ck]=n+1;
+    try{localStorage.setItem(CLAIM_KEY,JSON.stringify(claims));}catch(e){}
+  }
+  var data=coinLoad();
+  data.total+=amount;
+  data.history.push({date:todayStr(),source:sourceLabel,amount:amount});
+  if(data.history.length>200)data.history=data.history.slice(data.history.length-200);
+  try{localStorage.setItem(COIN_KEY,JSON.stringify(data));}catch(e){}
+  coinToast(amount);
+  return amount;
+}
+function coinToast(amount){
+  var t=document.createElement('div');
+  t.textContent='🪙 +'+amount+'コイン！';
+  t.setAttribute('style','position:fixed;right:16px;bottom:16px;z-index:9999;background:#1a1a5e;color:#fff;font-weight:700;font-size:1.1rem;padding:12px 20px;border-radius:999px;box-shadow:0 4px 14px rgba(0,0,0,.25);opacity:0;transition:opacity .3s;pointer-events:none');
+  document.body.appendChild(t);
+  setTimeout(function(){t.style.opacity='1';},10);
+  setTimeout(function(){t.style.opacity='0';},1700);
+  setTimeout(function(){if(t.parentNode)t.parentNode.removeChild(t);},2200);
+}
+</script>
+</body>
+</html>

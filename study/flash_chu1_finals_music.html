@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>中1音楽 暗記カード｜期末テスト正式範囲｜Step Up テスト対策</title>
+<style>
+:root{--ink:#1c2733;--accent:#ff6b9d;--navy:#1a1a5e;--line:#d9e2ec;--soft:#f4f7fb}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:var(--ink);
+ font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP","Yu Gothic",sans-serif;
+ font-size:18px;line-height:1.85;-webkit-text-size-adjust:100%}
+.wrap{max-width:880px;margin:0 auto;padding:20px 18px 56px}
+h1{font-size:1.55rem;line-height:1.45;border-bottom:4px solid var(--accent);padding-bottom:.35em;margin:.4em 0 .8em}
+p{margin:.6em 0}
+.backlink{display:inline-block;margin-top:28px;background:var(--accent);color:#fff;font-weight:700;
+ text-decoration:none;padding:14px 22px;border-radius:999px;font-size:1.05rem}
+.toplink{font-size:.95rem;margin-bottom:4px}
+.toplink a{color:var(--navy)}
+footer{margin-top:10px}
+@media (max-width:600px){body{font-size:17px}.wrap{padding:14px 12px 48px}h1{font-size:1.35rem}}
+.progress-text{font-weight:700;margin:16px 0 6px;font-size:1.1rem}
+.progress-bar{height:16px;background:var(--soft);border:2px solid var(--line);border-radius:999px;overflow:hidden}
+.progress-fill{height:100%;background:var(--accent);width:0;transition:width .3s}
+.card-scene{perspective:1200px;margin:20px 0 6px}
+.fcard{position:relative;width:100%;height:400px;cursor:pointer;transform-style:preserve-3d;transition:transform .45s;-webkit-tap-highlight-color:transparent}
+.fcard.flipped{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+ border:3px solid var(--navy);border-radius:18px;padding:24px 18px;overflow:hidden;
+ display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:#fff}
+.face.back{transform:rotateY(180deg);background:var(--soft);border-color:var(--accent)}
+.face-label{font-size:.85rem;font-weight:700;color:var(--accent);letter-spacing:.2em;margin-bottom:12px}
+.face-label.ans{color:var(--navy)}
+.face-text{font-size:1.3rem;font-weight:700;line-height:1.65}
+.face-note{margin-top:14px;font-size:.98rem;color:#54677a;line-height:1.65}
+.tap-hint{margin-top:16px;font-size:.9rem;color:#8a97a5}
+.judge{display:flex;gap:12px;margin-top:16px}
+.jbtn{flex:1;font-family:inherit;font-size:1.25rem;font-weight:700;padding:18px 10px;border-radius:14px;
+ border:3px solid var(--navy);background:#fff;color:var(--navy);cursor:pointer;min-height:64px}
+.jbtn.known{background:var(--accent);border-color:var(--accent);color:#fff}
+.jbtn:active{transform:scale(.98)}
+.round-info{text-align:center;color:#54677a;font-size:.95rem;margin-top:12px}
+.done-box{border:3px solid var(--accent);border-radius:18px;padding:32px 20px;text-align:center;background:#fff5f8;margin-top:22px}
+.done-title{font-size:1.5rem;font-weight:700;color:#c2255c;margin:.2em 0}
+.restart{max-width:340px;margin:16px auto 0;display:block;width:100%}
+</style>
+</head>
+<body>
+<div class="wrap">
+<p class="toplink"><a href="sakuya.html">← 中1トップへ戻る</a></p>
+<h1>中1音楽 暗記カード｜期末テスト正式範囲</h1>
+<p>カードをタップすると答えが見えます。答えを見たら「覚えた」「まだ」で教えてください。「まだ」のカードだけが次の周に出てきます。</p>
+<div class="progress-text" id="progressText"></div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+<div id="playArea">
+<div class="card-scene"><div class="fcard" id="fcard">
+<div class="face front"><div class="face-label">も　ん　だ　い</div><div class="face-text" id="frontText"></div><div class="tap-hint">タップで答えを見る</div></div>
+<div class="face back"><div class="face-label ans">こ　た　え</div><div class="face-text" id="backText"></div><div class="face-note" id="backNote"></div></div>
+</div></div>
+<div class="judge" id="judgeBtns" style="visibility:hidden">
+<button class="jbtn still" id="btnStill" type="button">まだ</button>
+<button class="jbtn known" id="btnKnown" type="button">覚えた</button>
+</div>
+<p class="round-info" id="roundInfo"></p>
+</div>
+<div id="doneArea" style="display:none">
+<div class="done-box"><p class="done-title">🎉 全部おぼえた！</p><p id="doneText"></p>
+<button class="jbtn known restart" id="btnRestart" type="button">最初からもう一度</button></div>
+</div>
+<footer><a class="backlink" href="sakuya.html">← 中1トップへ戻る</a> <a class="backlink" href="../index.html" style="background:#1a1a5e">🏠 アプリへ戻る</a></footer>
+</div>
+<script>
+var CARDS = [
+ {
+  "q": "全音符は、四分音符を1拍とすると何拍分か",
+  "a": "4拍分",
+  "n": "いちばん長い、基本の音符です"
+ },
+ {
+  "q": "二分音符は、四分音符を1拍とすると何拍分か",
+  "a": "2拍分",
+  "n": "全音符の半分の長さです"
+ },
+ {
+  "q": "四分音符は、基準となる何拍の音符か",
+  "a": "1拍",
+  "n": "長さを比べるときの基準です"
+ },
+ {
+  "q": "八分音符は、四分音符を1拍とすると何拍分か",
+  "a": "2分の1拍分",
+  "n": "2つで四分音符1つ分（1拍）になります"
+ },
+ {
+  "q": "休符は、対応する音符と比べて長さはどうなるか",
+  "a": "音符と同じ長さだけ休む",
+  "n": "四分休符なら四分音符と同じ長さです"
+ },
+ {
+  "q": "四分休符は、何拍休む記号か",
+  "a": "1拍休む",
+  "n": "四分音符と長さが対応しています"
+ },
+ {
+  "q": "八分休符は、四分音符を1拍とすると何拍分休むか",
+  "a": "2分の1拍分休む",
+  "n": "八分音符と長さが対応しています"
+ },
+ {
+  "q": "拍子記号で、上の数字は何を表すか",
+  "a": "1小節に入る拍の数",
+  "n": "4分の3拍子なら、1小節に3拍入ります"
+ },
+ {
+  "q": "拍子記号で、下の数字は何を表すか",
+  "a": "何分音符を1拍とするか",
+  "n": "4なら四分音符を1拍とします"
+ },
+ {
+  "q": "高さが同じ2つの音をつなぎ、長さを合計して演奏する弧線を何というか",
+  "a": "タイ",
+  "n": "同じ高さの音だけをつなぎます"
+ },
+ {
+  "q": "高さのちがう音をなめらかにつなげて演奏する弧線を何というか",
+  "a": "スラー",
+  "n": "高さのちがう音もつなげられます"
+ },
+ {
+  "q": "音を短く切って演奏する記号を何というか",
+  "a": "スタッカート",
+  "n": "音符に点が付きます"
+ },
+ {
+  "q": "音を適当な長さにのばして止める記号を何というか",
+  "a": "フェルマータ",
+  "n": "演奏に合わせて長さを決めます"
+ },
+ {
+  "q": "f と p は、それぞれどのような強弱を表すか",
+  "a": "f は強く、p は弱く",
+  "n": "f はフォルテ、p はピアノの略です"
+ },
+ {
+  "q": "mf と mp は、それぞれどのような強弱を表すか",
+  "a": "mf はやや強く、mp はやや弱く",
+  "n": "m はメッゾで「少し」という意味です"
+ },
+ {
+  "q": "だんだん強く、だんだん弱くを表す記号は、それぞれ何を意味するか",
+  "a": "だんだん強くがクレシェンド、だんだん弱くがデクレシェンド",
+  "n": "記号が開いていく方がクレシェンドです"
+ },
+ {
+  "q": "合唱コンクール曲で、楽譜を見直しておく主な項目は何か",
+  "a": "作詞者、作曲者、拍子記号、速度、歌詞、強弱記号",
+  "n": "表記は楽譜どおりに書くことが大切です"
+ },
+ {
+  "q": "「かっこう」で指番号を確認する理由は何か",
+  "a": "正しい運指で、なめらかに演奏するため",
+  "n": "指の動きが決まっていると、音の切り替えがスムーズです"
+ },
+ {
+  "q": "リコーダーなどの指番号や穴番号で、左手の親指に当たる番号は一般に何番か",
+  "a": "0番",
+  "n": "左手の親指は、裏側の穴を押さえます"
+ },
+ {
+  "q": "「魔王」の作曲家は誰か",
+  "a": "フランツ・ペーター・シューベルト",
+  "n": "フルネームで書けるようにしましょう"
+ },
+ {
+  "q": "「魔王」のもとになった詩を書いた文学者は誰か",
+  "a": "ヴォルフガング・フォン・ゲーテ",
+  "n": "フルネームで書けるようにしましょう"
+ },
+ {
+  "q": "「魔王」の伴奏楽器は何か",
+  "a": "ピアノ",
+  "n": "伴奏も場面を表す、大事な役割があります"
+ },
+ {
+  "q": "「魔王」の伴奏は、主に何の様子を表しているか",
+  "a": "馬が走る様子",
+  "n": "速いくり返しの音型で表しています"
+ },
+ {
+  "q": "「魔王」に登場する主な人物は誰か",
+  "a": "語り手、父、子、魔王",
+  "n": "4人の役を、一人の歌手が歌い分けます"
+ }
+];
+var total = CARDS.length;
+var knownCount = 0;
+var deck = [];
+var pos = 0;
+var flipped = false;
+var round = 1;
+function el(id){ return document.getElementById(id); }
+function shuffle(a){ for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+function updateProgress(){
+  el('progressText').textContent = '覚えた ' + knownCount + ' / ' + total + ' 枚';
+  el('progressFill').style.width = (total ? (knownCount/total*100) : 0) + '%';
+}
+function updateRoundInfo(){
+  el('roundInfo').textContent = '第' + round + '周目｜この周はあと ' + (deck.length - pos) + ' 枚';
+}
+function showCard(){
+  flipped = false;
+  el('fcard').classList.remove('flipped');
+  var c = CARDS[deck[pos]];
+  el('frontText').textContent = c.q;
+  el('backText').textContent = c.a;
+  el('backNote').textContent = c.n || '';
+  el('judgeBtns').style.visibility = 'hidden';
+  updateRoundInfo();
+}
+function startRound(){ shuffle(deck); pos = 0; showCard(); }
+function init(){
+  knownCount = 0; round = 1;
+  deck = CARDS.map(function(_, i){ return i; });
+  el('doneArea').style.display = 'none';
+  el('playArea').style.display = 'block';
+  updateProgress();
+  startRound();
+}
+function finish(){
+  coinAward(10,'暗記カード1周','flash:flash_chu1_finals_music',1);
+  el('playArea').style.display = 'none';
+  el('doneArea').style.display = 'block';
+  el('doneText').textContent = '全' + total + '枚のカードを全部おぼえました。おつかれさま！';
+}
+function judge(known){
+  if(!flipped) return;
+  if(known){ knownCount++; deck.splice(pos, 1); coinAward(1,'暗記カード','flashcard-each',20); }
+  else { pos++; }
+  updateProgress();
+  if(pos >= deck.length){
+    if(deck.length === 0){ finish(); return; }
+    round++; startRound(); return;
+  }
+  showCard();
+}
+el('fcard').addEventListener('click', function(){
+  if(flipped) return;
+  flipped = true;
+  this.classList.add('flipped');
+  el('judgeBtns').style.visibility = 'visible';
+});
+el('btnKnown').addEventListener('click', function(){ judge(true); });
+el('btnStill').addEventListener('click', function(){ judge(false); });
+el('btnRestart').addEventListener('click', init);
+init();
+function todayStr(d){d=d||new Date();var m=('0'+(d.getMonth()+1)).slice(-2);var day=('0'+d.getDate()).slice(-2);return d.getFullYear()+'-'+m+'-'+day;}
+/* ==== ご褒美コイン ==== */
+var COIN_CHILD='sakuya';
+var COIN_KEY='stepup-coins-'+COIN_CHILD;
+var CLAIM_KEY='stepup-coinclaims-'+COIN_CHILD;
+function coinLoad(){try{var v=JSON.parse(localStorage.getItem(COIN_KEY));if(v&&typeof v.total==='number'&&Array.isArray(v.history))return v;}catch(e){}return{total:0,history:[]};}
+function coinClaimsLoad(){try{var v=JSON.parse(localStorage.getItem(CLAIM_KEY));if(v&&typeof v==='object'&&v!==null)return v;}catch(e){}return{};}
+function coinAward(amount,sourceLabel,claimId,dailyCap){
+  if(!amount||amount<=0)return 0;
+  if(dailyCap==null)dailyCap=1;
+  if(claimId){
+    var claims=coinClaimsLoad();
+    var ck=todayStr()+':'+claimId;
+    var n=claims[ck]||0;
+    if(n>=dailyCap)return 0;
+    claims[ck]=n+1;
+    try{localStorage.setItem(CLAIM_KEY,JSON.stringify(claims));}catch(e){}
+  }
+  var data=coinLoad();
+  data.total+=amount;
+  data.history.push({date:todayStr(),source:sourceLabel,amount:amount});
+  if(data.history.length>200)data.history=data.history.slice(data.history.length-200);
+  try{localStorage.setItem(COIN_KEY,JSON.stringify(data));}catch(e){}
+  coinToast(amount);
+  return amount;
+}
+function coinToast(amount){
+  var t=document.createElement('div');
+  t.textContent='🪙 +'+amount+'コイン！';
+  t.setAttribute('style','position:fixed;right:16px;bottom:16px;z-index:9999;background:#1a1a5e;color:#fff;font-weight:700;font-size:1.1rem;padding:12px 20px;border-radius:999px;box-shadow:0 4px 14px rgba(0,0,0,.25);opacity:0;transition:opacity .3s;pointer-events:none');
+  document.body.appendChild(t);
+  setTimeout(function(){t.style.opacity='1';},10);
+  setTimeout(function(){t.style.opacity='0';},1700);
+  setTimeout(function(){if(t.parentNode)t.parentNode.removeChild(t);},2200);
+}
+</script>
+</body>
+</html>

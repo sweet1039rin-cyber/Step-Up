@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>中1理科 暗記カード｜期末テスト正式範囲｜Step Up テスト対策</title>
+<style>
+:root{--ink:#1c2733;--accent:#ff6b9d;--navy:#1a1a5e;--line:#d9e2ec;--soft:#f4f7fb}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:var(--ink);
+ font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP","Yu Gothic",sans-serif;
+ font-size:18px;line-height:1.85;-webkit-text-size-adjust:100%}
+.wrap{max-width:880px;margin:0 auto;padding:20px 18px 56px}
+h1{font-size:1.55rem;line-height:1.45;border-bottom:4px solid var(--accent);padding-bottom:.35em;margin:.4em 0 .8em}
+p{margin:.6em 0}
+.backlink{display:inline-block;margin-top:28px;background:var(--accent);color:#fff;font-weight:700;
+ text-decoration:none;padding:14px 22px;border-radius:999px;font-size:1.05rem}
+.toplink{font-size:.95rem;margin-bottom:4px}
+.toplink a{color:var(--navy)}
+footer{margin-top:10px}
+@media (max-width:600px){body{font-size:17px}.wrap{padding:14px 12px 48px}h1{font-size:1.35rem}}
+.progress-text{font-weight:700;margin:16px 0 6px;font-size:1.1rem}
+.progress-bar{height:16px;background:var(--soft);border:2px solid var(--line);border-radius:999px;overflow:hidden}
+.progress-fill{height:100%;background:var(--accent);width:0;transition:width .3s}
+.card-scene{perspective:1200px;margin:20px 0 6px}
+.fcard{position:relative;width:100%;height:480px;cursor:pointer;transform-style:preserve-3d;transition:transform .45s;-webkit-tap-highlight-color:transparent}
+.fcard.flipped{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+ border:3px solid var(--navy);border-radius:18px;padding:24px 18px;overflow:hidden;
+ display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:#fff}
+.face.back{transform:rotateY(180deg);background:var(--soft);border-color:var(--accent)}
+.face-label{font-size:.85rem;font-weight:700;color:var(--accent);letter-spacing:.2em;margin-bottom:12px}
+.face-label.ans{color:var(--navy)}
+.face-text{font-size:1.3rem;font-weight:700;line-height:1.65}
+.face-note{margin-top:14px;font-size:.98rem;color:#54677a;line-height:1.65}
+.face-img{width:100%;margin-bottom:8px}
+.face-img svg{width:100%;max-width:340px;height:auto;display:block;margin:0 auto}
+.tap-hint{margin-top:16px;font-size:.9rem;color:#8a97a5}
+.judge{display:flex;gap:12px;margin-top:16px}
+.jbtn{flex:1;font-family:inherit;font-size:1.25rem;font-weight:700;padding:18px 10px;border-radius:14px;
+ border:3px solid var(--navy);background:#fff;color:var(--navy);cursor:pointer;min-height:64px}
+.jbtn.known{background:var(--accent);border-color:var(--accent);color:#fff}
+.jbtn:active{transform:scale(.98)}
+.round-info{text-align:center;color:#54677a;font-size:.95rem;margin-top:12px}
+.done-box{border:3px solid var(--accent);border-radius:18px;padding:32px 20px;text-align:center;background:#fff5f8;margin-top:22px}
+.done-title{font-size:1.5rem;font-weight:700;color:#c2255c;margin:.2em 0}
+.restart{max-width:340px;margin:16px auto 0;display:block;width:100%}
+</style>
+</head>
+<body>
+<div class="wrap">
+<p class="toplink"><a href="sakuya.html">← 中1トップへ戻る</a></p>
+<h1>中1理科 暗記カード｜期末テスト正式範囲</h1>
+<p>カードをタップすると答えが見えます。答えを見たら「覚えた」「まだ」で教えてください。「まだ」のカードだけが次の周に出てきます。</p>
+<div class="progress-text" id="progressText"></div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+<div id="playArea">
+<div class="card-scene"><div class="fcard" id="fcard">
+<div class="face front"><div class="face-label">も　ん　だ　い</div><div class="face-img" id="frontImg"></div><div class="face-text" id="frontText"></div><div class="tap-hint">タップで答えを見る</div></div>
+<div class="face back"><div class="face-label ans">こ　た　え</div><div class="face-text" id="backText"></div><div class="face-note" id="backNote"></div></div>
+</div></div>
+<div class="judge" id="judgeBtns" style="visibility:hidden">
+<button class="jbtn still" id="btnStill" type="button">まだ</button>
+<button class="jbtn known" id="btnKnown" type="button">覚えた</button>
+</div>
+<p class="round-info" id="roundInfo"></p>
+</div>
+<div id="doneArea" style="display:none">
+<div class="done-box"><p class="done-title">🎉 全部おぼえた！</p><p id="doneText"></p>
+<button class="jbtn known restart" id="btnRestart" type="button">最初からもう一度</button></div>
+</div>
+<footer><a class="backlink" href="sakuya.html">← 中1トップへ戻る</a> <a class="backlink" href="../index.html" style="background:#1a1a5e">🏠 アプリへ戻る</a></footer>
+</div>
+<script>
+var CARDS = [
+ {
+  "q": "水にとけている物質を何というか",
+  "a": "溶質",
+  "n": "「とかされる」ものの名前です"
+ },
+ {
+  "q": "物質をとかす液体を何というか",
+  "a": "溶媒",
+  "n": "多くの場合は水が溶媒になります"
+ },
+ {
+  "q": "物質が液体にとけた液全体を何というか",
+  "a": "溶液",
+  "n": "溶質と溶媒を合わせた液全体です"
+ },
+ {
+  "q": "溶質が溶媒に均一に混ざることを何というか",
+  "a": "溶解",
+  "n": "見えなくなっても、なくなったわけではありません"
+ },
+ {
+  "q": "ある温度で、それ以上溶質がとけなくなった水溶液を何というか",
+  "a": "飽和水溶液",
+  "n": "これ以上とかすと、とけ残りが出る状態です"
+ },
+ {
+  "q": "水100gに物質が最大で何gとけるかを表す値を何というか",
+  "a": "溶解度",
+  "n": "温度によって変わります"
+ },
+ {
+  "q": "温度と溶解度の関係を表したグラフを何というか",
+  "a": "溶解度曲線",
+  "n": "再結晶で出てくる量を読むときに使います"
+ },
+ {
+  "q": "飽和水溶液を冷やしたり、溶媒を蒸発させたりして、とけていた物質を固体として取り出すことを何というか",
+  "a": "再結晶",
+  "n": "溶解度の変化のちがいを利用します"
+ },
+ {
+  "q": "固体がとけて液体になる変化を何というか",
+  "a": "融解",
+  "n": "氷が水になる変化です"
+ },
+ {
+  "q": "液体が冷えて固体になる変化を何というか",
+  "a": "凝固",
+  "n": "水が氷になる変化です"
+ },
+ {
+  "q": "固体が液体に変わり始める温度を何というか",
+  "a": "融点",
+  "n": "氷の融点は0℃です"
+ },
+ {
+  "q": "液体が沸騰して気体に変わるときの温度を何というか",
+  "a": "沸点",
+  "n": "水の沸点は100℃です"
+ },
+ {
+  "q": "純粋な物質が状態変化している間、熱を加え続けても温度はどうなるか",
+  "a": "温度はほぼ一定に保たれる",
+  "n": "加えた熱は、温度を上げるためではなく状態変化に使われます"
+ },
+ {
+  "q": "状態変化しても、物質そのものの量は変わるか",
+  "a": "質量は変わらない",
+  "n": "体積が変わっても質量は変わりません"
+ },
+ {
+  "q": "多くの物質では、固体から液体になると体積はどうなるか",
+  "a": "体積は大きくなることが多い",
+  "n": "水は例外です"
+ },
+ {
+  "q": "氷がとけて水になると、体積はどうなるか",
+  "a": "体積は小さくなる",
+  "n": "水だけの特別な性質です"
+ },
+ {
+  "q": "液体を加熱して気体にし、出てきた気体を冷やして液体として集める方法を何というか",
+  "a": "蒸留",
+  "n": "沸点のちがいを利用する方法です"
+ },
+ {
+  "q": "光が同じ種類の物質の中を進むとき、どのように進むか",
+  "a": "光は直進する",
+  "n": "空気中でもまっすぐに進みます"
+ },
+ {
+  "q": "鏡の面に垂直な線を何というか",
+  "a": "法線",
+  "n": "角度は、この線から測ります"
+ },
+ {
+  "q": "入射光線と法線の間の角度を何というか",
+  "a": "入射角",
+  "n": "鏡の面との角度ではないので注意"
+ },
+ {
+  "q": "反射光線と法線の間の角度を何というか",
+  "a": "反射角",
+  "n": "入射角と等しくなります"
+ },
+ {
+  "q": "光の反射では、入射角と反射角の大きさはどうなるか",
+  "a": "入射角と反射角は等しい",
+  "n": "これが反射の法則です"
+ },
+ {
+  "q": "なめらかでない面で、光がさまざまな方向に反射することを何というか",
+  "a": "乱反射",
+  "n": "いろいろな方向から物が見えるのは、この反射のおかげです"
+ },
+ {
+  "q": "鏡に映る像は、実物と比べて大きさや鏡からの距離はどうなるか",
+  "a": "大きさは同じで、鏡からの距離も実物と等しい",
+  "n": "像は、鏡をはさんで実物と対称な位置に見えます"
+ },
+{
+ "q": "図のように光が鏡で反射した。入射角と反射角の大きさの関係は？",
+ "a": "入射角と反射角は等しい",
+ "n": "反射の法則です。角度は、鏡の面からではなく法線から測ります",
+ "img": "<svg viewBox=\"0 0 320 220\" width=\"300\" role=\"img\" aria-label=\"光の反射の図\"><defs><marker id=\"arwR\" markerWidth=\"8\" markerHeight=\"8\" refX=\"6\" refY=\"3\" orient=\"auto\"><path d=\"M0,0 L7,3 L0,6 Z\" fill=\"#1a1a5e\"/></marker></defs><line x1=\"62\" y1=\"58\" x2=\"155\" y2=\"174\" stroke=\"#1a1a5e\" stroke-width=\"3\" marker-end=\"url(#arwR)\"/><line x1=\"165\" y1=\"174\" x2=\"258\" y2=\"58\" stroke=\"#1a1a5e\" stroke-width=\"3\" marker-end=\"url(#arwR)\"/><line x1=\"160\" y1=\"34\" x2=\"160\" y2=\"180\" stroke=\"#c2255c\" stroke-width=\"2\" stroke-dasharray=\"6 5\"/><path d=\"M160 122 A58 58 0 0 0 123.7 134.8\" fill=\"none\" stroke=\"#ff6b9d\" stroke-width=\"3\"/><path d=\"M160 122 A58 58 0 0 1 196.3 134.8\" fill=\"none\" stroke=\"#ff6b9d\" stroke-width=\"3\"/><line x1=\"20\" y1=\"180\" x2=\"300\" y2=\"180\" stroke=\"#1c2733\" stroke-width=\"4\"/><path d=\"M32 180 L24 193 M58 180 L50 193 M84 180 L76 193 M110 180 L102 193 M216 180 L208 193 M242 180 L234 193 M268 180 L260 193 M294 180 L286 193\" stroke=\"#8a97a5\" stroke-width=\"2\" fill=\"none\"/><circle cx=\"160\" cy=\"180\" r=\"4\" fill=\"#1c2733\"/><text x=\"52\" y=\"40\" font-size=\"15\" fill=\"#1a1a5e\" text-anchor=\"middle\">入射光</text><text x=\"268\" y=\"40\" font-size=\"15\" fill=\"#1a1a5e\" text-anchor=\"middle\">反射光</text><text x=\"170\" y=\"42\" font-size=\"14\" fill=\"#c2255c\">法線</text><text x=\"96\" y=\"104\" font-size=\"15\" fill=\"#c2255c\" font-weight=\"700\" text-anchor=\"middle\">入射角</text><text x=\"226\" y=\"104\" font-size=\"15\" fill=\"#c2255c\" font-weight=\"700\" text-anchor=\"middle\">反射角</text><text x=\"296\" y=\"206\" font-size=\"14\" fill=\"#54677a\" text-anchor=\"end\">鏡</text></svg>"
+},
+{
+ "q": "ア・イ・ウは、固体・液体・気体の粒子の様子を表した模式図である。気体の粒子の様子はどれ？",
+ "a": "ウ",
+ "n": "アは固体（粒子が規則正しく並ぶ）、イは液体（粒子が集まったまま動ける）、ウは気体（粒子が広い範囲を自由に飛び回る）",
+ "img": "<svg viewBox=\"0 0 330 165\" width=\"310\" role=\"img\" aria-label=\"固体・液体・気体の粒子の様子の模式図\"><rect x=\"10\" y=\"25\" width=\"92\" height=\"92\" fill=\"#f4f7fb\" stroke=\"#1a1a5e\" stroke-width=\"2\"/><rect x=\"119\" y=\"25\" width=\"92\" height=\"92\" fill=\"#f4f7fb\" stroke=\"#1a1a5e\" stroke-width=\"2\"/><rect x=\"228\" y=\"25\" width=\"92\" height=\"92\" fill=\"#f4f7fb\" stroke=\"#1a1a5e\" stroke-width=\"2\"/><g fill=\"#ff6b9d\"><circle cx=\"34\" cy=\"49\" r=\"9.5\"/><circle cx=\"57\" cy=\"49\" r=\"9.5\"/><circle cx=\"80\" cy=\"49\" r=\"9.5\"/><circle cx=\"34\" cy=\"72\" r=\"9.5\"/><circle cx=\"57\" cy=\"72\" r=\"9.5\"/><circle cx=\"80\" cy=\"72\" r=\"9.5\"/><circle cx=\"34\" cy=\"95\" r=\"9.5\"/><circle cx=\"57\" cy=\"95\" r=\"9.5\"/><circle cx=\"80\" cy=\"95\" r=\"9.5\"/></g><g fill=\"#3a7ca5\"><circle cx=\"140\" cy=\"95\" r=\"9.5\"/><circle cx=\"162\" cy=\"103\" r=\"9.5\"/><circle cx=\"184\" cy=\"92\" r=\"9.5\"/><circle cx=\"197\" cy=\"107\" r=\"9.5\"/><circle cx=\"146\" cy=\"68\" r=\"9.5\"/><circle cx=\"170\" cy=\"77\" r=\"9.5\"/><circle cx=\"195\" cy=\"64\" r=\"9.5\"/><circle cx=\"158\" cy=\"50\" r=\"9.5\"/></g><g fill=\"#1a1a5e\"><circle cx=\"247\" cy=\"44\" r=\"8\"/><circle cx=\"287\" cy=\"52\" r=\"8\"/><circle cx=\"263\" cy=\"79\" r=\"8\"/><circle cx=\"303\" cy=\"87\" r=\"8\"/><circle cx=\"250\" cy=\"103\" r=\"8\"/><circle cx=\"291\" cy=\"104\" r=\"8\"/></g><text x=\"56\" y=\"142\" font-size=\"17\" font-weight=\"700\" fill=\"#1c2733\" text-anchor=\"middle\">ア</text><text x=\"165\" y=\"142\" font-size=\"17\" font-weight=\"700\" fill=\"#1c2733\" text-anchor=\"middle\">イ</text><text x=\"274\" y=\"142\" font-size=\"17\" font-weight=\"700\" fill=\"#1c2733\" text-anchor=\"middle\">ウ</text></svg>"
+},
+{
+ "q": "物質を加熱したときの温度変化のグラフである。温度が一定になっている部分では、何が起きている？",
+ "a": "状態変化が起きている（加えた熱が状態変化に使われている）",
+ "n": "平らな部分の温度が、融点や沸点です",
+ "img": "<svg viewBox=\"0 0 320 215\" width=\"300\" role=\"img\" aria-label=\"加熱曲線のグラフ\"><line x1=\"42\" y1=\"185\" x2=\"42\" y2=\"26\" stroke=\"#1c2733\" stroke-width=\"2.5\"/><line x1=\"42\" y1=\"185\" x2=\"302\" y2=\"185\" stroke=\"#1c2733\" stroke-width=\"2.5\"/><path d=\"M46 168 L104 122 L166 122 L224 74 L278 74 L300 52\" fill=\"none\" stroke=\"#ff6b9d\" stroke-width=\"3.5\"/><text x=\"50\" y=\"18\" font-size=\"14\" fill=\"#1c2733\">温度</text><text x=\"300\" y=\"206\" font-size=\"14\" fill=\"#1c2733\" text-anchor=\"end\">加熱時間</text><text x=\"135\" y=\"107\" font-size=\"14\" fill=\"#c2255c\" font-weight=\"700\" text-anchor=\"middle\">融解中</text><text x=\"251\" y=\"59\" font-size=\"14\" fill=\"#c2255c\" font-weight=\"700\" text-anchor=\"middle\">沸騰中</text></svg>"
+},
+{
+ "q": "図の装置の名前は？ また、この方法で物質を取り分けられるのは、何のちがいを利用しているから？",
+ "a": "蒸留。沸点のちがいを利用している",
+ "n": "液体を加熱して気体にし、出てきた気体を冷やして液体として集めます",
+ "img": "<svg viewBox=\"0 0 330 224\" width=\"310\" role=\"img\" aria-label=\"蒸留装置の模式図\"><line x1=\"88\" y1=\"90\" x2=\"140\" y2=\"103\" stroke=\"#1a1a5e\" stroke-width=\"2.5\"/><line x1=\"140\" y1=\"103\" x2=\"224\" y2=\"147\" stroke=\"#bcd8ff\" stroke-width=\"17\"/><line x1=\"140\" y1=\"103\" x2=\"224\" y2=\"147\" stroke=\"#ffffff\" stroke-width=\"4\"/><line x1=\"224\" y1=\"147\" x2=\"248\" y2=\"164\" stroke=\"#1a1a5e\" stroke-width=\"2.5\"/><rect x=\"72\" y=\"76\" width=\"16\" height=\"36\" fill=\"#ffffff\" stroke=\"#1a1a5e\" stroke-width=\"2.5\"/><circle cx=\"80\" cy=\"140\" r=\"33\" fill=\"#ffffff\" stroke=\"#1a1a5e\" stroke-width=\"2.5\"/><path d=\"M49 147 L111 147 Q108 168 88 173 Q80 175 72 173 Q52 168 49 147 Z\" fill=\"#bcd8ff\"/><line x1=\"80\" y1=\"76\" x2=\"80\" y2=\"48\" stroke=\"#c2255c\" stroke-width=\"3\"/><circle cx=\"80\" cy=\"43\" r=\"5\" fill=\"#c2255c\"/><path d=\"M80 176 L67 199 L93 199 Z\" fill=\"#f2b134\"/><path d=\"M80 185 L73.5 198 L86.5 198 Z\" fill=\"#e2574c\"/><line x1=\"48\" y1=\"202\" x2=\"112\" y2=\"202\" stroke=\"#1c2733\" stroke-width=\"3\"/><path d=\"M232 166 L238 204 L292 204 L298 166\" fill=\"none\" stroke=\"#1a1a5e\" stroke-width=\"2.5\"/><line x1=\"248\" y1=\"164\" x2=\"254\" y2=\"178\" stroke=\"#1a1a5e\" stroke-width=\"2.5\"/><circle cx=\"255\" cy=\"184\" r=\"3.5\" fill=\"#3a7ca5\"/><path d=\"M240 195 L290 195 L288.5 202 L241.5 202 Z\" fill=\"#bcd8ff\"/><text x=\"6\" y=\"100\" font-size=\"13\" fill=\"#54677a\">フラスコ</text><text x=\"183\" y=\"86\" font-size=\"13\" fill=\"#3a7ca5\" text-anchor=\"middle\">冷却水で冷やす</text><text x=\"265\" y=\"220\" font-size=\"13\" fill=\"#54677a\" text-anchor=\"middle\">受け器</text></svg>"
+}
+];
+var total = CARDS.length;
+var knownCount = 0;
+var deck = [];
+var pos = 0;
+var flipped = false;
+var round = 1;
+function el(id){ return document.getElementById(id); }
+function shuffle(a){ for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+function updateProgress(){
+  el('progressText').textContent = '覚えた ' + knownCount + ' / ' + total + ' 枚';
+  el('progressFill').style.width = (total ? (knownCount/total*100) : 0) + '%';
+}
+function updateRoundInfo(){
+  el('roundInfo').textContent = '第' + round + '周目｜この周はあと ' + (deck.length - pos) + ' 枚';
+}
+function showCard(){
+  flipped = false;
+  el('fcard').classList.remove('flipped');
+  var c = CARDS[deck[pos]];
+  el('frontText').textContent = c.q;
+  el('frontImg').innerHTML = c.img || '';
+  el('backText').textContent = c.a;
+  el('backNote').textContent = c.n || '';
+  el('judgeBtns').style.visibility = 'hidden';
+  updateRoundInfo();
+}
+function startRound(){ shuffle(deck); pos = 0; showCard(); }
+function init(){
+  knownCount = 0; round = 1;
+  deck = CARDS.map(function(_, i){ return i; });
+  el('doneArea').style.display = 'none';
+  el('playArea').style.display = 'block';
+  updateProgress();
+  startRound();
+}
+function finish(){
+  coinAward(10,'暗記カード1周','flash:flash_chu1_finals_science',1);
+  el('playArea').style.display = 'none';
+  el('doneArea').style.display = 'block';
+  el('doneText').textContent = '全' + total + '枚のカードを全部おぼえました。おつかれさま！';
+}
+function judge(known){
+  if(!flipped) return;
+  if(known){ knownCount++; deck.splice(pos, 1); coinAward(1,'暗記カード','flashcard-each',20); }
+  else { pos++; }
+  updateProgress();
+  if(pos >= deck.length){
+    if(deck.length === 0){ finish(); return; }
+    round++; startRound(); return;
+  }
+  showCard();
+}
+el('fcard').addEventListener('click', function(){
+  if(flipped) return;
+  flipped = true;
+  this.classList.add('flipped');
+  el('judgeBtns').style.visibility = 'visible';
+});
+el('btnKnown').addEventListener('click', function(){ judge(true); });
+el('btnStill').addEventListener('click', function(){ judge(false); });
+el('btnRestart').addEventListener('click', init);
+init();
+function todayStr(d){d=d||new Date();var m=('0'+(d.getMonth()+1)).slice(-2);var day=('0'+d.getDate()).slice(-2);return d.getFullYear()+'-'+m+'-'+day;}
+/* ==== ご褒美コイン ==== */
+var COIN_CHILD='sakuya';
+var COIN_KEY='stepup-coins-'+COIN_CHILD;
+var CLAIM_KEY='stepup-coinclaims-'+COIN_CHILD;
+function coinLoad(){try{var v=JSON.parse(localStorage.getItem(COIN_KEY));if(v&&typeof v.total==='number'&&Array.isArray(v.history))return v;}catch(e){}return{total:0,history:[]};}
+function coinClaimsLoad(){try{var v=JSON.parse(localStorage.getItem(CLAIM_KEY));if(v&&typeof v==='object'&&v!==null)return v;}catch(e){}return{};}
+function coinAward(amount,sourceLabel,claimId,dailyCap){
+  if(!amount||amount<=0)return 0;
+  if(dailyCap==null)dailyCap=1;
+  if(claimId){
+    var claims=coinClaimsLoad();
+    var ck=todayStr()+':'+claimId;
+    var n=claims[ck]||0;
+    if(n>=dailyCap)return 0;
+    claims[ck]=n+1;
+    try{localStorage.setItem(CLAIM_KEY,JSON.stringify(claims));}catch(e){}
+  }
+  var data=coinLoad();
+  data.total+=amount;
+  data.history.push({date:todayStr(),source:sourceLabel,amount:amount});
+  if(data.history.length>200)data.history=data.history.slice(data.history.length-200);
+  try{localStorage.setItem(COIN_KEY,JSON.stringify(data));}catch(e){}
+  coinToast(amount);
+  return amount;
+}
+function coinToast(amount){
+  var t=document.createElement('div');
+  t.textContent='🪙 +'+amount+'コイン！';
+  t.setAttribute('style','position:fixed;right:16px;bottom:16px;z-index:9999;background:#1a1a5e;color:#fff;font-weight:700;font-size:1.1rem;padding:12px 20px;border-radius:999px;box-shadow:0 4px 14px rgba(0,0,0,.25);opacity:0;transition:opacity .3s;pointer-events:none');
+  document.body.appendChild(t);
+  setTimeout(function(){t.style.opacity='1';},10);
+  setTimeout(function(){t.style.opacity='0';},1700);
+  setTimeout(function(){if(t.parentNode)t.parentNode.removeChild(t);},2200);
+}
+</script>
+</body>
+</html>
