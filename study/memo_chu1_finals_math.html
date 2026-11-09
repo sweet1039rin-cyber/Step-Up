@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>中1数学 暗記シート｜期末テスト正式範囲</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 16px;
+    background: #ffffff;
+    color: #222;
+    font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Noto Sans JP", "Yu Gothic", sans-serif;
+    font-size: 16px;
+    line-height: 1.8;
+  }
+  .sheet { max-width: 760px; margin: 0 auto; }
+  h1 {
+    font-size: 24px;
+    text-align: center;
+    color: #ffffff;
+    background: #2f6fb2;
+    border-radius: 10px;
+    padding: 12px 8px;
+    margin: 0 0 6px;
+  }
+  .subtitle { text-align: center; color: #555; font-size: 14px; margin: 0 0 20px; }
+  h2 {
+    font-size: 19px;
+    color: #2f6fb2;
+    border-left: 8px solid #2f6fb2;
+    padding: 2px 0 2px 10px;
+    margin: 28px 0 10px;
+  }
+  h2.green { color: #2e7d4f; border-left-color: #2e7d4f; }
+  h2.orange { color: #c05a17; border-left-color: #e07b39; }
+  h2.purple { color: #6a3fa0; border-left-color: #8e5fc0; }
+  p { margin: 6px 0; }
+  .memo-box {
+    border: 2px solid #2f6fb2;
+    background: #eef5fc;
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin: 10px 0;
+  }
+  .memo-box.green { border-color: #2e7d4f; background: #edf7f0; }
+  .memo-box.orange { border-color: #e07b39; background: #fdf3ea; }
+  .memo-box.purple { border-color: #8e5fc0; background: #f4eefb; }
+  .memo-box .box-title { font-weight: bold; font-size: 17px; margin-bottom: 4px; }
+  .warn-box {
+    border: 2px solid #c0392b;
+    background: #fdf0ee;
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin: 10px 0;
+  }
+  .warn-box .box-title { font-weight: bold; color: #c0392b; font-size: 17px; margin-bottom: 4px; }
+  ul, ol { margin: 6px 0 6px 0; padding-left: 24px; }
+  li { margin: 4px 0; }
+  .eq {
+    font-size: 19px;
+    font-weight: bold;
+    text-align: center;
+    background: #fff8e1;
+    border: 1px solid #e0c96a;
+    border-radius: 8px;
+    padding: 8px 6px;
+    margin: 8px 0;
+    letter-spacing: 0.5px;
+  }
+  .figure { text-align: center; margin: 12px 0; }
+  .figure svg { max-width: 100%; height: auto; }
+  .figure .caption { font-size: 13px; color: #555; margin-top: 4px; }
+  .big { font-size: 18px; font-weight: bold; }
+  .point { color: #c0392b; font-weight: bold; }
+  table { border-collapse: collapse; width: 100%; margin: 10px 0; }
+  th, td { border: 1px solid #9db8d2; padding: 8px 10px; text-align: left; }
+  th { background: #eef5fc; color: #2f6fb2; }
+  .footer { text-align: center; color: #777; font-size: 13px; margin-top: 32px; }
+  @media print {
+    body { padding: 0; font-size: 14px; }
+    h1 { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .memo-box, .warn-box, .eq, th { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .memo-box, .warn-box, .figure, table { page-break-inside: avoid; }
+    h2 { page-break-after: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+<h1>中1数学 暗記シート｜期末テスト正式範囲</h1>
+<p class="subtitle">期末テスト対策／正式範囲：教科書P88〜129・数学の友P56〜83（当日、定規は不要）</p>
+
+<h2>この範囲で学ぶこと</h2>
+<p>今回の期末テストは、<span class="big">方程式</span>と<span class="big">比例</span>の2本柱です。どちらも「手順どおりに進めれば必ず解ける」タイプの単元なので、<b>解き方の手順 → 例題（途中式）→ つまずき注意</b>の順で身につけるのが近道です。</p>
+<ol>
+  <li><b>等式の性質と方程式</b>：天秤のイメージで「両辺に同じことをしても等しいまま」を理解する</li>
+  <li><b>方程式の解き方</b>：等式の性質で解く方法と、移項で解く方法の2つを使い分ける</li>
+  <li><b>比例式</b>：「外側どうし・内側どうしの積が等しい」で解く</li>
+  <li><b>比例の式とグラフ</b>：y = ax の式を求めることと、原点を通る直線のグラフを読み・かくこと</li>
+</ol>
+<p>計算は途中式を省略せず、<b>1行ずつ書く</b>ことが大切です。符号のミスは途中式を書けば見つけられます。また、解いた答えは<b>もとの式に代入して確かめる</b>習慣をつけましょう。</p>
+
+<h2>1．等式の性質と方程式の基本</h2>
+<div class="figure">
+<svg viewBox="0 0 700 250" width="700" role="img" aria-label="等式を天秤で表した図">
+  <rect x="110" y="28" width="480" height="12" rx="6" fill="#2f6fb2"/>
+  <rect x="343" y="36" width="14" height="164" fill="#2f6fb2"/>
+  <rect x="270" y="200" width="160" height="14" rx="6" fill="#2f6fb2"/>
+  <circle cx="350" cy="34" r="10" fill="#2f6fb2"/>
+  <path d="M150 40 L110 104 M150 40 L190 104" stroke="#555" stroke-width="2"/>
+  <polygon points="105,104 195,104 175,132 125,132" fill="#e07b39"/>
+  <text x="150" y="92" text-anchor="middle" font-size="20" font-weight="bold">x + 3</text>
+  <path d="M550 40 L510 104 M550 40 L590 104" stroke="#555" stroke-width="2"/>
+  <polygon points="505,104 595,104 575,132 525,132" fill="#e07b39"/>
+  <text x="550" y="92" text-anchor="middle" font-size="20" font-weight="bold">7</text>
+  <text x="350" y="240" text-anchor="middle" font-size="16">両辺に同じ数を 足す・引く・かける・わる → つり合いは変わらない</text>
+</svg>
+<p class="caption">図1：方程式は天秤。両辺に同じことをすれば、等しいまま</p>
+</div>
+
+<div class="memo-box">
+<div class="box-title">等式の性質（4つ）</div>
+<ul>
+  <li>両辺に<b>同じ数を足しても</b>、等しいまま</li>
+  <li>両辺から<b>同じ数を引いても</b>、等しいまま</li>
+  <li>両辺に<b>同じ数をかけても</b>、等しいまま</li>
+  <li>両辺を<b>同じ数でわっても</b>、等しいまま（ただし、わる数は<b>0ではない</b>こと）</li>
+</ul>
+</div>
+<ul>
+  <li><b>方程式</b>：まだ分からない数（x など）を含む等式</li>
+  <li><b>解</b>：方程式を成り立たせる x の値。「方程式を解く」とは、この値を求めること</li>
+  <li><b>確かめ方</b>：求めた値を x に代入し、左辺と右辺が等しくなれば正解</li>
+</ul>
+<div class="memo-box">
+<div class="box-title">例題：x + 3 = 7 を解く（性質を使う）</div>
+<p>左辺を x だけにしたいので、両辺から 3 を引く。</p>
+<div class="eq">x + 3 − 3 = 7 − 3　→　x = 4</div>
+<p>確かめ：x = 4 を代入すると、左辺は 4 + 3 = 7 で右辺と等しい。だから解は <b>x = 4</b> で正しい。</p>
+</div>
+<div class="memo-box">
+<div class="box-title">📝 テストではこう出る</div>
+<p>「等式の性質を使って解きなさい」という指示つきの問題や、解の確かめを問う問題が出ます。両辺に何をしたかを途中式に残すことが大切です。</p>
+</div>
+
+<h2 class="green">2．方程式の解き方（移項）</h2>
+<div class="figure">
+<svg viewBox="0 0 700 250" width="700" role="img" aria-label="移項で符号が変わる図">
+  <path d="M287 88 C 340 10, 480 10, 541 88" stroke="#c0392b" stroke-width="2.5" fill="none" marker-end="url(#arrR)"/>
+  <text x="414" y="26" text-anchor="middle" font-size="15" font-weight="bold" fill="#c0392b">−3 は 符号が変わって +3 になり右辺へ</text>
+  <rect x="127" y="92" width="96" height="52" rx="8" fill="#eef5fc" stroke="#2f6fb2" stroke-width="2"/>
+  <text x="175" y="126" text-anchor="middle" font-size="20" font-weight="bold">5x</text>
+  <rect x="239" y="92" width="96" height="52" rx="8" fill="#fdf0ee" stroke="#c0392b" stroke-width="2"/>
+  <text x="287" y="126" text-anchor="middle" font-size="20" font-weight="bold">−3</text>
+  <text x="355" y="128" text-anchor="middle" font-size="26" font-weight="bold">＝</text>
+  <rect x="381" y="92" width="96" height="52" rx="8" fill="#eef5fc" stroke="#2f6fb2" stroke-width="2"/>
+  <text x="429" y="126" text-anchor="middle" font-size="20" font-weight="bold">2x</text>
+  <rect x="493" y="92" width="96" height="52" rx="8" fill="#edf7f0" stroke="#2e7d4f" stroke-width="2"/>
+  <text x="541" y="126" text-anchor="middle" font-size="20" font-weight="bold">+9</text>
+  <path d="M429 148 C 380 216, 230 216, 175 148" stroke="#2f6fb2" stroke-width="2.5" fill="none" marker-end="url(#arrB)"/>
+  <text x="302" y="238" text-anchor="middle" font-size="15" font-weight="bold" fill="#2f6fb2">2x は 符号が変わって −2x になり左辺へ</text>
+  <defs>
+    <marker id="arrR" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0 0 L7 3 L0 6 Z" fill="#c0392b"/></marker>
+    <marker id="arrB" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0 0 L7 3 L0 6 Z" fill="#2f6fb2"/></marker>
+  </defs>
+</svg>
+<p class="caption">図2：移項＝項が ＝ を飛び越えると、符号が反対になる</p>
+</div>
+
+<div class="memo-box green">
+<div class="box-title">解き方の手順（移項バージョン）</div>
+<ol>
+  <li><b>文字の項</b>を左辺へ、<b>数の項</b>を右辺へ集める（移項したら符号を変える）</li>
+  <li>左辺どうし、右辺どうしを計算して、<b>ax = b</b> の形にする</li>
+  <li>両辺を <b>x の係数 a でわる</b>と、x = ○ の形になる</li>
+  <li>かっこがある式は、<b>先に分配法則でかっこをはずす</b>。小数・分数は、両辺に10や分母をかけて<b>整数の式に直してから</b>解くと楽</li>
+</ol>
+</div>
+
+<div class="memo-box green">
+<div class="box-title">例題1：2x + 5 = 17</div>
+<div class="eq">2x = 17 − 5　→　2x = 12　→　x = 6</div>
+<p>+5 を右辺へ移項して −5 にする。最後に両辺を係数 2 でわる。</p>
+</div>
+<div class="memo-box green">
+<div class="box-title">例題2：5x − 3 = 2x + 9（図2の式）</div>
+<div class="eq">5x − 2x = 9 + 3　→　3x = 12　→　x = 4</div>
+<p>2x を左辺へ（−2x に）、−3 を右辺へ（+3 に）移項する。確かめ：左辺 5×4−3 = 17、右辺 2×4+9 = 17 で等しい。</p>
+</div>
+<div class="memo-box green">
+<div class="box-title">例題3：x/4 + 3 = 8（分数の係数）</div>
+<div class="eq">x/4 = 8 − 3　→　x/4 = 5　→　x = 20</div>
+<p>先に +3 を移項して x/4 だけを残し、その後に両辺へ分母の 4 をかける。順番を逆にしないこと。</p>
+</div>
+<div class="memo-box green">
+<div class="box-title">例題4：3(x − 2) = 12（かっこがある式）</div>
+<div class="eq">3x − 6 = 12　→　3x = 12 + 6　→　3x = 18　→　x = 6</div>
+<p>分配法則で 3 を (x − 2) の両方にかける。3×(−2) = −6 の符号に注意。</p>
+</div>
+<div class="memo-box green">
+<div class="box-title">例題5：0.3x + 1 = 4（小数の式）</div>
+<div class="eq">両辺を10倍：3x + 10 = 40　→　3x = 30　→　x = 10</div>
+<p>小数が出たら、両辺を10倍（または100倍）して整数の式に直すと、ふつうの方程式と同じに解ける。</p>
+</div>
+<div class="warn-box">
+<div class="box-title">⚠ つまずき注意（方程式）</div>
+<ul>
+  <li><span class="point">移項したのに符号を変え忘れる</span>のが一番多いミス。＝ を飛び越えたら、必ず符号を反対にする</li>
+  <li>移項<b>しない</b>項の符号は変えない。動かした項だけが変わる</li>
+  <li>最後の割り算は、<b>両辺とも</b>係数でわる。片方だけわるのは×</li>
+  <li>分数の係数は「移項してから分母をかける」。x/4 = 5 の次に 4 をかける順番を守る</li>
+</ul>
+</div>
+<div class="memo-box green">
+<div class="box-title">📝 テストではこう出る</div>
+<p>計算問題として何問も並びます。移項の符号ミスと、最後の割り算のし忘れが失点の中心。1行ずつ途中式を書き、時間が余ったら代入して確かめるのが確実です。</p>
+</div>
+
+<h2 class="orange">3．比例式</h2>
+<div class="figure">
+<svg viewBox="0 0 700 210" width="700" role="img" aria-label="比例式の外側と内側の積の図">
+  <path d="M272 82 Q350 30 428 82" stroke="#c0392b" stroke-width="2.5" fill="none"/>
+  <text x="350" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#c0392b">外側どうし</text>
+  <text x="350" y="122" text-anchor="middle" font-size="34" font-weight="bold">a ： b ＝ c ： d</text>
+  <path d="M322 132 Q350 170 378 132" stroke="#2f6fb2" stroke-width="2.5" fill="none"/>
+  <text x="350" y="196" text-anchor="middle" font-size="15" font-weight="bold" fill="#2f6fb2">内側どうし</text>
+</svg>
+<p class="caption">図3：比例式では「外側どうしの積 ＝ 内側どうしの積」</p>
+</div>
+<div class="eq">a : b = c : d　ならば　a × d = b × c</div>
+<div class="memo-box orange">
+<div class="box-title">解き方の手順</div>
+<ol>
+  <li>外側どうし（a と d）、内側どうし（b と c）の積を等しくする式を作る</li>
+  <li>x を含む項を一方に集めて、ふつうの方程式として解く</li>
+</ol>
+</div>
+<div class="memo-box orange">
+<div class="box-title">例題1：x : 6 = 5 : 10</div>
+<div class="eq">10x = 6 × 5　→　10x = 30　→　x = 3</div>
+<p>外側は x と 10、内側は 6 と 5。積を等しくしてから両辺を 10 でわる。</p>
+</div>
+<div class="memo-box orange">
+<div class="box-title">例題2：4 : x = 8 : 14</div>
+<div class="eq">8x = 4 × 14　→　8x = 56　→　x = 7</div>
+<p>x が内側にある場合は、内側の積の中に x が入る。式の形は同じで、外側の積 4×14 と等しくする。</p>
+</div>
+<div class="warn-box">
+<div class="box-title">⚠ つまずき注意（比例式）</div>
+<ul>
+  <li>外側と内側を<b>取り違える</b>ミスに注意。「外×外 ＝ 内×内」と声に出して確認する</li>
+  <li>比の順番を勝手に入れ替えない。a : b の向きはそのまま使う</li>
+</ul>
+</div>
+<div class="memo-box orange">
+<div class="box-title">📝 テストではこう出る</div>
+<p>比例式を解く計算問題と、地図の縮尺や材料の分量などの文章題で出ます。式を作る前に「外側はどれとどれか」を指で押さえるのがコツです。</p>
+</div>
+
+<h2 class="purple">4．比例の式を求める</h2>
+<div class="eq">y が x に比例する　→　y = ax　（a は比例定数、a = y ÷ x）</div>
+<div class="memo-box purple">
+<div class="box-title">式を求める手順</div>
+<ol>
+  <li>対応する x と y の組を1つ選ぶ</li>
+  <li><b>a = y ÷ x</b> で比例定数を計算する</li>
+  <li>y = ax に a を入れて完成。他の組でも同じ a になるか確かめると安心</li>
+</ol>
+</div>
+<div class="memo-box purple">
+<div class="box-title">例題1：x = 2 のとき y = 6</div>
+<div class="eq">a = 6 ÷ 2 = 3　→　式は y = 3x　／　x = −4 のとき y = 3 × (−4) = −12</div>
+</div>
+<div class="memo-box purple">
+<div class="box-title">例題2：表から式を求める</div>
+<table>
+  <tr><th>x</th><td>−3</td><td>−1</td><td>0</td><td>2</td><td>5</td></tr>
+  <tr><th>y</th><td>6</td><td>2</td><td>0</td><td>−4</td><td>−10</td></tr>
+</table>
+<p>x = 5 のとき y = −10 だから、a = −10 ÷ 5 = <b>−2</b>。式は <b>y = −2x</b>。確かめに x = −3 を使うと y = −2 × (−3) = 6 で、表と合う。</p>
+</div>
+<div class="memo-box purple">
+<div class="box-title">例題3：文章題（代金）</div>
+<p>ノート5冊の代金は750円。代金が冊数に比例するとして、8冊の代金を求める。</p>
+<div class="eq">1冊分は 750 ÷ 5 = 150円　→　式は y = 150x　→　8冊では 150 × 8 = 1200円</div>
+</div>
+<div class="memo-box purple">
+<div class="box-title">⭐ 比例の「式とグラフの対応表」</div>
+<table>
+  <tr><th style="width:22%;">比例定数 a</th><th style="width:39%;">グラフの形</th><th>x が増えると y は</th></tr>
+  <tr><td><b>a &gt; 0</b>（プラスのとき）</td><td>原点を通る<b>右上がり</b>の直線</td><td>増える</td></tr>
+  <tr><td><b>a &lt; 0</b>（マイナスのとき）</td><td>原点を通る<b>右下がり</b>の直線</td><td>減る</td></tr>
+</table>
+<ul>
+  <li>どちらの場合も、グラフは必ず<b>原点（0, 0）</b>を通る</li>
+  <li>a の絶対値が大きいほど、グラフの傾きは急になる</li>
+  <li>式が分かれば、x に値を代入して通る点の座標が求まる（例：y = 3x で x = 1 なら点（1, 3））</li>
+</ul>
+</div>
+<div class="warn-box">
+<div class="box-title">⚠ つまずき注意（比例の式）</div>
+<ul>
+  <li>a = y ÷ x の<b>割り算の向き</b>を逆にしない。「y わる x」</li>
+  <li>比例定数が負の数になるとき、符号の落とし物に注意（例題2の a = −2）</li>
+  <li>y = ax の a に、求めた値を<b>必ず代入して式を完成</b>させる。「a = 3」のままで終わらない</li>
+</ul>
+</div>
+<div class="memo-box purple">
+<div class="box-title">📝 テストではこう出る</div>
+<p>「x と y の関係を式で表しなさい」と「x = ○ のときの y の値」の2つセットが定番。表から求める場合は、どの組を使っても同じ a になることが確かめに使えます。</p>
+</div>
+
+<h2>5．比例のグラフ（読み取り・かき方）</h2>
+<div class="figure">
+<svg viewBox="0 0 700 340" width="700" role="img" aria-label="比例のグラフの図">
+  <g stroke="#dbe5ef" stroke-width="1">
+    <path d="M200 20 L200 320 M230 20 L230 320 M260 20 L260 320 M290 20 L290 320 M320 20 L320 320 M380 20 L380 320 M410 20 L410 320 M440 20 L440 320 M470 20 L470 320 M500 20 L500 320"/>
+    <path d="M200 20 L500 20 M200 50 L500 50 M200 80 L500 80 M200 110 L500 110 M200 140 L500 140 M200 200 L500 200 M200 230 L500 230 M200 260 L500 260 M200 290 L500 290 M200 320 L500 320"/>
+  </g>
+  <line x1="270" y1="10" x2="430" y2="330" stroke="#2f6fb2" stroke-width="3.5"/>
+  <line x1="270" y1="330" x2="430" y2="10" stroke="#c0392b" stroke-width="3.5"/>
+  <line x1="190" y1="170" x2="512" y2="170" stroke="#222" stroke-width="2"/>
+  <line x1="350" y1="330" x2="350" y2="8" stroke="#222" stroke-width="2"/>
+  <circle cx="380" cy="110" r="6" fill="#c0392b"/>
+  <text x="392" y="106" font-size="15" font-weight="bold" fill="#c0392b">(1, 2)</text>
+  <circle cx="320" cy="110" r="6" fill="#2f6fb2"/>
+  <text x="308" y="106" text-anchor="end" font-size="15" font-weight="bold" fill="#2f6fb2">(−1, 2)</text>
+  <circle cx="350" cy="170" r="5" fill="#222"/>
+  <text x="360" y="192" font-size="15" font-weight="bold">原点 O</text>
+  <text x="438" y="34" font-size="16" font-weight="bold" fill="#c0392b">y = 2x（a＞0）</text>
+  <text x="262" y="34" text-anchor="end" font-size="16" font-weight="bold" fill="#2f6fb2">y = −2x（a＜0）</text>
+  <text x="518" y="174" font-size="16" font-weight="bold">x</text>
+  <text x="360" y="20" font-size="16" font-weight="bold">y</text>
+  <text x="404" y="162" font-size="13" fill="#555">2</text>
+  <text x="284" y="162" font-size="13" fill="#555">−2</text>
+  <text x="356" y="116" font-size="13" fill="#555">2</text>
+  <text x="356" y="236" font-size="13" fill="#555">−2</text>
+</svg>
+<p class="caption">図4：比例のグラフは原点を通る直線。a＞0 は右上がり、a＜0 は右下がり</p>
+</div>
+
+<div class="memo-box">
+<div class="box-title">グラフから式を求める手順</div>
+<ol>
+  <li>グラフが通る点のうち、<b>原点のほかに読み取りやすい点</b>を1つ選ぶ（目盛りの交点にある点）</li>
+  <li>その点の座標で <b>a = y ÷ x</b> を計算する</li>
+  <li>y = ax に入れて完成</li>
+</ol>
+</div>
+<div class="memo-box">
+<div class="box-title">例題1：グラフが原点と点（3, −6）を通る</div>
+<div class="eq">a = −6 ÷ 3 = −2　→　式は y = −2x　／　x = 5 のとき y = −2 × 5 = −10</div>
+<p>点の座標は（x, y）の順。−6 が y、3 が x であることに注意。</p>
+</div>
+<div class="memo-box">
+<div class="box-title">グラフをかく手順</div>
+<ol>
+  <li>原点（0, 0）に点を打つ</li>
+  <li>x = 1 のときの y など、<b>もう1点</b>を求めて打つ（y = 4x なら点（1, 4））</li>
+  <li>2点を結んで直線を引く（直線は両端を少し伸ばす）</li>
+</ol>
+</div>
+<div class="memo-box">
+<div class="box-title">例題2：点がグラフ上にあるか調べる</div>
+<p>y = 4x のグラフについて、点（−1, −4）は x = −1 のとき y = 4 × (−1) = −4 となり、座標と一致するので<b>グラフ上の点</b>。点（2, 6）は y = 8 になるはずで一致しないので、グラフ上の点ではない。</p>
+</div>
+<div class="warn-box">
+<div class="box-title">⚠ つまずき注意（グラフ）</div>
+<ul>
+  <li>座標は<b>（x, y）の順</b>。読み取りで逆にすると a の値が逆数になってしまう</li>
+  <li>比例のグラフは必ず<b>原点を通る直線</b>。曲線や、原点を通らない直線は比例ではない</li>
+  <li>a が負のときは右下がり。式の符号とグラフの向きが合っているか最後に確認する</li>
+</ul>
+</div>
+<div class="memo-box">
+<div class="box-title">📝 テストではこう出る</div>
+<p>グラフから式を求める問題と、式からグラフをかく問題が両方向で出ます。当日は定規が不要とされているので、フリーハンドでまっすぐに引く練習をしておくと安心です。</p>
+</div>
+
+<div class="warn-box">
+<div class="box-title">⚠ まとめ｜間違えやすい点（ここをチェック！）</div>
+<ul>
+  <li>方程式：<b>移項したら符号を変える</b>。変えるのは動かした項だけ</li>
+  <li>方程式：最後は両辺を x の係数でわる。片方だけは×</li>
+  <li>方程式：分数は「移項 → 分母をかける」、かっこは「先に分配」、小数は「10倍して整数に」</li>
+  <li>比例式：<b>外×外 ＝ 内×内</b>。取り違えが一番多い</li>
+  <li>比例：a = <b>y ÷ x</b>（向きを逆にしない）。求めた a は式に代入して完成させる</li>
+  <li>グラフ：座標は（x, y）の順。比例のグラフは原点を通る直線</li>
+  <li>計算ミスの発見には<b>代入の確かめ</b>。方程式は解を、比例は別の組で確かめる</li>
+</ul>
+</div>
+
+<h2>一言チェックリスト（テスト前日に確認）</h2>
+<ul>
+  <li>☐ 等式の性質4つを、天秤の図で説明できる</li>
+  <li>☐ 移項のルール「＝ を飛び越えたら符号が変わる」を言える</li>
+  <li>☐ 分数・かっこ・小数の方程式の手直しの順番を言える</li>
+  <li>☐ 比例式は「外×外 ＝ 内×内」で解ける</li>
+  <li>☐ a = y ÷ x で比例定数を求め、y = ax を完成できる</li>
+  <li>☐ 式とグラフの対応表（a＞0 は右上がり、a＜0 は右下がり）を言える</li>
+  <li>☐ グラフから式を、式からグラフを、両方向ともできる</li>
+  <li>☐ 解いた答えを代入して確かめる習慣がついている</li>
+</ul>
+
+<p style="text-align:center; margin-top:24px;"><a href="sakuya.html">← 中1の教材トップへ戻る</a></p>
+<p class="footer">中1数学 暗記シート｜期末テスト正式範囲（期末テスト対策）</p>
+
+</div>
+</body>
+</html>
