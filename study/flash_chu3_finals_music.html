@@ -23,7 +23,7 @@ footer{margin-top:10px}
 .progress-bar{height:16px;background:var(--soft);border:2px solid var(--line);border-radius:999px;overflow:hidden}
 .progress-fill{height:100%;background:var(--accent);width:0;transition:width .3s}
 .card-scene{perspective:1200px;margin:20px 0 6px}
-.fcard{position:relative;width:100%;height:400px;cursor:pointer;transform-style:preserve-3d;transition:transform .45s;-webkit-tap-highlight-color:transparent}
+.fcard{position:relative;width:100%;height:480px;cursor:pointer;transform-style:preserve-3d;transition:transform .45s;-webkit-tap-highlight-color:transparent}
 .fcard.flipped{transform:rotateY(180deg)}
 .face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
  border:3px solid var(--navy);border-radius:18px;padding:24px 18px;overflow:hidden;
@@ -33,6 +33,8 @@ footer{margin-top:10px}
 .face-label.ans{color:var(--navy)}
 .face-text{font-size:1.3rem;font-weight:700;line-height:1.65}
 .face-note{margin-top:14px;font-size:.98rem;color:#54677a;line-height:1.65}
+.face-img{margin-top:12px}
+.face-img img{max-width:100%;max-height:190px;border:2px solid var(--line);border-radius:8px}
 .tap-hint{margin-top:16px;font-size:.9rem;color:#8a97a5}
 .judge{display:flex;gap:12px;margin-top:16px}
 .jbtn{flex:1;font-family:inherit;font-size:1.25rem;font-weight:700;padding:18px 10px;border-radius:14px;
@@ -54,7 +56,7 @@ footer{margin-top:10px}
 <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
 <div id="playArea">
 <div class="card-scene"><div class="fcard" id="fcard">
-<div class="face front"><div class="face-label">も　ん　だ　い</div><div class="face-text" id="frontText"></div><div class="tap-hint">タップで答えを見る</div></div>
+<div class="face front"><div class="face-label">も　ん　だ　い</div><div class="face-text" id="frontText"></div><div class="face-img" id="frontImg"></div><div class="tap-hint">タップで答えを見る</div></div>
 <div class="face back"><div class="face-label ans">こ　た　え</div><div class="face-text" id="backText"></div><div class="face-note" id="backNote"></div></div>
 </div></div>
 <div class="judge" id="judgeBtns" style="visibility:hidden">
@@ -98,7 +100,7 @@ var CARDS = [
  },
  {
   "q": "音をだんだん弱くする記号・用語",
-  "a": "デクレシェンド（デクレッシェンド、decresc.）またはディミヌエンド（dim.)",
+  "a": "デクレシェンド（decresc.）またはディミヌエンド（dim.）",
   "n": ""
  },
  {
@@ -113,27 +115,27 @@ var CARDS = [
  },
  {
   "q": "「メッゾフォルテ（mf）」と「メッゾピアノ（mp）」の意味",
-  "a": "mf：やや強く／mp：やや弱く",
+  "a": "mf：少し強く／mp：少し弱く",
   "n": ""
  },
  {
-  "q": "「フォルティシモ（ff）」と「ピアニシモ（pp）」の意味",
+  "q": "「フォルティッシモ（ff）」と「ピアニッシモ（pp）」の意味",
   "a": "ff：とても強く／pp：とても弱く",
   "n": ""
  },
  {
   "q": "速度を表す言葉「アレグロ」の意味",
-  "a": "速く、明るく",
+  "a": "速く",
   "n": ""
  },
  {
   "q": "速度を表す言葉「アンダンテ」の意味",
-  "a": "歩くような速さで",
+  "a": "ゆっくり歩くような速さで",
   "n": ""
  },
  {
   "q": "速度を表す言葉「モデラート」の意味",
-  "a": "中くらいの速さで",
+  "a": "中ぐらいの速さで",
   "n": ""
  },
  {
@@ -142,7 +144,7 @@ var CARDS = [
   "n": ""
  },
  {
-  "q": "曲の終わりなどで、少しずつ遅くすることを表す言葉",
+  "q": "だんだん遅くすることを表す言葉",
   "a": "リタルダンド（rit.）",
   "n": ""
  },
@@ -152,18 +154,18 @@ var CARDS = [
   "n": ""
  },
  {
-  "q": "2つの音をなめらかにつなげて演奏する記号を何というか",
+  "q": "高さの違う2つ以上の音符を、なめらかにつなぐ記号を何というか",
   "a": "スラー（弧線の記号）",
   "n": ""
  },
  {
-  "q": "同じ高さの2つの音符をつなぎ、長さを合計して演奏する記号は",
+  "q": "隣り合った同じ高さの音符をつなぎ、1つの音にして演奏する記号は",
   "a": "タイ",
   "n": ""
  },
  {
-  "q": "音を十分に延ばして止める記号（フェルマータ）は何を表すか",
-  "a": "その音（や休符）を適宜に延ばすこと",
+  "q": "音符（休符）をほどよく延ばす記号（フェルマータ）は何を表すか",
+  "a": "その音符（休符）をほどよく延ばすこと",
   "n": ""
  },
  {
@@ -203,12 +205,42 @@ var CARDS = [
  },
  {
   "q": "「アクセント（＞）」の意味",
-  "a": "その音を特に強く演奏する",
+  "a": "その音を目立たせて、強調して演奏する",
   "n": ""
  },
  {
-  "q": "なめらかに、歌うように演奏することを表す言葉",
+  "q": "音符を滑らかに演奏することを表す言葉（legato）",
   "a": "レガート",
+  "n": ""
+ },
+ {
+  "q": "「♩＝112」のような速度表示の意味は",
+  "a": "1分間に4分音符（♩）を112打つ速さで演奏すること",
+  "n": ""
+ },
+ {
+  "q": "音の長さをじゅうぶんに保って演奏する記号・用語は",
+  "a": "テヌート",
+  "n": ""
+ },
+ {
+  "q": "だんだん速くすることを表す言葉は",
+  "a": "アッチェレランド（accel.）",
+  "n": ""
+ },
+ {
+  "q": "Largo（ラルゴ）、Adagio（アダージョ）、Lento（レント）は、どのような速さを表すか",
+  "a": "いずれも緩やかな速さ（Largoは「幅広く緩やかに」）",
+  "n": ""
+ },
+ {
+  "q": "Allegretto（アレグレット）とPresto（プレスト）の意味は",
+  "a": "Allegretto：やや速く／Presto：急速に",
+  "n": ""
+ },
+ {
+  "q": "全休符・2分休符・4分休符・8分休符・16分休符のうち、1小節休む場合にも用いられるのはどれか",
+  "a": "全休符",
   "n": ""
  },
  {
@@ -293,7 +325,7 @@ var CARDS = [
  },
  {
   "q": "「ブルタバ（モルダウ）」は、何を音楽で表した曲か",
-  "a": "ブルタバ川（モルダウ川）の源流から、森や村、プラハの町を通って大河へ注ぐまでの流れ",
+  "a": "ブルタバ川の流れ。2つの水源が合流し、草原や森、祭りの地域、月の光と水の精、城と廃墟、聖ヨハネの急流を経てプラハへ至り、最後はエルベ川へ流れ去る様子",
   "n": ""
  },
  {
@@ -303,12 +335,42 @@ var CARDS = [
  },
  {
   "q": "作曲された時代背景として、スメタナの音楽の特徴は何か",
-  "a": "チェコの国民楽派の代表で、自国の自然や歴史を音楽で表し、民族の誇りを育てた",
+  "a": "当時のチェコはオーストリアの強い支配を受け、母語を話すことさえ禁じられていた。スメタナは独立への願いを音楽に託し、祖国への思いに満ちた作品を送り続けた",
   "n": ""
  },
  {
   "q": "標題音楽とは何か",
   "a": "風景や物語など、音楽以外の題材をもとに、その内容を表そうとする音楽",
+  "n": ""
+ },
+ {
+  "q": "スメタナの生没年と、どのような作曲家か",
+  "a": "B.スメタナ（1824〜1884）。チェコを代表する作曲家で、プラハでピアノと作曲を学んだ後、指揮者や作曲家として活躍した",
+  "n": ""
+ },
+ {
+  "q": "「ブルタバ」が作曲されたのは何年か",
+  "a": "1874年",
+  "n": ""
+ },
+ {
+  "q": "連作交響詩「我が祖国」は、どのような曲の集まりか",
+  "a": "チェコの自然や伝説、歴史に基づく6曲の交響詩からなる（「ブルタバ」はその第2曲）",
+  "n": ""
+ },
+ {
+  "q": "「ブルタバ」で描かれる川の流れの順序を答えなさい",
+  "a": "2つの水源→合流→草原と森・人々の祭り→月の光のもとで水の精が踊る→壮大な城と岩壁に覆われた廃墟→聖ヨハネの急流→プラハ（ビシェフラト城）→エルベ川へ",
+  "n": ""
+ },
+ {
+  "q": "プラハの春音楽祭について答えなさい",
+  "a": "毎年、スメタナの命日にあたる5月12日に開幕する音楽祭。オープニングでは連作交響詩「我が祖国」が必ず演奏される",
+  "n": ""
+ },
+ {
+  "q": "画家ムハ（ミュシャ）と「我が祖国」の関わりは",
+  "a": "ムハは「我が祖国」を聴いて強い感銘を受け、祖国の伝説や歴史をつづった大作「スラヴ叙事詩」に余生をささげる決心をしたといわれている",
   "n": ""
  },
  {
@@ -318,7 +380,7 @@ var CARDS = [
  },
  {
   "q": "「ボレロ」の最大の特徴を答えなさい",
-  "a": "同じリズムと旋律が繰り返される中で、楽器が次々に加わり、少しずつ強く（クレシェンド）なっていく",
+  "a": "小太鼓が2小節のリズムパターンを刻み続ける中で、2つの旋律が楽器の組み合わせを変えながら繰り返され、曲全体が1つの長いクレシェンドになっていく",
   "n": ""
  },
  {
@@ -327,8 +389,8 @@ var CARDS = [
   "n": ""
  },
  {
-  "q": "「ボレロ」の2小節のリズムパターンの特徴は",
-  "a": "3連符を含む特徴的なリズムを、2小節のまとまりで繰り返す",
+  "q": "「ボレロ」の2小節のリズムパターンについて答えなさい",
+  "a": "2小節のリズムパターンが、小太鼓を中心にさまざまな楽器によって、曲全体を通して演奏される",
   "n": ""
  },
  {
@@ -340,6 +402,38 @@ var CARDS = [
   "q": "ブルタバ川が流れる町（首都）はどこか",
   "a": "プラハ（チェコの首都）",
   "n": ""
+ },
+ {
+  "q": "ラヴェルの生没年と、呼ばれ方は",
+  "a": "M.ラヴェル（1875〜1937）。フランスの作曲家で、管弦楽法に詳しく「オーケストラの魔術師」と呼ばれる",
+  "n": ""
+ },
+ {
+  "q": "「ボレロ」が作曲された年と、リズムのもとは",
+  "a": "1928年作曲。18世紀末にスペインで流行した3拍子系の舞曲「ボレロ」のリズムを使っている",
+  "n": ""
+ },
+ {
+  "q": "「ボレロ」の2つの旋律は、どのように現れるか",
+  "a": "2つの旋律（A・B）が交互に現れ、楽器の組み合わせを変えながら何度も繰り返される",
+  "n": ""
+ },
+ {
+  "q": "「ボレロ」で旋律Aを最初に演奏する楽器と、旋律Bを最初に演奏する楽器は",
+  "a": "旋律A：フルート（次にクラリネット）／旋律B：ファゴット",
+  "n": ""
+ },
+ {
+  "q": "【図を見て答える】「旋律を演奏する主な楽器」の図で、テナーサックスが受け持つのは旋律A・Bのどちらか",
+  "a": "旋律B",
+  "n": "教科書P36〜37「旋律を演奏する主な楽器」の図を見て答えよう",
+  "img": "assets/bolero_instruments.png"
+ },
+ {
+  "q": "【図を見て答える】同じ図で、オーボエダモーレが受け持つのは旋律A・Bのどちらか",
+  "a": "旋律A",
+  "n": "教科書P36〜37「旋律を演奏する主な楽器」の図を見て答えよう",
+  "img": "assets/bolero_instruments.png"
  }
 ];
 var total = CARDS.length;
@@ -362,6 +456,7 @@ function showCard(){
   el('fcard').classList.remove('flipped');
   var c = CARDS[deck[pos]];
   el('frontText').textContent = c.q;
+  el('frontImg').innerHTML = c.img ? '<img src="' + c.img + '" alt="教科書の図（ボレロの楽器）">' : '';
   el('backText').textContent = c.a;
   el('backNote').textContent = c.n || '';
   el('judgeBtns').style.visibility = 'hidden';
