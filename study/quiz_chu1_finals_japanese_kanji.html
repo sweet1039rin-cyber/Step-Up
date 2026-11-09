@@ -24,337 +24,125 @@ table{border-collapse:collapse;width:100%;margin:.8em 0;font-size:.95em;display:
 th,td{border:1px solid var(--line);padding:.45em .6em;text-align:left;white-space:nowrap}
 th{background:var(--soft)}
 hr{border:none;border-top:2px dashed var(--line);margin:1.6em 0}
-details.answers{margin:2em 0 1em;border:3px solid var(--navy);border-radius:14px;overflow:hidden;background:#fff}
-details.answers>summary{cursor:pointer;list-style:none;background:var(--navy);color:#fff;
- font-weight:700;font-size:1.15rem;text-align:center;padding:16px 12px;-webkit-tap-highlight-color:transparent}
-details.answers>summary::-webkit-details-marker{display:none}
-details.answers>summary::after{content:" ▼"}
-details.answers[open ]>summary::after{content:" ▲"}
-details.answers .answers-body{padding:6px 18px 20px}
 .backlink{display:inline-block;margin-top:28px;background:var(--accent);color:#fff;font-weight:700;
  text-decoration:none;padding:14px 22px;border-radius:999px;font-size:1.05rem}
 .toplink{font-size:.95rem;margin-bottom:4px}
 .toplink a{color:var(--navy)}
 footer{margin-top:10px}
 @media (max-width:600px){body{font-size:17px}.wrap{padding:14px 12px 48px}h1{font-size:1.35rem}h2{font-size:1.18rem}}
+.randinfo{background:#fff5f8;border:2px solid var(--accent);border-radius:12px;padding:10px 16px;font-weight:700;color:#c2255c}
+.qcard{border:2px solid var(--line);border-radius:14px;padding:14px 16px;margin:1em 0;background:#fff}
+.qhead{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.qnum{font-weight:700;color:var(--navy);font-size:1.12rem}
+.qcat{font-size:.78rem;background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:2px 10px;color:var(--navy)}
+.qbody p{margin:.35em 0}
+.abtn{display:inline-block;background:var(--navy);color:#fff;font-weight:700;border:none;border-radius:999px;padding:10px 24px;font-size:1rem;cursor:pointer;margin-top:.45em;-webkit-tap-highlight-color:transparent}
+.abox{display:none;margin-top:.6em;background:#fff7ea;border-left:6px solid #f2b134;border-radius:6px;padding:.6em 1em}
+.abox.open{display:block}
+.mrow{margin-top:.65em;border-top:1px dashed var(--line);padding-top:.5em}
+.mrow label{display:inline-flex;align-items:center;gap:6px;cursor:pointer}
+.mrow input{width:20px;height:20px;accent-color:#c2255c}
+.mrow .rec{font-size:.8rem;color:#c2255c;font-weight:700;margin-left:6px}
+.passage{background:var(--soft);border-radius:12px;padding:6px 18px 12px;margin:1.4em 0}
+.mpanel{margin:2em 0 1em;border:3px solid #c2255c;border-radius:14px;padding:18px;background:#fff5f8}
+.mpanel h2{border:none;background:none;margin:.1em 0 .4em;padding:0;font-size:1.25rem;color:#c2255c}
+.mpanel p{font-size:.95rem}
+.mbtn{display:inline-block;background:#c2255c;color:#fff;font-weight:700;border:none;border-radius:999px;padding:14px 26px;font-size:1.05rem;cursor:pointer}
+.mmsg{font-weight:700;color:#c2255c;margin-top:.6em}
 </style>
 </head>
 <body>
 <div class="wrap">
 <p class="toplink"><a href="sakuya.html">← 教材トップへ戻る</a></p>
 <h1>中1国語 漢字問題集｜期末テスト正式範囲（国語の学習P78〜79・P80）</h1>
-<p>※国語の学習P78〜79（漢字の音訓・練習4）、P80（シジュウカラの漢字）、P100（練習5）の漢字の問題集です。全70問。漢字カードで覚えてから解き、間違えたところは「まちがい記録」に残して復習しましょう。</p>
+<p>※国語の学習P78〜79（漢字の音訓・練習4）、P80（シジュウカラの漢字）、P100（練習5）の漢字の問題集です。全100問の問題バンクから、毎回30問をランダムに出題します。漢字カードで覚えてから解き、間違えたところは「まちがい記録」に残して復習しましょう。</p>
+<p class="randinfo">🎲 全100問から30問をランダムで出しています。もう一度開くと別の問題になります。</p>
 <hr />
-<h1>問題編</h1>
-<h2>第1部 読み（国語の学習P78・P80）</h2>
-<p><strong>問1</strong> 「濃度」の読みを答えなさい。</p>
-<p><strong>問2</strong> 「技巧」の読みを答えなさい。</p>
-<p><strong>問3</strong> 「納涼」の読みを答えなさい。</p>
-<p><strong>問4</strong> 「遮断」の読みを答えなさい。</p>
-<p><strong>問5</strong> 「柔道」の読みを答えなさい。</p>
-<p><strong>問6</strong> 「有無」の読みを答えなさい。</p>
-<p><strong>問7</strong> 「土砂」の読みを答えなさい。</p>
-<p><strong>問8</strong> 「盛夏」の読みを答えなさい。</p>
-<p><strong>問9</strong> 「夏至」の読みを答えなさい。</p>
-<p><strong>問10</strong> 「首相」の読みを答えなさい。</p>
-<p><strong>問11</strong> 「知己」の読みを答えなさい。</p>
-<p><strong>問12</strong> 「街道」の読みを答えなさい。</p>
-<p><strong>問13</strong> 「号泣」の読みを答えなさい。</p>
-<p><strong>問14</strong> 「申告」の読みを答えなさい。</p>
-<p><strong>問15</strong> 「所望」の読みを答えなさい。</p>
-<p><strong>問16</strong> 「繁栄」の読みを答えなさい。</p>
-<p><strong>問17</strong> 「権威」の読みを答えなさい。</p>
-<p><strong>問18</strong> 「分析」の読みを答えなさい。</p>
-<p><strong>問19</strong> 「警戒」の読みを答えなさい。</p>
-<p><strong>問20</strong> 「証拠」の読みを答えなさい。</p>
-<h2>第2部 書き取り（練習4・P79）</h2>
-<p><strong>問21</strong> 次の文の「ぼく」を漢字で書きなさい。<br />
-ぼくは弟と公園で遊ぶ。</p>
-<p><strong>問22</strong> 次の文の「くうしゅう」を漢字で書きなさい。<br />
-戦争中、くうしゅう警報が鳴り響いた。</p>
-<p><strong>問23</strong> 次の文の「ばくだん」を漢字で書きなさい。<br />
-ばくだんが爆発する場面を映画で見た。</p>
-<p><strong>問24</strong> 次の文の「そかい」を漢字で書きなさい。<br />
-子どもたちは田舎へそかいした。</p>
-<p><strong>問25</strong> 次の文の「しんせき」を漢字で書きなさい。<br />
-正月にはしんせきが集まる。</p>
-<p><strong>問26</strong> 次の文の「けいりゅう」を漢字で書きなさい。<br />
-けいりゅうで魚を取る。</p>
-<p><strong>問27</strong> 次の文の「えんりょ」を漢字で書きなさい。<br />
-えんりょせずに食べてください。</p>
-<p><strong>問28</strong> 次の文の「かっさい」を漢字で書きなさい。<br />
-舞台の終わりに大きなかっさいを受けた。</p>
-<p><strong>問29</strong> 次の文の「こうしん」を漢字で書きなさい。<br />
-大会の記録をこうしんした。</p>
-<p><strong>問30</strong> 次の文の「そうしつ」を漢字で書きなさい。<br />
-自信をそうしつしてしまった。</p>
-<p><strong>問31</strong> 次の文の「こうたく」を漢字で書きなさい。<br />
-こうたくのある布を選ぶ。</p>
-<p><strong>問32</strong> 次の文の「じゅく」を漢字で書きなさい。<br />
-兄はじゅくに通っている。</p>
-<p><strong>問33</strong> 次の文の「せんぱい」を漢字で書きなさい。<br />
-せんぱいに勉強を教わった。</p>
-<p><strong>問34</strong> 次の文の「ひま」を漢字で書きなさい。<br />
-ひまな時間ができた。</p>
-<p><strong>問35</strong> 次の文の「たましい」を漢字で書きなさい。<br />
-たましいを込めて歌う。</p>
-<p><strong>問36</strong> 次の文の「おす」を漢字で書きなさい。<br />
-ボタンをおす。</p>
-<p><strong>問37</strong> 次の文の「となり」を漢字で書きなさい。<br />
-となりの席の人と話す。</p>
-<p><strong>問38</strong> 次の文の「わたる」を漢字で書きなさい。<br />
-橋をわたって向こう岸へ行く。</p>
-<p><strong>問39</strong> 次の文の「ほる」を漢字で書きなさい。<br />
-庭に穴をほる。</p>
-<p><strong>問40</strong> 次の文の「すむ」を漢字で書きなさい。<br />
-川の水がすんで、底が見える。</p>
-<h2>第3部 音訓と文脈</h2>
-<p><strong>問41</strong> 「生命」の読みを答えなさい。</p>
-<p><strong>問42</strong> 「七分そで」の読みを答えなさい。</p>
-<p><strong>問43</strong> 「風車小屋」の「風車」の読みを答えなさい。</p>
-<p><strong>問44</strong> 「折り紙の風車」の「風車」の読みを答えなさい。</p>
-<p><strong>問45</strong> 「寒気が流れ込む」の「寒気」の読みを答えなさい。</p>
-<p><strong>問46</strong> 「寒気がする」の「寒気」の読みを答えなさい。</p>
-<p><strong>問47</strong> 「梅雨前線」の「梅雨」の読みを答えなさい。</p>
-<p><strong>問48</strong> 「梅雨入り」の「梅雨」の読みを答えなさい。</p>
-<p><strong>問49</strong> 「色紙にサインを書く」の「色紙」の読みを答えなさい。</p>
-<p><strong>問50</strong> 「色紙で輪飾りを作る」の「色紙」の読みを答えなさい。</p>
-<p><strong>問51</strong> 「背筋がぞっとする」の「背筋」の読みを答えなさい。</p>
-<p><strong>問52</strong> 「背筋をきたえる」の「背筋」の読みを答えなさい。</p>
-<h2>第4部 練習5の漢字（P100）</h2>
-<p><strong>問53</strong> 「舞う」の読みを答えなさい。</p>
-<p><strong>問54</strong> 「追い払う」の読みを答えなさい。</p>
-<p><strong>問55</strong> 「獲得」の読みを答えなさい。</p>
-<p><strong>問56</strong> 「要旨」の読みを答えなさい。</p>
-<p><strong>問57</strong> 「発酵」の読みを答えなさい。</p>
-<p><strong>問58</strong> 「陪審員」の読みを答えなさい。</p>
-<p><strong>問59</strong> 「視聴」の読みを答えなさい。</p>
-<p><strong>問60</strong> 「砂丘」の読みを答えなさい。</p>
-<p><strong>問61</strong> 「細菌」の読みを答えなさい。</p>
-<p><strong>問62</strong> 次の文の「ころ」を漢字で書きなさい。<br />
-梅が咲くころになった。</p>
-<p><strong>問63</strong> 次の文の「ほお」を漢字で書きなさい。<br />
-寒くてほおが赤くなった。</p>
-<p><strong>問64</strong> 次の文の「はんしょく」を漢字で書きなさい。<br />
-鳥のはんしょく期が始まる。</p>
-<p><strong>問65</strong> 次の文の「えさ」を漢字で書きなさい。<br />
-ひなにえさを運ぶ。</p>
-<p><strong>問66</strong> 次の文の「せまる」を漢字で書きなさい。<br />
-先生が決断をせまる。</p>
-<p><strong>問67</strong> 次の文の「こんきょ」を漢字で書きなさい。<br />
-こんきょをはっきり話す。</p>
-<p><strong>問68</strong> 次の文の「しんらい」を漢字で書きなさい。<br />
-友をしんらいする。</p>
-<p><strong>問69</strong> 次の文の「ばいたい」を漢字で書きなさい。<br />
-広告のばいたいを選ぶ。</p>
-<p><strong>問70</strong> 次の文の「そうにゅうか」を漢字で書きなさい。<br />
-劇のそうにゅうかを歌う。</p>
-<hr />
-<details class="answers"><summary>答えを見る（解答・解説）</summary><div class="answers-body">
-<h1>解答・解説編</h1>
-<h2>第1部 読み（国語の学習P78・P80）の解答</h2>
-<p><strong>問1</strong> <strong>のうど</strong><br />
-「濃」は音読みで「ノウ」。「のうど」と読みます。</p>
-<p><strong>問2</strong> <strong>ぎこう</strong><br />
-「技」は音読みで「ギ」。わざの巧みさという意味です。</p>
-<p><strong>問3</strong> <strong>のうりょう</strong><br />
-「涼」は音読みで「リョウ」。涼しさを楽しむことです。</p>
-<p><strong>問4</strong> <strong>しゃだん</strong><br />
-「遮」は音読みで「シャ」。さえぎって断ち切ることです。</p>
-<p><strong>問5</strong> <strong>じゅうどう</strong><br />
-「柔」は音読みで「ジュウ」。</p>
-<p><strong>問6</strong> <strong>うむ</strong><br />
-「有」は音読みで「ウ」。あることとないことです。</p>
-<p><strong>問7</strong> <strong>どしゃ</strong><br />
-「砂」は音読みで「シャ」。「どさ」とは読みません。</p>
-<p><strong>問8</strong> <strong>せいか</strong><br />
-「盛」は音読みで「セイ」。夏の盛りのことです。</p>
-<p><strong>問9</strong> <strong>げし</strong><br />
-「至」は音読みで「シ」。一年で最も昼が長い日です。</p>
-<p><strong>問10</strong> <strong>しゅしょう</strong><br />
-「相」は音読みで「ショウ」。内閣総理大臣のことです。</p>
-<p><strong>問11</strong> <strong>ちき</strong><br />
-自分のことをよく理解してくれる親しい友人のことです。</p>
-<p><strong>問12</strong> <strong>かいどう</strong><br />
-「街」は「ガイ」とも読みますが、この語は「かいどう」です。大きな通り道のことです。</p>
-<p><strong>問13</strong> <strong>ごうきゅう</strong><br />
-「号」は音読みで「ゴウ」。声をあげて泣くことです。</p>
-<p><strong>問14</strong> <strong>しんこく</strong><br />
-「申」は音読みで「シン」。申し述べることです。</p>
-<p><strong>問15</strong> <strong>しょもう</strong><br />
-「望」は音読みで「モウ」ですが、この語は「しょもう」と読みます。「しょぼう」とは読みません。</p>
-<p><strong>問16</strong> <strong>はんえい</strong><br />
-「栄」は音読みで「エイ」。栄えることです。</p>
-<p><strong>問17</strong> <strong>けんい</strong><br />
-「威」は音読みで「イ」。他を従わせる力や信用のことです。</p>
-<p><strong>問18</strong> <strong>ぶんせき</strong><br />
-「析」は音読みで「セキ」。分けて調べることです。</p>
-<p><strong>問19</strong> <strong>けいかい</strong><br />
-「戒」は音読みで「カイ」。用心することです。</p>
-<p><strong>問20</strong> <strong>しょうこ</strong><br />
-「証」は音読みで「ショウ」。事実を証明するものことです。</p>
-<h2>第2部 書き取り（練習4・P79）の解答</h2>
-<p><strong>問21</strong> <strong>僕</strong><br />
-一人称の「ぼく」は「僕」と書きます。</p>
-<p><strong>問22</strong> <strong>空襲</strong><br />
-空から攻撃することです。</p>
-<p><strong>問23</strong> <strong>爆弾</strong><br />
-「弾」は「だん」と読みます。</p>
-<p><strong>問24</strong> <strong>疎開</strong><br />
-戦火などを避けて離れることです。</p>
-<p><strong>問25</strong> <strong>親戚</strong><br />
-「戚」の字を間違えないようにします。</p>
-<p><strong>問26</strong> <strong>渓流</strong><br />
-山あいの谷川の流れです。</p>
-<p><strong>問27</strong> <strong>遠慮</strong><br />
-「慮」は「りょ」と読みます。</p>
-<p><strong>問28</strong> <strong>喝采</strong><br />
-手をたたき、大声をあげてほめることです。</p>
-<p><strong>問29</strong> <strong>更新</strong><br />
-新しく改めることです。</p>
-<p><strong>問30</strong> <strong>喪失</strong><br />
-失ってなくすことです。</p>
-<p><strong>問31</strong> <strong>光沢</strong><br />
-物の表面に見られるツヤのことです。</p>
-<p><strong>問32</strong> <strong>塾</strong><br />
-一字の漢字です。</p>
-<p><strong>問33</strong> <strong>先輩</strong><br />
-「輩」は「ぱい」の部分です。</p>
-<p><strong>問34</strong> <strong>暇</strong><br />
-「暇」は「ひま」と読みます。</p>
-<p><strong>問35</strong> <strong>魂</strong><br />
-「魂」は「たましい」と読みます。</p>
-<p><strong>問36</strong> <strong>押す</strong><br />
-「押」は手へんです。</p>
-<p><strong>問37</strong> <strong>隣</strong><br />
-「隣」は「となり」と読みます。</p>
-<p><strong>問38</strong> <strong>渡る</strong><br />
-「渡」は「わた（る）」と読みます。</p>
-<p><strong>問39</strong> <strong>掘る</strong><br />
-「掘」は手へんです。「ほる」と読みます。</p>
-<p><strong>問40</strong> <strong>澄む</strong><br />
-「澄」は「す（む）」と読みます。</p>
-<h2>第3部 音訓と文脈の解答</h2>
-<p><strong>問41</strong> <strong>せいめい</strong><br />
-「生」の音読みです。</p>
-<p><strong>問42</strong> <strong>しちぶそで</strong><br />
-「分」は「ぶ」。長さの割合を表す読み方です。</p>
-<p><strong>問43</strong> <strong>ふうしゃ</strong><br />
-建物に付いた車輪型の装置は「ふうしゃ」と読みます。</p>
-<p><strong>問44</strong> <strong>かざぐるま</strong><br />
-おもちゃの風車は「かざぐるま」と読みます。</p>
-<p><strong>問45</strong> <strong>かんき</strong><br />
-冷たい空気の意味では「かんき」と読みます。</p>
-<p><strong>問46</strong> <strong>さむけ</strong><br />
-体のぞっとする感じは「さむけ」と読みます。</p>
-<p><strong>問47</strong> <strong>ばいう</strong><br />
-気象の用語では「ばいう」と読みます。</p>
-<p><strong>問48</strong> <strong>つゆ</strong><br />
-季節の言葉としては「つゆ」と読みます。</p>
-<p><strong>問49</strong> <strong>しきし</strong><br />
-サイン用の厚紙は「しきし」と読みます。</p>
-<p><strong>問50</strong> <strong>いろがみ</strong><br />
-色の付いた紙は「いろがみ」と読みます。</p>
-<p><strong>問51</strong> <strong>せすじ</strong><br />
-背中の筋（すじ）の意味では「せすじ」と読みます。</p>
-<p><strong>問52</strong> <strong>はいきん</strong><br />
-筋肉の名前としては「はいきん」と読みます。</p>
-<h2>第4部 練習5の漢字（P100）の解答</h2>
-<p><strong>問53</strong> <strong>まう</strong><br />
-「舞」は「ま（う）」と読みます。明るく振る舞う、の「舞う」です。</p>
-<p><strong>問54</strong> <strong>おいはらう</strong><br />
-「払う」は「はらう」。虫を追い払う、と使います。</p>
-<p><strong>問55</strong> <strong>かくとく</strong><br />
-「獲」は音読みで「カク」。メダルの獲得、と使います。</p>
-<p><strong>問56</strong> <strong>ようし</strong><br />
-文章の大切な趣旨のことです。</p>
-<p><strong>問57</strong> <strong>はっこう</strong><br />
-「酵」は音読みで「コウ」。魚を発酵させる、と使います。</p>
-<p><strong>問58</strong> <strong>ばいしんいん</strong><br />
-一般の人が裁判に関わる制度の役目です。</p>
-<p><strong>問59</strong> <strong>しちょう</strong><br />
-見たり聞いたりすることです。映画を視聴する、と使います。</p>
-<p><strong>問60</strong> <strong>さきゅう</strong><br />
-砂が積もってできた丘です。</p>
-<p><strong>問61</strong> <strong>さいきん</strong><br />
-「菌」は音読みで「キン」。</p>
-<p><strong>問62</strong> <strong>頃</strong><br />
-「頃」は時期を表す言葉です。</p>
-<p><strong>問63</strong> <strong>頬</strong><br />
-「頬」は顔の左右の部分です。</p>
-<p><strong>問64</strong> <strong>繁殖</strong><br />
-動物などが生まれてふえることです。</p>
-<p><strong>問65</strong> <strong>餌</strong><br />
-「餌」は動物の食べ物です。</p>
-<p><strong>問66</strong> <strong>迫る</strong><br />
-「迫」は「せま（る）」と読みます。</p>
-<p><strong>問67</strong> <strong>根拠</strong><br />
-物事の理由や土台のことです。</p>
-<p><strong>問68</strong> <strong>信頼</strong><br />
-信じて頼ることです。</p>
-<p><strong>問69</strong> <strong>媒体</strong><br />
-二つのものの間を取り持つものです。</p>
-<p><strong>問70</strong> <strong>挿入歌</strong><br />
-劇の中に挟み入れられる歌のことです。</p>
-</div></details>
-
-<style>
-.mpanel{margin:2em 0 1em;border:3px solid #c2255c;border-radius:14px;padding:18px;background:#fff5f8}
-.mpanel h2{border:none;background:none;margin:.1em 0 .4em;padding:0;font-size:1.25rem;color:#c2255c}
-.mpanel p{font-size:.95rem}
-.mgrid{display:flex;flex-wrap:wrap;gap:8px;margin:.6em 0}
-.mgrid label{display:inline-flex;align-items:center;gap:4px;border:2px solid var(--line);border-radius:999px;padding:8px 14px;font-size:1rem;background:#fff;cursor:pointer}
-.mgrid input{width:20px;height:20px;accent-color:#c2255c}
-.mgrid .rec{font-size:.78rem;color:#c2255c;font-weight:700}
-.mbtn{display:inline-block;background:#c2255c;color:#fff;font-weight:700;border:none;border-radius:999px;padding:14px 26px;font-size:1.05rem;cursor:pointer}
-.mmsg{font-weight:700;color:#c2255c;margin-top:.6em}
-</style>
+<div id="quizArea"></div>
 
 <section class="mpanel" id="mistakePanel">
 <h2>✍️ まちがい記録</h2>
-<p>まちがえた問題にチェックを入れて「記録する」を押すと、まちがい復習ボックスに残ります。あとで復習ページに出てきます。</p>
-<div class="mgrid" id="mpGrid"></div>
+<p>まちがえた問題の「まちがえた」にチェックを入れて「記録する」を押すと、まちがい復習ボックスに残ります。あとで復習ページに出てきます。</p>
 <button type="button" class="mbtn" id="mpSave">記録する</button>
 <p class="mmsg" id="mpMsg"></p>
 </section>
 
 <script>
-(function(){
-var MPAGE="quiz_chu1_finals_japanese_kanji.html", MTITLE="中1国語 漢字問題集｜期末テスト正式範囲（国語の学習P78〜79・P80）", MCHILD="sakuya", MN=70;
+var QUESTIONS = [{"id": 1, "cat": "読み", "q": "「濃度」の読みを答えなさい。", "a": "<strong>のうど</strong><br />「濃」は音読みで「ノウ」。「のうど」と読みます。"}, {"id": 2, "cat": "読み", "q": "「技巧」の読みを答えなさい。", "a": "<strong>ぎこう</strong><br />「技」は音読みで「ギ」。わざの巧みさという意味です。"}, {"id": 3, "cat": "読み", "q": "「納涼」の読みを答えなさい。", "a": "<strong>のうりょう</strong><br />「涼」は音読みで「リョウ」。涼しさを楽しむことです。"}, {"id": 4, "cat": "読み", "q": "「遮断」の読みを答えなさい。", "a": "<strong>しゃだん</strong><br />「遮」は音読みで「シャ」。さえぎって断ち切ることです。"}, {"id": 5, "cat": "読み", "q": "「柔道」の読みを答えなさい。", "a": "<strong>じゅうどう</strong><br />「柔」は音読みで「ジュウ」。"}, {"id": 6, "cat": "読み", "q": "「有無」の読みを答えなさい。", "a": "<strong>うむ</strong><br />「有」は音読みで「ウ」。あることとないことです。"}, {"id": 7, "cat": "読み", "q": "「土砂」の読みを答えなさい。", "a": "<strong>どしゃ</strong><br />「砂」は音読みで「シャ」。「どさ」とは読みません。"}, {"id": 8, "cat": "読み", "q": "「盛夏」の読みを答えなさい。", "a": "<strong>せいか</strong><br />「盛」は音読みで「セイ」。夏の盛りのことです。"}, {"id": 9, "cat": "読み", "q": "「夏至」の読みを答えなさい。", "a": "<strong>げし</strong><br />「至」は音読みで「シ」。一年で最も昼が長い日です。"}, {"id": 10, "cat": "読み", "q": "「首相」の読みを答えなさい。", "a": "<strong>しゅしょう</strong><br />「相」は音読みで「ショウ」。内閣総理大臣のことです。"}, {"id": 11, "cat": "読み", "q": "「知己」の読みを答えなさい。", "a": "<strong>ちき</strong><br />自分のことをよく理解してくれる親しい友人のことです。"}, {"id": 12, "cat": "読み", "q": "「街道」の読みを答えなさい。", "a": "<strong>かいどう</strong><br />「街」は「ガイ」とも読みますが、この語は「かいどう」です。大きな通り道のことです。"}, {"id": 13, "cat": "読み", "q": "「号泣」の読みを答えなさい。", "a": "<strong>ごうきゅう</strong><br />「号」は音読みで「ゴウ」。声をあげて泣くことです。"}, {"id": 14, "cat": "読み", "q": "「申告」の読みを答えなさい。", "a": "<strong>しんこく</strong><br />「申」は音読みで「シン」。申し述べることです。"}, {"id": 15, "cat": "読み", "q": "「所望」の読みを答えなさい。", "a": "<strong>しょもう</strong><br />「望」は音読みで「モウ」ですが、この語は「しょもう」と読みます。「しょぼう」とは読みません。"}, {"id": 16, "cat": "読み", "q": "「繁栄」の読みを答えなさい。", "a": "<strong>はんえい</strong><br />「栄」は音読みで「エイ」。栄えることです。"}, {"id": 17, "cat": "読み", "q": "「権威」の読みを答えなさい。", "a": "<strong>けんい</strong><br />「威」は音読みで「イ」。他を従わせる力や信用のことです。"}, {"id": 18, "cat": "読み", "q": "「分析」の読みを答えなさい。", "a": "<strong>ぶんせき</strong><br />「析」は音読みで「セキ」。分けて調べることです。"}, {"id": 19, "cat": "読み", "q": "「警戒」の読みを答えなさい。", "a": "<strong>けいかい</strong><br />「戒」は音読みで「カイ」。用心することです。"}, {"id": 20, "cat": "読み", "q": "「証拠」の読みを答えなさい。", "a": "<strong>しょうこ</strong><br />「証」は音読みで「ショウ」。事実を証明するものです。"}, {"id": 21, "cat": "書き取り", "q": "次の文の「ぼく」を漢字で書きなさい。<br />ぼくは弟と公園で遊ぶ。", "a": "<strong>僕</strong><br />一人称の「ぼく」は「僕」と書きます。"}, {"id": 22, "cat": "書き取り", "q": "次の文の「くうしゅう」を漢字で書きなさい。<br />戦争中、くうしゅう警報が鳴り響いた。", "a": "<strong>空襲</strong><br />空から攻撃することです。"}, {"id": 23, "cat": "書き取り", "q": "次の文の「ばくだん」を漢字で書きなさい。<br />ばくだんが爆発する場面を映画で見た。", "a": "<strong>爆弾</strong><br />「弾」は「だん」と読みます。"}, {"id": 24, "cat": "書き取り", "q": "次の文の「そかい」を漢字で書きなさい。<br />子どもたちは田舎へそかいした。", "a": "<strong>疎開</strong><br />戦火などを避けて離れることです。"}, {"id": 25, "cat": "書き取り", "q": "次の文の「しんせき」を漢字で書きなさい。<br />正月にはしんせきが集まる。", "a": "<strong>親戚</strong><br />「戚」の字を間違えないようにします。"}, {"id": 26, "cat": "書き取り", "q": "次の文の「けいりゅう」を漢字で書きなさい。<br />けいりゅうで魚を取る。", "a": "<strong>渓流</strong><br />山あいの谷川の流れです。"}, {"id": 27, "cat": "書き取り", "q": "次の文の「えんりょ」を漢字で書きなさい。<br />えんりょせずに食べてください。", "a": "<strong>遠慮</strong><br />「慮」は「りょ」と読みます。"}, {"id": 28, "cat": "書き取り", "q": "次の文の「かっさい」を漢字で書きなさい。<br />舞台の終わりに大きなかっさいを受けた。", "a": "<strong>喝采</strong><br />手をたたき、大声をあげてほめることです。"}, {"id": 29, "cat": "書き取り", "q": "次の文の「こうしん」を漢字で書きなさい。<br />大会の記録をこうしんした。", "a": "<strong>更新</strong><br />新しく改めることです。"}, {"id": 30, "cat": "書き取り", "q": "次の文の「そうしつ」を漢字で書きなさい。<br />自信をそうしつしてしまった。", "a": "<strong>喪失</strong><br />失ってなくすことです。"}, {"id": 31, "cat": "書き取り", "q": "次の文の「こうたく」を漢字で書きなさい。<br />こうたくのある布を選ぶ。", "a": "<strong>光沢</strong><br />物の表面に見られるツヤのことです。"}, {"id": 32, "cat": "書き取り", "q": "次の文の「じゅく」を漢字で書きなさい。<br />兄はじゅくに通っている。", "a": "<strong>塾</strong><br />一字の漢字です。"}, {"id": 33, "cat": "書き取り", "q": "次の文の「せんぱい」を漢字で書きなさい。<br />せんぱいに勉強を教わった。", "a": "<strong>先輩</strong><br />「輩」は「ぱい」の部分です。"}, {"id": 34, "cat": "書き取り", "q": "次の文の「ひま」を漢字で書きなさい。<br />ひまな時間ができた。", "a": "<strong>暇</strong><br />「暇」は「ひま」と読みます。"}, {"id": 35, "cat": "書き取り", "q": "次の文の「たましい」を漢字で書きなさい。<br />たましいを込めて歌う。", "a": "<strong>魂</strong><br />「魂」は「たましい」と読みます。"}, {"id": 36, "cat": "書き取り", "q": "次の文の「おす」を漢字で書きなさい。<br />ボタンをおす。", "a": "<strong>押す</strong><br />「押」は手へんです。"}, {"id": 37, "cat": "書き取り", "q": "次の文の「となり」を漢字で書きなさい。<br />となりの席の人と話す。", "a": "<strong>隣</strong><br />「隣」は「となり」と読みます。"}, {"id": 38, "cat": "書き取り", "q": "次の文の「わたる」を漢字で書きなさい。<br />橋をわたって向こう岸へ行く。", "a": "<strong>渡る</strong><br />「渡」は「わた（る）」と読みます。"}, {"id": 39, "cat": "書き取り", "q": "次の文の「ほる」を漢字で書きなさい。<br />庭に穴をほる。", "a": "<strong>掘る</strong><br />「掘」は手へんです。「ほる」と読みます。"}, {"id": 40, "cat": "書き取り", "q": "次の文の「すむ」を漢字で書きなさい。<br />川の水がすんで、底が見える。", "a": "<strong>澄む</strong><br />「澄」は「す（む）」と読みます。"}, {"id": 41, "cat": "音訓・文脈", "q": "「生命」の読みを答えなさい。", "a": "<strong>せいめい</strong><br />「生」の音読みです。"}, {"id": 42, "cat": "音訓・文脈", "q": "「七分そで」の読みを答えなさい。", "a": "<strong>しちぶそで</strong><br />「分」は「ぶ」。長さの割合を表す読み方です。"}, {"id": 43, "cat": "音訓・文脈", "q": "「風車小屋」の「風車」の読みを答えなさい。", "a": "<strong>ふうしゃ</strong><br />建物に付いた車輪型の装置は「ふうしゃ」と読みます。"}, {"id": 44, "cat": "音訓・文脈", "q": "「折り紙の風車」の「風車」の読みを答えなさい。", "a": "<strong>かざぐるま</strong><br />おもちゃの風車は「かざぐるま」と読みます。"}, {"id": 45, "cat": "音訓・文脈", "q": "「寒気が流れ込む」の「寒気」の読みを答えなさい。", "a": "<strong>かんき</strong><br />冷たい空気の意味では「かんき」と読みます。"}, {"id": 46, "cat": "音訓・文脈", "q": "「寒気がする」の「寒気」の読みを答えなさい。", "a": "<strong>さむけ</strong><br />体のぞっとする感じは「さむけ」と読みます。"}, {"id": 47, "cat": "音訓・文脈", "q": "「梅雨前線」の「梅雨」の読みを答えなさい。", "a": "<strong>ばいう</strong><br />気象の用語では「ばいう」と読みます。"}, {"id": 48, "cat": "音訓・文脈", "q": "「梅雨入り」の「梅雨」の読みを答えなさい。", "a": "<strong>つゆ</strong><br />季節の言葉としては「つゆ」と読みます。"}, {"id": 49, "cat": "音訓・文脈", "q": "「色紙にサインを書く」の「色紙」の読みを答えなさい。", "a": "<strong>しきし</strong><br />サイン用の厚紙は「しきし」と読みます。"}, {"id": 50, "cat": "音訓・文脈", "q": "「色紙で輪飾りを作る」の「色紙」の読みを答えなさい。", "a": "<strong>いろがみ</strong><br />色の付いた紙は「いろがみ」と読みます。"}, {"id": 51, "cat": "音訓・文脈", "q": "「背筋がぞっとする」の「背筋」の読みを答えなさい。", "a": "<strong>せすじ</strong><br />背中の筋（すじ）の意味では「せすじ」と読みます。"}, {"id": 52, "cat": "音訓・文脈", "q": "「背筋をきたえる」の「背筋」の読みを答えなさい。", "a": "<strong>はいきん</strong><br />筋肉の名前としては「はいきん」と読みます。"}, {"id": 53, "cat": "練習5・読み", "q": "「舞う」の読みを答えなさい。", "a": "<strong>まう</strong><br />「舞」は「ま（う）」と読みます。明るく振る舞う、の「舞う」です。"}, {"id": 54, "cat": "練習5・読み", "q": "「追い払う」の読みを答えなさい。", "a": "<strong>おいはらう</strong><br />「払う」は「はらう」。虫を追い払う、と使います。"}, {"id": 55, "cat": "練習5・読み", "q": "「獲得」の読みを答えなさい。", "a": "<strong>かくとく</strong><br />「獲」は音読みで「カク」。メダルの獲得、と使います。"}, {"id": 56, "cat": "練習5・読み", "q": "「要旨」の読みを答えなさい。", "a": "<strong>ようし</strong><br />文章の大切な趣旨のことです。"}, {"id": 57, "cat": "練習5・読み", "q": "「発酵」の読みを答えなさい。", "a": "<strong>はっこう</strong><br />「酵」は音読みで「コウ」。魚を発酵させる、と使います。"}, {"id": 58, "cat": "練習5・読み", "q": "「陪審員」の読みを答えなさい。", "a": "<strong>ばいしんいん</strong><br />一般の人が裁判に関わる制度の役目です。"}, {"id": 59, "cat": "練習5・読み", "q": "「視聴」の読みを答えなさい。", "a": "<strong>しちょう</strong><br />見たり聞いたりすることです。映画を視聴する、と使います。"}, {"id": 60, "cat": "練習5・読み", "q": "「砂丘」の読みを答えなさい。", "a": "<strong>さきゅう</strong><br />砂が積もってできた丘です。"}, {"id": 61, "cat": "練習5・読み", "q": "「細菌」の読みを答えなさい。", "a": "<strong>さいきん</strong><br />「菌」は音読みで「キン」。"}, {"id": 62, "cat": "練習5・書き取り", "q": "次の文の「ころ」を漢字で書きなさい。<br />梅が咲くころになった。", "a": "<strong>頃</strong><br />「頃」は時期を表す言葉です。"}, {"id": 63, "cat": "練習5・書き取り", "q": "次の文の「ほお」を漢字で書きなさい。<br />寒くてほおが赤くなった。", "a": "<strong>頬</strong><br />「頬」は顔の左右の部分です。"}, {"id": 64, "cat": "練習5・書き取り", "q": "次の文の「はんしょく」を漢字で書きなさい。<br />鳥のはんしょく期が始まる。", "a": "<strong>繁殖</strong><br />動物などが生まれてふえることです。"}, {"id": 65, "cat": "練習5・書き取り", "q": "次の文の「えさ」を漢字で書きなさい。<br />ひなにえさを運ぶ。", "a": "<strong>餌</strong><br />「餌」は動物の食べ物です。"}, {"id": 66, "cat": "練習5・書き取り", "q": "次の文の「せまる」を漢字で書きなさい。<br />先生が決断をせまる。", "a": "<strong>迫る</strong><br />「迫」は「せま（る）」と読みます。"}, {"id": 67, "cat": "練習5・書き取り", "q": "次の文の「こんきょ」を漢字で書きなさい。<br />こんきょをはっきり話す。", "a": "<strong>根拠</strong><br />物事の理由や土台のことです。"}, {"id": 68, "cat": "練習5・書き取り", "q": "次の文の「しんらい」を漢字で書きなさい。<br />友をしんらいする。", "a": "<strong>信頼</strong><br />信じて頼ることです。"}, {"id": 69, "cat": "練習5・書き取り", "q": "次の文の「ばいたい」を漢字で書きなさい。<br />広告のばいたいを選ぶ。", "a": "<strong>媒体</strong><br />二つのものの間を取り持つものです。"}, {"id": 70, "cat": "練習5・書き取り", "q": "次の文の「そうにゅうか」を漢字で書きなさい。<br />劇のそうにゅうかを歌う。", "a": "<strong>挿入歌</strong><br />劇の中に挟み入れられる歌のことです。"}, {"id": 71, "cat": "読み", "q": "「威嚇」の読みを答えなさい。", "a": "<strong>いかく</strong><br />「威」は音読みで「イ」、「嚇」は「カク」。相手をおどして恐れさせることです。"}, {"id": 72, "cat": "読み", "q": "「解釈」の読みを答えなさい。", "a": "<strong>かいしゃく</strong><br />「釈」は音読みで「シャク」。意味を解き明かすことです。"}, {"id": 73, "cat": "読み", "q": "「状況」の読みを答えなさい。", "a": "<strong>じょうきょう</strong><br />「況」は音読みで「キョウ」。物事のありさまのことです。"}, {"id": 74, "cat": "読み", "q": "「脅威」の読みを答えなさい。", "a": "<strong>きょうい</strong><br />「脅」は音読みで「キョウ」。おどし、恐れさせる力のことです。"}, {"id": 75, "cat": "読み", "q": "「魅了」の読みを答えなさい。", "a": "<strong>みりょう</strong><br />「魅」は音読みで「ミ」。心を引きつけて夢中にさせることです。"}, {"id": 76, "cat": "読み", "q": "「盛ん」の読みを答えなさい。", "a": "<strong>さかん</strong><br />「盛」は音読みで「セイ」ですが、この語は「さかん」と読みます。盛んに活動する、と使います。"}, {"id": 77, "cat": "読み", "q": "「舞台」の読みを答えなさい。", "a": "<strong>ぶたい</strong><br />「舞」は音読みで「ブ」。舞台に立つ、と使います。"}, {"id": 78, "cat": "読み", "q": "「入り江」の読みを答えなさい。", "a": "<strong>いりえ</strong><br />「江」は訓読みで「え」。海や湖が陸に入り込んだ場所です。"}, {"id": 79, "cat": "読み", "q": "「丘」の読みを答えなさい。", "a": "<strong>おか</strong><br />「丘」は訓読みで「おか」。丘をかける（駆ける）、と使います。"}, {"id": 80, "cat": "読み", "q": "「驚く」の読みを答えなさい。", "a": "<strong>おどろく</strong><br />「驚」は訓読みで「おどろ（く）」。大きな音に驚く、と使います。"}, {"id": 81, "cat": "書き取り", "q": "次の文の「かし」を漢字で書きなさい。<br />おやつにかしを食べた。", "a": "<strong>菓子</strong><br />食べ物のお菓子は「菓子」と書きます。"}, {"id": 82, "cat": "書き取り", "q": "次の文の「もも」を漢字で書きなさい。<br />ももの花が咲く。", "a": "<strong>桃</strong><br />果物のももは「桃」と書きます。"}, {"id": 83, "cat": "書き取り", "q": "次の文の「ふくむ」を漢字で書きなさい。<br />口に水をふくんで、うがいをする。", "a": "<strong>含む</strong><br />口の中に入れている意味では「含む」と書きます。"}, {"id": 84, "cat": "書き取り", "q": "次の文の「すぎいた」を漢字で書きなさい。<br />すぎいたで棚を作る。", "a": "<strong>杉板</strong><br />杉の木の板は「杉板」と書きます。"}, {"id": 85, "cat": "書き取り", "q": "次の文の「ふく」を漢字で書きなさい。<br />タオルで顔をふく。", "a": "<strong>拭く</strong><br />「拭」は手へんです。「ふ（く）」と読みます。"}, {"id": 86, "cat": "書き取り", "q": "次の文の「ねこ」を漢字で書きなさい。<br />ねこが逃げていった。", "a": "<strong>猫</strong><br />動物のねこは「猫」と書きます。"}, {"id": 87, "cat": "書き取り", "q": "次の文の「おそい」を漢字で書きなさい。<br />彼の足はおそい。", "a": "<strong>遅い</strong><br />「遅」は「おそ（い）」と読みます。反対の意味は「速い」です。"}, {"id": 88, "cat": "書き取り", "q": "次の文の「そむける」を漢字で書きなさい。<br />思わず目をそむける。", "a": "<strong>背ける</strong><br />顔や目を向ける方向を変えて避ける意味では「背ける」と書きます。"}, {"id": 89, "cat": "書き取り", "q": "次の文の「ちゅうしゃじょう」を漢字で書きなさい。<br />駅のちゅうしゃじょうに車をとめる。", "a": "<strong>駐車場</strong><br />「駐」は、とどまるという意味です。"}, {"id": 90, "cat": "書き取り", "q": "次の文の「ふんえん」を漢字で書きなさい。<br />火山のふんえんが上がる。", "a": "<strong>噴煙</strong><br />「噴」は、ふき出すという意味です。"}, {"id": 91, "cat": "書き取り", "q": "次の文の「まさつ」を漢字で書きなさい。<br />物と物のまさつで熱が生まれる。", "a": "<strong>摩擦</strong><br />「摩」も「擦」も、こするという意味をもちます。"}, {"id": 92, "cat": "書き取り", "q": "次の文の「にじ」を漢字で書きなさい。<br />雨上がりの空ににじが出た。", "a": "<strong>虹</strong><br />「虹」は虫へんです。"}, {"id": 93, "cat": "音訓・文脈", "q": "「一生」の読みを答えなさい。", "a": "<strong>いっしょう</strong><br />「生」は音読みで「セイ・ショウ」。この語は「いっしょう」と読みます。"}, {"id": 94, "cat": "音訓・文脈", "q": "「生き物」の読みを答えなさい。", "a": "<strong>いきもの</strong><br />「生」の訓読み「い（きる）」を使います。"}, {"id": 95, "cat": "音訓・文脈", "q": "「生卵」の読みを答えなさい。", "a": "<strong>なまたまご</strong><br />「生」は訓読みで「なま」。加熱していない卵のことです。"}, {"id": 96, "cat": "音訓・文脈", "q": "「分類」の読みを答えなさい。", "a": "<strong>ぶんるい</strong><br />「分」は音読みで「ブン」です。"}, {"id": 97, "cat": "音訓・文脈", "q": "「分ける」の読みを答えなさい。", "a": "<strong>わける</strong><br />「分」の訓読み「わ（ける）」です。"}, {"id": 98, "cat": "音訓・文脈", "q": "「発明」の読みを答えなさい。", "a": "<strong>はつめい</strong><br />「明」は音読みで「メイ」です。"}, {"id": 99, "cat": "音訓・文脈", "q": "「夜明け」の読みを答えなさい。", "a": "<strong>よあけ</strong><br />「明」の訓読み「あ（ける）」を使います。"}, {"id": 100, "cat": "音訓・文脈", "q": "「交代」の読みを答えなさい。", "a": "<strong>こうたい</strong><br />「代」は音読みで「タイ」とも読みますが、この語は「こうたい」です。"}];
+var GROUP_HEADS = {};
+var DRAW = 30;
+var MPAGE="quiz_chu1_finals_japanese_kanji.html", MTITLE="中1国語 漢字問題集｜期末テスト正式範囲（国語の学習P78〜79・P80）", MCHILD="sakuya", MN=QUESTIONS.length;
 var KEY='stepup-mistakes-'+MCHILD;
 function todayStr(){var d=new Date();var m=('0'+(d.getMonth()+1)).slice(-2);var day=('0'+d.getDate()).slice(-2);return d.getFullYear()+'-'+m+'-'+day;}
 function load(){try{var v=JSON.parse(localStorage.getItem(KEY));return Array.isArray(v)?v:[];}catch(e){return[];}}
 function saveAll(a){localStorage.setItem(KEY,JSON.stringify(a));}
 function findIdx(a,q){for(var i=0;i<a.length;i++){if(a[i].page===MPAGE&&a[i].q===q)return i;}return -1;}
-var grid=document.getElementById('mpGrid');
-function render(){
-  var a=load();grid.innerHTML='';
-  for(var q=1;q<=MN;q++){
-    (function(q){
-      var idx=findIdx(a,q);
-      var lab=document.createElement('label');
-      var cb=document.createElement('input');cb.type='checkbox';cb.value=q;
-      lab.appendChild(cb);
-      lab.appendChild(document.createTextNode('問'+q));
-      if(idx>=0){var s=document.createElement('span');s.className='rec';s.textContent='記録済み×'+a[idx].count;lab.appendChild(s);}
-      grid.appendChild(lab);
-    })(q);
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+(function(){
+  var units=[], byG={}, i, k, it;
+  for(i=0;i<QUESTIONS.length;i++){it=QUESTIONS[i];
+    if(it.g){if(!byG[it.g]){byG[it.g]=[];units.push(byG[it.g]);}byG[it.g].push(it);}
+    else{units.push([it]);}
   }
-}
-document.getElementById('mpSave').addEventListener('click',function(){
-  var cbs=grid.querySelectorAll('input[type=checkbox]:checked');
-  var msg=document.getElementById('mpMsg');
-  if(cbs.length===0){msg.textContent='チェックが入っていません。まちがえた問題を選んでください。';return;}
-  var a=load();var t=todayStr();
-  for(var i=0;i<cbs.length;i++){
-    var q=parseInt(cbs[i].value,10);var idx=findIdx(a,q);
-    if(idx>=0){a[idx].count+=1;a[idx].last=t;}
-    else{a.push({page:MPAGE,title:MTITLE,q:q,count:1,first:t,last:t});}
+  shuffle(units);
+  var flat=[];
+  for(i=0;i<units.length;i++){for(k=0;k<units[i].length;k++){flat.push(units[i][k]);}}
+  var picked=flat.slice(0,Math.min(DRAW,flat.length));
+  var area=document.getElementById('quizArea');
+  function refreshBadges(){
+    var recs=load();
+    var spans=area.querySelectorAll('[data-rec]');
+    for(var s=0;s<spans.length;s++){
+      var id=parseInt(spans[s].getAttribute('data-rec'),10);
+      var idx=findIdx(recs,id);
+      spans[s].textContent=(idx>=0)?('記録済み×'+recs[idx].count):'';
+    }
   }
-  saveAll(a);render();
-  msg.textContent=cbs.length+'件を記録しました。まちがい復習ページで待っています。';
-});
-render();
+  var seenG={};
+  for(i=0;i<picked.length;i++){
+    it=picked[i];
+    if(it.g&&GROUP_HEADS[it.g]&&!seenG[it.g]){
+      seenG[it.g]=1;
+      var ph=document.createElement('div');ph.className='passage';ph.innerHTML=GROUP_HEADS[it.g];
+      area.appendChild(ph);
+    }
+    var card=document.createElement('div');card.className='qcard';
+    var head=document.createElement('div');head.className='qhead';
+    var num=document.createElement('span');num.className='qnum';num.textContent='問'+(i+1);
+    var cat=document.createElement('span');cat.className='qcat';cat.textContent=it.cat;
+    head.appendChild(num);head.appendChild(cat);
+    var body=document.createElement('div');body.className='qbody';body.innerHTML=it.q;
+    var btn=document.createElement('button');btn.type='button';btn.className='abtn';btn.textContent='答えを見る';
+    var box=document.createElement('div');box.className='abox';box.innerHTML=it.a;
+    (function(box,btn){btn.addEventListener('click',function(){
+      if(box.className.indexOf('open')>=0){box.className='abox';btn.textContent='答えを見る';}
+      else{box.className='abox open';btn.textContent='答えを閉じる';}
+    });})(box,btn);
+    var mrow=document.createElement('div');mrow.className='mrow';
+    var lab=document.createElement('label');
+    var cb=document.createElement('input');cb.type='checkbox';cb.className='mcheck';cb.value=it.id;
+    lab.appendChild(cb);lab.appendChild(document.createTextNode('まちがえた'));
+    var rec=document.createElement('span');rec.className='rec';rec.setAttribute('data-rec',it.id);
+    mrow.appendChild(lab);mrow.appendChild(rec);
+    card.appendChild(head);card.appendChild(body);card.appendChild(btn);card.appendChild(box);card.appendChild(mrow);
+    area.appendChild(card);
+  }
+  refreshBadges();
+  document.getElementById('mpSave').addEventListener('click',function(){
+    var cbs=area.querySelectorAll('input.mcheck:checked');
+    var msg=document.getElementById('mpMsg');
+    if(cbs.length===0){msg.textContent='チェックが入っていません。まちがえた問題を選んでください。';return;}
+    var a=load();var t=todayStr();
+    for(var i2=0;i2<cbs.length;i2++){
+      var q=parseInt(cbs[i2].value,10);var idx=findIdx(a,q);
+      if(idx>=0){a[idx].count+=1;a[idx].last=t;}
+      else{a.push({page:MPAGE,title:MTITLE,q:q,count:1,first:t,last:t});}
+    }
+    saveAll(a);
+    for(var i3=0;i3<cbs.length;i3++){cbs[i3].checked=false;}
+    refreshBadges();
+    msg.textContent=cbs.length+'件を記録しました。まちがい復習ページで待っています。';
+  });
 })();
 </script>
 <footer><a class="backlink" href="sakuya.html">← 教材トップへ戻る</a></footer>
