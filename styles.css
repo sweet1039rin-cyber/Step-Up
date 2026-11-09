@@ -1561,7 +1561,7 @@ html:not(.theme-champion-black) .champion-emblem.lg{
  padding:12px 16px;border:1px solid #e2e2e5;border-radius:14px;
  background:var(--surface,#fff);box-shadow:var(--shadow,0 2px 10px rgba(0,0,0,.06));
  font-family:inherit;font-size:14px;color:var(--text,#161616);
- cursor:pointer;text-align:left;box-sizing:border-box;
+ cursor:pointer;text-align:left;box-sizing:border-box;text-decoration:none;
 }
 .notebook-subject-btn:active{background:rgba(20,106,255,.06)}
 .notebook-subject-icon{font-size:22px;flex:none;line-height:1}

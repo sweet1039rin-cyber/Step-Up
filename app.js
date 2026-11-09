@@ -2252,13 +2252,21 @@ function renderNotebookSection(){
  const info=NOTEBOOK_MATERIAL_BY_CHILD[current];
  if(!info){subEl.textContent='';buttonsEl.innerHTML='';return}
  subEl.textContent=`${info.materialLabel} AI復習`;
- buttonsEl.innerHTML=NOTEBOOK_SUBJECTS.map(s=>
-  `<button type="button" class="notebook-subject-btn" data-notebook-child="${current}" data-notebook-material="${info.materialId}" data-notebook-subject="${s.id}">
+ buttonsEl.innerHTML=NOTEBOOK_SUBJECTS.map(s=>{
+  const url=notebookLinks?.[current]?.[info.materialId]?.[s.id]||'';
+  const inner=`
     <span class="notebook-subject-icon">${s.icon}</span>
     <span class="notebook-subject-text"><span class="notebook-subject-name">${s.label}</span><small class="notebook-subject-caption">NotebookLMで開く</small></span>
-    <span class="notebook-subject-arrow">→</span>
-   </button>`
- ).join('');
+    <span class="notebook-subject-arrow">→</span>`;
+  // URL登録済みの教科は通常の<a>リンクにする（window.open方式はタブレットで開けないため）。
+  // 未登録の教科は従来どおりボタンにし、下のクリック処理で注意文を出す。
+  if(url){
+   return `<a class="notebook-subject-btn" href="${url}" target="_blank" rel="noopener noreferrer">${inner}
+   </a>`;
+  }
+  return `<button type="button" class="notebook-subject-btn" data-notebook-child="${current}" data-notebook-material="${info.materialId}" data-notebook-subject="${s.id}">${inner}
+   </button>`;
+ }).join('');
  buttonsEl.querySelectorAll('[data-notebook-subject]').forEach(b=>b.onclick=()=>{
   openNotebook(b.dataset.notebookChild,b.dataset.notebookMaterial,b.dataset.notebookSubject);
  });
