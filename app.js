@@ -2933,6 +2933,89 @@ function seedFinalsFormalSakuya(){
  }catch(e){console.error('中1期末の正式範囲への課題追加に失敗しました',e)}
 }
 seedFinalsFormalSakuya();
+// ============================================================
+// 中3期末・正式範囲（2026-11-09受領）への課題追加・差し替え（壱凰のみ）
+// 正式な範囲表が出たため、予測版の期末課題8件を正式範囲の題名に
+// 差し替え、提出物8件（期限は教科ごと）とテスト勉強18件の
+// 合計26件を追加する。差し替え対象は未着手（進捗なし・未完了）の
+// 場合だけ取り除き、少しでも進めている場合は消さずに残す。
+// ============================================================
+const FINALS_FORMAL_IORI_FLAG_KEY='stepup-seeded-finals-formal-iori';
+const FINALS_FORMAL_IORI_DEFAULT_DEADLINE='2026-11-15';
+const FINALS_FORMAL_IORI_REMOVE_TITLES=[
+ '相似な図形（性質と相似比）',
+ '関数y＝ax²の復習と利用',
+ '分詞と関係代名詞の文法',
+ '文法の復習（不定詞・間接疑問文）',
+ '運動とエネルギー（力・仕事）',
+ '歴史の続き（戦後〜現代）',
+ '公民（政治のしくみ）',
+ '漢字と文法（ことばのきまり）'
+];
+const FINALS_FORMAL_IORI_ITEMS=[
+ // 提出物（期限は教科ごと）
+ {subject:'理科',title:'完全学習（ノート）P36〜43を終わらせる',material:'理科の完全学習',progressType:'numeric',deadline:'2026-11-12'},
+ {subject:'保体',title:'保体ノートP14〜21・P24〜35（要点のまとめ・深めようまで）',material:'保体ノート',progressType:'numeric',deadline:'2026-11-16'},
+ {subject:'家庭',title:'ハンドノートP20〜31（丸つけまで）',material:'ハンドノート家庭分野',progressType:'numeric',deadline:'2026-11-17'},
+ {subject:'国語',title:'国語の学習を提出できる状態にする',material:'国語の学習',progressType:'numeric',deadline:'2026-11-17'},
+ {subject:'国語',title:'10問漢字P20〜33を提出できる状態にする',material:'10問漢字',progressType:'numeric',deadline:'2026-11-17'},
+ {subject:'社会',title:'公民の学習（本誌）P12〜49＋くりかえしノートP7〜P25',material:'公民の学習・くりかえしノート',progressType:'numeric',deadline:'2026-11-18'},
+ {subject:'英語',title:'ジョイフルワークP50〜83',material:'ジョイフルワーク',progressType:'numeric',deadline:'2026-11-15'},
+ {subject:'技術',title:'夏休みのプリント・MMシートの未提出分',material:'プリント・MMシート',progressType:'check',deadline:'2026-11-18'},
+ // テスト勉強（期限は原則2026-11-15）
+ {subject:'数学',title:'関数 y＝ax²（式・グラフ・変域・変化の割合・利用）',material:'教科書・数学の友',progressType:'numeric'},
+ {subject:'数学',title:'相似な図形（性質・相似条件・平行線と線分の比・中点連結定理）',material:'教科書・数学の友',progressType:'numeric'},
+ {subject:'英語',title:'分詞の後置修飾と接触節・関係代名詞',material:'教科書・ジョイフルワーク',progressType:'numeric'},
+ {subject:'英語',title:'新研究の復習問題（本誌P40〜57）',material:'新研究',progressType:'numeric'},
+ {subject:'理科',title:'力の合成・分解と物体の運動（作図の練習を含む）',material:'教科書・理科の完全学習',progressType:'numeric'},
+ {subject:'理科',title:'仕事・仕事率と力学的エネルギー（計算の練習）',material:'教科書・理科の完全学習',progressType:'numeric'},
+ {subject:'社会',title:'公民（人権と憲法）',material:'公民の教科書・公民の学習・憲法条文プリント',progressType:'numeric'},
+ {subject:'社会',title:'公民（政治のしくみ：国会・内閣・裁判所・選挙・地方自治）',material:'公民の教科書・公民の学習',progressType:'numeric'},
+ {subject:'社会',title:'公民（経済のしくみと暮らし）',material:'公民の教科書・公民の学習・資料集',progressType:'numeric'},
+ {subject:'国語',title:'「故郷」の読解と漢字',material:'教科書・授業ノート',progressType:'numeric'},
+ {subject:'国語',title:'和歌の世界（古今和歌集仮名序・君待つと）と慣用句・ことわざ・故事成語',material:'教科書',progressType:'numeric'},
+ {subject:'国語',title:'国語の学習P72〜101・P112〜120と国語演習⑥⑦⑧・ことばのきまりP21〜24',material:'国語の学習・国語演習・ことばのきまり',progressType:'numeric'},
+ {subject:'技術',title:'情報の技術とフローチャート（記号と読み書き）',material:'教科書・技術ノート',progressType:'numeric'},
+ {subject:'家庭',title:'食生活（栄養・食品・調理）と五大栄養素の復習',material:'教科書・ハンドノート',progressType:'numeric'},
+ {subject:'保体',title:'保健（教科書P136〜161の要点）',material:'教科書・保体ノート',progressType:'numeric'},
+ {subject:'保体',title:'体育分野（タグラグビー・水泳・ハンドボールのルール）',material:'タグラグビーまとめプリント・アクティブ',progressType:'check'},
+ {subject:'音楽',title:'音楽の約束（記号・用語）と合唱曲・リコーダー・鑑賞2曲',material:'教科書・プリント',progressType:'check'},
+ {subject:'美術',title:'ダ・ヴィンチとフェルメールの鑑賞＋手のデッサンの練習',material:'教科書・資料集・授業プリント',progressType:'check'}
+];
+function seedFinalsFormalIori(){
+ try{
+  if(localStorage.getItem(FINALS_FORMAL_IORI_FLAG_KEY))return;
+  const now=new Date().toISOString();
+  const childId='iori';
+  let customs=getCustomAssignments(childId);
+  // 処理1：予測版の期末課題が未着手なら取り除く（進捗がある場合は残す）
+  customs=customs.filter(it=>{
+   if(it.source==='finals2026-seed'&&FINALS_FORMAL_IORI_REMOVE_TITLES.includes(it.title)){
+    const started=(typeof it.current==='number'&&it.current>0)||it.done;
+    if(!started)return false;
+   }
+   return true;
+  });
+  // 処理2：正式範囲の課題26件を追加（同タイトルがあればスキップ）
+  const existingTitles=new Set(ProgressEngine.getAll(childId).map(it=>it.title));
+  FINALS_FORMAL_IORI_ITEMS.forEach((def,index)=>{
+   if(existingTitles.has(def.title))return;
+   const entry={
+    id:`${childId}-custom-finals-formal-${index+1}`,subject:def.subject,title:def.title,scope:'',
+    deadline:def.deadline||FINALS_FORMAL_IORI_DEFAULT_DEADLINE,category:'',status:'not-started',done:false,
+    progress:'',remaining:'',note:'',progressType:def.progressType,source:'finals-formal-seed',
+    material:def.material,pageStart:null,pageEnd:null,problemRange:'',priority:'normal',
+    updatedAt:now,createdAt:now
+   };
+   if(def.progressType==='numeric'){entry.current=0;entry.total=null;entry.unit='ページ'}
+   customs.push(entry);
+   existingTitles.add(def.title);
+  });
+  saveCustomAssignments(childId,customs);
+  localStorage.setItem(FINALS_FORMAL_IORI_FLAG_KEY,'true');
+ }catch(e){console.error('中3期末の正式範囲への課題追加に失敗しました',e)}
+}
+seedFinalsFormalIori();
 function openAssignments(){assignmentForm.classList.add('hidden');materialForm.classList.add('hidden');renderAssignments();populateAssignmentMaterialList();renderMaterials();show(assignmentsScreen)}
 // 既存教材(教材ページのdefaultMaterials+保存済み教材)から候補一覧を作る。一覧にない場合は自由入力可。
 function populateAssignmentMaterialList(){
