@@ -2874,6 +2874,65 @@ function seedFinalsScopeSakuyaSocial(){
  }catch(e){console.error('中1社会の確定範囲への課題差し替えに失敗しました',e)}
 }
 seedFinalsScopeSakuyaSocial();
+// ============================================================
+// 中1期末・正式範囲（2026-11-09受領）への課題追加・差し替え（朔埜のみ）
+// 正式な範囲表が出たため、口頭発表ベースの社会2件を正式範囲の題名に
+// 差し替え、未カバーだった教科・単元の課題を追加する（期限は全て2026-11-15）。
+// 差し替え対象は未着手（進捗なし・未完了）の場合だけ取り除き、
+// 少しでも進めている場合は消さずに残す。
+// ============================================================
+const FINALS_FORMAL_SAKUYA_FLAG_KEY='stepup-seeded-finals-formal-sakuya';
+const FINALS_FORMAL_SAKUYA_DEADLINE='2026-11-15';
+const FINALS_FORMAL_SAKUYA_REMOVE_TITLES=[
+ '社会 地理（アジア州・ヨーロッパ州・アフリカ州）',
+ '社会 歴史（平安時代）'
+];
+const FINALS_FORMAL_SAKUYA_ITEMS=[
+ {subject:'社会',title:'社会 地理（アジア州・アフリカ州）',material:'地理の教科書・地理の学習',progressType:'check'},
+ {subject:'社会',title:'社会 歴史（古代までの日本）',material:'歴史の教科書・歴史の学習',progressType:'check'},
+ {subject:'国語',title:'国語 漢字スキル⑲〜㉘と音訓',material:'あかねこ漢字スキル・教科書',progressType:'check'},
+ {subject:'国語',title:'国語 シジュウカラと蓬莱の玉の枝',material:'教科書・国語の学習',progressType:'check'},
+ {subject:'英語',title:'英語 Unit5・6の文法（現在進行形・Whose/Which）',material:'教科書・ジョイフルワーク',progressType:'check'},
+ {subject:'英語',title:'英語 単語のつづりと語順トレーニング',material:'教科書・語順トレーニング',progressType:'check'},
+ {subject:'理科',title:'理科 溶解度と再結晶',material:'教科書・理科の完全学習',progressType:'check'},
+ {subject:'理科',title:'理科 光の反射と調べ学習（蒸留）',material:'教科書・理科便覧',progressType:'check'},
+ {subject:'音楽',title:'音楽 魔王とかっこう・楽譜の約束',material:'音楽の教科書・器楽教科書',progressType:'check'},
+ {subject:'美術',title:'美術 色の整理と手のデッサン',material:'美術資料',progressType:'check'},
+ {subject:'保健体育',title:'保健体育 保健の語句とバドミントン・ソフトボール',material:'教科書・保健体育ノート',progressType:'check'}
+];
+function seedFinalsFormalSakuya(){
+ try{
+  if(localStorage.getItem(FINALS_FORMAL_SAKUYA_FLAG_KEY))return;
+  const now=new Date().toISOString();
+  const childId='sakuya';
+  let customs=getCustomAssignments(childId);
+  // 処理1：口頭発表ベースの社会2件が未着手なら取り除く（進捗がある場合は残す）
+  customs=customs.filter(it=>{
+   if((it.source==='finals-scope-seed'||it.source==='finals2026-seed')&&FINALS_FORMAL_SAKUYA_REMOVE_TITLES.includes(it.title)){
+    const started=(typeof it.current==='number'&&it.current>0)||it.done;
+    if(!started)return false;
+   }
+   return true;
+  });
+  // 処理2：正式範囲の課題を追加（同タイトルがあればスキップ）
+  const existingTitles=new Set(ProgressEngine.getAll(childId).map(it=>it.title));
+  FINALS_FORMAL_SAKUYA_ITEMS.forEach((def,index)=>{
+   if(existingTitles.has(def.title))return;
+   const entry={
+    id:`${childId}-custom-finals-formal-${index+1}`,subject:def.subject,title:def.title,scope:'',
+    deadline:FINALS_FORMAL_SAKUYA_DEADLINE,category:'',status:'not-started',done:false,
+    progress:'',remaining:'',note:'',progressType:def.progressType,source:'finals-formal-seed',
+    material:def.material,pageStart:null,pageEnd:null,problemRange:'',priority:'normal',
+    updatedAt:now,createdAt:now
+   };
+   customs.push(entry);
+   existingTitles.add(def.title);
+  });
+  saveCustomAssignments(childId,customs);
+  localStorage.setItem(FINALS_FORMAL_SAKUYA_FLAG_KEY,'true');
+ }catch(e){console.error('中1期末の正式範囲への課題追加に失敗しました',e)}
+}
+seedFinalsFormalSakuya();
 function openAssignments(){assignmentForm.classList.add('hidden');materialForm.classList.add('hidden');renderAssignments();populateAssignmentMaterialList();renderMaterials();show(assignmentsScreen)}
 // 既存教材(教材ページのdefaultMaterials+保存済み教材)から候補一覧を作る。一覧にない場合は自由入力可。
 function populateAssignmentMaterialList(){
