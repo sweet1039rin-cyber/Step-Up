@@ -1,8 +1,9 @@
 <!DOCTYPE html>
+
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>中3数学 暗記シート｜期末テスト正式範囲</title>
 <style>
   * { box-sizing: border-box; }
@@ -46,6 +47,9 @@
   .important-points { color: #c62828; }
   .important-points li, .important-points b, .important-points strong, .important-points span { color: #c62828; }
   h2.red { color: #c62828; border-left-color: #c62828; }
+
+  /* 覚える語マーカー（update43） */
+  .memo-key { background: #fff59d; font-weight: bold; padding: 0 2px; border-radius: 3px; }
 </style>
 </head>
 <body>
@@ -67,7 +71,7 @@
 <h2>単元ごとの要点</h2>
 <h3>1. 関数 $y=ax^2$ ― 式の立て方</h3>
 <ul>
-<li>$y$ が $x$ の2乗に比例するとき、式は <b>$y=ax^2$</b>（$a$ は比例定数）</li>
+<li>$y$ が $x$ の2乗に比例するとき、式は <b>$y=ax^2$</b>（$a$ は<span class="memo-key">比例定数</span>）</li>
 <li>式を求める手順：</li>
 </ul>
 <ol>
@@ -77,27 +81,27 @@
 </ol>
 <ul>
 <li>表から式を求めるときは、どの組を使っても $a=y\div x^2$（$x\neq0$）が同じ値になる組を選ぶ</li>
-<li>放物線が点 $(x,\ y)$ を通る問題も同じやり方：代入して $a$ を求める（例：点 $(-2,\ 8)$ を通るなら $8=a\times(-2)^2=4a$ より $a=2$）</li>
+<li><span class="memo-key">放物線</span>が点 $(x,\ y)$ を通る問題も同じやり方：代入して $a$ を求める（例：点 $(-2,\ 8)$ を通るなら $8=a\times(-2)^2=4a$ より $a=2$）</li>
 </ul>
 <h3>2. 関数 $y=ax^2$ ― 特徴とグラフ</h3>
 <ul>
-<li>グラフの形は <b>放物線</b>。必ず <b>原点を通り、$y$ 軸について対称</b></li>
+<li>グラフの形は <b><span class="memo-key">放物線</span></b>。必ず <b><span class="memo-key">原点</span>を通り、$y$ 軸について対称</b></li>
 </ul>
 <table>
 <tr><th>$a$ の符号</th><th>グラフの形</th><th>$x&gt;0$ で $x$ が増えると $y$ は</th></tr>
-<tr><td>$a&gt;0$</td><td>下に凸（谷型、上向きに開く）</td><td>増加する</td></tr>
-<tr><td>$a&lt;0$</td><td>上に凸（山型、下向きに開く）</td><td>減少する</td></tr>
+<tr><td>$a&gt;0$</td><td><span class="memo-key">下に凸</span>（谷型、上向きに開く）</td><td>増加する</td></tr>
+<tr><td>$a&lt;0$</td><td><span class="memo-key">上に凸</span>（山型、下向きに開く）</td><td>減少する</td></tr>
 </table>
 <ul>
 <li><b>$|a|$ が大きいほど、グラフの開き方は小さく（狭く）なる</b>。例：$y=5x^2$ は $y=x^2$ より狭く、$y=\frac{1}{2}x^2$ は $y=x^2$ より広い</li>
-<li>グラフをかく手順：原点ともう1点（$x=1$ のときの $y$ など）を含む数点を取り、なめらかな曲線で結ぶ。直線で結ばない</li>
-<li>グラフから式を求める手順：原点以外の読み取りやすい点の座標 $(x,\ y)$ を1つ選び、$a=y\div x^2$ で求める。座標は <b>（$x$, $y$）の順</b>に読む</li>
-<li>放物線と直線の交点は、<b>2つの式を連立方程式として解く</b>（例：$y=x^2$ と $y=2x+3$ なら $x^2=2x+3$ を解く）</li>
+<li>グラフをかく手順：<span class="memo-key">原点</span>ともう1点（$x=1$ のときの $y$ など）を含む数点を取り、なめらかな曲線で結ぶ。直線で結ばない</li>
+<li>グラフから式を求める手順：<span class="memo-key">原点</span>以外の読み取りやすい点の座標 $(x,\ y)$ を1つ選び、$a=y\div x^2$ で求める。座標は <b>（$x$, $y$）の順</b>に読む</li>
+<li><span class="memo-key">放物線</span>と直線の交点は、<b>2つの式を<span class="memo-key">連立方程式</span>として解く</b>（例：$y=x^2$ と $y=2x+3$ なら $x^2=2x+3$ を解く）</li>
 </ul>
-<div class="figure"><img src="assets/fig_parabola.svg" alt="y＝ax²のグラフの形の比較（aの値で開き方と向きが変わる）"><div class="caption">y＝ax²のグラフの形の比較（aの値で開き方と向きが変わる）</div></div>
+<div class="figure"><img alt="y＝ax²のグラフの形の比較（aの値で開き方と向きが変わる）" src="assets/fig_parabola.svg"/><div class="caption">y＝ax²のグラフの形の比較（aの値で開き方と向きが変わる）</div></div>
 <h3>3. 関数 $y=ax^2$ ― 変域</h3>
 <ul>
-<li>変域の問題では、<b>両端の値だけで決めない</b>。$x=0$ が変域に入っているかを必ず確認する</li>
+<li><span class="memo-key">変域</span>の問題では、<b>両端の値だけで決めない</b>。$x=0$ が変域に入っているかを必ず確認する</li>
 </ul>
 <table>
 <tr><th>場合</th><th>最小値・最大値の決まり方</th></tr>
@@ -112,13 +116,13 @@
 </ul>
 <h3>4. 関数 $y=ax^2$ ― 変化の割合と平均の速さ</h3>
 <ul>
-<li><b>変化の割合 ＝ （$y$ の増加量）÷（$x$ の増加量）</b></li>
-<li>$y=ax^2$ の変化の割合は、一次関数のように一定ではない。$x$ の範囲によって変わる</li>
-<li>公式：$x$ が $p$ から $q$ まで増加するとき、<b>変化の割合 ＝ $a(p+q)$</b></li>
+<li><b><span class="memo-key">変化の割合</span> ＝ （$y$ の増加量）÷（$x$ の増加量）</b></li>
+<li>$y=ax^2$ の<span class="memo-key">変化の割合</span>は、一次関数のように一定ではない。$x$ の範囲によって変わる</li>
+<li>公式：$x$ が $p$ から $q$ まで増加するとき、<b><span class="memo-key">変化の割合</span> ＝ $<span class="memo-key">a(p+q)</span>$</b></li>
 <li>検算のやり方：$x=p$ のときの $y$ と $x=q$ のときの $y$ をそれぞれ出し、（$y$ の増加量）÷（$x$ の増加量）で計算しても同じになる</li>
-<li>例：$y=x^2$ で $x$ が1から3まで増加 → $y$ は1から9へ、変化の割合は $(9-1)\div(3-1)=4$。公式でも $1\times(1+3)=4$</li>
-<li><b>平均の速さは、その区間の変化の割合そのもの</b></li>
-<li>例：$y=2x^2$（$x$ 秒間に $y$ m進む）で2秒後から4秒後まで → $y$ は8mから32mへ、平均の速さは $(32-8)\div(4-2)=12$ m/s</li>
+<li>例：$y=x^2$ で $x$ が1から3まで増加 → $y$ は1から9へ、<span class="memo-key">変化の割合</span>は $(9-1)\div(3-1)=4$。公式でも $1\times(1+3)=4$</li>
+<li><b><span class="memo-key">平均の速さ</span>は、その区間の<span class="memo-key">変化の割合</span>そのもの</b></li>
+<li>例：$y=2x^2$（$x$ 秒間に $y$ m進む）で2秒後から4秒後まで → $y$ は8mから32mへ、<span class="memo-key">平均の速さ</span>は $(32-8)\div(4-2)=12$ m/s</li>
 </ul>
 <h3>5. 関数 $y=ax^2$ ― 利用といろいろな関数</h3>
 <ul>
@@ -129,10 +133,10 @@
 </ul>
 <h3>6. 相似な図形 ― 性質と相似比・面積比・体積比</h3>
 <ul>
-<li>形が同じで大きさが違う2つの図形は <b>相似</b>。記号は <b>∽</b>（合同の ≡ と区別する）。相似比1：1が合同</li>
+<li>形が同じで大きさが違う2つの図形は <b><span class="memo-key">相似</span></b>。記号は <b>∽</b>（<span class="memo-key">合同</span>の ≡ と区別する）。<span class="memo-key">相似比</span>1：1が合同</li>
 <li><b>対応は「書かれた順番」で決まる</b>：$\triangle ABC\backsim\triangle DEF$ なら A↔D、B↔E、C↔F。辺ABに対応するのは辺DE</li>
-<li><b>相似比</b> ＝ 対応する線分の長さの比。辺の長さを求めるときは「相手 ÷ 自分」の倍率をかける（例：相似比2：3、BC=9cm → EF $=9\times\frac{3}{2}=13.5$ cm）</li>
-<li>周の長さの比は、相似比そのまま（長さの比だから）</li>
+<li><b><span class="memo-key">相似比</span></b> ＝ 対応する線分の長さの比。辺の長さを求めるときは「相手 ÷ 自分」の倍率をかける（例：相似比2：3、BC=9cm → EF $=9\times\frac{3}{2}=13.5$ cm）</li>
+<li>周の長さの比は、<span class="memo-key">相似比</span>そのまま（長さの比だから）</li>
 </ul>
 <table>
 <tr><th>比の種類</th><th>相似比が $m:n$ のとき</th></tr>
@@ -141,30 +145,30 @@
 <tr><td>体積比</td><td>$m^3:n^3$（3乗）</td></tr>
 </table>
 <ul>
-<li>面積・体積の問題は、先に面積比・体積比を出してから計算する2段構えにする（例：相似比3：4、小さい方の面積27cm² → 面積比9：16 → 大きい方は $27\times\frac{16}{9}=48$ cm²）</li>
-<li>相似の利用：同じ時刻の影は、高さの比＝影の長さの比（例：高さ1.5mの棒の影2m、木の影12m → 倍率6倍 → 木の高さ9m）。縮尺は「地図の長さ × 縮尺の分母」（例：縮尺25000分の1で地図上4cm → $4\times25000=100000$ cm ＝ 1000m ＝ 1km）</li>
+<li>面積・体積の問題は、先に<span class="memo-key">面積比</span>・<span class="memo-key">体積比</span>を出してから計算する2段構えにする（例：<span class="memo-key">相似比</span>3：4、小さい方の面積27cm² → 面積比9：16 → 大きい方は $27\times\frac{16}{9}=48$ cm²）</li>
+<li><span class="memo-key">相似</span>の利用：同じ時刻の影は、高さの比＝影の長さの比（例：高さ1.5mの棒の影2m、木の影12m → 倍率6倍 → 木の高さ9m）。縮尺は「地図の長さ × 縮尺の分母」（例：縮尺25000分の1で地図上4cm → $4\times25000=100000$ cm ＝ 1000m ＝ 1km）</li>
 </ul>
 <h3>7. 相似な図形 ― 相似条件と証明</h3>
 <ul>
-<li><b>三角形の相似条件（3つ、言い方を正確に）</b></li>
+<li><b>三角形の<span class="memo-key">相似</span>条件（3つ、言い方を正確に）</b></li>
 </ul>
 <table>
 <tr><th>番号</th><th>相似条件</th></tr>
-<tr><td>1</td><td><b>3組の辺の比がすべて等しい</b></td></tr>
-<tr><td>2</td><td><b>2組の辺の比とその間の角がそれぞれ等しい</b></td></tr>
-<tr><td>3</td><td><b>2組の角がそれぞれ等しい</b></td></tr>
+<tr><td>1</td><td><b><span class="memo-key">3組の辺の比がすべて等しい</span></b></td></tr>
+<tr><td>2</td><td><b><span class="memo-key">2組の辺の比とその間の角がそれぞれ等しい</span></b></td></tr>
+<tr><td>3</td><td><b><span class="memo-key">2組の角がそれぞれ等しい</span></b></td></tr>
 </table>
 <ul>
-<li>間違った言い方：「2組の辺の比と、その間でない角が等しい」「1組の辺の比と1組の角が等しい」では相似とは限らない</li>
+<li>間違った言い方：「2組の辺の比と、その間でない角が等しい」「1組の辺の比と1組の角が等しい」では<span class="memo-key">相似</span>とは限らない</li>
 <li>本番の証明は <b>全文証明なし</b>。証明の過程の空所を埋める形が中心になる</li>
 <li>空所補充でよく使う根拠：</li>
-<li>共通な角（例：$\angle DAE$ は2つの三角形の共通の角）</li>
-<li>平行線の <b>同位角・錯角は等しい</b>（例：$DE\parallel BC$ より $\angle ADE=\angle ABC$）</li>
-<li>結論は相似条件の言葉で締める（例：「2組の角がそれぞれ等しいので $\triangle ADE\backsim\triangle ABC$」）</li>
+<li><span class="memo-key">共通な角</span>（例：$\angle DAE$ は2つの三角形の共通の角）</li>
+<li>平行線の <b><span class="memo-key">同位角</span>・<span class="memo-key">錯角</span>は等しい</b>（例：$DE\parallel BC$ より $\angle ADE=\angle ABC$）</li>
+<li>結論は<span class="memo-key">相似</span>条件の言葉で締める（例：「<span class="memo-key">2組の角がそれぞれ等しい</span>ので $\triangle ADE\backsim\triangle ABC$」）</li>
 </ul>
 <h3>8. 平行線と線分の比</h3>
 <ul>
-<li>$\triangle ABC$ で、辺AB上に点D、辺AC上に点Eがあり、$DE\parallel BC$ のとき、小さい三角形 $\triangle ADE$ と大きい三角形 $\triangle ABC$ が相似になる</li>
+<li>$\triangle ABC$ で、辺AB上に点D、辺AC上に点Eがあり、$DE\parallel BC$ のとき、小さい三角形 $\triangle ADE$ と大きい三角形 $\triangle ABC$ が<span class="memo-key">相似</span>になる</li>
 <li>使える比は2通り。<b>どちらか1つに決めて最後まで混ぜない</b></li>
 <li>切り分けた部分どうし：$AD:DB=AE:EC$</li>
 <li>部分と全体：$AD:AB=AE:AC$、また $AD:AB=DE:BC$</li>
@@ -172,28 +176,28 @@
 <li>例2：$AD:DB=2:3$、$AE=6$ cm → $AD:AB=2:5$ だから $AE:AC=2:5$ より $AC=15$ cm、$EC=15-6=9$ cm</li>
 <li>比は先に簡単にすると計算が楽になる（例：$5:15=1:3$）</li>
 </ul>
-<div class="figure"><img src="assets/fig_triangle_ratio.svg" alt="DE∥BC のとき AD：DB＝AE：EC"><div class="caption">DE∥BC のとき AD：DB＝AE：EC</div></div>
+<div class="figure"><img alt="DE∥BC のとき AD：DB＝AE：EC" src="assets/fig_triangle_ratio.svg"/><div class="caption">DE∥BC のとき AD：DB＝AE：EC</div></div>
 <h3>9. 中点連結定理</h3>
 <ul>
-<li><b>中点連結定理：三角形の2辺の中点を結ぶ線分は、残りの1辺に平行で、長さはその半分</b></li>
+<li><b><span class="memo-key">中点連結定理</span>：三角形の2辺の中点を結ぶ線分は、残りの1辺に平行で、長さはその半分</b></li>
 <li>$\triangle ABC$ の辺AB、ACの中点をM、Nとすると、$MN\parallel BC$ かつ $MN=\frac{1}{2}BC$</li>
 <li>例：$BC=18$ cm → $MN=9$ cm で、BCに平行</li>
 <li>答えるときは「長さが半分」だけでなく <b>「平行である」もセット</b> で書く</li>
 <li>使うための条件は「2辺のそれぞれの中点を結んでいること」。中点でない点を結んだ線には使えない</li>
 <li>利用：台形の2つの辺（脚）の中点を結ぶ線分の長さは、2つの底辺の平均になる（例：上底6cm、下底14cm → $\frac{6+14}{2}=10$ cm）</li>
 </ul>
-<div class="figure"><img src="assets/fig_midpoint.svg" alt="中点連結定理（MN∥BC、MN＝(1/2)BC）"><div class="caption">中点連結定理（MN∥BC、MN＝(1/2)BC）</div></div>
+<div class="figure"><img alt="中点連結定理（MN∥BC、MN＝(1/2)BC）" src="assets/fig_midpoint.svg"/><div class="caption">中点連結定理（MN∥BC、MN＝(1/2)BC）</div></div>
 <h2 class="green red">重要ポイント</h2>
 <div class="important-points">
 <ul>
 <li>$y=ax^2$ の式は、1組の値を代入して $a$ を求め、式まで完成させる</li>
-<li>グラフは放物線、原点を通り $y$ 軸対称。$a&gt;0$ は下に凸、$a&lt;0$ は上に凸。$|a|$ が大きいほど開き方は狭い</li>
-<li>変域は「$x=0$ の値＋両端の値」の3点で比べる</li>
-<li>変化の割合 ＝（$y$ の増加量）÷（$x$ の増加量）＝ $a(p+q)$。平均の速さも同じ式</li>
-<li>相似条件は3つを正確な言葉で：3組の辺の比／2組の辺の比とその間の角／2組の角</li>
-<li>長さの比は相似比そのまま、面積比は2乗、体積比は3乗</li>
-<li>平行線がある三角形は小さい三角形と大きい三角形が相似。比の式は1つに決めて混ぜない</li>
-<li>中点連結定理は「平行」と「半分」の2点セット</li>
+<li>グラフは<span class="memo-key">放物線</span>、<span class="memo-key">原点</span>を通り $y$ 軸対称。$a&gt;0$ は<span class="memo-key">下に凸</span>、$a&lt;0$ は<span class="memo-key">上に凸</span>。$|a|$ が大きいほど開き方は狭い</li>
+<li><span class="memo-key">変域</span>は「$x=0$ の値＋両端の値」の3点で比べる</li>
+<li><span class="memo-key">変化の割合</span> ＝（$y$ の増加量）÷（$x$ の増加量）＝ $<span class="memo-key">a(p+q)</span>$。<span class="memo-key">平均の速さ</span>も同じ式</li>
+<li><span class="memo-key">相似</span>条件は3つを正確な言葉で：3組の辺の比／2組の辺の比とその間の角／2組の角</li>
+<li>長さの比は<span class="memo-key">相似比</span>そのまま、<span class="memo-key">面積比</span>は2乗、<span class="memo-key">体積比</span>は3乗</li>
+<li>平行線がある三角形は小さい三角形と大きい三角形が<span class="memo-key">相似</span>。比の式は1つに決めて混ぜない</li>
+<li><span class="memo-key">中点連結定理</span>は「平行」と「半分」の2点セット</li>
 </ul>
 </div>
 <h2 class="orange">間違えやすい点</h2>

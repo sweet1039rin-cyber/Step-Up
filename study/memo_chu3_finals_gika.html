@@ -1,8 +1,9 @@
 <!DOCTYPE html>
+
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>中3技術・家庭 暗記シート｜期末テスト正式範囲</title>
 <style>
   * { box-sizing: border-box; }
@@ -46,6 +47,9 @@
   .important-points { color: #c62828; }
   .important-points li, .important-points b, .important-points strong, .important-points span { color: #c62828; }
   h2.red { color: #c62828; border-left-color: #c62828; }
+
+  /* 覚える語マーカー（update43） */
+  .memo-key { background: #fff59d; font-weight: bold; padding: 0 2px; border-radius: 3px; }
 </style>
 </head>
 <body>
@@ -71,24 +75,24 @@
 </ul>
 <table>
 <tr><th>順番</th><th>要素</th><th>役割</th></tr>
-<tr><td>1</td><td><b>センサ</b></td><td>温度・明るさなどの情報を読み取る（入力）</td></tr>
-<tr><td>2</td><td><b>コンピュータ</b></td><td>読み取った値をプログラムで処理・判断する</td></tr>
-<tr><td>3</td><td><b>アクチュエータ</b></td><td>判断にもとづいて実際に動作する（出力・動作。モーターなど）</td></tr>
+<tr><td>1</td><td><b><span class="memo-key">センサ</span></b></td><td>温度・明るさなどの情報を読み取る（入力）</td></tr>
+<tr><td>2</td><td><b><span class="memo-key">コンピュータ</span></b></td><td>読み取った値をプログラムで処理・判断する</td></tr>
+<tr><td>3</td><td><b><span class="memo-key">アクチュエータ</span></b></td><td>判断にもとづいて実際に動作する（出力・動作。モーターなど）</td></tr>
 </table>
 <ul>
-<li><b>フィードバック制御：</b> センサで読み取った値に応じて、自動で動作を調整し直す制御（1学期の復習）</li>
-<li>例：エアコンが室温センサの値に応じて運転の強さを調整する</li>
-<li>プログラムは、目的の動作になるよう、センサの値を判断に使う形で組み立てる（例：気温が基準以上ならファンを回す）</li>
+<li><b><span class="memo-key">フィードバック制御</span>：</b> <span class="memo-key">センサ</span>で読み取った値に応じて、自動で動作を調整し直す制御（1学期の復習）</li>
+<li>例：エアコンが室温<span class="memo-key">センサ</span>の値に応じて運転の強さを調整する</li>
+<li>プログラムは、目的の動作になるよう、<span class="memo-key">センサ</span>の値を判断に使う形で組み立てる（例：気温が基準以上ならファンを回す）</li>
 </ul>
 <h3>技術 2. フローチャートとプログラムの構造</h3>
 <ul>
-<li><b>フローチャート：</b> プログラムの処理の流れを、決まった記号と流れ線で表した図。本番では <b>フローチャートを作る問題</b> が出る（定規は不要）</li>
+<li><b><span class="memo-key">フローチャート</span>：</b> プログラムの処理の流れを、決まった記号と<span class="memo-key">流れ線</span>で表した図。本番では <b>フローチャートを作る問題</b> が出る（定規は不要）</li>
 </ul>
 <table>
 <tr><th>記号の名称</th><th>形</th><th>役割</th></tr>
 <tr><td><b>端子</b></td><td>角の丸い長方形（小判型）</td><td>処理の開始と終了</td></tr>
 <tr><td><b>処理</b></td><td>長方形</td><td>計算や動作などの処理</td></tr>
-<tr><td><b>判断</b></td><td>ひし形</td><td>条件によって流れが分かれる（分岐）。中に条件を書き、「はい／いいえ」で分かれる</td></tr>
+<tr><td><b>判断</b></td><td>ひし形</td><td>条件によって流れが分かれる（<span class="memo-key">分岐</span>）。中に条件を書き、「はい／いいえ」で分かれる</td></tr>
 <tr><td><b>入出力</b></td><td>平行四辺形</td><td>データの入力、結果の出力（表示）</td></tr>
 <tr><td><b>流れ線</b></td><td>矢印の線</td><td>記号同士をつなぎ、処理の流れる向きを示す</td></tr>
 </table>
@@ -102,88 +106,88 @@
 <tr><td><b>反復（ループ）</b></td><td>条件が満たされる間、同じ処理を繰り返す</td></tr>
 </table>
 <ul>
-<li>フローチャートを作る手順：</li>
+<li><span class="memo-key">フローチャート</span>を作る手順：</li>
 </ul>
 <ol>
-<li>端子（開始）から始める</li>
-<li>入力（センサで読む、値を入力する）は <b>入出力（平行四辺形）</b> で書く</li>
+<li><span class="memo-key">端子</span>（開始）から始める</li>
+<li>入力（<span class="memo-key">センサ</span>で読む、値を入力する）は <b><span class="memo-key">入出力</span>（平行四辺形）</b> で書く</li>
 <li>「〜以上か？」「〜か？」という条件は <b>判断（ひし形）</b> で書き、はい・いいえの両方の流れを書く</li>
-<li>動作や表示は <b>処理（長方形）</b> で書く。分岐した流れは最後に合流させる</li>
-<li>端子（終了）で終わる</li>
+<li>動作や表示は <b>処理（長方形）</b> で書く。<span class="memo-key">分岐</span>した流れは最後に合流させる</li>
+<li><span class="memo-key">端子</span>（終了）で終わる</li>
 </ol>
 <ul>
-<li>例：「開始 → 点数を入力する → 60以上か？（判断）→ はい：『合格』と表示／いいえ：『再テスト』と表示 → 合流 → 終了」。記号の並びは 端子 → 入出力 → 判断 → 処理（2つ）→ 端子</li>
+<li>例：「開始 → 点数を入力する → 60以上か？（判断）→ はい：『合格』と表示／いいえ：『再テスト』と表示 → 合流 → 終了」。記号の並びは <span class="memo-key">端子</span> → <span class="memo-key">入出力</span> → 判断 → 処理（2つ）→ 端子</li>
 </ul>
-<div class="figure"><img src="assets/fig_flowchart.svg" alt="フローチャートの作例（気温でファンを制御する）"><div class="caption">フローチャートの作例（気温でファンを制御する）</div></div>
+<div class="figure"><img alt="フローチャートの作例（気温でファンを制御する）" src="assets/fig_flowchart.svg"/><div class="caption">フローチャートの作例（気温でファンを制御する）</div></div>
 <h3>技術 3. 情報の扱いとトラブルへの対応（1学期の復習を含む）</h3>
 <ul>
-<li><b>デジタル方式：</b> 情報を0と1の信号で表す方法。アナログの音声や画像をデジタルデータに変換することを <b>A/D変換</b> といい、<b>標本化（サンプリング）→ 量子化 → 符号化</b> の過程を経る</li>
-<li>標本化：短い時間ごとに区切って値を取り出すこと</li>
-<li><b>情報量の単位：</b> 最小単位は <b>ビット（bit）</b>。<b>1バイト（B）＝8ビット</b>（例：24ビット＝3バイト）。1MB＝1,000,000バイトとして計算する問題もある（例：2,400,000バイト＝約2.4MB）</li>
-<li><b>通信プロトコル：</b> ネットワークに接続された機器同士が、決まった約束事でデータをやりとりする決まり</li>
-<li><b>IPアドレス：</b> インターネットで情報を送る相手先を示す、住所のような番号</li>
+<li><b><span class="memo-key">デジタル方式</span>：</b> 情報を0と1の信号で表す方法。アナログの音声や画像をデジタルデータに変換することを <b><span class="memo-key">A/D変換</span></b> といい、<b><span class="memo-key">標本化</span>（<span class="memo-key">サンプリング</span>）→ <span class="memo-key">量子化</span> → <span class="memo-key">符号化</span></b> の過程を経る</li>
+<li><span class="memo-key">標本化</span>：短い時間ごとに区切って値を取り出すこと</li>
+<li><b>情報量の単位：</b> 最小単位は <b><span class="memo-key">ビット</span>（bit）</b>。<b>1<span class="memo-key">バイト</span>（B）＝8ビット</b>（例：24ビット＝3バイト）。1MB＝1,000,000バイトとして計算する問題もある（例：2,400,000バイト＝約2.4MB）</li>
+<li><b><span class="memo-key">通信プロトコル</span>：</b> ネットワークに接続された機器同士が、決まった約束事でデータをやりとりする決まり</li>
+<li><b><span class="memo-key">IPアドレス</span>：</b> インターネットで情報を送る相手先を示す、住所のような番号</li>
 <li>トラブルの原因と解決法を選ぶ問題の型（範囲表の指定形式）：</li>
 </ul>
 <table>
 <tr><th>トラブルの場面</th><th>原因・考え方</th><th>ふさわしい解決・対応</th></tr>
-<tr><td>銀行を装ったメールが届き、リンク先で口座番号とパスワードの入力を求められた</td><td><b>フィッシング詐欺</b>（他人になりすまして個人情報などをだまし取る手口）</td><td>リンクは開かず・入力せず、公式サイトや窓口で事実を確認する</td></tr>
-<tr><td>パソコンの動きが急に遅くなり、知らない広告が大量に表示される</td><td><b>コンピュータウイルス（マルウェア）</b> への感染のおそれ</td><td>セキュリティソフトで検査・駆除し、OSやソフトを最新の状態に保つ</td></tr>
+<tr><td>銀行を装ったメールが届き、リンク先で口座番号とパスワードの入力を求められた</td><td><b><span class="memo-key">フィッシング詐欺</span></b>（他人になりすまして<span class="memo-key">個人情報</span>などをだまし取る手口）</td><td>リンクは開かず・入力せず、公式サイトや窓口で事実を確認する</td></tr>
+<tr><td>パソコンの動きが急に遅くなり、知らない広告が大量に表示される</td><td><b><span class="memo-key">コンピュータウイルス</span>（<span class="memo-key">マルウェア</span>）</b> への感染のおそれ</td><td>セキュリティソフトで検査・駆除し、OSやソフトを最新の状態に保つ</td></tr>
 <tr><td>公共の無料Wi-Fiで買い物（カード番号の入力）をしようとしている</td><td>通信が暗号化されていないと盗み見されるおそれ</td><td>大切な情報の送受信は避け、正規の回線などを使う</td></tr>
 </table>
 <ul>
 <li>情報セキュリティの基本：</li>
 <li><b>パスワードの使い回しは危険</b>（1か所から漏れると、他のサービスにも不正ログインされるおそれ）</li>
-<li><b>二要素認証（二段階認証）：</b> パスワードに加え、スマートフォンへの確認コードなどで本人確認を2段階で行う</li>
-<li><b>バックアップ：</b> 情報を失わないために、別の場所に複製を保存しておくこと</li>
-<li><b>著作権：</b> 小説・音楽・絵画・写真・プログラムなどの著作物が保護される（アイデアそのものではなく表現が保護される）。他人の著作物を無断で自分の作品として発表するのは侵害になる</li>
-<li><b>個人情報：</b> 氏名、住所、生年月日、顔写真など、個人が特定できる情報</li>
+<li><b><span class="memo-key">二要素認証</span>（<span class="memo-key">二段階認証</span>）：</b> パスワードに加え、スマートフォンへの確認コードなどで本人確認を2段階で行う</li>
+<li><b><span class="memo-key">バックアップ</span>：</b> 情報を失わないために、別の場所に複製を保存しておくこと</li>
+<li><b><span class="memo-key">著作権</span>：</b> 小説・音楽・絵画・写真・プログラムなどの著作物が保護される（アイデアそのものではなく表現が保護される）。他人の著作物を無断で自分の作品として発表するのは侵害になる</li>
+<li><b><span class="memo-key">個人情報</span>：</b> 氏名、住所、生年月日、顔写真など、個人が特定できる情報</li>
 </ul>
 <h3>家庭 1. 五大栄養素（2年時の復習）</h3>
 <ul>
-<li><b>五大栄養素：炭水化物、脂質、たんぱく質、無機質（ミネラル）、ビタミン</b></li>
-<li>このうち <b>エネルギー源になるのは炭水化物・脂質・たんぱく質</b>（三大栄養素）</li>
+<li><b><span class="memo-key">五大栄養素</span>：<span class="memo-key">炭水化物</span>、<span class="memo-key">脂質</span>、<span class="memo-key">たんぱく質</span>、<span class="memo-key">無機質</span>（<span class="memo-key">ミネラル</span>）、<span class="memo-key">ビタミン</span></b></li>
+<li>このうち <b><span class="memo-key">エネルギー源</span>になるのは<span class="memo-key">炭水化物</span>・<span class="memo-key">脂質</span>・<span class="memo-key">たんぱく質</span></b>（<span class="memo-key">三大栄養素</span>）</li>
 </ul>
 <table>
 <tr><th>栄養素</th><th>主なはたらき</th><th>多く含む食品の例</th></tr>
-<tr><td>炭水化物</td><td>体や脳の主なエネルギー源</td><td>ごはん・パン・麺類・いも類</td></tr>
+<tr><td>炭水化物</td><td>体や脳の主な<span class="memo-key">エネルギー源</span></td><td>ごはん・パン・麺類・いも類</td></tr>
 <tr><td>脂質</td><td>少量で大きなエネルギーになる。とりすぎると肥満や生活習慣病の原因</td><td>油脂類など</td></tr>
 <tr><td>たんぱく質</td><td>筋肉や血液など、体をつくる材料</td><td>肉・魚・卵・大豆製品・乳製品</td></tr>
 <tr><td>無機質（ミネラル）</td><td>体の調子を整え、骨や血液などの材料になる</td><td>下の表を参照</td></tr>
 <tr><td>ビタミン</td><td>体の調子を整える</td><td>下の表を参照</td></tr>
 </table>
 <ul>
-<li>1gあたりのエネルギーが最も多いのは <b>脂質</b></li>
-<li>代表的な無機質とビタミン：</li>
+<li>1gあたりのエネルギーが最も多いのは <b><span class="memo-key">脂質</span></b></li>
+<li>代表的な<span class="memo-key">無機質</span>と<span class="memo-key">ビタミン</span>：</li>
 </ul>
 <table>
 <tr><th>名前</th><th>はたらき</th><th>多く含む食品の例</th></tr>
 <tr><td>カルシウム（無機質）</td><td>骨や歯をつくる</td><td>牛乳・乳製品・小魚など</td></tr>
-<tr><td>鉄（無機質）</td><td>血液（赤血球のヘモグロビン）の材料になり、貧血を防ぐ</td><td>レバー・赤身の肉や魚・あさり・ほうれんそうなど</td></tr>
+<tr><td>鉄（無機質）</td><td>血液（赤血球の<span class="memo-key">ヘモグロビン</span>）の材料になり、貧血を防ぐ</td><td>レバー・赤身の肉や魚・あさり・ほうれんそうなど</td></tr>
 <tr><td>ビタミンA</td><td>皮膚や粘膜、目のはたらきを保つ</td><td>緑黄色野菜・レバー・うなぎなど</td></tr>
-<tr><td>ビタミンC</td><td>血管や皮膚を丈夫にし、<b>鉄の吸収を助ける</b></td><td>野菜・果物（柑橘類）・いも類など</td></tr>
-<tr><td>ビタミンD</td><td><b>カルシウムの吸収を助け</b>、骨を丈夫にする</td><td>―</td></tr>
+<tr><td>ビタミンC</td><td>血管や皮膚を丈夫にし、<b><span class="memo-key">鉄</span>の吸収を助ける</b></td><td>野菜・果物（柑橘類）・いも類など</td></tr>
+<tr><td>ビタミンD</td><td><b><span class="memo-key">カルシウム</span>の吸収を助け</b>、骨を丈夫にする</td><td>―</td></tr>
 </table>
 <ul>
-<li><b>中学生（成長期）に特に必要なもの：たんぱく質とカルシウム</b>（体づくりと骨の成長のため）。<b>鉄も不足しやすい</b>ので意識してとる</li>
+<li><b>中学生（成長期）に特に必要なもの：<span class="memo-key">たんぱく質</span>と<span class="memo-key">カルシウム</span></b>（体づくりと骨の成長のため）。<b><span class="memo-key">鉄</span>も不足しやすい</b>ので意識してとる</li>
 </ul>
 <h3>家庭 2. 食事のとり方と献立</h3>
 <ul>
-<li><b>主食・主菜・副菜（＋汁物）をそろえる</b> と栄養バランスが整う</li>
+<li><b><span class="memo-key">主食</span>・<span class="memo-key">主菜</span>・<span class="memo-key">副菜</span>（＋汁物）をそろえる</b> と栄養バランスが整う</li>
 </ul>
 <table>
 <tr><th>区分</th><th>内容</th><th>供給源になるもの</th></tr>
-<tr><td>主食</td><td>ごはん・パン・麺類が中心</td><td>炭水化物（エネルギー源）</td></tr>
-<tr><td>主菜</td><td>肉・魚・卵・大豆製品などが中心の料理</td><td>たんぱく質</td></tr>
-<tr><td>副菜</td><td>野菜などが中心の料理</td><td>ビタミン・無機質・食物繊維</td></tr>
+<tr><td>主食</td><td>ごはん・パン・麺類が中心</td><td><span class="memo-key">炭水化物</span>（<span class="memo-key">エネルギー源</span>）</td></tr>
+<tr><td>主菜</td><td>肉・魚・卵・大豆製品などが中心の料理</td><td><span class="memo-key">たんぱく質</span></td></tr>
+<tr><td>副菜</td><td>野菜などが中心の料理</td><td><span class="memo-key">ビタミン</span>・<span class="memo-key">無機質</span>・食物繊維</td></tr>
 </table>
 <ul>
 <li>献立を立てるときのポイント：栄養のバランス、彩り、<b>調理法や味付けが重ならない</b> ようにする、旬の食材を使う</li>
-<li><b>食事バランスガイド：</b> 1日に「何を」「どれだけ」食べたらよいかを、料理の数（SV＝サービング）で示したもの</li>
-<li>計量の基本：<b>1カップ＝200mL、大さじ1＝15mL、小さじ1＝5mL</b></li>
+<li><b><span class="memo-key">食事バランスガイド</span>：</b> 1日に「何を」「どれだけ」食べたらよいかを、料理の数（SV＝<span class="memo-key">サービング</span>）で示したもの</li>
+<li>計量の基本：<b>1カップ＝<span class="memo-key">200mL</span>、大さじ1＝<span class="memo-key">15mL</span>、小さじ1＝<span class="memo-key">5mL</span></b></li>
 </ul>
 <h3>家庭 3. 食品の選択と表示・安全</h3>
 <ul>
-<li><b>栄養成分表示：</b> 食品に含まれる栄養素やエネルギーを示した表示。食品を選ぶ手がかりにする</li>
+<li><b><span class="memo-key">栄養成分表示</span>：</b> 食品に含まれる栄養素やエネルギーを示した表示。食品を選ぶ手がかりにする</li>
 <li>期限表示の違い：</li>
 </ul>
 <table>
@@ -193,28 +197,28 @@
 </table>
 <ul>
 <li><b>食中毒予防の三原則：菌を「つけない」「増やさない」「やっつける」</b></li>
-<li>つけない：調理前・調理中にこまめに手を洗う。生の肉や魚を切った包丁・まな板を、そのまま生で食べる食品に使うと菌が移る（<b>二次汚染</b>）ので、洗って使い分ける</li>
+<li>つけない：調理前・調理中にこまめに手を洗う。生の肉や魚を切った包丁・まな板を、そのまま生で食べる食品に使うと菌が移る（<b><span class="memo-key">二次汚染</span></b>）ので、洗って使い分ける</li>
 <li>増やさない：食品は低温で保存し、室温に長く置かない</li>
 <li>やっつける：肉は中心部まで十分に加熱する</li>
-<li><b>食品添加物の役割：</b> 保存性を高める（保存料）、色や香りをつける、栄養を強化する、など</li>
+<li><b><span class="memo-key">食品添加物</span>の役割：</b> 保存性を高める（<span class="memo-key">保存料</span>）、色や香りをつける、栄養を強化する、など</li>
 </ul>
 <h3>家庭 4. 食生活と環境</h3>
 <ul>
-<li><b>地産地消：</b> 地域で生産されたものを地域で消費すること。輸送距離が短く、新鮮で、地域の農業が守られる</li>
-<li><b>フードマイレージ：</b> 食料の輸入量×輸送距離で表される指標。<b>大きいほど輸送で多くのエネルギーが使われ、環境への負荷が大きい</b></li>
+<li><b><span class="memo-key">地産地消</span>：</b> 地域で生産されたものを地域で消費すること。輸送距離が短く、新鮮で、地域の農業が守られる</li>
+<li><b><span class="memo-key">フードマイレージ</span>：</b> 食料の輸入量×輸送距離で表される指標。<b>大きいほど輸送で多くのエネルギーが使われ、環境への負荷が大きい</b></li>
 <li>小さくする行動：地元でとれた旬の食材を選ぶ</li>
 <li><b>旬の食材の利点：</b> 栄養価が高い、味がよい、価格が安い、環境への負荷が少ない（輸送や冷暖房のエネルギーが少なくて済む）</li>
-<li>米のとぎ汁を流すと生活排水が川や海の水質汚濁の原因になる。とぎ汁を植木の水やりに使う、無洗米を使うなどの工夫ができる</li>
+<li>米のとぎ汁を流すと<span class="memo-key">生活排水</span>が川や海の水質汚濁の原因になる。とぎ汁を植木の水やりに使う、無洗米を使うなどの工夫ができる</li>
 </ul>
 <h2 class="green red">重要ポイント</h2>
 <div class="important-points">
 <ul>
-<li>フローチャート記号は5つを形で区別：端子＝角の丸い長方形、処理＝長方形、判断＝ひし形、入出力＝平行四辺形、流れ線＝矢印</li>
-<li>プログラムの3構造は順次・分岐・反復。計測・制御の順序はセンサ→コンピュータ→アクチュエータ</li>
-<li>トラブル問題は「原因の用語」と「ふさわしい対応」のペアで覚える（フィッシング詐欺、ウイルス感染、無料Wi-Fiの盗み見）</li>
-<li>五大栄養素と、カルシウム・鉄・ビタミンC・ビタミンDのはたらきのペアが家庭の中心</li>
-<li>主食・主菜・副菜の役割の違いと、食中毒三原則「つけない・増やさない・やっつける」</li>
-<li>賞味期限は品質、消費期限は安全の期限</li>
+<li><span class="memo-key">フローチャート</span>記号は5つを形で区別：<span class="memo-key">端子</span>＝角の丸い長方形、処理＝長方形、判断＝ひし形、<span class="memo-key">入出力</span>＝平行四辺形、<span class="memo-key">流れ線</span>＝矢印</li>
+<li>プログラムの3構造は<span class="memo-key">順次</span>・<span class="memo-key">分岐</span>・<span class="memo-key">反復</span>。計測・制御の順序は<span class="memo-key">センサ</span>→<span class="memo-key">コンピュータ</span>→<span class="memo-key">アクチュエータ</span></li>
+<li>トラブル問題は「原因の用語」と「ふさわしい対応」のペアで覚える（<span class="memo-key">フィッシング詐欺</span>、ウイルス感染、無料Wi-Fiの盗み見）</li>
+<li><span class="memo-key">五大栄養素</span>と、<span class="memo-key">カルシウム</span>・<span class="memo-key">鉄</span>・<span class="memo-key">ビタミンC</span>・<span class="memo-key">ビタミンD</span>のはたらきのペアが家庭の中心</li>
+<li><span class="memo-key">主食</span>・<span class="memo-key">主菜</span>・<span class="memo-key">副菜</span>の役割の違いと、食中毒三原則「つけない・増やさない・やっつける」</li>
+<li><span class="memo-key">賞味期限</span>は品質、<span class="memo-key">消費期限</span>は安全の期限</li>
 </ul>
 </div>
 <h2 class="orange">間違えやすい点</h2>
