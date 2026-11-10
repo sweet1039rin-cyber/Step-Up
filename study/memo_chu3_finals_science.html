@@ -41,6 +41,11 @@
     .figure, table { page-break-inside: avoid; }
     h2, h3 { page-break-after: avoid; }
   }
+
+  /* 重要ポイント節は赤文字（update42） */
+  .important-points { color: #c62828; }
+  .important-points li, .important-points b, .important-points strong, .important-points span { color: #c62828; }
+  h2.red { color: #c62828; border-left-color: #c62828; }
 </style>
 </head>
 <body>
@@ -166,7 +171,8 @@
 <li>使われて周囲に広がった熱エネルギーは、もとの形に戻しにくく、利用しにくい（エネルギーを有効に使ううえでの課題）</li>
 <li>摩擦で運動エネルギーが熱エネルギーに変わっても、エネルギーが消えたわけではなく、総量は変わらない</li>
 </ul>
-<h2 class="green">重要ポイント</h2>
+<h2 class="green red">重要ポイント</h2>
+<div class="important-points">
 <ul>
 <li>合力は平行四辺形の対角線。作図は「2本の矢印 → 平行四辺形 → 対角線」の順で、直定規でかく</li>
 <li>同じ向きの2力は和、反対向きは差、等しく反対向きなら合力0N（つり合い）</li>
@@ -177,6 +183,7 @@
 <li>力学的エネルギー＝位置＋運動。摩擦などがなければ和は一定（保存）</li>
 <li>エネルギーは形を変えても総量は保存される</li>
 </ul>
+</div>
 <h2 class="orange">間違えやすい点</h2>
 <ul>
 <li><b>作図で平行四辺形をかかず、矢印をそのままつないでしまう：</b> 合力は作用点から引く対角線。分力の作図と手順が逆になっていないか確認する</li>

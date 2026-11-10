@@ -41,6 +41,11 @@
     .figure, table { page-break-inside: avoid; }
     h2, h3 { page-break-after: avoid; }
   }
+
+  /* 重要ポイント節は赤文字（update42） */
+  .important-points { color: #c62828; }
+  .important-points li, .important-points b, .important-points strong, .important-points span { color: #c62828; }
+  h2.red { color: #c62828; border-left-color: #c62828; }
 </style>
 </head>
 <body>
@@ -178,7 +183,8 @@
 <li>利用：台形の2つの辺（脚）の中点を結ぶ線分の長さは、2つの底辺の平均になる（例：上底6cm、下底14cm → $\frac{6+14}{2}=10$ cm）</li>
 </ul>
 <div class="figure"><img src="assets/fig_midpoint.svg" alt="中点連結定理（MN∥BC、MN＝(1/2)BC）"><div class="caption">中点連結定理（MN∥BC、MN＝(1/2)BC）</div></div>
-<h2 class="green">重要ポイント</h2>
+<h2 class="green red">重要ポイント</h2>
+<div class="important-points">
 <ul>
 <li>$y=ax^2$ の式は、1組の値を代入して $a$ を求め、式まで完成させる</li>
 <li>グラフは放物線、原点を通り $y$ 軸対称。$a&gt;0$ は下に凸、$a&lt;0$ は上に凸。$|a|$ が大きいほど開き方は狭い</li>
@@ -189,6 +195,7 @@
 <li>平行線がある三角形は小さい三角形と大きい三角形が相似。比の式は1つに決めて混ぜない</li>
 <li>中点連結定理は「平行」と「半分」の2点セット</li>
 </ul>
+</div>
 <h2 class="orange">間違えやすい点</h2>
 <ul>
 <li><b>$x^2$ の符号ミス：</b> $(-3)^2=9$ であって $-9$ ではない。かっこごと2乗するときは符号も一緒に2乗される。$y=-2x^2$ で $x=-3$ のときは $y=-2\times9=-18$（$-2\times(-9)$ としない）</li>

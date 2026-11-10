@@ -41,6 +41,11 @@
     .figure, table { page-break-inside: avoid; }
     h2, h3 { page-break-after: avoid; }
   }
+
+  /* 重要ポイント節は赤文字（update42） */
+  .important-points { color: #c62828; }
+  .important-points li, .important-points b, .important-points strong, .important-points span { color: #c62828; }
+  h2.red { color: #c62828; border-left-color: #c62828; }
 </style>
 </head>
 <body>
@@ -201,7 +206,8 @@
 <li><b>旬の食材の利点：</b> 栄養価が高い、味がよい、価格が安い、環境への負荷が少ない（輸送や冷暖房のエネルギーが少なくて済む）</li>
 <li>米のとぎ汁を流すと生活排水が川や海の水質汚濁の原因になる。とぎ汁を植木の水やりに使う、無洗米を使うなどの工夫ができる</li>
 </ul>
-<h2 class="green">重要ポイント</h2>
+<h2 class="green red">重要ポイント</h2>
+<div class="important-points">
 <ul>
 <li>フローチャート記号は5つを形で区別：端子＝角の丸い長方形、処理＝長方形、判断＝ひし形、入出力＝平行四辺形、流れ線＝矢印</li>
 <li>プログラムの3構造は順次・分岐・反復。計測・制御の順序はセンサ→コンピュータ→アクチュエータ</li>
@@ -210,6 +216,7 @@
 <li>主食・主菜・副菜の役割の違いと、食中毒三原則「つけない・増やさない・やっつける」</li>
 <li>賞味期限は品質、消費期限は安全の期限</li>
 </ul>
+</div>
 <h2 class="orange">間違えやすい点</h2>
 <ul>
 <li><b>フローチャート記号の取り違え：</b> 処理（長方形）と判断（ひし形）、入出力（平行四辺形）を入れ替えない。「入力する・表示する」は入出力、「〜か？」は判断</li>

@@ -41,6 +41,11 @@
     .figure, table { page-break-inside: avoid; }
     h2, h3 { page-break-after: avoid; }
   }
+
+  /* 重要ポイント節は赤文字（update42） */
+  .important-points { color: #c62828; }
+  .important-points li, .important-points b, .important-points strong, .important-points span { color: #c62828; }
+  h2.red { color: #c62828; border-left-color: #c62828; }
 </style>
 </head>
 <body>
@@ -273,7 +278,8 @@
 <ul>
 <li><b>SDGs（持続可能な開発目標）</b>：国連で採択された17の目標。「誰一人取り残さない」持続可能な社会を目指す。環境、貧困、平等など幅広い課題を含む。</li>
 </ul>
-<h2 class="green">重要ポイント</h2>
+<h2 class="green red">重要ポイント</h2>
+<div class="important-points">
 <ul>
 <li>憲法の三大原則（国民主権・基本的人権の尊重・平和主義）と、主要な条文番号（第9条平和主義、第13条幸福追求権、第14条平等権、第25条生存権、第26条教育、第41条国会の地位）は組み合わせで言えるようにする。</li>
 <li>三権分立の表（国会＝立法、内閣＝行政、裁判所＝司法）と、それぞれのチェック機能を図で説明できるようにする。</li>
@@ -284,6 +290,7 @@
 <li>経済は「需要と供給と価格」「インフレとデフレ」「金融政策は日本銀行、財政政策は政府」の3組の対比で整理する。</li>
 <li>社会保障の4つの柱と、クーリング・オフ（8日以内）・PL法・独占禁止法と公正取引委員会のセットは、漢字で書けるようにする。</li>
 </ul>
+</div>
 <h2 class="orange">間違えやすい点</h2>
 <ul>
 <li>参議院に解散はない。任期は6年で3年ごとに半数改選。任期4年・解散ありは衆議院。</li>
