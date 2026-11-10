@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 420" font-family="Hiragino Kaku Gothic ProN, Hiragino Sans, Noto Sans JP, sans-serif">
+<defs><marker id="ah" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 z" fill="#333"/></marker></defs>
+<rect x="40" y="30" width="160" height="62" rx="10" fill="#eef5fc" stroke="#2f6fb2" stroke-width="2"/><text x="120.0" y="51.08" text-anchor="middle" font-size="16" font-weight="bold" fill="#222">国会</text><text x="120.0" y="70.92" text-anchor="middle" font-size="16" font-weight="bold" fill="#222">（立法権）</text>
+<rect x="360" y="30" width="160" height="62" rx="10" fill="#edf7f0" stroke="#2e7d4f" stroke-width="2"/><text x="440.0" y="51.08" text-anchor="middle" font-size="16" font-weight="bold" fill="#222">内閣</text><text x="440.0" y="70.92" text-anchor="middle" font-size="16" font-weight="bold" fill="#222">（行政権）</text>
+<rect x="200" y="220" width="160" height="62" rx="10" fill="#f4eefb" stroke="#6a3fa0" stroke-width="2"/><text x="280.0" y="241.08" text-anchor="middle" font-size="16" font-weight="bold" fill="#222">裁判所</text><text x="280.0" y="260.92" text-anchor="middle" font-size="16" font-weight="bold" fill="#222">（司法権）</text>
+<rect x="200" y="344" width="160" height="50" rx="10" fill="#fdf3ea" stroke="#e07b39" stroke-width="2"/><text x="280.0" y="369.0" text-anchor="middle" font-size="16" font-weight="bold" fill="#222">国民</text>
+<line x1="200" y1="48" x2="356" y2="48" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="280" y="40" text-anchor="middle" font-size="13">内閣総理大臣を指名</text>
+<line x1="360" y1="76" x2="204" y2="76" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="280" y="94" text-anchor="middle" font-size="13">衆議院を解散</text>
+<line x1="168" y1="92" x2="222" y2="216" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="146" y="150" text-anchor="middle" font-size="13">裁判官の</text><text x="146" y="167" text-anchor="middle" font-size="13">弾劾裁判</text>
+<line x1="238" y1="216" x2="184" y2="92" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="256" y="150" text-anchor="middle" font-size="13">違憲審査権</text><text x="256" y="167" text-anchor="middle" font-size="13">（法律）</text>
+<line x1="392" y1="92" x2="338" y2="216" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="414" y="150" text-anchor="middle" font-size="13">違憲審査権</text><text x="414" y="167" text-anchor="middle" font-size="13">（行政の行為）</text>
+<line x1="324" y1="216" x2="376" y2="92" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="322" y="150" text-anchor="middle" font-size="13">裁判官を任命</text><text x="322" y="167" text-anchor="middle" font-size="13">長官を指名</text>
+<path d="M200,368 L96,368 L96,96" fill="none" stroke="#e07b39" stroke-width="1.8" marker-end="url(#ah)"/>
+<text x="86" y="240" text-anchor="middle" font-size="13" fill="#c05a17" transform="rotate(-90 86 240)">選挙</text>
+<line x1="280" y1="344" x2="280" y2="286" stroke="#e07b39" stroke-width="1.8" marker-end="url(#ah)"/>
+<text x="290" y="318" font-size="13" fill="#c05a17">国民審査</text>
+</svg>

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 345" font-family="Hiragino Kaku Gothic ProN, Hiragino Sans, Noto Sans JP, sans-serif">
+<defs><marker id="ah" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 z" fill="#333"/></marker></defs>
+<polygon points="240,40 168.0,148.0 312.0,148.0" fill="#dbeafe"/>
+<polygon points="240,40 80,280 400,280" fill="none" stroke="#333" stroke-width="2"/>
+<line x1="168.0" y1="148.0" x2="312.0" y2="148.0" stroke="#2f6fb2" stroke-width="2.4"/>
+<path d="M233,142.0 L243,148.0 L233,154.0" fill="none" stroke="#c0392b" stroke-width="2.2"/>
+<path d="M233,274 L243,280 L233,286" fill="none" stroke="#c0392b" stroke-width="2.2"/>
+<text x="70" y="140" font-size="14">AD</text><text x="56" y="238" font-size="14">DB</text>
+<text x="392" y="140" font-size="14">AE</text><text x="398" y="238" font-size="14">EC</text>
+<text x="330" y="330" font-size="14" fill="#2f6fb2">△ADE ∽ △ABC</text>
+<text x="240" y="28" text-anchor="middle" font-size="16" font-weight="bold">A</text>
+<text x="64" y="286" text-anchor="start" font-size="16" font-weight="bold">B</text>
+<text x="410" y="286" text-anchor="start" font-size="16" font-weight="bold">C</text>
+<text x="146.0" y="152.0" text-anchor="start" font-size="16" font-weight="bold">D</text>
+<text x="324.0" y="152.0" text-anchor="start" font-size="16" font-weight="bold">E</text>
+</svg>

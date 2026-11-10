@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 290" font-family="Hiragino Kaku Gothic ProN, Hiragino Sans, Noto Sans JP, sans-serif">
+<defs><marker id="ah" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 z" fill="#333"/></marker></defs>
+<path d="M144,151 A 150 150 0 0 1 336,151" fill="none" stroke="#bbb" stroke-width="1.6"/>
+<line x1="60" y1="186" x2="420" y2="186" stroke="#888" stroke-dasharray="6 4"/>
+<line x1="214" y1="36" x2="266" y2="36" stroke="#333" stroke-width="4"/>
+<line x1="240" y1="36" x2="144" y2="151" stroke="#555" stroke-width="1.8"/>
+<circle cx="144" cy="151" r="14" fill="#e07b39"/>
+<line x1="240" y1="36" x2="240" y2="186" stroke="#555" stroke-width="1.8"/>
+<circle cx="240" cy="186" r="14" fill="#c0392b"/>
+<line x1="240" y1="36" x2="336" y2="151" stroke="#555" stroke-width="1.8"/>
+<circle cx="336" cy="151" r="14" fill="#e07b39"/>
+<text x="135.58185854701912" y="194.90666646784672" text-anchor="middle" font-size="13" font-weight="bold">いちばん高い位置</text>
+<text x="135.58185854701912" y="212.90666646784672" text-anchor="middle" font-size="12">位置エネルギー最大</text>
+<text x="135.58185854701912" y="228.90666646784672" text-anchor="middle" font-size="12">運動エネルギー 0</text>
+<text x="240" y="230" text-anchor="middle" font-size="13" font-weight="bold">いちばん低い位置</text>
+<text x="240" y="248" text-anchor="middle" font-size="12">位置エネルギー最小</text>
+<text x="240" y="264" text-anchor="middle" font-size="12">運動エネルギー最大（最も速い）</text>
+<text x="344.4181414529809" y="194.90666646784672" text-anchor="middle" font-size="13" font-weight="bold">いちばん高い位置</text>
+<text x="344.4181414529809" y="212.90666646784672" text-anchor="middle" font-size="12">位置エネルギー最大</text>
+<text x="344.4181414529809" y="228.90666646784672" text-anchor="middle" font-size="12">運動エネルギー 0</text>
+<text x="424" y="182" font-size="11" fill="#666">最も低い位置の高さ</text>
+</svg>

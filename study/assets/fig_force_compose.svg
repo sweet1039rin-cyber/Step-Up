@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 300" font-family="Hiragino Kaku Gothic ProN, Hiragino Sans, Noto Sans JP, sans-serif">
+<defs><marker id="ah" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 z" fill="#333"/></marker></defs>
+<line x1="40" y1="56" x2="40" y2="272" stroke="#e3e3e3"/>
+<line x1="76" y1="56" x2="76" y2="272" stroke="#e3e3e3"/>
+<line x1="112" y1="56" x2="112" y2="272" stroke="#e3e3e3"/>
+<line x1="148" y1="56" x2="148" y2="272" stroke="#e3e3e3"/>
+<line x1="184" y1="56" x2="184" y2="272" stroke="#e3e3e3"/>
+<line x1="220" y1="56" x2="220" y2="272" stroke="#e3e3e3"/>
+<line x1="256" y1="56" x2="256" y2="272" stroke="#e3e3e3"/>
+<line x1="292" y1="56" x2="292" y2="272" stroke="#e3e3e3"/>
+<line x1="328" y1="56" x2="328" y2="272" stroke="#e3e3e3"/>
+<line x1="40" y1="56" x2="340" y2="56" stroke="#e3e3e3"/>
+<line x1="40" y1="92" x2="340" y2="92" stroke="#e3e3e3"/>
+<line x1="40" y1="128" x2="340" y2="128" stroke="#e3e3e3"/>
+<line x1="40" y1="164" x2="340" y2="164" stroke="#e3e3e3"/>
+<line x1="40" y1="200" x2="340" y2="200" stroke="#e3e3e3"/>
+<line x1="40" y1="236" x2="340" y2="236" stroke="#e3e3e3"/>
+<line x1="40" y1="272" x2="340" y2="272" stroke="#e3e3e3"/>
+<rect x="100" y="128" width="144" height="108" fill="none" stroke="#888" stroke-dasharray="6 4"/>
+<line x1="100" y1="236" x2="244" y2="236" stroke="#2f6fb2" stroke-width="3" marker-end="url(#ah)"/>
+<line x1="100" y1="236" x2="100" y2="128" stroke="#2e7d4f" stroke-width="3" marker-end="url(#ah)"/>
+<line x1="100" y1="236" x2="244" y2="128" stroke="#c0392b" stroke-width="4" marker-end="url(#ah)"/>
+<circle cx="100" cy="236" r="4" fill="#333"/>
+<text x="76" y="242" font-size="15" font-weight="bold">O</text>
+<text x="152" y="258" font-size="15" fill="#2f6fb2" font-weight="bold">4N（東）</text>
+<text x="48" y="184" font-size="15" fill="#2e7d4f" font-weight="bold">3N（北）</text>
+<text x="196" y="158" font-size="16" fill="#c0392b" font-weight="bold">合力 5N</text>
+<text x="330" y="290" font-size="12" fill="#666">※1目盛り＝1N</text>
+</svg>
