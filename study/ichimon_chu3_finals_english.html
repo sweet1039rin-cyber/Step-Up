@@ -41,6 +41,10 @@ footer{margin-top:10px}
 .done-score{font-size:1.3rem;font-weight:700;color:var(--navy)}
 .restart{max-width:340px;margin:16px auto 0;display:block;width:100%}
 .retry{max-width:340px;margin:16px auto 0;display:block;width:100%;background:var(--navy);border-color:var(--navy);color:#fff}
+.setswitch{display:flex;gap:10px;margin:14px 0 4px}
+.setbtn{flex:1;font-family:inherit;font-size:1rem;font-weight:700;padding:12px 8px;border-radius:12px;border:3px solid var(--line);background:#fff;color:#54677a;cursor:pointer;min-height:56px}
+.setbtn.active{border-color:#ff6b9d;color:#c2255c;background:#fff5f8}
+.setnote{font-size:.95rem;color:#54677a;margin:.2em 0}
 </style>
 </head>
 <body>
@@ -48,6 +52,9 @@ footer{margin-top:10px}
 <p class="toplink"><a href="iori.html">← 中3トップへ戻る</a></p>
 <h1>中3英語 一問一答｜期末テスト正式範囲（分詞・関係代名詞）</h1>
 <p>1問ずつ出ます。まず頭の中で答えてから「答えを見る」を押して、「できた」「できなかった」で教えてください。できなかった問題は、まちがい復習ボックスに残ります。</p>
+<p>問題は「本編」と「実力問題対策」に分かれています。本編は今回のテスト範囲（分詞の後置修飾・関係代名詞・接触節）の18問です。「実力問題対策」はテスト範囲外の文法7問で、範囲表に「実力問題あり」とあるため、これまでに習った文法の土台として別枠で用意しました。まず本編から固めましょう。</p>
+<div class="setswitch"><button type="button" class="setbtn active" id="btnMain">本編（テスト範囲内）18問</button><button type="button" class="setbtn" id="btnJitsu">実力問題対策（範囲外）7問</button></div>
+<p class="setnote" id="setNote">いまは「本編」の問題です。</p>
 <div class="progress-text" id="progressText"></div>
 <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
 <div id="playArea">
@@ -67,7 +74,8 @@ footer{margin-top:10px}
 <footer><a class="backlink" href="iori.html">← 中3トップへ戻る</a> <a class="backlink" href="../index.html" style="background:#1a1a5e">🏠 アプリへ戻る</a></footer>
 </div>
 <script>
-var CARDS = [
+var SETS = {
+"main": [
  {
   "q": "「〜している」と説明する分詞は？",
   "a": "現在分詞（〜ing形）",
@@ -134,6 +142,33 @@ var CARDS = [
   "n": ""
  },
  {
+  "q": "「これは私が去年読んだ本です」を接触節で言うと？",
+  "a": "This is the book I read last year.",
+  "n": ""
+ },
+ {
+  "q": "The boy running over there. の running のような形を何という？",
+  "a": "現在分詞",
+  "n": ""
+ },
+ {
+  "q": "The language spoken in Canada. の spoken は何分詞？",
+  "a": "過去分詞",
+  "n": ""
+ },
+ {
+  "q": "主格の関係代名詞の後ろに続く品詞は？",
+  "a": "動詞",
+  "n": ""
+ },
+ {
+  "q": "目的格の関係代名詞の後ろに続く始まりは？",
+  "a": "主語＋動詞",
+  "n": ""
+ }
+],
+"jitsu": [
+ {
   "q": "三単現で s がつくのは、主語が何のとき？",
   "a": "3人称単数",
   "n": ""
@@ -164,39 +199,17 @@ var CARDS = [
   "n": ""
  },
  {
-  "q": "「これは私が去年読んだ本です」を接触節で言うと？",
-  "a": "This is the book I read last year.",
-  "n": ""
- },
- {
-  "q": "The boy running over there. の running のような形を何という？",
-  "a": "現在分詞",
-  "n": ""
- },
- {
-  "q": "The language spoken in Canada. の spoken は何分詞？",
-  "a": "過去分詞",
-  "n": ""
- },
- {
-  "q": "主格の関係代名詞の後ろに続く品詞は？",
-  "a": "動詞",
-  "n": ""
- },
- {
-  "q": "目的格の関係代名詞の後ろに続く始まりは？",
-  "a": "主語＋動詞",
-  "n": ""
- },
- {
   "q": "how to の意味は？",
   "a": "〜の仕方（方法）",
   "n": ""
  }
-];
+]
+};
+var CARDS = SETS.main;
 var MPAGE="ichimon_chu3_finals_english.html", MTITLE="中3英語 一問一答｜期末テスト正式範囲（分詞・関係代名詞）", MCHILD="iori";
 var MKEY='stepup-mistakes-'+MCHILD;
 var total = CARDS.length;
+var MODE = 'main';
 var deck = [];
 var pos = 0;
 var revealed = false;
@@ -234,7 +247,15 @@ function startRound(indices, full){
   el('playArea').style.display = 'block';
   showQuestion();
 }
+function setMode(m){
+  MODE = m; CARDS = SETS[m]; total = CARDS.length;
+  el('btnMain').classList.toggle('active', m === 'main');
+  el('btnJitsu').classList.toggle('active', m === 'jitsu');
+  el('setNote').textContent = (m === 'main') ? 'いまは「本編」の問題です。' : 'いまは「実力問題対策」の問題です（テスト範囲外の文法）。';
+  init();
+}
 function init(){
+  total = CARDS.length;
   var all = CARDS.map(function(_, i){ return i; });
   startRound(all, true);
 }
@@ -274,6 +295,8 @@ el('btnOk').addEventListener('click', function(){ judge(true); });
 el('btnNg').addEventListener('click', function(){ judge(false); });
 el('btnRetry').addEventListener('click', function(){ startRound(missed, false); });
 el('btnRestart').addEventListener('click', init);
+el('btnMain').addEventListener('click', function(){ setMode('main'); });
+el('btnJitsu').addEventListener('click', function(){ setMode('jitsu'); });
 init();
 /* ==== ご褒美コイン ==== */
 var COIN_CHILD='iori';
