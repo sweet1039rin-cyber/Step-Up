@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>中3美術 暗記カード｜期末テスト正式範囲（ダ・ヴィンチ／フェルメール／デッサン）｜Step Up テスト対策</title>
+<title>中3美術 暗記カード｜期末テスト正式範囲（ダ・ヴィンチ／フェルメール／デッサン／作品ギャラリー）｜Step Up テスト対策</title>
 <style>
 :root{--ink:#1c2733;--accent:#ff6b9d;--navy:#1a1a5e;--line:#d9e2ec;--soft:#f4f7fb}
 *{box-sizing:border-box}
@@ -23,7 +23,7 @@ footer{margin-top:10px}
 .progress-bar{height:16px;background:var(--soft);border:2px solid var(--line);border-radius:999px;overflow:hidden}
 .progress-fill{height:100%;background:var(--accent);width:0;transition:width .3s}
 .card-scene{perspective:1200px;margin:20px 0 6px}
-.fcard{position:relative;width:100%;height:400px;cursor:pointer;transform-style:preserve-3d;transition:transform .45s;-webkit-tap-highlight-color:transparent}
+.fcard{position:relative;width:100%;height:470px;cursor:pointer;transform-style:preserve-3d;transition:transform .45s;-webkit-tap-highlight-color:transparent}
 .fcard.flipped{transform:rotateY(180deg)}
 .face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
  border:3px solid var(--navy);border-radius:18px;padding:24px 18px;overflow:hidden;
@@ -33,6 +33,8 @@ footer{margin-top:10px}
 .face-label.ans{color:var(--navy)}
 .face-text{font-size:1.3rem;font-weight:700;line-height:1.65}
 .face-note{margin-top:14px;font-size:.98rem;color:#54677a;line-height:1.65}
+.face-img{margin-top:10px}
+.face-img img{max-width:100%;max-height:255px;border:2px solid var(--line);border-radius:8px}
 .tap-hint{margin-top:16px;font-size:.9rem;color:#8a97a5}
 .judge{display:flex;gap:12px;margin-top:16px}
 .jbtn{flex:1;font-family:inherit;font-size:1.25rem;font-weight:700;padding:18px 10px;border-radius:14px;
@@ -48,13 +50,13 @@ footer{margin-top:10px}
 <body>
 <div class="wrap">
 <p class="toplink"><a href="iori.html">← 中3トップへ戻る</a></p>
-<h1>中3美術 暗記カード｜期末テスト正式範囲（ダ・ヴィンチ／フェルメール／デッサン）</h1>
+<h1>中3美術 暗記カード｜期末テスト正式範囲（ダ・ヴィンチ／フェルメール／デッサン／作品ギャラリー）</h1>
 <p>カードをタップすると答えが見えます。答えを見たら「覚えた」「まだ」で教えてください。「まだ」のカードだけが次の周に出てきます。</p>
 <div class="progress-text" id="progressText"></div>
 <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
 <div id="playArea">
 <div class="card-scene"><div class="fcard" id="fcard">
-<div class="face front"><div class="face-label">も　ん　だ　い</div><div class="face-text" id="frontText"></div><div class="tap-hint">タップで答えを見る</div></div>
+<div class="face front"><div class="face-label">も　ん　だ　い</div><div class="face-text" id="frontText"></div><div class="face-img" id="frontImg"></div><div class="tap-hint">タップで答えを見る</div></div>
 <div class="face back"><div class="face-label ans">こ　た　え</div><div class="face-text" id="backText"></div><div class="face-note" id="backNote"></div></div>
 </div></div>
 <div class="judge" id="judgeBtns" style="visibility:hidden">
@@ -205,6 +207,168 @@ var CARDS = [
   "q": "実技テスト前に家でできる練習として最も効果的なもの",
   "a": "自分の手を開いた形・握った形など、形を変えて繰り返し描くこと",
   "n": ""
+ },
+ {
+  "q": "この作品の題名と作者名を答えなさい",
+  "a": "「モナ・リザ」／レオナルド・ダ・ヴィンチ",
+  "n": "微妙な微笑みと、輪郭をぼかすスフマートが決め手",
+  "img": "assets/da_vinci_mona_lisa.jpg"
+ },
+ {
+  "q": "この作品の題名と作者名を答えなさい",
+  "a": "「最後の晩餐」／レオナルド・ダ・ヴィンチ",
+  "n": "壁画・一点透視図法・ミラノの修道院の食堂",
+  "img": "assets/da_vinci_last_supper.jpg"
+ },
+ {
+  "q": "この作品の題名と作者名を答えなさい",
+  "a": "「白貂を抱く婦人」／レオナルド・ダ・ヴィンチ",
+  "n": "白貂（オコジョ）を抱く若い女性の肖像",
+  "img": "assets/art_lady_ermine.jpg"
+ },
+ {
+  "q": "この作品の題名と作者名を答えなさい",
+  "a": "「聖アンナと聖母子」／レオナルド・ダ・ヴィンチ",
+  "n": "聖アンナ・聖母・幼いキリストが三角形にまとまる構図",
+  "img": "assets/art_st_anne.jpg"
+ },
+ {
+  "q": "この作品の題名と作者名を答えなさい",
+  "a": "「洗礼者ヨハネ」／レオナルド・ダ・ヴィンチ",
+  "n": "天を指す手と不思議な微笑み。レオナルド最後の作品",
+  "img": "assets/art_st_john.jpg"
+ },
+ {
+  "q": "この作品の題名と作者名を答えなさい",
+  "a": "「春（プリマヴェーラ）」／サンドロ・ボッティチェリ",
+  "n": "ヴィーナスと三美神、花の女神。テンペラ画",
+  "img": "assets/art_primavera.jpg"
+ },
+ {
+  "q": "この作品の題名と作者名を答えなさい",
+  "a": "「荘厳の聖母」／ジョット・ディ・ボンドーネ",
+  "n": "金色の背景の聖母子像。ルネサンスの先駆け",
+  "img": "assets/art_giotto_madonna.jpg"
+ },
+ {
+  "q": "この作品の題名と作者名を答えなさい",
+  "a": "「美しき女庭師」／ラファエロ・サンティ",
+  "n": "聖母と幼いキリスト、洗礼者ヨハネ",
+  "img": "assets/art_raphael_gardener.jpg"
+ },
+ {
+  "q": "この作品の題名と作者名を答えなさい",
+  "a": "「小椅子の聖母」／ラファエロ・サンティ",
+  "n": "円形（トンド）の画面が目印",
+  "img": "assets/art_madonna_chair.jpg"
+ },
+ {
+  "q": "この作品の題名と作者名を答えなさい",
+  "a": "「アルノルフィーニ夫妻の肖像」／ヤン・ファン・エイク",
+  "n": "背後の凸面鏡。油彩画の完成者といわれる画家",
+  "img": "assets/art_arnolfini.jpg"
+ },
+ {
+  "q": "この作品の題名と作者名を答えなさい",
+  "a": "「最後の審判」／ミケランジェロ・ブオナローティ",
+  "n": "システィーナ礼拝堂のフレスコ壁画",
+  "img": "assets/art_last_judgment.jpg"
+ },
+ {
+  "q": "この作品の題名と作者名を答えなさい",
+  "a": "「ダヴィデ」／ミケランジェロ・ブオナローティ",
+  "n": "絵画ではなく大理石の彫刻。5mを超す大きさ",
+  "img": "assets/art_david.jpg"
+ },
+ {
+  "q": "この作品の題名と作者名を答えなさい",
+  "a": "「夜警」／レンブラント・ファン・レイン",
+  "n": "自警団の集団肖像画。光とかげの演出",
+  "img": "assets/art_night_watch.jpg"
+ },
+ {
+  "q": "この作品の題名と作者名を答えなさい",
+  "a": "「大工の聖ヨセフ」／ジョルジュ・ド・ラ・トゥール",
+  "n": "ろうそくの光だけで照らされた場面",
+  "img": "assets/art_st_joseph.jpg"
+ },
+ {
+  "q": "この作品の題名と作者名を答えなさい",
+  "a": "「フォリー・ベルジェールのバー」／エドゥワール・マネ",
+  "n": "バーの女性と、鏡に映るにぎやかな店内",
+  "img": "assets/art_folies_bergere.jpg"
+ },
+ {
+  "q": "この作品の題名と作者名を答えなさい",
+  "a": "「牛乳を注ぐ女」／ヨハネス・フェルメール",
+  "n": "窓からの光と、青と黄の組み合わせ",
+  "img": "assets/art_milkmaid.jpg"
+ },
+ {
+  "q": "この作品の題名と作者名を答えなさい",
+  "a": "「夜桜」／横山大観",
+  "n": "かがり火に照らされて浮かぶ白い桜と満月",
+  "img": "assets/art_yozakura.jpg"
+ },
+ {
+  "q": "この作品の題名と作者名を答えなさい",
+  "a": "「ピレネーの城」／ルネ・マグリット",
+  "n": "空に浮かぶ城ののった岩。シュルレアリスム",
+  "img": "assets/art_pyrenees_castle.jpg"
+ },
+ {
+  "q": "この作品の題名と作者名を答えなさい",
+  "a": "「叫び」／エドヴァルト・ムンク",
+  "n": "うねるようなタッチと色彩で不安を表現",
+  "img": "assets/art_scream.jpg"
+ },
+ {
+  "q": "この作品の題名と作者名を答えなさい",
+  "a": "「青いターバンの少女」／ヨハネス・フェルメール",
+  "n": "「真珠の耳飾りの少女」と同じ作品。資料集での題名",
+  "img": "assets/art_girl_turban.jpg"
+ },
+ {
+  "q": "この作品の題名と作者名を答えなさい",
+  "a": "「おさげ髪の少女」／アメデオ・モディリアーニ",
+  "n": "おさげ髪と、細長く単純化された顔立ち",
+  "img": "assets/art_modigliani_girl.jpg"
+ },
+ {
+  "q": "この作品の題名と作者名を答えなさい",
+  "a": "「ホオズキの実のある自画像」／エゴン・シーレ",
+  "n": "ホオズキの実と、ゆがんだ表情の自画像",
+  "img": "assets/art_schiele_self.jpg"
+ },
+ {
+  "q": "この作品の題名と作者名を答えなさい",
+  "a": "「ピエロに扮したポール」／パブロ・ピカソ",
+  "n": "ピカソが息子ポールをピエロの衣装で描いた作品",
+  "img": "assets/art_picasso_paul.jpg"
+ },
+ {
+  "q": "この作品の題名と作者名を答えなさい",
+  "a": "「母と子」／パブロ・ピカソ",
+  "n": "量感のある、穏やかな母子像",
+  "img": "assets/art_picasso_mother.jpg"
+ },
+ {
+  "q": "この作品の題名と作者名を答えなさい",
+  "a": "「夢」／パブロ・ピカソ",
+  "n": "赤い椅子にもたれて眠る女性",
+  "img": "assets/art_picasso_dream.jpg"
+ },
+ {
+  "q": "この作品の題名と作者名を答えなさい",
+  "a": "「ゲルニカ」／パブロ・ピカソ",
+  "n": "爆撃への告発を描いた、白黒の大壁画",
+  "img": "assets/art_guernica.jpg"
+ },
+ {
+  "q": "この作品の題名と作者名を答えなさい",
+  "a": "「アヴィニョンの娘たち」／パブロ・ピカソ",
+  "n": "キュビスムの出発点といわれる作品",
+  "img": "assets/art_demoiselles.jpg"
  }
 ];
 var total = CARDS.length;
@@ -229,6 +393,7 @@ function showCard(){
   el('frontText').textContent = c.q;
   el('backText').textContent = c.a;
   el('backNote').textContent = c.n || '';
+  el('frontImg').innerHTML = c.img ? '<img src="' + c.img + '" alt="作品の絵">' : '';
   el('judgeBtns').style.visibility = 'hidden';
   updateRoundInfo();
 }
