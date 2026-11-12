@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ご褒美｜マイチーム｜Step Up テスト対策</title>
+<title>ご褒美｜エンブレムコレクション｜Step Up テスト対策</title>
 <style>
 :root{--ink:#1c2733;--accent:#ff6b9d;--navy:#1a1a5e;--line:#d9e2ec;--soft:#f4f7fb}
 *{box-sizing:border-box}
@@ -66,6 +66,8 @@ footer{margin-top:10px}
 .pcard.locked{border-color:var(--line);background:var(--soft)}
 .pcard .emo{font-size:2.6rem;line-height:1.25}
 .pcard .emo.silhouette{filter:brightness(0) opacity(.35)}
+.pcard .emblem{width:82%;max-width:132px;height:auto;display:block;margin:0 auto}
+.pcard .emblem.silhouette{filter:brightness(0) opacity(.35)}
 .pcard .pos{display:inline-block;background:var(--navy);color:#fff;border-radius:999px;padding:1px 14px;font-size:.8rem;font-weight:700;margin-top:.2em}
 .pcard .nm{font-weight:700;margin-top:.2em}
 .pcard .stars{color:#f2b134;letter-spacing:2px;font-size:1rem;min-height:1.2em}
@@ -79,13 +81,13 @@ select,input[type="text"],input[type="number"]{font-size:1rem;padding:10px 12px;
 <div class="wrap">
 <p class="toplink"><a href="iori.html">← 教材トップへ戻る</a></p>
 
-<h1>🎁 ご褒美｜マイチーム</h1>
-<p>勉強するとコインが貯まって、選手がチームに加入していくよ。オリジナルの選手カードを全部集めよう。</p>
+<h1>🎁 ご褒美｜エンブレムコレクション</h1>
+<p>勉強するとコインが貯まって、オリジナルサッカーチームのエンブレムが集まっていくよ。全40チームのエンブレムを全部集めよう。</p>
 <div class="coindisp">🪙 <span id="coinTotal">0</span> コイン</div>
 <p class="nextinfo" id="nextInfo"></p>
 <div class="progresswrap"><div class="progressbar" id="nextBar"></div></div>
 
-<h2>選手コレクション（<span id="gotCount">0</span> / 12）</h2>
+<h2>エンブレムコレクション（<span id="gotCount">0</span> / 40）</h2>
 <div class="collgrid" id="collGrid"></div>
 
 <h2>💰 お小遣い換算</h2>
@@ -183,18 +185,46 @@ function coinToast(amount){
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
 var ITEMS=[
-{c:0,e:'👟',n:'ルーキー',pos:'FW',r:1},
-{c:50,e:'🧤',n:'鉄壁キーパー',pos:'GK',r:1},
-{c:120,e:'⚡',n:'爆速ウインガー',pos:'WG',r:2},
-{c:220,e:'🎯',n:'司令塔・背番号10',pos:'MF',r:2},
-{c:350,e:'🧱',n:'空中戦マスター',pos:'DF',r:3},
-{c:500,e:'🪄',n:'テクニシャン',pos:'MF',r:3},
-{c:700,e:'🔥',n:'情熱キャプテン',pos:'MF',r:3},
-{c:950,e:'🎩',n:'ベテランの司令塔',pos:'MF',r:4},
-{c:1250,e:'🦁',n:'エースストライカー',pos:'FW',r:4},
-{c:1600,e:'🌟',n:'スーパースター',pos:'FW',r:4},
-{c:2000,e:'🏆',n:'チャンピオン',pos:'FW',r:5},
-{c:2500,e:'👑',n:'レジェンド',pos:'FW',r:5}
+{c:0,img:'assets/emblem_01_albion.png',n:'ALBION FC',no:1,r:1},
+{c:10,img:'assets/emblem_02_vorna.png',n:'VORNA FC',no:2,r:1},
+{c:25,img:'assets/emblem_03_rivera.png',n:'RIVERA SC',no:3,r:1},
+{c:45,img:'assets/emblem_04_celtis.png',n:'CELTIS FC',no:4,r:1},
+{c:75,img:'assets/emblem_05_lunaria.png',n:'LUNARIA FC',no:5,r:1},
+{c:105,img:'assets/emblem_06_blazen.png',n:'BLAZEN FC',no:6,r:1},
+{c:135,img:'assets/emblem_07_castello.png',n:'CASTELLO FC',no:7,r:1},
+{c:175,img:'assets/emblem_08_dragora.png',n:'DRAGORA FC',no:8,r:1},
+{c:215,img:'assets/emblem_09_maris.png',n:'MARIS FC',no:9,r:2},
+{c:260,img:'assets/emblem_10_crux.png',n:'CRUX FC',no:10,r:2},
+{c:305,img:'assets/emblem_11_alpina.png',n:'ALPINA FC',no:11,r:2},
+{c:350,img:'assets/emblem_12_verdant.png',n:'VERDANT FC',no:12,r:2},
+{c:400,img:'assets/emblem_13_solaria.png',n:'SOLARIA FC',no:13,r:2},
+{c:455,img:'assets/emblem_14_leonis.png',n:'LEONIS FC',no:14,r:2},
+{c:515,img:'assets/emblem_15_aquila.png',n:'AQUILA FC',no:15,r:2},
+{c:580,img:'assets/emblem_16_voltex.png',n:'VOLTEX FC',no:16,r:2},
+{c:650,img:'assets/emblem_17_noctis.png',n:'NOCTIS FC',no:17,r:3},
+{c:720,img:'assets/emblem_18_fortis.png',n:'FORTIS FC',no:18,r:3},
+{c:790,img:'assets/emblem_19_azure.png',n:'AZURE FC',no:19,r:3},
+{c:860,img:'assets/emblem_20_silvan.png',n:'SILVAN FC',no:20,r:3},
+{c:930,img:'assets/emblem_21_ignis.png',n:'IGNIS FC',no:21,r:3},
+{c:1000,img:'assets/emblem_22_pegasus.png',n:'PEGASUS FC',no:22,r:3},
+{c:1068,img:'assets/emblem_23_regalis.png',n:'REGALIS FC',no:23,r:3},
+{c:1138,img:'assets/emblem_24_rosa.png',n:'ROSA FC',no:24,r:3},
+{c:1210,img:'assets/emblem_25_faro.png',n:'FARO FC',no:25,r:3},
+{c:1283,img:'assets/emblem_26_lupus.png',n:'LUPUS FC',no:26,r:3},
+{c:1358,img:'assets/emblem_27_montis.png',n:'MONTIS FC',no:27,r:4},
+{c:1435,img:'assets/emblem_28_ventus.png',n:'VENTUS FC',no:28,r:4},
+{c:1514,img:'assets/emblem_29_sparta.png',n:'SPARTA FC',no:29,r:4},
+{c:1595,img:'assets/emblem_30_cigno.png',n:'CIGNO FC',no:30,r:4},
+{c:1677,img:'assets/emblem_31_vitis.png',n:'VITIS FC',no:31,r:4},
+{c:1761,img:'assets/emblem_32_fleur.png',n:'FLEUR FC',no:32,r:4},
+{c:1847,img:'assets/emblem_33_glacia.png',n:'GLACIA FC',no:33,r:4},
+{c:1935,img:'assets/emblem_34_toro.png',n:'TORO FC',no:34,r:4},
+{c:2025,img:'assets/emblem_35_ponte.png',n:'PONTE FC',no:35,r:5},
+{c:2116,img:'assets/emblem_36_valor.png',n:'VALOR FC',no:36,r:5},
+{c:2209,img:'assets/emblem_37_emeris.png',n:'EMERIS FC',no:37,r:5},
+{c:2304,img:'assets/emblem_38_stella.png',n:'STELLA FC',no:38,r:5},
+{c:2401,img:'assets/emblem_39_falconis.png',n:'FALCONIS FC',no:39,r:5},
+{c:2500,img:'assets/emblem_40_imperia.png',n:'IMPERIA FC',no:40,r:5}
 ];
 function render(){
   var data=coinLoad();var total=data.total;
@@ -219,11 +249,11 @@ function render(){
     var d=document.createElement('div');
     d.className='pcard'+(unlocked?'':' locked');
     var st='';for(var i=0;i<x.r;i++)st+='★';
-    d.innerHTML='<div class="emo'+(unlocked?'':' silhouette')+'">'+x.e+'</div>'
-      +'<div><span class="pos">'+x.pos+'</span></div>'
+    d.innerHTML='<img class="emblem'+(unlocked?'':' silhouette')+'" src="'+x.img+'" alt="'+(unlocked?esc(x.n):'？？？')+'">'
+      +'<div><span class="pos">No.'+x.no+'</span></div>'
       +'<div class="nm">'+(unlocked?esc(x.n):'？？？')+'</div>'
       +'<div class="stars">'+(unlocked?st:'')+'</div>'
-      +'<div class="cond">'+(unlocked?'チームに加入！':(x.c+'コインで解放'))+'</div>';
+      +'<div class="cond">'+(unlocked?'ゲット！':(x.c+'コインで解放'))+'</div>';
     grid.appendChild(d);
   });
   var hb=document.getElementById('coinHistory');
