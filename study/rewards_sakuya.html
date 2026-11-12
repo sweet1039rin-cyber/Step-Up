@@ -60,6 +60,9 @@ footer{margin-top:10px}
 .friend.gold{border:3px solid #f2b134;background:#fff7ea}
 .friend .emo{font-size:2.6rem;line-height:1.25}
 .friend .emo.silhouette{filter:brightness(0) opacity(.35)}
+.friend .pic img{width:100%;max-width:150px;height:auto;border-radius:8px;display:block;margin:0 auto}
+.friend .pic.imglocked img{filter:grayscale(1) opacity(.35)}
+.collhead{grid-column:1/-1;font-weight:700;color:var(--navy);background:var(--soft);border-left:8px solid var(--accent);border-radius:6px;padding:.35em .6em;margin-top:.4em;text-align:left}
 .friend .nm{font-weight:700}
 .friend .cond{font-size:.8rem;color:#5a6b7d}
 .pcard{border:3px solid var(--navy);border-radius:14px;padding:12px 8px;text-align:center;background:linear-gradient(180deg,#ffffff,#f4f7fb)}
@@ -85,7 +88,7 @@ select,input[type="text"],input[type="number"]{font-size:1rem;padding:10px 12px;
 <p class="nextinfo" id="nextInfo"></p>
 <div class="progresswrap"><div class="progressbar" id="nextBar"></div></div>
 
-<h2>なかま図鑑（<span id="gotCount">0</span> / 12）</h2>
+<h2>なかま図鑑（<span id="gotCount">0</span> / 52）</h2>
 <div class="collgrid" id="collGrid"></div>
 
 <h2>💰 お小遣い換算</h2>
@@ -183,18 +186,58 @@ function coinToast(amount){
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
 var ITEMS=[
-{c:0,e:'🦉',n:'フクロウ君'},
-{c:50,e:'🐣',n:'ひよこ'},
-{c:120,e:'🐦',n:'すずめ'},
-{c:220,e:'🦜',n:'いんこ'},
-{c:350,e:'🐧',n:'ぺんぎん'},
-{c:500,e:'🕊️',n:'はと'},
-{c:700,e:'🦢',n:'はくちょう'},
-{c:950,e:'🦩',n:'ふらみんご'},
-{c:1250,e:'🦚',n:'くじゃく'},
-{c:1600,e:'🦅',n:'わし'},
-{c:2000,e:'🦉',n:'みみずく長老'},
-{c:2500,e:'🦉',n:'金のフクロウ王',gold:true}
+{c:0,e:'🦉',n:'フクロウ君',g:'フクロウ君のなかま'},
+{c:50,e:'🐣',n:'ひよこ',g:'フクロウ君のなかま'},
+{c:120,e:'🐦',n:'すずめ',g:'フクロウ君のなかま'},
+{c:220,e:'🦜',n:'いんこ',g:'フクロウ君のなかま'},
+{c:350,e:'🐧',n:'ぺんぎん',g:'フクロウ君のなかま'},
+{c:500,e:'🕊️',n:'はと',g:'フクロウ君のなかま'},
+{c:700,e:'🦢',n:'はくちょう',g:'フクロウ君のなかま'},
+{c:950,e:'🦩',n:'ふらみんご',g:'フクロウ君のなかま'},
+{c:1250,e:'🦚',n:'くじゃく',g:'フクロウ君のなかま'},
+{c:1600,e:'🦅',n:'わし',g:'フクロウ君のなかま'},
+{c:2000,e:'🦉',n:'みみずく長老',g:'フクロウ君のなかま'},
+{c:2500,e:'🦉',n:'金のフクロウ王',gold:true,g:'フクロウ君のなかま'},
+{c:2600,img:'assets/owl_menfukurou.jpg',n:'メンフクロウ',g:'フクロウのお友達シリーズ'},
+{c:2670,img:'assets/owl_washimimizuku.jpg',n:'ワシミミズク',g:'フクロウのお友達シリーズ'},
+{c:2745,img:'assets/owl_konohazuku.jpg',n:'コノハズク',g:'フクロウのお友達シリーズ'},
+{c:2825,img:'assets/owl_shirofukurou.jpg',n:'シロフクロウ',g:'フクロウのお友達シリーズ'},
+{c:2910,img:'assets/owl_kokinme.jpg',n:'コキンメフクロウ',g:'フクロウのお友達シリーズ'},
+{c:3000,img:'assets/owl_torafuzuku.jpg',n:'トラフズク',g:'フクロウのお友達シリーズ'},
+{c:3095,img:'assets/owl_meganefukurou.jpg',n:'メガネフクロウ',g:'フクロウのお友達シリーズ'},
+{c:3195,img:'assets/owl_ural.jpg',n:'フクロウ',g:'フクロウのお友達シリーズ'},
+{c:3300,img:'assets/owl_ootaka.jpg',n:'オオタカフクロウ',g:'フクロウのお友達シリーズ'},
+{c:3410,img:'assets/owl_anahori.jpg',n:'アナホリフクロウ',g:'フクロウのお友達シリーズ'},
+{c:3525,img:'assets/forest_neko.jpg',n:'ネコ',g:'森とまちのなかまたち'},
+{c:3645,img:'assets/forest_inu.jpg',n:'イヌ',g:'森とまちのなかまたち'},
+{c:3770,img:'assets/forest_kitsune.jpg',n:'キツネ',g:'森とまちのなかまたち'},
+{c:3900,img:'assets/forest_usagi.jpg',n:'ウサギ',g:'森とまちのなかまたち'},
+{c:4035,img:'assets/forest_kuma.jpg',n:'クマ',g:'森とまちのなかまたち'},
+{c:4175,img:'assets/forest_tanuki.jpg',n:'タヌキ',g:'森とまちのなかまたち'},
+{c:4320,img:'assets/forest_risu.jpg',n:'リス',g:'森とまちのなかまたち'},
+{c:4470,img:'assets/forest_harinezumi.jpg',n:'ハリネズミ',g:'森とまちのなかまたち'},
+{c:4625,img:'assets/forest_shika.jpg',n:'シカ',g:'森とまちのなかまたち'},
+{c:4785,img:'assets/forest_ookami.jpg',n:'オオカミ',g:'森とまちのなかまたち'},
+{c:4950,img:'assets/animal_tora.jpg',n:'トラ',g:'わくわくアニマルなかま'},
+{c:5120,img:'assets/animal_lion.jpg',n:'ライオン',g:'わくわくアニマルなかま'},
+{c:5295,img:'assets/animal_panda.jpg',n:'パンダ',g:'わくわくアニマルなかま'},
+{c:5475,img:'assets/animal_lessarpanda.jpg',n:'レッサーパンダ',g:'わくわくアニマルなかま'},
+{c:5660,img:'assets/animal_saru.jpg',n:'サル',g:'わくわくアニマルなかま'},
+{c:5850,img:'assets/animal_koala.jpg',n:'コアラ',g:'わくわくアニマルなかま'},
+{c:6045,img:'assets/animal_kawauso.jpg',n:'カワウソ',g:'わくわくアニマルなかま'},
+{c:6245,img:'assets/animal_hamster.jpg',n:'ハムスター',g:'わくわくアニマルなかま'},
+{c:6450,img:'assets/animal_hitsuji.jpg',n:'ヒツジ',g:'わくわくアニマルなかま'},
+{c:6660,img:'assets/animal_yagi.jpg',n:'ヤギ',g:'わくわくアニマルなかま'},
+{c:6875,img:'assets/water_penguin.jpg',n:'ペンギン',g:'みずべとそうげんのなかま'},
+{c:7095,img:'assets/water_iruka.jpg',n:'イルカ',g:'みずべとそうげんのなかま'},
+{c:7320,img:'assets/water_kame.jpg',n:'カメ',g:'みずべとそうげんのなかま'},
+{c:7550,img:'assets/water_kaeru.jpg',n:'カエル',g:'みずべとそうげんのなかま'},
+{c:7785,img:'assets/water_zou.jpg',n:'ゾウ',g:'みずべとそうげんのなかま'},
+{c:8025,img:'assets/water_kirin.jpg',n:'キリン',g:'みずべとそうげんのなかま'},
+{c:8270,img:'assets/water_shimauma.jpg',n:'シマウマ',g:'みずべとそうげんのなかま'},
+{c:8520,img:'assets/water_uma.jpg',n:'ウマ',g:'みずべとそうげんのなかま'},
+{c:8775,img:'assets/water_alpaca.jpg',n:'アルパカ',g:'みずべとそうげんのなかま'},
+{c:9035,img:'assets/water_azarashi.jpg',n:'アザラシ',g:'みずべとそうげんのなかま'}
 ];
 function render(){
   var data=coinLoad();var total=data.total;
@@ -214,11 +257,25 @@ function render(){
   }
   var grid=document.getElementById('collGrid');
   grid.innerHTML='';
+  var curGroup=null;
   ITEMS.forEach(function(x){
+    if(x.g&&x.g!==curGroup){
+      curGroup=x.g;
+      var hd=document.createElement('div');
+      hd.className='collhead';
+      hd.textContent=x.g;
+      grid.appendChild(hd);
+    }
     var unlocked=total>=x.c;
+    var face;
+    if(x.img){
+      face='<div class="pic'+(unlocked?'':' imglocked')+'"><img src="'+x.img+'" alt="'+(unlocked?esc(x.n):'')+'"></div>';
+    }else{
+      face='<div class="emo'+(unlocked?'':' silhouette')+'">'+x.e+'</div>';
+    }
     var d=document.createElement('div');
     d.className='friend'+(unlocked?'':' locked')+((x.gold&&unlocked)?' gold':'');
-    d.innerHTML='<div class="emo'+(unlocked?'':' silhouette')+'">'+x.e+'</div>'
+    d.innerHTML=face
       +'<div class="nm">'+(unlocked?esc(x.n):'？？？')+'</div>'
       +'<div class="cond">'+(unlocked?'なかまになった！':(x.c+'コインで解放'))+'</div>';
     grid.appendChild(d);
