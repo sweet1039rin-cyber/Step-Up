@@ -8,12 +8,12 @@
 :root{--ink:#1c2733;--accent:#ff6b9d;--navy:#1a1a5e;--line:#d9e2ec;--soft:#f4f7fb}
 *{box-sizing:border-box}
 body{margin:0;background:#fff;color:var(--ink);
-font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP","Yu Gothic",sans-serif;
-font-size:18px;line-height:1.85;-webkit-text-size-adjust:100%}
+ font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP","Yu Gothic",sans-serif;
+ font-size:18px;line-height:1.85;-webkit-text-size-adjust:100%}
 .wrap{max-width:880px;margin:0 auto;padding:20px 18px 56px}
-h1{font-size:1.55rem;line-height:1.45;border-bottom:4px solid var(--accent);padding-bottom:.35em;margin:.4em 0.8em}
-h2{font-size:1.3rem;line-height:1.5;border-left:8px solid var(--accent);padding:.1em 0.1em.5em;margin:1.4em 0.6em;background:var(--soft)}
-h3{font-size:1.15rem;margin:1.2em 0.4em;color:var(--navy)}
+h1{font-size:1.55rem;line-height:1.45;border-bottom:4px solid var(--accent);padding-bottom:.35em;margin:.4em 0 .8em}
+h2{font-size:1.3rem;line-height:1.5;border-left:8px solid var(--accent);padding:.1em 0 .1em .5em;margin:1.4em 0 .6em;background:var(--soft)}
+h3{font-size:1.15rem;margin:1.2em 0 .4em;color:var(--navy)}
 p{margin:.6em 0}
 ul,ol{padding-left:1.4em;margin:.5em 0}
 li{margin:.25em 0}
@@ -21,36 +21,36 @@ strong{color:#c2255c}
 blockquote{margin:.8em 0;padding:.6em 1em;background:#fff7ea;border-left:6px solid #f2b134;border-radius:6px}
 blockquote p{margin:.3em 0}
 table{border-collapse:collapse;width:100%;margin:.8em 0;font-size:.95em;display:block;overflow-x:auto}
-th,td{border:1px solid var(--line);padding:.45em.6em;text-align:left;white-space:nowrap}
+th,td{border:1px solid var(--line);padding:.45em .6em;text-align:left;white-space:nowrap}
 th{background:var(--soft)}
 hr{border:none;border-top:2px dashed var(--line);margin:1.6em 0}
 details.answers{margin:2em 0 1em;border:3px solid var(--navy);border-radius:14px;overflow:hidden;background:#fff}
 details.answers>summary{cursor:pointer;list-style:none;background:var(--navy);color:#fff;
-font-weight:700;font-size:1.15rem;text-align:center;padding:16px 12px;-webkit-tap-highlight-color:transparent}
+ font-weight:700;font-size:1.15rem;text-align:center;padding:16px 12px;-webkit-tap-highlight-color:transparent}
 details.answers>summary::-webkit-details-marker{display:none}
 details.answers>summary::after{content:" ▼"}
-details.answers[open]>summary::after{content:" ▲"}
-details.answers.answers-body{padding:6px 18px 20px}
+details.answers[open ]>summary::after{content:" ▲"}
+details.answers .answers-body{padding:6px 18px 20px}
 .backlink{display:inline-block;margin-top:28px;background:var(--accent);color:#fff;font-weight:700;
-text-decoration:none;padding:14px 22px;border-radius:999px;font-size:1.05rem}
+ text-decoration:none;padding:14px 22px;border-radius:999px;font-size:1.05rem}
 .toplink{font-size:.95rem;margin-bottom:4px}
 .toplink a{color:var(--navy)}
 footer{margin-top:10px}
 .notice{border:3px solid var(--navy);border-radius:10px;padding:12px 18px;margin:1em 0;background:#fff}
-.notice.ntitle{font-weight:700;text-align:center;font-size:1.05rem;margin-bottom:.3em}
+.notice .ntitle{font-weight:700;text-align:center;font-size:1.05rem;margin-bottom:.3em}
 .shiryo{border:2px solid var(--line);border-radius:10px;padding:10px 14px;margin:.8em 0;background:#fff}
-.shiryo.stitle{font-weight:700;color:var(--navy);margin-bottom:.3em}
+.shiryo .stitle{font-weight:700;color:var(--navy);margin-bottom:.3em}
 .figrow{display:flex;flex-wrap:wrap;gap:14px}
-.figrow.shiryo{flex:1 1 300px;text-align:center}
-.figrow.shiryo p{text-align:left}
+.figrow .shiryo{flex:1 1 300px;text-align:center}
+.figrow .shiryo p{text-align:left}
 .band{display:flex;height:34px;border:1.5px solid #555;margin:.3em 0 0;overflow:hidden;font-size:.78rem;line-height:1.25}
 .band div{display:flex;align-items:center;justify-content:center;text-align:center;border-right:1px solid #fff;padding:1px 2px}
 .flow{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:.6em 0}
-.flow.fbox{border:2px solid var(--navy);border-radius:8px;padding:6px 12px;background:var(--soft);font-weight:700}
-.flow.farr{font-weight:700;color:var(--navy)}
+.flow .fbox{border:2px solid var(--navy);border-radius:8px;padding:6px 12px;background:var(--soft);font-weight:700}
+.flow .farr{font-weight:700;color:var(--navy)}
 .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;margin:.8em 0}
 .card{border:2px solid var(--line);border-radius:10px;padding:8px 12px;background:#fff}
-.card.ctitle{font-weight:700;color:var(--navy)}
+.card .ctitle{font-weight:700;color:var(--navy)}
 @media (max-width:600px){body{font-size:17px}.wrap{padding:14px 12px 48px}h1{font-size:1.35rem}h2{font-size:1.18rem}}
 </style>
 </head>
@@ -58,7 +58,7 @@ footer{margin-top:10px}
 <div class="wrap">
 <p class="toplink"><a href="sakuya.html">← 教材トップへ戻る</a></p>
 <h1>中1社会 模擬テスト 第3回｜期末テスト正式範囲（本番形式）</h1>
-<p>※実際の期末テストと同じ形式で作った模擬テストの<strong>第3回</strong>です。大問11題・<strong>100点満点</strong>（知識・技能60点／思考・判断・表現40点）。第3回は歴史「古代までの日本」を厚くし、第1回・第2回と資料や形式の組み合わせを変えてあります。範囲は、正式範囲の地理「アジア州・アフリカ州」と歴史「古代までの日本」です。資料の地図やグラフは模式図で、統計の数値は練習用に作ったデータまたはよく知られた概数です。本番のつもりで時間を計って解き、間違えたところは「まちがい記録」に残して復習しましょう。</p>
+<p>※実際の期末テストと同じ形式で作った模擬テストです。大問11題・<strong>100点満点</strong>（知識・技能60点／思考・判断・表現40点）。範囲は、正式範囲の地理「アジア州・ヨーロッパ州・アフリカ州」と歴史「平安時代」です。資料の地図やグラフは模式図で、統計の数値は練習用に作ったデータまたはよく知られた概数です。まずは暗記シートで全体をつかんでから、本番のつもりで時間を計って解き、間違えたところは「まちがい記録」に残して復習しましょう。</p>
 <div class="notice">
 <p class="ntitle">☆解答上の注意事項☆</p>
 <p>◆解答は、問題文の指示に従って、丁寧な読みやすい字で記入すること。</p>
@@ -75,284 +75,282 @@ footer{margin-top:10px}
 <hr />
 <h1>問題編</h1>
 
-<h2>次の年表を見て、各問いに答えなさい。（知識・技能　（1）：各1点　（2）〜（4）：各2点　12点）</h2>
+<h2>【1】次の資料と文を見て、各問いに答えなさい。（知識・技能　各1点　10点）</h2>
+<div class="shiryo"><p class="stitle">資料　アジア州の模式地図</p><svg width="380" height="260" viewBox="0 0 360 250" role="img" aria-label="アジア州の模式地図"><path d="M25,75 L70,45 L140,28 L215,25 L275,38 L320,60 L338,88 L318,112 L300,128 L288,160 L276,196 L264,168 L246,150 L228,150 L214,182 L198,196 L186,158 L160,146 L132,158 L112,150 L104,124 L70,118 L40,102 Z" fill="#fdf6ec" stroke="#8a6d1a" stroke-width="2"/><path d="M332,52 L344,66 L340,84 L330,96" fill="none" stroke="#8a6d1a" stroke-width="3"/><ellipse cx="238" cy="222" rx="16" ry="5" fill="#fdf6ec" stroke="#8a6d1a"/><ellipse cx="272" cy="228" rx="20" ry="5" fill="#fdf6ec" stroke="#8a6d1a"/><ellipse cx="308" cy="222" rx="14" ry="5" fill="#fdf6ec" stroke="#8a6d1a"/><path d="M282,92 L316,104" stroke="#2f6fb2" stroke-width="2"/><path d="M268,72 L304,84" stroke="#2f6fb2" stroke-width="2"/><path d="M204,148 L226,160" stroke="#2f6fb2" stroke-width="2"/><path d="M270,148 L278,184" stroke="#2f6fb2" stroke-width="2"/><text x="238" y="66" font-size="11" fill="#555">中国</text><text x="196" y="140" font-size="11" fill="#555">インド</text><text x="252" y="138" font-size="10" fill="#555">東南アジア</text><text x="66" y="134" font-size="11" fill="#555">西アジア</text><circle cx="248" cy="86" r="10" fill="#c0392b"/><text x="248" y="90" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">A</text><circle cx="217" cy="156" r="10" fill="#c0392b"/><text x="217" y="160" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">B</text><circle cx="118" cy="128" r="10" fill="#c0392b"/><text x="118" y="132" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">C</text></svg><p>※Aは国、Bは川、Cは湾を示している。</p></div>
+<p>（1）資料中のAの国名、Bの川の名称、Cの湾の名称を、それぞれ答えなさい。また、Cの湾の周辺で多く産出する資源を答えなさい。</p>
+<blockquote><p>中国は、人口が約（ ① ）億人で、首都は（ ② ）である。沿岸部に設けられた（ ③ ）を中心に工業が発展し、「世界の工場」と呼ばれるようになった。インドは、（ ④ ）教を信仰する人が最も多く、英語が広く使われていることを背景に（ ⑤ ）産業が発展している。両国を含むアジア州の東部や南部では、夏に（ ⑥ ）の影響で雨が多くなる地域が広がっている。</p></blockquote>
+<p>（2）文中の①〜⑥に適する語句を答えなさい。</p>
+
+<h2>【2】次の資料を見て、各問いに答えなさい。（知識・技能　各2点　10点）</h2>
+<div class="shiryo"><p class="stitle">資料Ⅰ　ヨーロッパ州の模式地図</p><svg width="340" height="250" viewBox="0 0 340 250" role="img" aria-label="ヨーロッパ州の模式地図"><path d="M185,18 L235,10 L262,26 L250,52 L214,58 L192,44 Z" fill="#eef5fc" stroke="#2f6fb2" stroke-width="1.5"/><text x="222" y="36" text-anchor="middle" font-size="9.5" fill="#2f6fb2">スカンディナビア半島</text><path d="M96,66 L150,52 L214,58 L262,66 L300,84 L322,110 L306,140 L262,158 L214,152 L168,158 L120,146 L92,118 L84,88 Z" fill="#eef5fc" stroke="#2f6fb2" stroke-width="1.5"/><path d="M92,84 L322,104 L306,140 L262,150 L120,140 L92,112 Z" fill="#bfe3c0" opacity="0.55"/><path d="M52,128 L96,120 L104,146 L88,172 L56,170 L44,148 Z" fill="#eef5fc" stroke="#2f6fb2" stroke-width="1.5"/><text x="72" y="150" text-anchor="middle" font-size="9" fill="#2f6fb2">イベリア半島</text><path d="M182,160 L204,166 L224,196 L232,214 L220,220 L202,192 L186,176 Z" fill="#eef5fc" stroke="#2f6fb2" stroke-width="1.5"/><ellipse cx="58" cy="52" rx="20" ry="26" fill="#eef5fc" stroke="#2f6fb2" stroke-width="1.5" transform="rotate(-18 58 52)"/><text x="30" y="20" font-size="9" fill="#2f6fb2">イギリス</text><path d="M150,142 L160,126 L170,142 L180,124 L190,142 L200,126 L210,142 Z" fill="#d9c08a" stroke="#8a6d1a" stroke-width="1.5"/><path d="M168,128 C156,108 138,92 122,78" fill="none" stroke="#2f6fb2" stroke-width="2.5"/><path d="M196,138 C232,132 272,140 306,128" fill="none" stroke="#2f6fb2" stroke-width="2.5"/><text x="316" y="124" font-size="9.5" fill="#2f6fb2">黒海</text><text x="150" y="238" text-anchor="middle" font-size="10" fill="#2f6fb2">地中海</text><circle cx="180" cy="146" r="10" fill="#fff" stroke="#c0392b" stroke-width="1.5"/><text x="180" y="151" text-anchor="middle" font-size="12" font-weight="bold" fill="#c0392b">A</text><circle cx="138" cy="98" r="10" fill="#fff" stroke="#c0392b" stroke-width="1.5"/><text x="138" y="103" text-anchor="middle" font-size="12" font-weight="bold" fill="#c0392b">B</text><circle cx="256" cy="140" r="10" fill="#fff" stroke="#c0392b" stroke-width="1.5"/><text x="256" y="145" text-anchor="middle" font-size="12" font-weight="bold" fill="#c0392b">C</text><circle cx="238" cy="104" r="10" fill="#fff" stroke="#c0392b" stroke-width="1.5"/><text x="238" y="109" text-anchor="middle" font-size="12" font-weight="bold" fill="#c0392b">D</text><circle cx="58" cy="56" r="4" fill="#c0392b"/><text x="70" y="48" font-size="10">ロンドン</text><circle cx="106" cy="112" r="4" fill="#c0392b"/><text x="86" y="130" font-size="10">パリ</text><circle cx="216" cy="204" r="4" fill="#c0392b"/><text x="226" y="208" font-size="10">ローマ</text><circle cx="188" cy="88" r="4" fill="#c0392b"/><text x="196" y="82" font-size="10">ベルリン</text></svg><p>※A〜Dは、地形や川を示している（模式図）。</p></div>
+
+<div class="figrow">
+<div class="shiryo"><p class="stitle">資料Ⅱ　雨温図（ベルリン）</p><svg width="300" height="205" viewBox="0 0 300 205" role="img" aria-label="ベルリンの雨温図（模式図）"><text x="150" y="15" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1a5e">ベルリン</text><line x1="34" y1="168" x2="292" y2="168" stroke="#888" stroke-width="1"/><line x1="34" y1="150.25" x2="292" y2="150.25" stroke="#c9d8f0" stroke-width="1" stroke-dasharray="3 3"/><rect x="27.3" y="148.1" width="13.3" height="19.9" fill="#7fb2e5"/><rect x="50.8" y="151.4" width="13.3" height="16.6" fill="#7fb2e5"/><rect x="74.2" y="150.0" width="13.3" height="18.0" fill="#7fb2e5"/><rect x="97.7" y="149.1" width="13.3" height="18.9" fill="#7fb2e5"/><rect x="121.2" y="142.0" width="13.3" height="26.0" fill="#7fb2e5"/><rect x="144.6" y="134.9" width="13.3" height="33.1" fill="#7fb2e5"/><rect x="168.1" y="132.5" width="13.3" height="35.5" fill="#7fb2e5"/><rect x="191.5" y="137.2" width="13.3" height="30.8" fill="#7fb2e5"/><rect x="215.0" y="144.3" width="13.3" height="23.7" fill="#7fb2e5"/><rect x="238.4" y="146.7" width="13.3" height="21.3" fill="#7fb2e5"/><rect x="261.9" y="146.7" width="13.3" height="21.3" fill="#7fb2e5"/><rect x="285.3" y="145.3" width="13.3" height="22.7" fill="#7fb2e5"/><polyline points="34.0,150.2 57.5,144.9 80.9,132.5 104.4,116.5 127.8,98.8 151.3,88.1 174.7,81.0 198.2,82.8 221.6,97.0 245.1,114.8 268.5,132.5 292.0,144.9" fill="none" stroke="#c0392b" stroke-width="2"/><circle cx="34.0" cy="150.2" r="2.2" fill="#c0392b"/><circle cx="57.5" cy="144.9" r="2.2" fill="#c0392b"/><circle cx="80.9" cy="132.5" r="2.2" fill="#c0392b"/><circle cx="104.4" cy="116.5" r="2.2" fill="#c0392b"/><circle cx="127.8" cy="98.8" r="2.2" fill="#c0392b"/><circle cx="151.3" cy="88.1" r="2.2" fill="#c0392b"/><circle cx="174.7" cy="81.0" r="2.2" fill="#c0392b"/><circle cx="198.2" cy="82.8" r="2.2" fill="#c0392b"/><circle cx="221.6" cy="97.0" r="2.2" fill="#c0392b"/><circle cx="245.1" cy="114.8" r="2.2" fill="#c0392b"/><circle cx="268.5" cy="132.5" r="2.2" fill="#c0392b"/><circle cx="292.0" cy="144.9" r="2.2" fill="#c0392b"/><text x="34.0" y="181" text-anchor="middle" font-size="8.5" fill="#555">1</text><text x="57.5" y="181" text-anchor="middle" font-size="8.5" fill="#555">2</text><text x="80.9" y="181" text-anchor="middle" font-size="8.5" fill="#555">3</text><text x="104.4" y="181" text-anchor="middle" font-size="8.5" fill="#555">4</text><text x="127.8" y="181" text-anchor="middle" font-size="8.5" fill="#555">5</text><text x="151.3" y="181" text-anchor="middle" font-size="8.5" fill="#555">6</text><text x="174.7" y="181" text-anchor="middle" font-size="8.5" fill="#555">7</text><text x="198.2" y="181" text-anchor="middle" font-size="8.5" fill="#555">8</text><text x="221.6" y="181" text-anchor="middle" font-size="8.5" fill="#555">9</text><text x="245.1" y="181" text-anchor="middle" font-size="8.5" fill="#555">10</text><text x="268.5" y="181" text-anchor="middle" font-size="8.5" fill="#555">11</text><text x="292.0" y="181" text-anchor="middle" font-size="8.5" fill="#555">12</text><text x="30" y="147.25" text-anchor="end" font-size="8.5" fill="#c0392b">0℃</text><text x="150" y="200" text-anchor="middle" font-size="9" fill="#555">月（棒：降水量／折れ線：気温）</text></svg></div>
+<div class="shiryo"><p class="stitle">資料Ⅲ　ヨーロッパ州の言語と宗教</p>
+<table>
+<tr><th>地域</th><th>おもな言語のグループ</th><th>信仰する人の多い宗教</th></tr>
+<tr><td>北部・中部</td><td>ゲルマン系</td><td>プロテスタント</td></tr>
+<tr><td>南部</td><td>ラテン系</td><td>カトリック</td></tr>
+<tr><td>東部</td><td>スラブ系</td><td>正教会</td></tr>
+</table>
+<p>※ヨーロッパ州では、言語や宗教の分布に、地域ごとの特色が見られる。</p></div>
+</div>
+<p>（1）資料Ⅰ中のDの平原の名称を答えなさい。</p>
+<p>（2）資料Ⅱの雨温図は、資料Ⅰ中のベルリンのものです。この都市の気候の名称を答えなさい。</p>
+<p>（3）ベルリンの気候について、ロンドンと比べた特色として正しいものを、次のア〜エから1つ選び、記号で答えなさい。<br />
+ア 冬の気温が、ロンドンより低くなる<br />
+イ 夏の降水量が、ロンドンよりはるかに少ない<br />
+ウ 一年を通して気温が高い<br />
+エ 降水量がほとんどない</p>
+<p>（4）資料Ⅲを見て、イタリアで信仰する人が最も多い宗教を答えなさい。</p>
+<p>（5）資料Ⅲを見て、ロシアやギリシャなどで信仰され、東部に多い宗教を答えなさい。</p>
+
+<h2>【3】次の資料を見て、各問いに答えなさい。（知識・技能　（1）：各1点　その他：各2点　10点）</h2>
+<div class="figrow">
+<div class="shiryo"><p class="stitle">資料Ⅰ　アフリカ州の模式地図</p><svg width="330" height="320" viewBox="0 0 300 300" role="img" aria-label="アフリカ州の模式地図"><path d="M55,70 L95,52 L150,48 L205,52 L232,66 L224,96 L238,118 L252,132 L238,168 L226,205 L208,244 L182,272 L168,278 L150,252 L128,232 L108,205 L92,178 L62,150 L44,118 L46,88 Z" fill="#fdf6ec" stroke="#8a6d1a" stroke-width="2"/><path d="M55,70 L95,52 L150,48 L205,52 L232,66 L226,92 L180,84 L120,88 L70,96 L46,88 Z" fill="#f7d774" opacity="0.65"/><text x="140" y="74" font-size="11" fill="#8a6d1a">サハラ砂漠</text><ellipse cx="254" cy="230" rx="12" ry="24" fill="#fdf6ec" stroke="#8a6d1a" stroke-width="1.5" transform="rotate(18 254 230)"/><line x1="20" y1="158" x2="285" y2="158" stroke="#c0392b" stroke-width="2" stroke-dasharray="7 4"/><circle cx="26" cy="140" r="10" fill="#fff" stroke="#c0392b" stroke-width="1.5"/><text x="26" y="145" text-anchor="middle" font-size="12" font-weight="bold" fill="#c0392b">ア</text><line x1="118" y1="18" x2="118" y2="290" stroke="#2f6fb2" stroke-width="2" stroke-dasharray="7 4"/><circle cx="118" cy="26" r="10" fill="#fff" stroke="#2f6fb2" stroke-width="1.5"/><text x="118" y="31" text-anchor="middle" font-size="12" font-weight="bold" fill="#2f6fb2">イ</text><path d="M172,128 L182,100 L196,66" fill="none" stroke="#2f6fb2" stroke-width="2.5"/><text x="188" y="112" font-size="10" fill="#2f6fb2">ナイル川</text><text x="18" y="215" font-size="15" font-weight="bold" fill="#2f6fb2">A</text><text x="272" y="150" font-size="15" font-weight="bold" fill="#2f6fb2">B</text><circle cx="200" cy="60" r="9" fill="#c0392b"/><text x="200" y="64" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">あ</text><circle cx="122" cy="158" r="9" fill="#c0392b"/><text x="122" y="162" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">い</text><circle cx="133" cy="262" r="9" fill="#c0392b"/><text x="133" y="266" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">う</text></svg><p>※あ〜うは都市を示している。</p></div>
+<div class="shiryo"><p class="stitle">資料Ⅱ　雨温図</p><p>A</p><svg width="300" height="205" viewBox="0 0 300 205" role="img" aria-label="カイロの雨温図（模式図）"><text x="150" y="15" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1a5e">カイロ</text><line x1="34" y1="168" x2="292" y2="168" stroke="#888" stroke-width="1"/><line x1="34" y1="150.25" x2="292" y2="150.25" stroke="#c9d8f0" stroke-width="1" stroke-dasharray="3 3"/><rect x="27.3" y="165.6" width="13.3" height="2.4" fill="#7fb2e5"/><rect x="50.8" y="166.1" width="13.3" height="1.9" fill="#7fb2e5"/><rect x="74.2" y="166.1" width="13.3" height="1.9" fill="#7fb2e5"/><rect x="97.7" y="167.1" width="13.3" height="0.9" fill="#7fb2e5"/><rect x="121.2" y="167.5" width="13.3" height="0.5" fill="#7fb2e5"/><rect x="144.6" y="168.0" width="13.3" height="0.0" fill="#7fb2e5"/><rect x="168.1" y="168.0" width="13.3" height="0.0" fill="#7fb2e5"/><rect x="191.5" y="168.0" width="13.3" height="0.0" fill="#7fb2e5"/><rect x="215.0" y="168.0" width="13.3" height="0.0" fill="#7fb2e5"/><rect x="238.4" y="167.5" width="13.3" height="0.5" fill="#7fb2e5"/><rect x="261.9" y="166.6" width="13.3" height="1.4" fill="#7fb2e5"/><rect x="285.3" y="165.6" width="13.3" height="2.4" fill="#7fb2e5"/><polyline points="34.0,100.5 57.5,97.0 80.9,89.9 104.4,75.7 127.8,61.5 151.3,54.4 174.7,50.8 198.2,50.8 221.6,58.0 245.1,68.6 268.5,82.8 292.0,97.0" fill="none" stroke="#c0392b" stroke-width="2"/><circle cx="34.0" cy="100.5" r="2.2" fill="#c0392b"/><circle cx="57.5" cy="97.0" r="2.2" fill="#c0392b"/><circle cx="80.9" cy="89.9" r="2.2" fill="#c0392b"/><circle cx="104.4" cy="75.7" r="2.2" fill="#c0392b"/><circle cx="127.8" cy="61.5" r="2.2" fill="#c0392b"/><circle cx="151.3" cy="54.4" r="2.2" fill="#c0392b"/><circle cx="174.7" cy="50.8" r="2.2" fill="#c0392b"/><circle cx="198.2" cy="50.8" r="2.2" fill="#c0392b"/><circle cx="221.6" cy="58.0" r="2.2" fill="#c0392b"/><circle cx="245.1" cy="68.6" r="2.2" fill="#c0392b"/><circle cx="268.5" cy="82.8" r="2.2" fill="#c0392b"/><circle cx="292.0" cy="97.0" r="2.2" fill="#c0392b"/><text x="34.0" y="181" text-anchor="middle" font-size="8.5" fill="#555">1</text><text x="57.5" y="181" text-anchor="middle" font-size="8.5" fill="#555">2</text><text x="80.9" y="181" text-anchor="middle" font-size="8.5" fill="#555">3</text><text x="104.4" y="181" text-anchor="middle" font-size="8.5" fill="#555">4</text><text x="127.8" y="181" text-anchor="middle" font-size="8.5" fill="#555">5</text><text x="151.3" y="181" text-anchor="middle" font-size="8.5" fill="#555">6</text><text x="174.7" y="181" text-anchor="middle" font-size="8.5" fill="#555">7</text><text x="198.2" y="181" text-anchor="middle" font-size="8.5" fill="#555">8</text><text x="221.6" y="181" text-anchor="middle" font-size="8.5" fill="#555">9</text><text x="245.1" y="181" text-anchor="middle" font-size="8.5" fill="#555">10</text><text x="268.5" y="181" text-anchor="middle" font-size="8.5" fill="#555">11</text><text x="292.0" y="181" text-anchor="middle" font-size="8.5" fill="#555">12</text><text x="30" y="147.25" text-anchor="end" font-size="8.5" fill="#c0392b">0℃</text><text x="150" y="200" text-anchor="middle" font-size="9" fill="#555">月（棒：降水量／折れ線：気温）</text></svg><p>B</p><svg width="300" height="205" viewBox="0 0 300 205" role="img" aria-label="ラゴスの雨温図（模式図）"><text x="150" y="15" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1a5e">ラゴス</text><line x1="34" y1="168" x2="292" y2="168" stroke="#888" stroke-width="1"/><line x1="34" y1="150.25" x2="292" y2="150.25" stroke="#c9d8f0" stroke-width="1" stroke-dasharray="3 3"/><rect x="27.3" y="160.9" width="13.3" height="7.1" fill="#7fb2e5"/><rect x="50.8" y="149.1" width="13.3" height="18.9" fill="#7fb2e5"/><rect x="74.2" y="132.5" width="13.3" height="35.5" fill="#7fb2e5"/><rect x="97.7" y="115.9" width="13.3" height="52.1" fill="#7fb2e5"/><rect x="121.2" y="78.1" width="13.3" height="89.9" fill="#7fb2e5"/><rect x="144.6" y="35.5" width="13.3" height="132.5" fill="#7fb2e5"/><rect x="168.1" y="78.1" width="13.3" height="89.9" fill="#7fb2e5"/><rect x="191.5" y="111.2" width="13.3" height="56.8" fill="#7fb2e5"/><rect x="215.0" y="78.1" width="13.3" height="89.9" fill="#7fb2e5"/><rect x="238.4" y="68.6" width="13.3" height="99.4" fill="#7fb2e5"/><rect x="261.9" y="125.4" width="13.3" height="42.6" fill="#7fb2e5"/><rect x="285.3" y="156.2" width="13.3" height="11.8" fill="#7fb2e5"/><polyline points="34.0,54.4 57.5,50.8 80.9,50.8 104.4,50.8 127.8,54.4 151.3,58.0 174.7,61.5 198.2,61.5 221.6,58.0 245.1,58.0 268.5,54.4 292.0,54.4" fill="none" stroke="#c0392b" stroke-width="2"/><circle cx="34.0" cy="54.4" r="2.2" fill="#c0392b"/><circle cx="57.5" cy="50.8" r="2.2" fill="#c0392b"/><circle cx="80.9" cy="50.8" r="2.2" fill="#c0392b"/><circle cx="104.4" cy="50.8" r="2.2" fill="#c0392b"/><circle cx="127.8" cy="54.4" r="2.2" fill="#c0392b"/><circle cx="151.3" cy="58.0" r="2.2" fill="#c0392b"/><circle cx="174.7" cy="61.5" r="2.2" fill="#c0392b"/><circle cx="198.2" cy="61.5" r="2.2" fill="#c0392b"/><circle cx="221.6" cy="58.0" r="2.2" fill="#c0392b"/><circle cx="245.1" cy="58.0" r="2.2" fill="#c0392b"/><circle cx="268.5" cy="54.4" r="2.2" fill="#c0392b"/><circle cx="292.0" cy="54.4" r="2.2" fill="#c0392b"/><text x="34.0" y="181" text-anchor="middle" font-size="8.5" fill="#555">1</text><text x="57.5" y="181" text-anchor="middle" font-size="8.5" fill="#555">2</text><text x="80.9" y="181" text-anchor="middle" font-size="8.5" fill="#555">3</text><text x="104.4" y="181" text-anchor="middle" font-size="8.5" fill="#555">4</text><text x="127.8" y="181" text-anchor="middle" font-size="8.5" fill="#555">5</text><text x="151.3" y="181" text-anchor="middle" font-size="8.5" fill="#555">6</text><text x="174.7" y="181" text-anchor="middle" font-size="8.5" fill="#555">7</text><text x="198.2" y="181" text-anchor="middle" font-size="8.5" fill="#555">8</text><text x="221.6" y="181" text-anchor="middle" font-size="8.5" fill="#555">9</text><text x="245.1" y="181" text-anchor="middle" font-size="8.5" fill="#555">10</text><text x="268.5" y="181" text-anchor="middle" font-size="8.5" fill="#555">11</text><text x="292.0" y="181" text-anchor="middle" font-size="8.5" fill="#555">12</text><text x="30" y="147.25" text-anchor="end" font-size="8.5" fill="#c0392b">0℃</text><text x="150" y="200" text-anchor="middle" font-size="9" fill="#555">月（棒：降水量／折れ線：気温）</text></svg></div>
+</div>
+<div class="shiryo"><p class="stitle">資料Ⅲ　アフリカ州の気候帯（模式説明）</p>
+<p>アフリカ州では、北端と南端に地中海性気候が見られる。北部には世界最大のサハラ砂漠が広がる乾燥帯があり、中央の赤道付近は熱帯で、その間にはサバナと呼ばれる草原が広がる地域がある。</p></div>
+<p>（1）資料Ⅱ中の雨温図A・Bは、資料Ⅰ中のあ〜うのどの都市のものか。それぞれ記号で答えなさい。</p>
+<p>（2）資料Ⅲを見て、サハラ砂漠が広がる地域の気候を何というか答えなさい。</p>
+<p>（3）ナイル川が流れる向きとして正しいものを、次のア〜エから1つ選び、記号で答えなさい。<br />
+ア 北から南へ　イ 南から北へ　ウ 東から西へ　エ 西から東へ</p>
+<p>（4）資料Ⅰ中のう（南部の都市）の気候について述べた文として正しいものを、次のア〜エから1つ選び、記号で答えなさい。<br />
+ア 一年を通して氷点下である<br />
+イ 南半球にあるため、日本とは季節が反対になる<br />
+ウ 赤道の真下にあり、一年中雨が多い<br />
+エ 一年を通して、ほとんど雨が降らない</p>
+<p>（5）アフリカ州の東部を南北に走る、大きな谷が連なる地形を何というか答えなさい。</p>
+
+<h2>【4】平安時代について、次の年表と文を見て、各問いに答えなさい。（知識・技能　（1）（2）：各1点　（3）：2点　12点）</h2>
 <table>
 <tr><th>年代</th><th>できごと</th></tr>
-<tr><td>紀元前4世紀ごろ</td><td>大陸から（ ① ）が伝わり、水田で米を作る弥生時代が始まる</td></tr>
-<tr><td>紀元前1世紀ごろ</td><td>日本列島はたくさんの小さな（ ② ）に分かれ、争いも起こるようになる</td></tr>
-<tr><td>57年</td><td>倭の奴国の王が、中国の（ ③ ）の皇帝から金印を授けられる</td></tr>
-<tr><td>239年</td><td>邪馬台国の女王（ ④ ）が、中国の魏に使いを送る</td></tr>
-<tr><td>3世紀後半ごろ</td><td>近畿地方を中心に、大きな（ ⑤ ）が作られ始める</td></tr>
-<tr><td>5世紀ごろ</td><td>大和政権の（ ⑥ ）が、中国の皇帝に使いを送る</td></tr>
+<tr><td>794年</td><td>桓武天皇が、都を（ ① ）に移す</td></tr>
+<tr><td>894年</td><td>（ ② ）の建議によって、遣唐使が廃止される</td></tr>
+<tr><td>939年</td><td>関東で（ ③ ）の乱、瀬戸内海で藤原純友の乱が起こる</td></tr>
+<tr><td>1016年</td><td>藤原道長が（ ④ ）となり、藤原氏の全盛期をむかえる</td></tr>
+<tr><td>1053年</td><td>藤原頼通が、宇治に（ ⑤ ）を建てる</td></tr>
 </table>
-<p>（1）年表中の①〜⑥に適する語句を答えなさい。③・④・⑥は漢字で答えなさい。</p>
-<p>（2）年表中の57年の金印に刻まれていた文字として、適するものを次のア〜ウから1つ選び、記号で答えなさい。<br />
-ア 漢委奴国王　イ 親魏倭王　ウ 日本国王</p>
-<p>（3）年表中の239年のできごとについて、④の人物が魏の皇帝から授けられた称号として、適するものを次のア〜ウから1つ選び、記号で答えなさい。<br />
-ア 漢委奴国王　イ 親魏倭王　ウ 日本国王</p>
-<p>（4）年表から読み取れることとして、正しいものを次のア〜エからすべて選び、記号で答えなさい。（完答）<br />
-ア この時期、日本列島の人々と中国との間に、交流はまったくなかった<br />
-イ 日本列島の有力者が、中国の皇帝から金印や称号を授けられることがあった<br />
-ウ 古墳は、3世紀後半ごろから作られるようになった<br />
-エ 大王は、人々が選挙で選んでいた</p>
+<p>（1）年表中の①〜⑤に適する語句を答えなさい。</p>
+<blockquote><p>平安時代の中ごろになると、日本の風土や生活に合った（ ⑥ ）文化が栄えた。文学では、（ ⑦ ）が『源氏物語』を著し、（ ⑧ ）が『土佐日記』を仮名文字で書いた。また、人々は（ ⑨ ）の世が始まる不安の中で（ ⑩ ）信仰を深め、阿弥陀如来にすがった。</p></blockquote>
+<p>（2）文中の⑥〜⑩に適する語句を答えなさい。</p>
+<p>（3）平安時代の人々のくらしについて述べた文として正しいものを、次のア〜エから1つ選び、記号で答えなさい。<br />
+ア 貴族は、寝殿造の住宅に住み、和歌や行事を楽しんだ<br />
+イ 農民は、全員が読み書きできた<br />
+ウ 武士が、全国の政治を統一していた<br />
+エ 都には、外国の商人が住む唐人町があった</p>
 
-<h2>次の資料を見て、各問いに答えなさい。（知識・技能　各2点　8点）</h2>
-<div class="figrow">
-<div class="shiryo"><p class="stitle">資料Ⅰ　金印の印面（模式図）</p>
-<svg width="200" height="220" viewBox="0 0 200 220" role="img" aria-label="金印の印面の模式図">
-<rect x="40" y="20" width="120" height="120" fill="#f7e08b" stroke="#a67c00" stroke-width="3"/>
-<g font-size="30" font-weight="bold" text-anchor="middle" fill="#7a5b00">
-<text x="125" y="62">漢</text><text x="125" y="100">委</text><text x="125" y="138">奴</text>
-<text x="72" y="82">国</text><text x="72" y="122">王</text>
-</g>
-<text x="100" y="170" text-anchor="middle" font-size="12" fill="#555">福岡市志賀島で発見された金印</text>
-<text x="100" y="190" text-anchor="middle" font-size="12" fill="#555">（印面の文字の配置を模式的に示した）</text>
-</svg></div>
-<div class="shiryo"><p class="stitle">資料Ⅱ　埴輪（模式図）</p>
-<svg width="200" height="220" viewBox="0 0 200 220" role="img" aria-label="人物埴輪の模式図">
-<circle cx="100" cy="45" r="20" fill="#e8c39a" stroke="#a05a2c" stroke-width="2"/>
-<path d="M78,40 Q100,15 122,40 L122,32 Q100,8 78,32 Z" fill="#a05a2c"/>
-<path d="M72,75 L128,75 L138,160 L62,160 Z" fill="#e8c39a" stroke="#a05a2c" stroke-width="2"/>
-<rect x="58" y="160" width="84" height="14" fill="#d9a05f" stroke="#a05a2c" stroke-width="2"/>
-<circle cx="92" cy="43" r="2.5" fill="#5b3a1a"/><circle cx="108" cy="43" r="2.5" fill="#5b3a1a"/>
-<path d="M92,55 Q100,59 108,55" fill="none" stroke="#5b3a1a" stroke-width="2"/>
-<text x="100" y="200" text-anchor="middle" font-size="12" fill="#555">人物の埴輪（模式図）</text>
-</svg></div>
+<h2>【5】次の資料を見て、各問いに答えなさい。（知識・技能　各2点　8点）</h2>
+<div class="shiryo"><p class="stitle">資料Ⅰ　勅撰和歌集（模式説明）</p>
+<p>905年、醍醐天皇の命令によって編さんされた、最初の勅撰和歌集。紀貫之らが選者を務め、序文も仮名文字で書かれた。</p></div>
+<div class="shiryo"><p class="stitle">資料Ⅱ　貴族の住宅（模式説明）</p>
+<p>中央に寝殿と呼ばれる建物があり、その前に池のある庭園が広がる。寝殿は、渡殿と呼ばれる廊下で、対屋などの建物と結ばれていた。</p></div>
+<div class="shiryo"><p class="stitle">資料Ⅲ　阿弥陀堂（模式説明）</p>
+<p>死後に極楽浄土へ生まれ変わることを願う人々のために建てられた堂。平等院鳳凰堂はその代表で、内部には阿弥陀如来像が安置されている。</p></div>
+<div class="shiryo"><p class="stitle">資料Ⅳ　仮名文学の作品と作者</p>
+<table>
+<tr><th>作品</th><th>作者</th></tr>
+<tr><td>源氏物語</td><td>紫式部</td></tr>
+<tr><td>枕草子</td><td>清少納言</td></tr>
+<tr><td>土佐日記</td><td>紀貫之</td></tr>
+</table>
 </div>
-<div class="shiryo"><p class="stitle">資料Ⅲ　古墳の副葬品</p>
-<table>
-<tr><th>副葬品</th><th>分かること</th></tr>
-<tr><td>銅鏡</td><td>大陸との交流があり、権威を示す品だった</td></tr>
-<tr><td>鉄製の剣</td><td>鉄が武器に使われていた</td></tr>
-<tr><td>勾玉</td><td>身分を示す装飾品だった</td></tr>
-<tr><td>馬具</td><td>馬が利用されていた</td></tr>
-</table></div>
-<p>（1）資料Ⅰの金印は、中国の皇帝からどの国の王に授けられたものか答えなさい。</p>
-<p>（2）資料Ⅱの埴輪が置かれた場所として、適するものを次のア〜エから1つ選び、記号で答えなさい。<br />
-ア 古墳のまわりや上　イ 神社の境内　ウ 城の天守　エ 寺院の本堂</p>
-<p>（3）資料Ⅲの鉄製の剣から分かることとして、適するものを次のア〜エから1つ選び、記号で答えなさい。<br />
-ア 鉄が武器として使われていた　イ 鉄は日本ではまったく使われていなかった　ウ 剣はすべて木で作られていた　エ 鉄は食べ物として使われていた</p>
-<p>（4）資料Ⅱの埴輪から読み取れることとして、適するものを次のア〜エから1つ選び、記号で答えなさい。<br />
-ア 当時の人々の服装や暮らしの様子　イ 当時の文字の読み方　ウ 当時の日本の人口　エ 当時の天気の記録</p>
+<p>（1）資料Ⅰで説明されている和歌集の名称を答えなさい。</p>
+<p>（2）資料Ⅱで説明されている、貴族の住宅の建て方を何というか答えなさい。</p>
+<p>（3）資料Ⅲの堂は、どのような信仰にもとづいて建てられたか答えなさい。</p>
+<p>（4）資料Ⅳを見て、『枕草子』の作者を答えなさい。</p>
 
-<h2>次の文章を読んで、各問いに答えなさい。（知識・技能　各1点　10点）</h2>
-<blockquote><p>3世紀後半ごろから、各地で王や（ ① ）の大きな墓である（ ② ）が作られるようになった。近畿地方を中心に各地の有力者を従えた（ ③ ）の王は、（ ④ ）と呼ばれた。（ ③ ）は、従えた有力者に（ ⑤ ）や（ ⑥ ）を与えて、身分の秩序を作った。墓のまわりや上には（ ⑦ ）が置かれ、いっしょに埋葬された品々を（ ⑧ ）という。各地で共通の形の墓が作られたことは、（ ③ ）の（ ⑨ ）が各地に及んでいたことを示している。また、墓の規模の違いからは、身分の（ ⑩ ）が大きくなっていたことが分かる。</p></blockquote>
-<p>（1）文章中の①〜⑩に適する語句を答えなさい。①・③・⑦は漢字で答えなさい。</p>
-
-<h2>次の表は、アジア州とアフリカ州を比べたものである。表を見て、各問いに答えなさい。（知識・技能　（1）：各1点　（2）：各2点　10点）</h2>
+<h2>【6】次の資料を見て、各問いに答えなさい。（知識・技能　各2点　10点）</h2>
+<div class="shiryo"><p class="stitle">資料Ⅰ　世界の州の比較（練習用データ）</p>
 <table>
-<tr><th></th><th>アジア州</th><th>アフリカ州</th></tr>
-<tr><td>気候の特色</td><td>（ ① ）の影響が大きく、雨の多い地域がある</td><td>赤道付近は（ ② ）、北部には（ ③ ）が広がる</td></tr>
-<tr><td>代表的な川</td><td>長江、ガンジス川など</td><td>（ ④ ）</td></tr>
-<tr><td>産業の特色</td><td>中国の工業、インドの（ ⑤ ）</td><td>カカオや石油などの輸出、サファリ観光</td></tr>
-<tr><td>おもな課題</td><td>地域による発展の差</td><td>（ ⑥ ）</td></tr>
+<tr><th>州</th><th>人口（概数）</th><th>特色</th></tr>
+<tr><td>アジア州</td><td>約46億人</td><td>世界の人口の約6割が住む</td></tr>
+<tr><td>ヨーロッパ州</td><td>約7億5000万人</td><td>EUを中心に、統合が進んでいる</td></tr>
+<tr><td>アフリカ州</td><td>約14億人</td><td>人口の増加率が高い</td></tr>
 </table>
-<p>（1）表中の①〜⑥に適する語句を答えなさい。</p>
-<p>（2）次の文のうち、表の内容に合うものをそれぞれ1つずつ選び、記号で答えなさい。<br />
-（i）アジア州とアフリカ州に共通すること<br />
-ア どちらの州にも、雨の少ない乾燥した地域がある<br />
-イ どちらの州にも、熱帯雨林だけが広がっている<br />
-ウ どちらの州でも、すべての国が海に面していない<br />
-（ii）アフリカ州について、表から読み取れること<br />
-ア 産業は、一次産品の輸出や観光に頼る面が大きい<br />
-イ 工業が最も発展している州である<br />
-ウ 川は1つも流れていない</p>
-
-<h2>次の資料は、アフリカ州についてまとめたものである。資料を見て、各問いに答えなさい。（知識・技能　各2点　10点）</h2>
-<div class="shiryo"><p class="stitle">資料Ⅰ　アフリカ州の気候帯の並び（北から南への模式図）</p>
-<svg width="620" height="120" viewBox="0 0 620 120" role="img" aria-label="アフリカの気候帯の断面模式図">
-<g font-size="13" text-anchor="middle">
-<rect x="10" y="35" width="95" height="45" fill="#eef5fc" stroke="#2f6fb2"/><text x="57" y="62">A 温帯</text>
-<rect x="110" y="35" width="130" height="45" fill="#fdeecb" stroke="#c05a17"/><text x="175" y="62">B 乾燥帯</text>
-<rect x="245" y="35" width="95" height="45" fill="#e8f3e4" stroke="#2e7d4f"/><text x="292" y="62">C サバナ</text>
-<rect x="345" y="35" width="110" height="45" fill="#fbd9d0" stroke="#c0392b"/><text x="400" y="55">D 熱帯雨林帯</text><text x="400" y="74" font-size="11">（赤道付近）</text>
-<rect x="460" y="35" width="70" height="45" fill="#e8f3e4" stroke="#2e7d4f"/><text x="495" y="62">サバナ</text>
-<rect x="535" y="35" width="75" height="45" fill="#fdeecb" stroke="#c05a17"/><text x="572" y="62">乾燥帯</text>
-</g>
-<text x="10" y="20" font-size="13">北 ←</text>
-<text x="575" y="20" font-size="13">→ 南</text>
-<text x="310" y="108" text-anchor="middle" font-size="12" fill="#555">※気候帯の並びを模式的に表したもの</text>
-</svg></div>
-<div class="shiryo"><p class="stitle">資料Ⅱ　アフリカ州のおもな国の人口（概数）</p>
+</div>
+<div class="shiryo"><p class="stitle">資料Ⅱ　ドイツの輸出相手（練習用データ）</p>
+<div class="band"><div style="width:55%;background:#ffe08a">EU加盟国 55%</div><div style="width:15%;background:#c9d8f0">アメリカ 15%</div><div style="width:10%;background:#f6c6d8">中国 10%</div><div style="width:20%;background:#e8e8e8">その他 20%</div></div>
+</div>
+<div class="shiryo"><p class="stitle">資料Ⅲ　アフリカ州の都市人口の割合の変化（練習用データ）</p>
 <table>
-<tr><th>国</th><th>ナイジェリア</th><th>エチオピア</th><th>エジプト</th></tr>
-<tr><td>人口</td><td>約2億2000万人</td><td>約1億2000万人</td><td>約1億1000万人</td></tr>
-</table></div>
-<p>（1）資料Ⅰで、サハラ砂漠がある気候帯はA〜Dのどれか。記号で答えなさい。</p>
-<p>（2）資料ⅠのDの気候帯の特色として、適するものを次のア〜エから1つ選び、記号で答えなさい。<br />
-ア 一年中暑く、雨が多い　イ 冬にだけ雪が降る　ウ 一年を通して雨がほとんど降らない　エ 夏と冬の気温差が非常に大きい</p>
-<p>（3）資料Ⅱから、人口が最も多い国を答えなさい。</p>
-<p>（4）資料Ⅱから、エジプトの人口はナイジェリアの人口の約何分の1か答えなさい。</p>
-<p>（5）資料ⅠのCの地域で見られる景色として、適するものを次のア〜エから1つ選び、記号で答えなさい。<br />
-ア 草原に木がまばらに生えている　イ 一面が氷におおわれている　ウ 昼でも太陽がまったく出ない　エ 海が広がっている</p>
+<tr><th></th><th>1990年</th><th>2020年</th></tr>
+<tr><td>都市人口の割合</td><td>30%</td><td>45%</td></tr>
+</table>
+</div>
+<p>（1）資料Ⅰの3つの州のうち、人口が最も多い州はどこか答えなさい。</p>
+<p>（2）資料Ⅰについて、ヨーロッパ州の人口は、アフリカ州の人口の約何分の1か答えなさい。</p>
+<p>（3）資料Ⅱを見て、ドイツの輸出のうち、EU加盟国向けの割合は何％か答えなさい。</p>
+<p>（4）資料Ⅲについて、1990年から2020年にかけて、アフリカ州の都市人口の割合は何ポイント増加したか答えなさい。</p>
+<p>（5）資料Ⅱから読み取れることとして正しいものを、次のア〜エから1つ選び、記号で答えなさい。<br />
+ア EUの加盟国の間では、貿易がさかんである<br />
+イ ドイツは、アジアとの貿易だけを行っている<br />
+ウ EUの加盟国の間では、関税がとても高い<br />
+エ ヨーロッパ州の国は、すべてEUに加盟している</p>
 
-<h2>次の資料は、アジア州の国々の協力と交通についてまとめたものである。資料を見て、各問いに答えなさい。（知識・技能　（1）・（3）・（4）・（6）：各2点　（2）・（5）：各1点　10点）</h2>
-<div class="shiryo"><p class="stitle">資料Ⅰ　ASEANのおもな加盟国と特色</p>
-<table>
-<tr><th>国</th><th>特色</th></tr>
-<tr><td>タイ</td><td>米の輸出がさかん</td></tr>
-<tr><td>インドネシア</td><td>パーム油の生産がさかん</td></tr>
-<tr><td>ベトナム</td><td>稲作と工業がさかん</td></tr>
-<tr><td>シンガポール</td><td>海上交通の要所にあり、貿易がさかん</td></tr>
-</table></div>
-<div class="shiryo"><p class="stitle">資料Ⅱ　スエズ運河の位置（模式図）</p>
-<svg width="560" height="130" viewBox="0 0 560 130" role="img" aria-label="スエズ運河の位置の模式図">
-<rect x="20" y="30" width="150" height="60" fill="#bfe0f5" stroke="#2f6fb2"/>
-<rect x="390" y="30" width="150" height="60" fill="#bfe0f5" stroke="#2f6fb2"/>
-<rect x="245" y="48" width="70" height="24" fill="#f7e08b" stroke="#a67c00" stroke-width="2"/>
-<text x="95" y="65" text-anchor="middle" font-size="15">地中海</text>
-<text x="465" y="65" text-anchor="middle" font-size="15">紅海</text>
-<text x="280" y="40" text-anchor="middle" font-size="13" font-weight="bold">スエズ運河</text>
-<line x1="170" y1="60" x2="245" y2="60" stroke="#a67c00" stroke-width="2" stroke-dasharray="5 4"/>
-<line x1="315" y1="60" x2="390" y2="60" stroke="#a67c00" stroke-width="2" stroke-dasharray="5 4"/>
-<text x="280" y="112" text-anchor="middle" font-size="12" fill="#555">※位置関係を模式的に表したもの</text>
-</svg></div>
-<p>（1）資料ⅠのASEANは、どのような組織か。適するものを次のア〜エから1つ選び、記号で答えなさい。<br />
-ア 東南アジアの国々が、経済の発展や地域の安定のために協力して結成した組織<br />
-イ アジアのすべての国が参加する軍事の組織<br />
-ウ 石油を輸出する国々の組織<br />
-エ ヨーロッパの国々が作った組織</p>
-<p>（2）資料Ⅰから、パーム油の生産がさかんな国を答えなさい。</p>
-<p>（3）資料Ⅰから、シンガポールが貿易で重要な位置にあるのはなぜか。理由を簡単に答えなさい。</p>
-<p>（4）資料Ⅱから、スエズ運河が結んでいる2つの海を答えなさい。（完答）</p>
-<p>（5）資料Ⅱのスエズ運河ができたことで、アジアとどこの間の航路が大きく短くなったか答えなさい。</p>
-<p>（6）資料ⅠのASEANの目的について述べた次のア〜エから、適するものを1つ選び、記号で答えなさい。<br />
-ア 加盟国の経済の発展や、地域の安定をはかる<br />
-イ 加盟国の言語を1つに統一する<br />
-ウ 加盟国の国境をなくして1つの国にする<br />
-エ 石油の価格を決める</p>
+<h2>【7】次の各問いに答えなさい。（思考・判断・表現　（1）：完答4点　（2）（3）：各2点　8点）</h2>
+<p>（1）EU（欧州連合）について述べた文として正しいものを、次のア〜エからすべて選び、記号で答えなさい。（完答）<br />
+ア 加盟国の多くで、共通通貨のユーロが使われている<br />
+イ 加盟国の間では、人や物の移動が自由である<br />
+ウ EUの本部は、パリに置かれている<br />
+エ 加盟国は、すべてユーロを使っている</p>
+<p>（2）ヨーロッパ州で問題になった酸性雨の原因として正しいものを、次のア〜エから1つ選び、記号で答えなさい。<br />
+ア 工場や自動車から出る排気ガスに含まれる、有害な物質<br />
+イ 海水が蒸発してできる塩分<br />
+ウ 火山の噴火による灰<br />
+エ 森林が増えすぎたこと</p>
+<p>（3）ヨーロッパ州の農業について述べた文として正しいものを、次のア〜エから1つ選び、記号で答えなさい。<br />
+ア 北部や西部では、作物の栽培と家畜の飼育を組み合わせた混合農業がさかんである<br />
+イ 地中海沿岸では、稲作が中心である<br />
+ウ ヨーロッパ州では、酪農は行われていない<br />
+エ ヨーロッパ州の国々は、小麦をすべて輸入に頼っている</p>
 
-<h2>次の資料A〜Dを読んで、各問いに答えなさい。（思考・判断・表現　各2点　8点）</h2>
+<h2>【8】次の資料A〜Dは、平安時代の人物について述べたものです。資料に当てはまる人物を、下のア〜オからそれぞれ1つずつ選び、記号で答えなさい。（思考・判断・表現　各2点　8点）</h2>
 <div class="cards">
-<div class="card"><p class="ctitle">資料A</p><p>ある古墳の副葬品の中に、大陸で作られた銅鏡がふくまれていた。</p></div>
-<div class="card"><p class="ctitle">資料B</p><p>大和政権は、各地の豪族に氏や姓を与え、身分の上下を明らかにした。</p></div>
-<div class="card"><p class="ctitle">資料C</p><p>各地の豪族は、前方後円墳という共通の形の古墳を競うように作った。</p></div>
-<div class="card"><p class="ctitle">資料D</p><p>大陸や朝鮮半島から移り住んだ人々が、須恵器づくりの技術を日本に伝えた。</p></div>
+<div class="card"><p class="ctitle">資料A</p><p>自分の娘を天皇の后にし、摂政となって、藤原氏の全盛期を築いた人物。</p></div>
+<div class="card"><p class="ctitle">資料B</p><p>道長の子で、宇治に平等院鳳凰堂を建てた人物。</p></div>
+<div class="card"><p class="ctitle">資料C</p><p>宮中に仕え、『源氏物語』を著した女性。</p></div>
+<div class="card"><p class="ctitle">資料D</p><p>関東で乱を起こし、地方で武士が力をつけてきたことを示した人物。</p></div>
 </div>
-<p>（1）〜（4）について、資料から分かること・資料に表れたねらいとして、適するものを次のア〜エからそれぞれ1つずつ選び、記号で答えなさい。同じ記号を2回使ってはいけません。<br />
-ア 身分の秩序を作り、支配を安定させるねらいがあった<br />
-イ 大陸と交流があったことが分かる<br />
-ウ 大和政権の影響が、各地に及んでいたことが分かる<br />
-エ 進んだ技術が、日本に伝えられたことが分かる<br />
-（1）資料Aについて　（2）資料Bについて　（3）資料Cについて　（4）資料Dについて</p>
+<p>ア 藤原頼通　イ 平将門　ウ 藤原道長　エ 紫式部　オ 清少納言</p>
 
-<h2>次の（1）〜（4）について、正しいものの組み合わせとして最も適するものを、下の①〜⑧からそれぞれ選び、記号で答えなさい。（思考・判断・表現　各2点　8点）</h2>
-<p>① ア　② イ　③ ウ　④ アとイ　⑤ アとウ　⑥ イとウ　⑦ アとイとウ　⑧ すべて間違っている</p>
-<p>（1）ア 卑弥呼は、邪馬台国の女王である<br />
-イ 金印は、魏の皇帝から授けられた<br />
-ウ 大仙古墳は、奈良県にある</p>
-<p>（2）ア サハラ砂漠は、アフリカ州の南部に広がっている<br />
-イ ナイル川は、地中海に注いでいる<br />
-ウ ガーナは、石油の輸出で有名な国である</p>
-<p>（3）ア 中国の首都は、上海である<br />
-イ 長江は、揚子江とも呼ばれる<br />
-ウ インドのIT産業の中心地は、ベンガルールである</p>
-<p>（4）ア 渡来人は、日本から大陸へ渡った人々である<br />
-イ 須恵器は、渡来人が伝えた技術で作られた<br />
-ウ 鉄製の農具が広がると、農業の生産量が減った</p>
+<h2>【9】次の各問いに答えなさい。（思考・判断・表現　（1）：完答4点　その他：各2点　10点）</h2>
+<p>（1）アジア州について述べた文として正しいものを、次のア〜エからすべて選び、記号で答えなさい。（完答）<br />
+ア 中国の人口は、世界でも有数である<br />
+イ インドでは、英語が広く使われている<br />
+ウ ASEAN（東南アジア諸国連合）には、日本も加盟している<br />
+エ 西アジアでは、石油が多く産出する</p>
+<p>（2）次のア〜エのうち、アフリカ州の国でないものを1つ選び、記号で答えなさい。<br />
+ア エジプト　イ ナイジェリア　ウ サウジアラビア　エ エチオピア</p>
+<p>（3）次のア〜エのうち、EUに加盟していない国を1つ選び、記号で答えなさい。<br />
+ア ドイツ　イ フランス　ウ イギリス　エ イタリア</p>
+<p>（4）次の文のうち、適するものを1つ選び、記号で答えなさい。<br />
+ア サハラ砂漠は、アフリカ州の南部に広がっている<br />
+イ ドナウ川は、黒海に注いでいる<br />
+ウ 地中海性気候は、夏に雨が多い<br />
+エ ライン川は、地中海に注いでいる</p>
 
-<h2>次の各問いに答えなさい。（思考・判断・表現　（1）：4点　（2）・（3）：各2点　8点）</h2>
-<p>（1）渡来人が日本に伝えた技術を、次のア〜オからすべて選び、記号で答えなさい。（完答）<br />
-ア 須恵器づくり　イ 機織り　ウ 活版印刷　エ 金属の加工　オ 火縄銃</p>
-<p>（2）次のア〜オのうち、アフリカ州の国でないものを1つ選び、記号で答えなさい。なお、アフリカ州の国でないものがない場合は、オを選びなさい。<br />
-ア ガーナ　イ ナイジェリア　ウ インド　エ エジプト　オ 該当なし</p>
-<p>（3）次のア〜オのうち、ASEANの加盟国でないものを1つ選び、記号で答えなさい。なお、ASEANの加盟国でないものがない場合は、オを選びなさい。<br />
-ア タイ　イ インドネシア　ウ 中国　エ ベトナム　オ 該当なし</p>
+<h2>【10】次の各問いに答えなさい。（思考・判断・表現　各2点　6点）</h2>
+<p>（1）次のア〜エのアフリカ州の都市を、北にあるものから順に並べかえ、記号で答えなさい。<br />
+ア ケープタウン　イ カイロ　ウ ラゴス　エ アルジェ</p>
+<p>（2）次のア〜エの平安時代のできごとを、年代の古い順に並べかえ、記号で答えなさい。<br />
+ア 遣唐使が廃止される　イ 藤原道長が摂政になる　ウ 平安京に都が移る　エ 『古今和歌集』が編さんされる</p>
+<p>（3）次の表のX・Yは、フランスとスペインのいずれかを示している。X・Yの国名をそれぞれ答えなさい。（完答）</p>
+<table>
+<tr><th></th><th>人口（概数）</th><th>特色</th></tr>
+<tr><td>X</td><td>約6800万人</td><td>首都はパリ。EUに加盟し、ユーロを使っている</td></tr>
+<tr><td>Y</td><td>約4800万人</td><td>首都はマドリード。地中海に面している</td></tr>
+</table>
 
-<h2>次の各問いについて、記号を正しい順に並べかえなさい。（思考・判断・表現　各3点　6点）</h2>
-<p>（1）次のできごとを、年代の古いものから順に並べかえなさい。<br />
-ア 大陸から稲作が伝わり、弥生時代が始まる<br />
-イ 鉄製の農具が広がり、農業の生産量が増える<br />
-ウ 人々が狩りや採集を中心に生活する<br />
-エ 日本列島がたくさんの小さな国に分かれ、争いが起こる</p>
-<p>（2）アフリカ州を北から赤道まで移動するとき、通過する気候帯を順に並べかえなさい。<br />
-ア 乾燥帯　イ 熱帯雨林帯　ウ 温帯　エ サバナ</p>
+<h2>【11】次の各問いに答えなさい。（思考・判断・表現　各2点　8点）</h2>
+<p>（1）EUの共通通貨ユーロを使う利点を、「旅行」という語句を使って書きなさい。</p>
+<p>（2）アフリカ州で、人口が増えている地域に見られる課題を、「食料」という語句を使って書きなさい。</p>
+<p>（3）東南アジアでプランテーション（大農園）が作られた背景を、「植民地」という語句を使って書きなさい。</p>
+<p>（4）平等院鳳凰堂が、極楽浄土を表す姿で建てられた理由を、「浄土」という語句を使って書きなさい。</p>
 
-<h2>次の各問いに答えなさい。（思考・判断・表現　（1）・（2）：各3点　（3）：4点　10点）</h2>
-<p>（1）古墳が各地に広がったことから、どのようなことが分かるか。「大和政権」の語句を用いて答えなさい。</p>
-<p>（2）鉄製の農具が広がったことで、農業はどのように変わったか。「生産量」の語句を用いて答えなさい。</p>
-<p>（3）次の資料は、ガーナの輸出品の割合（練習用データ）である。資料を見て、この国の経済の特色と課題を、「輸出」の語句を用いて答えなさい。</p>
-<div class="shiryo"><p class="stitle">資料　ガーナの輸出品の割合（練習用データ）</p>
-<div class="band"><div style="width:55%;background:#7fb2dd">カカオ 55%</div><div style="width:25%;background:#f2b134">金 25%</div><div style="width:20%;background:#d9e2ec">その他 20%</div></div>
-</div>
-
-<hr />
 <details class="answers"><summary>答えを見る（解答・解説）</summary><div class="answers-body">
 <h1>解答・解説編</h1>
-<h2>年表（12点）</h2>
-<p>（1）①<strong>稲作</strong>　②<strong>国</strong>　③<strong>後漢</strong>　④<strong>卑弥呼</strong>　⑤<strong>前方後円墳</strong>　⑥<strong>大王</strong>（各1点）<br />
-⑤は「前方後円墳」が入ります（「古墳」だけでは不十分です）。⑥は「天皇」ではなく「大王」です。<br />
-（2）<strong>ア</strong>（2点）<br />
-金印には「漢委奴国王」と刻まれています。<br />
-（3）<strong>イ</strong>（2点）<br />
-卑弥呼は魏の皇帝から「親魏倭王」の称号を授けられました。（2）の「漢委奴国王」は57年の金印の文字で、時代も授けた国も違うので取り違えないようにしましょう。<br />
-（4）<strong>イ・ウ</strong>（完答2点）<br />
-アは、金印や称号の授与という交流があったので誤り。エは、大王は選挙で選ばれていなかったので誤りです。</p>
-<h2>金印・埴輪・副葬品の資料（8点）</h2>
-<p>（1）<strong>奴国</strong>（2点）<br />
-57年に、倭の奴国の王の使いが後漢の皇帝から金印を授けられました。<br />
-（2）<strong>ア</strong>（2点）<br />
-埴輪は、古墳のまわりや上に置かれた素焼きの人形などです。<br />
-（3）<strong>ア</strong>（2点）<br />
-（4）<strong>ア</strong>（2点）<br />
-人物や家、動物の形をした埴輪からは、当時の人々の服装や暮らしの様子が分かります。</p>
-<h2>大和政権の文章（10点）</h2>
-<p>①<strong>豪族</strong>　②<strong>古墳</strong>　③<strong>大和政権</strong>　④<strong>大王</strong>　⑤<strong>氏</strong>　⑥<strong>姓</strong>　⑦<strong>埴輪</strong>　⑧<strong>副葬品</strong>　⑨<strong>影響</strong>　⑩<strong>差</strong>（各1点）<br />
-⑤の氏（うじ）と⑥の姓（かばね）は、大和政権が豪族に与えて身分の秩序を作ったものです。順番を取り違えないようにしましょう。</p>
-<h2>アジア州とアフリカ州の比較表（10点）</h2>
-<p>（1）①<strong>季節風</strong>　②<strong>熱帯雨林帯</strong>　③<strong>サハラ砂漠</strong>　④<strong>ナイル川</strong>　⑤<strong>IT産業</strong>　⑥<strong>モノカルチャー経済</strong>（各1点）<br />
-①は季節風（モンスーン）でも可。<br />
-（2）（i）<strong>ア</strong>（2点）<br />
-アジア州にも西アジアなどの乾燥した地域があり、アフリカ州にもサハラ砂漠があります。<br />
-（ii）<strong>ア</strong>（2点）<br />
-表の「産業の特色」から、カカオや石油などの一次産品の輸出と、サファリ観光が中心であることが読み取れます。</p>
-<h2>アフリカ州の資料（10点）</h2>
-<p>（1）<strong>B</strong>（2点）<br />
-サハラ砂漠は、北部の乾燥帯に広がっています。<br />
-（2）<strong>ア</strong>（2点）<br />
-Dは赤道付近の熱帯雨林帯で、一年中暑く雨が多い気候です。<br />
-（3）<strong>ナイジェリア</strong>（2点）　約2億2000万人で最も多い国です。<br />
-（4）<strong>約2分の1</strong>（2点）　1億1000万 ÷ 2億2000万 = 2分の1 です。<br />
-（5）<strong>ア</strong>（2点）<br />
-Cはサバナで、草原に木がまばらに生える景色が見られます。</p>
-<h2>ASEANとスエズ運河の資料（10点）</h2>
-<p>（1）<strong>ア</strong>（2点）<br />
-ASEANは、東南アジアの国々が経済の発展や地域の安定のために協力して結成した組織です。<br />
-（2）<strong>インドネシア</strong>（1点）<br />
-（3）（例）<strong>アジアとヨーロッパなどを結ぶ海上交通の要所にあり、大きな港をもつから</strong>（2点）<br />
-（4）<strong>地中海・紅海</strong>（完答2点）<br />
-（5）<strong>ヨーロッパ</strong>（1点）<br />
-スエズ運河によって、アジアとヨーロッパの間の航路が大きく短くなりました。<br />
-（6）<strong>ア</strong>（2点）<br />
-石油の価格を決めるのはOPECの役割で、ASEANの目的ではありません。</p>
-<h2>資料と目的・内容の対応づけ（8点）</h2>
-<p>（1）<strong>イ</strong>　（2）<strong>ア</strong>　（3）<strong>ウ</strong>　（4）<strong>エ</strong>（各2点）<br />
-資料Aの大陸製の銅鏡は、大陸との交流を示します。資料Bの氏や姓は、身分の秩序を作って支配を安定させるねらいです。資料Cの共通の形の古墳は、大和政権の影響の広がりを示します。資料Dは、渡来人による技術の伝来です。</p>
-<h2>正誤の組み合わせ選択（8点）</h2>
-<p>（1）<strong>①</strong>（2点）　正しいのはアのみです。イは、金印を授けたのは「後漢」の皇帝です。ウは、大仙古墳は「大阪府」堺市にあります。<br />
-（2）<strong>②</strong>（2点）　正しいのはイのみです。アは、サハラ砂漠は「北部」です。ウは、ガーナで有名なのは「カカオ」で、石油はナイジェリアです。<br />
-（3）<strong>⑥</strong>（2点）　正しいのはイとウです。アは、中国の首都は「北京」です。<br />
-（4）<strong>②</strong>（2点）　正しいのはイのみです。アは、渡来人は大陸や朝鮮半島「から」日本へ移り住んだ人々です。ウは、鉄製農具の広がりで生産量は「増えた」ので誤りです。</p>
-<blockquote><p>つまずきポイント：組み合わせ選択は、まずア〜ウの1つずつに○×をつけてから、組み合わせの記号を選びます。焦って記号から探すと間違えやすくなります。</p></blockquote>
-<h2>すべて選ぶ・該当なし（8点）</h2>
+<h2>【1】アジア州の資料と文（10点）</h2>
+<p>（1）A：<strong>中国</strong>　B：<strong>ガンジス川</strong>　C：<strong>ペルシャ湾</strong>　資源：<strong>石油</strong>（各1点）<br />
+Aは中国、Bはインドを流れるガンジス川、Cはペルシャ湾です。ペルシャ湾の周辺は、世界有数の石油の産地です。</p>
+<p>（2）①<strong>14</strong>　②<strong>北京</strong>　③<strong>経済特区</strong>　④<strong>ヒンドゥー</strong>　⑤<strong>IT</strong>　⑥<strong>季節風（モンスーン）</strong>（各1点）<br />
+中国の工業は、沿岸部に設けられた経済特区を中心に発展しました。インドでは、ヒンドゥー教を信仰する人が最も多く、IT産業が発展しています。</p>
+
+<h2>【2】ヨーロッパ州の資料（10点）</h2>
+<p>（1）<strong>北ヨーロッパ平原</strong>（2点）<br />
+フランス北部からドイツ、ポーランドへと広がる、なだらかな平原です。</p>
+<p>（2）<strong>西岸海洋性気候</strong>（2点）<br />
+ベルリンの雨温図は、冬の気温が0℃前後まで下がりますが、一年を通して降水量に大きな差がありません。</p>
+<p>（3）<strong>ア</strong>（2点）<br />
+ベルリンはロンドンより内陸にあるため、冬の気温がより低くなります。どちらも偏西風と暖流の影響を受ける西岸海洋性気候です。</p>
+<p>（4）<strong>カトリック</strong>（2点）<br />
+イタリアは南部に位置し、ラテン系の言語（イタリア語）が話され、カトリックを信仰する人が最も多くなっています。</p>
+<p>（5）<strong>正教会</strong>（2点）<br />
+東部のスラブ系の地域では、正教会を信仰する人が多くなっています。</p>
+
+<h2>【3】アフリカ州の資料（10点）</h2>
+<p>（1）A：<strong>あ</strong>　B：<strong>い</strong>（各1点）<br />
+雨温図Aは、降水量がほとんどない乾燥した気候で、北部の都市あ（カイロ）です。雨温図Bは、一年中気温が高く、降水量も多い熱帯の気候で、赤道付近の都市い（ラゴス）です。</p>
+<p>（2）<strong>乾燥帯</strong>（2点）<br />
+サハラ砂漠は、雨がほとんど降らない乾燥帯に広がっています。</p>
+<p>（3）<strong>イ</strong>（2点）<br />
+ナイル川は、内陸のビクトリア湖の付近から北へ流れ、地中海に注ぎます。</p>
+<p>（4）<strong>イ</strong>（2点）<br />
+うは南半球にある都市なので、日本とは季節が反対になります。夏と冬の時期が逆になることに注意します。</p>
+<p>（5）<strong>大地溝帯（グレート・リフト・バレー）</strong>（2点）<br />
+アフリカ州の東部を南北に走る、大きな谷が連なる地形です。</p>
+<blockquote><p>つまずきポイント：南半球では、7月が冬、1月が夏です。雨温図を読むときは、都市が北半球か南半球かを確認しましょう。</p></blockquote>
+
+<h2>【4】平安時代の年表と文（12点）</h2>
+<p>（1）①<strong>平安京</strong>　②<strong>菅原道真</strong>　③<strong>平将門</strong>　④<strong>摂政</strong>　⑤<strong>平等院鳳凰堂</strong>（各1点）<br />
+894年には、菅原道真の建議によって遣唐使が廃止されました。939年の平将門の乱と藤原純友の乱は、地方で武士が力をつけてきたことを示しています。</p>
+<p>（2）⑥<strong>国風</strong>　⑦<strong>紫式部</strong>　⑧<strong>紀貫之</strong>　⑨<strong>末法</strong>　⑩<strong>浄土</strong>（各1点）<br />
+紀貫之は『古今和歌集』の選者でもあり、『土佐日記』を女性のふりをして仮名文字で書きました。</p>
+<p>（3）<strong>ア</strong>（2点）<br />
+イの読み書きは一部の人々に限られ、ウのように武士が全国を統一するのは、はるか後の時代のことです。</p>
+
+<h2>【5】平安時代の資料（8点）</h2>
+<p>（1）<strong>古今和歌集</strong>（2点）<br />
+905年に編さんされた、最初の勅撰和歌集です。</p>
+<p>（2）<strong>寝殿造</strong>（2点）<br />
+中央の寝殿を中心に、池のある庭園が広がる、貴族の住宅の建て方です。</p>
+<p>（3）<strong>浄土信仰</strong>（2点）<br />
+阿弥陀如来にすがり、死後に極楽浄土へ生まれ変わることを願う信仰です。</p>
+<p>（4）<strong>清少納言</strong>（2点）<br />
+『枕草子』は、自然の美しさや宮中の生活を鋭く描いた随筆です。</p>
+
+<h2>【6】資料の読み取り（10点）</h2>
+<p>（1）<strong>アジア州</strong>（2点）<br />
+約46億人で、世界の人口の約6割を占めます。</p>
+<p>（2）<strong>約2分の1</strong>（2点）<br />
+7億5000万 ÷ 14億 ≒ 0.54。概数で、約2分の1です。</p>
+<p>（3）<strong>55％</strong>（2点）<br />
+ドイツの輸出の半分以上が、EU加盟国向けです。</p>
+<p>（4）<strong>15ポイント</strong>（2点）<br />
+45 − 30 ＝ 15。割合の変化は「ポイント」で答えます。</p>
+<p>（5）<strong>ア</strong>（2点）<br />
+ドイツの輸出の55％がEU加盟国向けであることから、加盟国の間で貿易がさかんなことが読み取れます。イギリスのように、EUに加盟していないヨーロッパ州の国もあります。</p>
+
+<h2>【7】EUとヨーロッパ州（8点）</h2>
+<p>（1）<strong>ア・イ</strong>（完答4点）<br />
+ウのEUの本部は、ベルギーのブリュッセルです。エは、デンマークのようにユーロを使っていない加盟国があるため誤りです。</p>
+<p>（2）<strong>ア</strong>（2点）<br />
+酸性雨は、工場や自動車の排気ガスに含まれる有害な物質が、雨に溶け込むことで起こります。森林が枯れるなどの被害が出ました。</p>
+<p>（3）<strong>ア</strong>（2点）<br />
+混合農業は、作物の栽培と家畜の飼育を組み合わせた農業で、ヨーロッパ州の北部や西部でさかんです。</p>
+
+<h2>【8】平安時代の人物（8点）</h2>
+<p>A：<strong>ウ</strong>　B：<strong>ア</strong>　C：<strong>エ</strong>　D：<strong>イ</strong>（各2点）<br />
+Aは藤原道長、Bは藤原頼通、Cは紫式部、Dは平将門です。オの清少納言は、『枕草子』の作者です。</p>
+
+<h2>【9】すべて選ぶと該当なし（10点）</h2>
 <p>（1）<strong>ア・イ・エ</strong>（完答4点）<br />
-活版印刷と火縄銃は、ずっと後の時代に伝えられた技術です。<br />
-（2）<strong>ウ</strong>（2点）<br />
-インドはアジア州の国で、アフリカ州の国ではありません。「該当なし」は、条件に合うものが本当にないときだけ選びます。<br />
-（3）<strong>ウ</strong>（2点）<br />
-中国はASEANの加盟国ではありません。</p>
-<h2>並べかえ（6点）</h2>
-<p>（1）<strong>ウ → ア → エ → イ</strong>（3点）<br />
-縄文時代の狩りや採集の生活のあと、稲作が伝わって弥生時代が始まり、小さな国々に分かれて争いが起こり、やがて鉄製の農具が広がって生産量が増えました。<br />
-（2）<strong>ウ → ア → エ → イ</strong>（3点）<br />
-地中海沿岸の温帯から南へ、乾燥帯（サハラ砂漠）、サバナ、熱帯雨林帯（赤道付近）の順です。</p>
-<h2>記述（10点）</h2>
-<p>（1）（例）<strong>大和政権の影響が、各地に及んでいたことが分かる</strong>（3点）<br />
-「大和政権」の語句を用い、影響の広がりに触れていれば可です。<br />
-（2）（例）<strong>土地を深く耕せるようになり、農業の生産量が増えた</strong>（3点）<br />
-「生産量」の語句を用い、増えたことが書けていれば可です。<br />
-（3）（例）<strong>カカオなど特定の産品の輸出に頼る経済で、その産品の価格が下がると国の収入が大きく減って不安定になるという課題がある</strong>（4点）<br />
-「輸出」の語句を用い、資料の割合（カカオ55%）から「特定の産品への依存」を読み取り、課題まで書けていれば可です。</p>
+ウは誤りで、ASEANに加盟しているのは東南アジアの国々で、日本は加盟していません。</p>
+<p>（2）<strong>ウ</strong>（2点）<br />
+サウジアラビアはアジア州（西アジア）の国です。</p>
+<p>（3）<strong>ウ</strong>（2点）<br />
+イギリスは2020年にEUを離脱したため、現在は加盟していません。</p>
+<p>（4）<strong>イ</strong>（2点）<br />
+ドナウ川は、ヨーロッパ州を東へ流れて黒海に注ぎます。サハラ砂漠は北部、ライン川は北海に注ぎ、地中海性気候は夏に乾燥します。</p>
+
+<h2>【10】並べかえと国名（6点）</h2>
+<p>（1）<strong>エ→イ→ウ→ア</strong>（2点）<br />
+北の地中海沿岸のアルジェ、カイロ、赤道付近のラゴス、南端のケープタウンの順です。</p>
+<p>（2）<strong>ウ→ア→エ→イ</strong>（2点）<br />
+平安京への遷都（794年）→遣唐使の廃止（894年）→『古今和歌集』（905年）→道長が摂政になる（1016年）の順です。</p>
+<p>（3）X：<strong>フランス</strong>　Y：<strong>スペイン</strong>（完答2点）<br />
+Xは首都パリからフランス、Yは首都マドリードからスペインです。</p>
+
+<h2>【11】記述（8点）</h2>
+<p>（1）<strong>（例）加盟国の間では両替の必要がないため、国境をこえた旅行でも、そのまま買い物ができて便利である。</strong>（2点）<br />
+「旅行」の語句を使うことが条件です。</p>
+<p>（2）<strong>（例）人口の増加に食料の生産が追いつかず、食料が不足する地域が出てくること。</strong>（2点）<br />
+「食料」の語句を使うことが条件です。</p>
+<p>（3）<strong>（例）かつてヨーロッパの国々の植民地だった時代に、輸出向けの農産物を大量に生産するために、大農園が作られたから。</strong>（2点）<br />
+「植民地」の語句を使うことが条件です。</p>
+<p>（4）<strong>（例）人々が、死後に極楽浄土へ生まれ変わることを願う浄土信仰を深め、その世界をこの世に表そうとしたため。</strong>（2点）<br />
+「浄土」の語句を使うことが条件です。</p>
 </div></details>
 
 <style>
