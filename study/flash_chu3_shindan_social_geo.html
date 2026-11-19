@@ -1,0 +1,638 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>中3社会 暗記カード｜学習の診断対策（地理総合）｜Step Up テスト対策</title>
+<style>
+:root{--ink:#1c2733;--accent:#ff6b9d;--navy:#1a1a5e;--line:#d9e2ec;--soft:#f4f7fb}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:var(--ink);
+ font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP","Yu Gothic",sans-serif;
+ font-size:18px;line-height:1.85;-webkit-text-size-adjust:100%}
+.wrap{max-width:880px;margin:0 auto;padding:20px 18px 56px}
+h1{font-size:1.55rem;line-height:1.45;border-bottom:4px solid var(--accent);padding-bottom:.35em;margin:.4em 0 .8em}
+p{margin:.6em 0}
+.backlink{display:inline-block;margin-top:28px;background:var(--accent);color:#fff;font-weight:700;
+ text-decoration:none;padding:14px 22px;border-radius:999px;font-size:1.05rem}
+.toplink{font-size:.95rem;margin-bottom:4px}
+.toplink a{color:var(--navy)}
+footer{margin-top:10px}
+@media (max-width:600px){body{font-size:17px}.wrap{padding:14px 12px 48px}h1{font-size:1.35rem}}
+.progress-text{font-weight:700;margin:16px 0 6px;font-size:1.1rem}
+.progress-bar{height:16px;background:var(--soft);border:2px solid var(--line);border-radius:999px;overflow:hidden}
+.progress-fill{height:100%;background:var(--accent);width:0;transition:width .3s}
+.card-scene{perspective:1200px;margin:20px 0 6px}
+.fcard{position:relative;width:100%;height:400px;cursor:pointer;transform-style:preserve-3d;transition:transform .45s;-webkit-tap-highlight-color:transparent}
+.fcard.flipped{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+ border:3px solid var(--navy);border-radius:18px;padding:24px 18px;overflow:hidden;
+ display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:#fff}
+.face.back{transform:rotateY(180deg);background:var(--soft);border-color:var(--accent)}
+.face-label{font-size:.85rem;font-weight:700;color:var(--accent);letter-spacing:.2em;margin-bottom:12px}
+.face-label.ans{color:var(--navy)}
+.face-text{font-size:1.3rem;font-weight:700;line-height:1.65}
+.face-note{margin-top:14px;font-size:.98rem;color:#54677a;line-height:1.65}
+.tap-hint{margin-top:16px;font-size:.9rem;color:#8a97a5}
+.judge{display:flex;gap:12px;margin-top:16px}
+.jbtn{flex:1;font-family:inherit;font-size:1.25rem;font-weight:700;padding:18px 10px;border-radius:14px;
+ border:3px solid var(--navy);background:#fff;color:var(--navy);cursor:pointer;min-height:64px}
+.jbtn.known{background:var(--accent);border-color:var(--accent);color:#fff}
+.jbtn:active{transform:scale(.98)}
+.round-info{text-align:center;color:#54677a;font-size:.95rem;margin-top:12px}
+.done-box{border:3px solid var(--accent);border-radius:18px;padding:32px 20px;text-align:center;background:#fff5f8;margin-top:22px}
+.done-title{font-size:1.5rem;font-weight:700;color:#c2255c;margin:.2em 0}
+.restart{max-width:340px;margin:16px auto 0;display:block;width:100%}
+</style>
+</head>
+<body>
+<div class="wrap">
+<p class="toplink"><a href="iori.html">← 中3トップへ戻る</a></p>
+<h1>中3社会 暗記カード｜学習の診断対策（地理総合）</h1>
+<p>愛知県学習の診断（12月11日の実力テスト想定）に向けた、社会・地理総合の暗記カード全93枚です。カードをタップすると答えが見えます。答えを見たら「覚えた」「まだ」で教えてください。「まだ」のカードだけが次の周に出てきます。地名・産業名は漢字で書けるようにしておきましょう。</p>
+<div class="progress-text" id="progressText"></div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+<div id="playArea">
+<div class="card-scene"><div class="fcard" id="fcard">
+<div class="face front"><div class="face-label">も　ん　だ　い</div><div class="face-text" id="frontText"></div><div class="tap-hint">タップで答えを見る</div></div>
+<div class="face back"><div class="face-label ans">こ　た　え</div><div class="face-text" id="backText"></div><div class="face-note" id="backNote"></div></div>
+</div></div>
+<div class="judge" id="judgeBtns" style="visibility:hidden">
+<button class="jbtn still" id="btnStill" type="button">まだ</button>
+<button class="jbtn known" id="btnKnown" type="button">覚えた</button>
+</div>
+<p class="round-info" id="roundInfo"></p>
+</div>
+<div id="doneArea" style="display:none">
+<div class="done-box"><p class="done-title">🎉 全部おぼえた！</p><p id="doneText"></p>
+<button class="jbtn known restart" id="btnRestart" type="button">最初からもう一度</button></div>
+</div>
+<footer><a class="backlink" href="iori.html">← 中3トップへ戻る</a> <a class="backlink" href="../index.html" style="background:#1a1a5e">🏠 アプリへ戻る</a></footer>
+</div>
+<script>
+var CARDS = [
+ {
+  "q": "日本の標準時子午線は東経何度か。また、通る市はどこか",
+  "a": "東経135度、兵庫県明石市",
+  "n": ""
+ },
+ {
+  "q": "日本の最南端の島を何というか",
+  "a": "沖ノ鳥島",
+  "n": ""
+ },
+ {
+  "q": "日本の国土のうち、山地が占める割合はおよそどれくらいか",
+  "a": "約4分の3",
+  "n": ""
+ },
+ {
+  "q": "日本列島を東西に分ける大きな地溝帯を何というか",
+  "a": "フォッサマグナ",
+  "n": ""
+ },
+ {
+  "q": "フォッサマグナの西の境になっている線を何というか",
+  "a": "糸魚川—静岡構造線",
+  "n": ""
+ },
+ {
+  "q": "日本列島の周辺に集まっているプレートはいくつあるか。また、その影響で起こりやすい自然現象は",
+  "a": "4つ。地震や火山活動",
+  "n": ""
+ },
+ {
+  "q": "日本の川を外国の大河と比べると、どのような特色があるか",
+  "a": "短くて急流で、流域面積が狭い",
+  "n": ""
+ },
+ {
+  "q": "三陸海岸や若狭湾に見られる、入り組んだ海岸を何というか",
+  "a": "リアス海岸",
+  "n": ""
+ },
+ {
+  "q": "冬に雪や雨が多く降る気候を何というか",
+  "a": "日本海側の気候",
+  "n": ""
+ },
+ {
+  "q": "一年を通して降水量が少なく、ため池が多い気候を何というか",
+  "a": "瀬戸内の気候",
+  "n": ""
+ },
+ {
+  "q": "冬の季節風はどちらの方角から吹くか。また、日本海側に雪を降らせる流れを説明しなさい",
+  "a": "北西から吹く。大陸からの乾いた風が日本海で水蒸気を含み、山地にぶつかって雪を降らせる",
+  "n": ""
+ },
+ {
+  "q": "夏に東北地方の太平洋側に吹く、冷たい北東の風を何というか。また、長く吹くと何が起こるか",
+  "a": "やませ。気温が下がり、稲が実らない冷害が起こる",
+  "n": ""
+ },
+ {
+  "q": "日本の地域のうち、梅雨がないのはどこか",
+  "a": "北海道",
+  "n": ""
+ },
+ {
+  "q": "台風が多く接近・上陸する時期はいつごろか",
+  "a": "夏から秋（8〜9月ごろ）",
+  "n": ""
+ },
+ {
+  "q": "冬でも暖かく、一年を通して降水量が多い、沖縄などの気候を何というか",
+  "a": "南西諸島の気候",
+  "n": ""
+ },
+ {
+  "q": "一年を通して降水量が少なく、気温の日較差・年較差が大きい、中央高地などの気候を何というか",
+  "a": "内陸の気候",
+  "n": ""
+ },
+ {
+  "q": "日本の三大都市圏を3つ答えなさい",
+  "a": "東京圏（首都圏）、名古屋圏、大阪圏（京阪神）",
+  "n": ""
+ },
+ {
+  "q": "政治・経済・文化の機能が東京に集中しすぎることを何というか",
+  "a": "東京一極集中",
+  "n": ""
+ },
+ {
+  "q": "少子高齢化が進んだ国の人口ピラミッドは、どのような形になるか",
+  "a": "高齢者が太く、年少者が細い「つぼ型」",
+  "n": ""
+ },
+ {
+  "q": "農山村で人口が減りすぎて、商店や病院の維持が難しくなる状態を何というか",
+  "a": "過疎",
+  "n": ""
+ },
+ {
+  "q": "都市部で人口が集中しすぎる状態を何というか",
+  "a": "過密",
+  "n": ""
+ },
+ {
+  "q": "東北地方の日本海側にある、稲作がさかんな平野を2つ答えなさい",
+  "a": "庄内平野、秋田平野",
+  "n": ""
+ },
+ {
+  "q": "暖かい地方でビニールハウスなどを使い、出荷時期を早める栽培を何というか。また、代表的な県を1つ答えなさい",
+  "a": "促成栽培。高知県（なす・ピーマン）や宮崎県（きゅうり）",
+  "n": ""
+ },
+ {
+  "q": "涼しい高原で出荷時期を遅らせる栽培を何というか。また、代表的な産物を1つ答えなさい",
+  "a": "抑制栽培。長野県のレタス、群馬県嬬恋村のキャベツ",
+  "n": ""
+ },
+ {
+  "q": "大都市の周辺で新鮮な野菜などを都市に出荷する農業を何というか",
+  "a": "近郊農業",
+  "n": ""
+ },
+ {
+  "q": "愛知県の渥美半島でさかんな、ビニールハウスなどで温度を管理する農業を何というか",
+  "a": "施設園芸農業（電照菊やメロンなど）",
+  "n": ""
+ },
+ {
+  "q": "北海道で大規模に栽培される畑作の作物を3つ答えなさい",
+  "a": "小麦、てん菜（ビート）、じゃがいも（ほか大豆・小豆・玉ねぎ）",
+  "n": ""
+ },
+ {
+  "q": "北海道の根釧台地でさかんな農業は何か",
+  "a": "酪農",
+  "n": ""
+ },
+ {
+  "q": "りんごの生産が日本一の県、みかんの生産がさかんな県はそれぞれどこか",
+  "a": "りんご：青森県／みかん：愛媛県（ほか和歌山県・静岡県）",
+  "n": ""
+ },
+ {
+  "q": "魚や貝などをいけすで育てる漁業を何というか。また、例を1つ答えなさい",
+  "a": "養殖業。広島県のかき、愛媛県の真珠・真鯛など",
+  "n": ""
+ },
+ {
+  "q": "稚魚を育ててから海に放流し、大きくなってからとる漁業を何というか",
+  "a": "栽培漁業",
+  "n": ""
+ },
+ {
+  "q": "沿岸から200海里までの海域で、沿岸国が水産資源などを管理できる水域を何というか",
+  "a": "排他的経済水域",
+  "n": ""
+ },
+ {
+  "q": "日本の食料自給率（カロリーベース）はおよそどれくらいか",
+  "a": "約4割（おおよその値）と低く、多くを輸入に頼っている",
+  "n": ""
+ },
+ {
+  "q": "太平洋側に工業地帯・工業地域が帯状に連なる地域を何というか",
+  "a": "太平洋ベルト",
+  "n": ""
+ },
+ {
+  "q": "四大工業地帯を4つ答えなさい",
+  "a": "京浜工業地帯、中京工業地帯、阪神工業地帯、北九州工業地帯",
+  "n": ""
+ },
+ {
+  "q": "中京工業地帯の中心となっている産業は何か",
+  "a": "自動車工業（輸送用機械の出荷額が大きい）",
+  "n": ""
+ },
+ {
+  "q": "北九州工業地帯は、かつて何の産業で栄え、現在はどう変化しているか",
+  "a": "鉄鋼業（八幡製鉄所）。近年は割合が低下し、先端技術産業などに移りつつある",
+  "n": ""
+ },
+ {
+  "q": "原料や燃料を輸入し、工業製品に加工して輸出する貿易を何というか",
+  "a": "加工貿易",
+  "n": ""
+ },
+ {
+  "q": "瀬戸内海沿岸に発達した工業地域を何というか。また、代表的な産業は",
+  "a": "瀬戸内工業地域。石油化学コンビナートや造船業",
+  "n": ""
+ },
+ {
+  "q": "北海道にある、稲作がさかんな日本有数の平野を何というか",
+  "a": "石狩平野",
+  "n": ""
+ },
+ {
+  "q": "南九州に広がる、火山灰や軽石からなる台地を何というか。また、主に何に利用されるか",
+  "a": "シラス台地。畑作と畜産",
+  "n": ""
+ },
+ {
+  "q": "九州最大の平野を何というか",
+  "a": "筑紫平野",
+  "n": ""
+ },
+ {
+  "q": "日本最大の平野と、日本最大の湖をそれぞれ答えなさい",
+  "a": "平野：関東平野／湖：琵琶湖",
+  "n": ""
+ },
+ {
+  "q": "瀬戸内地方でため池が多いのはなぜか",
+  "a": "瀬戸内の気候は一年を通して降水量が少ないため、農業用水をためておく必要があるから",
+  "n": ""
+ },
+ {
+  "q": "世界有数のカルデラをもつ、熊本県の火山を何というか",
+  "a": "阿蘇山",
+  "n": ""
+ },
+ {
+  "q": "沖縄県でさかんな農産物を2つ答えなさい",
+  "a": "さとうきび、パイナップル",
+  "n": ""
+ },
+ {
+  "q": "有明海沿岸でさかんな養殖は何か",
+  "a": "のりの養殖",
+  "n": ""
+ },
+ {
+  "q": "面積が最大の大陸と、最大の大洋をそれぞれ答えなさい",
+  "a": "大陸：アジア／大洋：太平洋",
+  "n": ""
+ },
+ {
+  "q": "経度0度の本初子午線が通る都市はどこか",
+  "a": "イギリスのロンドン",
+  "n": ""
+ },
+ {
+  "q": "時差は、経度何度ごとに1時間生じるか",
+  "a": "15度ごと",
+  "n": ""
+ },
+ {
+  "q": "一年中高温で雨が多く、スコールのある気候を何というか",
+  "a": "熱帯雨林気候",
+  "n": ""
+ },
+ {
+  "q": "夏は乾燥し冬に雨が降る、地中海沿岸の気候を何というか",
+  "a": "地中海性気候",
+  "n": ""
+ },
+ {
+  "q": "ヨーロッパ西部が緯度の割に温暖な理由を2つ答えなさい",
+  "a": "偏西風の影響と、北大西洋海流（暖流）が流れているため",
+  "n": ""
+ },
+ {
+  "q": "冷帯（亜寒帯）に広がる針葉樹林を何というか",
+  "a": "タイガ",
+  "n": ""
+ },
+ {
+  "q": "短い草の草原が広がる、乾燥帯のうち比較的雨の多い気候を何というか",
+  "a": "ステップ気候",
+  "n": ""
+ },
+ {
+  "q": "アジアの気候に大きな影響を与える、季節によって向きが変わる風を何というか",
+  "a": "モンスーン（季節風）",
+  "n": ""
+ },
+ {
+  "q": "中国では、南部の長江流域と北部の黄河流域で、それぞれ主に何が栽培されるか",
+  "a": "南部：稲作／北部：小麦",
+  "n": ""
+ },
+ {
+  "q": "東南アジアの国々が地域協力を進める組織を何というか",
+  "a": "ASEAN（東南アジア諸国連合）",
+  "n": ""
+ },
+ {
+  "q": "マレーシアなどでさかんな、天然ゴムや油やしを栽培する大農園を何というか",
+  "a": "プランテーション",
+  "n": ""
+ },
+ {
+  "q": "インドで最も多くの人が信仰する宗教は何か",
+  "a": "ヒンドゥー教",
+  "n": ""
+ },
+ {
+  "q": "インドのIT産業の中心として知られる都市はどこか",
+  "a": "バンガロール",
+  "n": ""
+ },
+ {
+  "q": "西アジアで多く産出する資源は何か。また、産油国の組織を何というか",
+  "a": "石油。OPEC（石油輸出国機構）",
+  "n": ""
+ },
+ {
+  "q": "タイで最も多くの人が信仰する宗教は何か",
+  "a": "（上座部）仏教",
+  "n": ""
+ },
+ {
+  "q": "ヨーロッパの多くの国が加盟する地域統合の組織を何というか",
+  "a": "EU（ヨーロッパ連合）",
+  "n": ""
+ },
+ {
+  "q": "EUの多くの国で使われている共通通貨を何というか",
+  "a": "ユーロ",
+  "n": ""
+ },
+ {
+  "q": "地中海沿岸で、夏の乾燥に強いオリーブやぶどうを栽培する農業を何というか",
+  "a": "地中海式農業",
+  "n": ""
+ },
+ {
+  "q": "作物の栽培と家畜の飼育を組み合わせた農業を何というか",
+  "a": "混合農業",
+  "n": ""
+ },
+ {
+  "q": "酪農がさかんで、乳製品の輸出も多い国を2つ答えなさい",
+  "a": "デンマーク、オランダ",
+  "n": ""
+ },
+ {
+  "q": "ライン川やドナウ川のように、複数の国を流れる川を何というか",
+  "a": "国際河川",
+  "n": ""
+ },
+ {
+  "q": "世界最大の砂漠を何というか",
+  "a": "サハラ砂漠",
+  "n": ""
+ },
+ {
+  "q": "特定の農産物や資源の輸出に頼る経済を何というか。また、その弱点は",
+  "a": "モノカルチャー経済。輸出品の国際価格が下がると、国の収入が大きく減る",
+  "n": ""
+ },
+ {
+  "q": "ガーナの代表的な輸出農産物は何か",
+  "a": "カカオ豆",
+  "n": ""
+ },
+ {
+  "q": "アフリカの多くの国の国境が直線的なのはなぜか",
+  "a": "植民地時代に、ヨーロッパの国々が民族の分布を無視して引いたため",
+  "n": ""
+ },
+ {
+  "q": "サハラ砂漠の南縁で砂漠化が進んでいる地域を何というか",
+  "a": "サヘル地域",
+  "n": ""
+ },
+ {
+  "q": "エジプトを流れ、地中海に注ぐ大河を何というか",
+  "a": "ナイル川",
+  "n": ""
+ },
+ {
+  "q": "その土地の自然条件に合った作物を栽培する、アメリカの農業の特色を何というか",
+  "a": "適地適作",
+  "n": ""
+ },
+ {
+  "q": "アメリカの中央平原（コーンベルト）で主に栽培される作物は何か",
+  "a": "とうもろこし（大豆も多い）",
+  "n": ""
+ },
+ {
+  "q": "グレートプレーンズで栽培される作物と、乾燥対策の灌漑装置を答えなさい",
+  "a": "小麦。センターピボット（円形の灌漑装置）",
+  "n": ""
+ },
+ {
+  "q": "五大湖周辺でさかんな農業は何か",
+  "a": "酪農",
+  "n": ""
+ },
+ {
+  "q": "アメリカで増えている、スペイン語を話す人々を何というか",
+  "a": "ヒスパニック",
+  "n": ""
+ },
+ {
+  "q": "西海岸のシリコンバレーに集まる産業は何か",
+  "a": "IT産業（情報技術産業）",
+  "n": ""
+ },
+ {
+  "q": "カナダに広がる針葉樹林と、さかんな産業を答えなさい",
+  "a": "タイガ。林業（小麦の生産もさかん）",
+  "n": ""
+ },
+ {
+  "q": "アマゾン川流域に広がる熱帯雨林を何とよぶか。また、「地球の肺」とよばれるのはなぜか",
+  "a": "セルバ。大量の酸素を生み出し、二酸化炭素を吸収しているから",
+  "n": ""
+ },
+ {
+  "q": "ブラジルの公用語は何語か。また、南アメリカの他国の多くで使われる言語は",
+  "a": "ブラジル：ポルトガル語／他国の多く：スペイン語",
+  "n": ""
+ },
+ {
+  "q": "アルゼンチンのパンパでさかんな産業を2つ答えなさい",
+  "a": "小麦の栽培、肉牛の飼育",
+  "n": ""
+ },
+ {
+  "q": "じゃがいもの原産地とされる山脈はどこか",
+  "a": "アンデス山脈",
+  "n": ""
+ },
+ {
+  "q": "オーストラリアの大鑽井盆地（グレートアーテジアン盆地）の地下水は、何に利用されるか",
+  "a": "羊などの家畜の飲料水",
+  "n": ""
+ },
+ {
+  "q": "オーストラリアの先住民を何というか",
+  "a": "アボリジニ",
+  "n": ""
+ },
+ {
+  "q": "オーストラリアで、日本が夏のときに季節はどうなるか",
+  "a": "冬になる（南半球のため季節が逆）",
+  "n": ""
+ },
+ {
+  "q": "日本が原油を主に輸入している地域はどこか",
+  "a": "西アジア（サウジアラビア、アラブ首長国連邦など）",
+  "n": ""
+ },
+ {
+  "q": "日本が鉄鉱石を主に輸入している国を2つ答えなさい",
+  "a": "オーストラリア、ブラジル",
+  "n": ""
+ },
+ {
+  "q": "各国が得意な物の生産に特化し、貿易で補い合うことを何というか",
+  "a": "国際分業",
+  "n": ""
+ },
+ {
+  "q": "世界の貿易で、物を運ぶ手段の中心となっているのは何か",
+  "a": "海上輸送（船）",
+  "n": ""
+ }
+];
+var total = CARDS.length;
+var knownCount = 0;
+var deck = [];
+var pos = 0;
+var flipped = false;
+var round = 1;
+function el(id){ return document.getElementById(id); }
+function shuffle(a){ for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+function updateProgress(){
+  el('progressText').textContent = '覚えた ' + knownCount + ' / ' + total + ' 枚';
+  el('progressFill').style.width = (total ? (knownCount/total*100) : 0) + '%';
+}
+function updateRoundInfo(){
+  el('roundInfo').textContent = '第' + round + '周目｜この周はあと ' + (deck.length - pos) + ' 枚';
+}
+function showCard(){
+  flipped = false;
+  el('fcard').classList.remove('flipped');
+  var c = CARDS[deck[pos]];
+  el('frontText').textContent = c.q;
+  el('backText').textContent = c.a;
+  el('backNote').textContent = c.n || '';
+  el('judgeBtns').style.visibility = 'hidden';
+  updateRoundInfo();
+}
+function startRound(){ shuffle(deck); pos = 0; showCard(); }
+function init(){
+  knownCount = 0; round = 1;
+  deck = CARDS.map(function(_, i){ return i; });
+  el('doneArea').style.display = 'none';
+  el('playArea').style.display = 'block';
+  updateProgress();
+  startRound();
+}
+function finish(){
+  coinAward(10,'暗記カード1周','flash:flash_chu3_shindan_social_geo',1);
+  el('playArea').style.display = 'none';
+  el('doneArea').style.display = 'block';
+  el('doneText').textContent = '全' + total + '枚のカードを全部おぼえました。おつかれさま！';
+}
+function judge(known){
+  if(!flipped) return;
+  if(known){ knownCount++; deck.splice(pos, 1); coinAward(1,'暗記カード','flashcard-each',20); }
+  else { pos++; }
+  updateProgress();
+  if(pos >= deck.length){
+    if(deck.length === 0){ finish(); return; }
+    round++; startRound(); return;
+  }
+  showCard();
+}
+el('fcard').addEventListener('click', function(){
+  if(flipped) return;
+  flipped = true;
+  this.classList.add('flipped');
+  el('judgeBtns').style.visibility = 'visible';
+});
+el('btnKnown').addEventListener('click', function(){ judge(true); });
+el('btnStill').addEventListener('click', function(){ judge(false); });
+el('btnRestart').addEventListener('click', init);
+init();
+function todayStr(d){d=d||new Date();var m=('0'+(d.getMonth()+1)).slice(-2);var day=('0'+d.getDate()).slice(-2);return d.getFullYear()+'-'+m+'-'+day;}
+/* ==== ご褒美コイン ==== */
+var COIN_CHILD='iori';
+var COIN_KEY='stepup-coins-'+COIN_CHILD;
+var CLAIM_KEY='stepup-coinclaims-'+COIN_CHILD;
+function coinLoad(){try{var v=JSON.parse(localStorage.getItem(COIN_KEY));if(v&&typeof v.total==='number'&&Array.isArray(v.history))return v;}catch(e){}return{total:0,history:[]};}
+function coinClaimsLoad(){try{var v=JSON.parse(localStorage.getItem(CLAIM_KEY));if(v&&typeof v==='object'&&v!==null)return v;}catch(e){}return{};}
+function coinAward(amount,sourceLabel,claimId,dailyCap){
+  if(!amount||amount<=0)return 0;
+  if(dailyCap==null)dailyCap=1;
+  if(claimId){
+    var claims=coinClaimsLoad();
+    var ck=todayStr()+':'+claimId;
+    var n=claims[ck]||0;
+    if(n>=dailyCap)return 0;
+    claims[ck]=n+1;
+    try{localStorage.setItem(CLAIM_KEY,JSON.stringify(claims));}catch(e){}
+  }
+  var data=coinLoad();
+  data.total+=amount;
+  data.history.push({date:todayStr(),source:sourceLabel,amount:amount});
+  if(data.history.length>200)data.history=data.history.slice(data.history.length-200);
+  try{localStorage.setItem(COIN_KEY,JSON.stringify(data));}catch(e){}
+  coinToast(amount);
+  return amount;
+}
+function coinToast(amount){
+  var t=document.createElement('div');
+  t.textContent='🪙 +'+amount+'コイン！';
+  t.setAttribute('style','position:fixed;right:16px;bottom:16px;z-index:9999;background:#1a1a5e;color:#fff;font-weight:700;font-size:1.1rem;padding:12px 20px;border-radius:999px;box-shadow:0 4px 14px rgba(0,0,0,.25);opacity:0;transition:opacity .3s;pointer-events:none');
+  document.body.appendChild(t);
+  setTimeout(function(){t.style.opacity='1';},10);
+  setTimeout(function(){t.style.opacity='0';},1700);
+  setTimeout(function(){if(t.parentNode)t.parentNode.removeChild(t);},2200);
+}
+</script>
+</body>
+</html>

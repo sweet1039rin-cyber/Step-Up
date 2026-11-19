@@ -1,0 +1,604 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>中3理科 一問一答｜学習の診断対策（未カバー4分野）｜Step Up テスト対策</title>
+<style>
+:root{--ink:#1c2733;--accent:#ff6b9d;--navy:#1a1a5e;--line:#d9e2ec;--soft:#f4f7fb}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:var(--ink);
+ font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP","Yu Gothic",sans-serif;
+ font-size:18px;line-height:1.85;-webkit-text-size-adjust:100%}
+.wrap{max-width:880px;margin:0 auto;padding:20px 18px 56px}
+h1{font-size:1.55rem;line-height:1.45;border-bottom:4px solid var(--accent);padding-bottom:.35em;margin:.4em 0 .8em}
+p{margin:.6em 0}
+.backlink{display:inline-block;margin-top:28px;background:var(--accent);color:#fff;font-weight:700;
+ text-decoration:none;padding:14px 22px;border-radius:999px;font-size:1.05rem}
+.toplink{font-size:.95rem;margin-bottom:4px}
+.toplink a{color:var(--navy)}
+footer{margin-top:10px}
+@media (max-width:600px){body{font-size:17px}.wrap{padding:14px 12px 48px}h1{font-size:1.35rem}}
+.progress-text{font-weight:700;margin:16px 0 6px;font-size:1.1rem}
+.progress-bar{height:16px;background:var(--soft);border:2px solid var(--line);border-radius:999px;overflow:hidden}
+.progress-fill{height:100%;background:var(--accent);width:0;transition:width .3s}
+.qbox{border:3px solid var(--navy);border-radius:18px;padding:26px 20px;margin:20px 0 6px;background:#fff;text-align:center}
+.qbox-label{font-size:.85rem;font-weight:700;color:var(--accent);letter-spacing:.2em;margin-bottom:12px}
+.qbox-label.ans{color:var(--navy)}
+.qbox-text{font-size:1.3rem;font-weight:700;line-height:1.65}
+.abox{border:3px solid var(--accent);border-radius:18px;padding:26px 20px;margin:14px 0 6px;background:var(--soft);text-align:center}
+.abox-note{margin-top:14px;font-size:.98rem;color:#54677a;line-height:1.65}
+.showbtn{display:block;width:100%;font-family:inherit;font-size:1.25rem;font-weight:700;padding:18px 10px;border-radius:14px;
+ border:3px solid var(--navy);background:var(--navy);color:#fff;cursor:pointer;min-height:64px;margin-top:16px}
+.showbtn:active{transform:scale(.98)}
+.judge{display:flex;gap:12px;margin-top:16px}
+.jbtn{flex:1;font-family:inherit;font-size:1.25rem;font-weight:700;padding:18px 10px;border-radius:14px;
+ border:3px solid var(--navy);background:#fff;color:var(--navy);cursor:pointer;min-height:64px}
+.jbtn.known{background:var(--accent);border-color:var(--accent);color:#fff}
+.jbtn:active{transform:scale(.98)}
+.done-box{border:3px solid var(--accent);border-radius:18px;padding:32px 20px;text-align:center;background:#fff5f8;margin-top:22px}
+.done-title{font-size:1.5rem;font-weight:700;color:#c2255c;margin:.2em 0}
+.done-score{font-size:1.3rem;font-weight:700;color:var(--navy)}
+.restart{max-width:340px;margin:16px auto 0;display:block;width:100%}
+.retry{max-width:340px;margin:16px auto 0;display:block;width:100%;background:var(--navy);border-color:var(--navy);color:#fff}
+</style>
+</head>
+<body>
+<div class="wrap">
+<p class="toplink"><a href="iori.html">← 中3トップへ戻る</a></p>
+<h1>中3理科 一問一答｜学習の診断対策（未カバー4分野）</h1>
+<p>愛知県学習の診断（12月11日の実力テスト想定）に向けた、理科の未カバー4分野（血液の循環／化学変化と物質の質量／前線と天気の変化／地層のでき方）の一問一答です。1問ずつ出ます。まず頭の中で答えてから「答えを見る」を押して、「できた」「できなかった」で教えてください。できなかった問題は、まちがい復習ボックスに残ります。</p>
+<div class="progress-text" id="progressText"></div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+<div id="playArea">
+<div class="qbox"><div class="qbox-label">も　ん　だ　い</div><div class="qbox-text" id="qText"></div></div>
+<button class="showbtn" id="btnShow" type="button">答えを見る</button>
+<div class="abox" id="answerArea" style="display:none"><div class="qbox-label ans">こ　た　え</div><div class="qbox-text" id="aText"></div><div class="abox-note" id="aNote"></div></div>
+<div class="judge" id="judgeBtns" style="visibility:hidden">
+<button class="jbtn still" id="btnNg" type="button">できなかった</button>
+<button class="jbtn known" id="btnOk" type="button">できた</button>
+</div>
+</div>
+<div id="doneArea" style="display:none">
+<div class="done-box"><p class="done-title" id="doneTitle">🎉 おつかれさま！</p><p class="done-score" id="doneText"></p>
+<button class="jbtn known retry" id="btnRetry" type="button" style="display:none">できなかった問題だけもう一度</button>
+<button class="jbtn known restart" id="btnRestart" type="button">最初からもう一度</button></div>
+</div>
+<footer><a class="backlink" href="iori.html">← 中3トップへ戻る</a> <a class="backlink" href="../index.html" style="background:#1a1a5e">🏠 アプリへ戻る</a></footer>
+</div>
+<script>
+var CARDS = [
+ {
+  "q": "心臓は、いくつの心房と心室からできている？",
+  "a": "2つの心房と2つの心室（右心房・右心室・左心房・左心室）",
+  "n": ""
+ },
+ {
+  "q": "心臓の4つの部屋のうち、壁が最も厚いのはどれ？",
+  "a": "左心室",
+  "n": ""
+ },
+ {
+  "q": "左心室の壁が最も厚いのはなぜ？",
+  "a": "全身へ血液を送り出すため、力強く縮む必要があるから",
+  "n": ""
+ },
+ {
+  "q": "全身から心臓へもどる血液が流れる太い血管は？",
+  "a": "大静脈",
+  "n": ""
+ },
+ {
+  "q": "心臓から肺へ血液を送る血管は？",
+  "a": "肺動脈",
+  "n": ""
+ },
+ {
+  "q": "肺から心臓へもどる血液が流れる血管は？",
+  "a": "肺静脈",
+  "n": ""
+ },
+ {
+  "q": "心臓から全身へ血液を送り出す太い血管は？",
+  "a": "大動脈",
+  "n": ""
+ },
+ {
+  "q": "酸素を多くふくむ血液を何という？",
+  "a": "動脈血",
+  "n": ""
+ },
+ {
+  "q": "酸素が少なく、二酸化炭素を多くふくむ血液を何という？",
+  "a": "静脈血",
+  "n": ""
+ },
+ {
+  "q": "肺動脈を流れる血液は、動脈血と静脈血のどちら？",
+  "a": "静脈血",
+  "n": ""
+ },
+ {
+  "q": "肺静脈を流れる血液は、動脈血と静脈血のどちら？",
+  "a": "動脈血",
+  "n": ""
+ },
+ {
+  "q": "血液が肺を通ると、酸素の量はどう変化する？",
+  "a": "増える（肺胞から酸素が取りこまれる）",
+  "n": ""
+ },
+ {
+  "q": "血液が全身の組織を通ると、酸素の量はどう変化する？",
+  "a": "減る（細胞へ酸素が渡される）",
+  "n": ""
+ },
+ {
+  "q": "酸素の量が最も多い血液が流れる血管はどれとどれ？",
+  "a": "肺静脈と大動脈",
+  "n": ""
+ },
+ {
+  "q": "左心室から全身をめぐって右心房にもどる血液の循環を何という？",
+  "a": "体循環",
+  "n": ""
+ },
+ {
+  "q": "右心室から肺をめぐって左心房にもどる血液の循環を何という？",
+  "a": "肺循環",
+  "n": ""
+ },
+ {
+  "q": "赤血球にふくまれ、酸素と結びついたりはなれたりする物質は？",
+  "a": "ヘモグロビン",
+  "n": ""
+ },
+ {
+  "q": "ヘモグロビンは、酸素の多いところと少ないところで、どうふるまう？",
+  "a": "酸素の多いところで酸素と結びつき、少ないところで酸素をはなす",
+  "n": ""
+ },
+ {
+  "q": "細菌などを取りこんで分解する血液の成分は？",
+  "a": "白血球",
+  "n": ""
+ },
+ {
+  "q": "出血したときに血液を固める成分は？",
+  "a": "血小板",
+  "n": ""
+ },
+ {
+  "q": "養分や老廃物を運ぶ、血液の液体の成分は？",
+  "a": "血しょう",
+  "n": ""
+ },
+ {
+  "q": "血しょうの一部が毛細血管からしみ出してできた液体を何という？",
+  "a": "組織液",
+  "n": ""
+ },
+ {
+  "q": "細胞との物質の交換が実際に行われる血管は？",
+  "a": "毛細血管（組織液を通して行われる）",
+  "n": ""
+ },
+ {
+  "q": "心臓や静脈にある、血液の逆流を防ぐつくりは？",
+  "a": "弁",
+  "n": ""
+ },
+ {
+  "q": "物質が酸素と結びつく化学変化を何という？",
+  "a": "酸化",
+  "n": ""
+ },
+ {
+  "q": "光や熱を出しながら激しく進む酸化を何という？",
+  "a": "燃焼",
+  "n": ""
+ },
+ {
+  "q": "鉄がさびるのは、酸化のうちどのような酸化？",
+  "a": "緩やかな酸化（光や熱を出さずにゆっくり進む）",
+  "n": ""
+ },
+ {
+  "q": "酸化物が酸素をうばわれる化学変化を何という？",
+  "a": "還元",
+  "n": ""
+ },
+ {
+  "q": "酸化と還元は、別々に起こるか、同時に起こるか？",
+  "a": "同時に起こる",
+  "n": ""
+ },
+ {
+  "q": "酸化銅と炭素を混ぜて加熱すると、酸化銅はどうなる？",
+  "a": "酸素をうばわれて銅にもどる（還元される）",
+  "n": ""
+ },
+ {
+  "q": "酸化銅と炭素の反応で、炭素はどうなる？",
+  "a": "酸素と結びついて二酸化炭素になる（酸化される）",
+  "n": ""
+ },
+ {
+  "q": "銅が完全に酸化するとき、銅：酸素：酸化銅の質量の比は？",
+  "a": "4：1：5",
+  "n": ""
+ },
+ {
+  "q": "銅 0.4g を完全に酸化させると、結びつく酸素は何 g？",
+  "a": "0.1g",
+  "n": ""
+ },
+ {
+  "q": "銅 0.4g を完全に酸化させると、できる酸化銅は何 g？",
+  "a": "0.5g",
+  "n": ""
+ },
+ {
+  "q": "マグネシウムが燃焼するとき、マグネシウム：酸素：酸化マグネシウムの質量の比は？",
+  "a": "3：2：5",
+  "n": ""
+ },
+ {
+  "q": "マグネシウム 0.6g を燃焼させると、できる酸化マグネシウムは何 g？",
+  "a": "1.0g",
+  "n": ""
+ },
+ {
+  "q": "金属と結びつく酸素の質量の比は、金属の種類によってどうなっている？",
+  "a": "一定の割合になっている",
+  "n": ""
+ },
+ {
+  "q": "化学変化の前後で物質全体の質量が変わらないことを何の法則という？",
+  "a": "質量保存の法則",
+  "n": ""
+ },
+ {
+  "q": "炭酸カルシウムに塩酸を加える反応を開いた容器で行うと、質量はどう見える？",
+  "a": "発生した二酸化炭素が空気中へ逃げるため、減ったように見える",
+  "n": ""
+ },
+ {
+  "q": "気体が発生する反応で質量保存を確かめるには、どうすればよい？",
+  "a": "密閉した容器の中で反応させて、全体の質量をはかる",
+  "n": ""
+ },
+ {
+  "q": "金属粉末の加熱実験で、質量が変わらなくなるまで加熱を繰り返すのはなぜ？",
+  "a": "内部まで完全に酸素と結びつかせるため（加熱が不十分だと酸化物の質量が小さくなる）",
+  "n": ""
+ },
+ {
+  "q": "気温や湿度がほぼ一様な、大きな空気のかたまりを何という？",
+  "a": "気団",
+  "n": ""
+ },
+ {
+  "q": "性質のちがう気団どうしが接する面を何という？",
+  "a": "前線面",
+  "n": ""
+ },
+ {
+  "q": "前線面が地表と交わる線を何という？",
+  "a": "前線",
+  "n": ""
+ },
+ {
+  "q": "温かい気団が冷たい気団の上にゆるやかにはい上がってできる前線は？",
+  "a": "温暖前線",
+  "n": ""
+ },
+ {
+  "q": "温暖前線による雨の特徴は？",
+  "a": "広い範囲に弱い雨が長く降る",
+  "n": ""
+ },
+ {
+  "q": "温暖前線が通過した後、気温はどうなる？",
+  "a": "上がる（暖かい気団に入るため）",
+  "n": ""
+ },
+ {
+  "q": "冷たい気団が温かい気団の下にもぐりこんでできる前線は？",
+  "a": "寒冷前線",
+  "n": ""
+ },
+ {
+  "q": "寒冷前線による雨の特徴は？",
+  "a": "狭い範囲に強い雨が短く降る（積乱雲による雷雨をともなう）",
+  "n": ""
+ },
+ {
+  "q": "寒冷前線が通過した後、気温と風はどうなる？",
+  "a": "気温が下がり、風は北寄りになる",
+  "n": ""
+ },
+ {
+  "q": "2つの気団の勢力がほぼ同じで、長期間とどまる前線は？",
+  "a": "停滞前線（梅雨前線・秋雨前線）",
+  "n": ""
+ },
+ {
+  "q": "温帯低気圧では、中心から東側と西側に、それぞれどの前線がのびる？",
+  "a": "東側に温暖前線、西側から南西側に寒冷前線",
+  "n": ""
+ },
+ {
+  "q": "日本付近で天気が西から東へ変わっていくのはなぜ？",
+  "a": "上空に偏西風が吹き、低気圧や前線が西から東へ移動するため",
+  "n": ""
+ },
+ {
+  "q": "空気 1m³ 中にふくむことのできる水蒸気の最大の量を何という？",
+  "a": "飽和水蒸気量",
+  "n": ""
+ },
+ {
+  "q": "気温が高くなると、飽和水蒸気量はどうなる？",
+  "a": "大きくなる",
+  "n": ""
+ },
+ {
+  "q": "空気を冷やしていったとき、水蒸気が水滴に変わり始める温度を何という？",
+  "a": "露点",
+  "n": ""
+ },
+ {
+  "q": "湿度を求める式は？",
+  "a": "湿度〔％〕＝（空気1m³中にふくまれている水蒸気の量）÷（その気温での飽和水蒸気量）×100",
+  "n": ""
+ },
+ {
+  "q": "気温25℃（飽和水蒸気量 23.1g/m³）で、水蒸気が 11.55g/m³ ふくまれている空気の湿度は？",
+  "a": "50％",
+  "n": ""
+ },
+ {
+  "q": "気温25℃で水蒸気を 18g/m³ ふくむ空気を15℃（飽和水蒸気量 12.8g/m³）まで冷やすと、1m³あたり何 g の水蒸気が水滴になる？",
+  "a": "5.2g（18−12.8）",
+  "n": ""
+ },
+ {
+  "q": "雲ができるしくみを説明せよ：空気が上昇すると、温度と水蒸気はどうなる？",
+  "a": "空気が膨張して温度が下がり、露点に達すると水蒸気が水滴や氷の粒になる",
+  "n": ""
+ },
+ {
+  "q": "岩石が気温の変化や水のはたらきでもろくくずれていくことを何という？",
+  "a": "風化",
+  "n": ""
+ },
+ {
+  "q": "流水などが地面をけずるはたらきを何という？",
+  "a": "侵食",
+  "n": ""
+ },
+ {
+  "q": "けずられた土砂が運ばれるはたらき、積もるはたらきをそれぞれ何という？",
+  "a": "運搬、堆積",
+  "n": ""
+ },
+ {
+  "q": "川の上流で見られる、谷底が深くけずられた地形は？",
+  "a": "V字谷",
+  "n": ""
+ },
+ {
+  "q": "川が山地から平野へ出るところにできる地形は？",
+  "a": "扇状地",
+  "n": ""
+ },
+ {
+  "q": "河口に土砂が積もってできる地形は？",
+  "a": "三角州",
+  "n": ""
+ },
+ {
+  "q": "地層の中で、上にあるものと下にあるものでは、どちらが古い？",
+  "a": "下にある地層の方が古い",
+  "n": ""
+ },
+ {
+  "q": "土砂が沈むとき、粒の大きいものと小さいものでは、どちらが先に沈む？",
+  "a": "粒の大きいものが先に沈む",
+  "n": ""
+ },
+ {
+  "q": "れきが押し固められてできた堆積岩は？",
+  "a": "れき岩",
+  "n": ""
+ },
+ {
+  "q": "砂が押し固められてできた堆積岩は？",
+  "a": "砂岩",
+  "n": ""
+ },
+ {
+  "q": "泥が押し固められてできた堆積岩は？",
+  "a": "泥岩",
+  "n": ""
+ },
+ {
+  "q": "火山灰などの火山噴出物が積もってできた堆積岩は？",
+  "a": "凝灰岩",
+  "n": ""
+ },
+ {
+  "q": "地層の対比の目印（鍵層）になるのは、どの岩石の層？",
+  "a": "凝灰岩の層",
+  "n": ""
+ },
+ {
+  "q": "うすい塩酸をかけると泡を出してとける堆積岩は？",
+  "a": "石灰岩（泡は二酸化炭素）",
+  "n": ""
+ },
+ {
+  "q": "石灰岩のもとになったものは？",
+  "a": "サンゴや貝がらなどの生物の死がい",
+  "n": ""
+ },
+ {
+  "q": "非常に硬く、うすい塩酸でも反応しない堆積岩は？",
+  "a": "チャート",
+  "n": ""
+ },
+ {
+  "q": "その化石がいた当時の環境が分かる化石を何という？",
+  "a": "示相化石",
+  "n": ""
+ },
+ {
+  "q": "サンゴの化石が見つかると、当時どのような環境だったと考えられる？",
+  "a": "暖かくて浅い海",
+  "n": ""
+ },
+ {
+  "q": "その化石がいた時代が分かる化石を何という？",
+  "a": "示準化石",
+  "n": ""
+ },
+ {
+  "q": "アンモナイトは、何時代の示準化石？",
+  "a": "中生代",
+  "n": ""
+ },
+ {
+  "q": "海底に積もった地層が陸上で見つかるのは、地殻にどのような変動があったから？",
+  "a": "隆起",
+  "n": ""
+ },
+ {
+  "q": "地層が波打つように曲がることを何という？",
+  "a": "しゅう曲",
+  "n": ""
+ },
+ {
+  "q": "地層がずれて食い違うことを何という？",
+  "a": "断層",
+  "n": ""
+ }
+];
+var MPAGE="ichimon_chu3_shindan_science.html", MTITLE="中3理科 一問一答｜学習の診断対策（未カバー4分野）", MCHILD="iori";
+var MKEY='stepup-mistakes-'+MCHILD;
+var total = CARDS.length;
+var deck = [];
+var pos = 0;
+var revealed = false;
+var roundOk = 0;
+var missed = [];
+var isFullRound = true;
+function el(id){ return document.getElementById(id); }
+function todayStr(d){d=d||new Date();var m=('0'+(d.getMonth()+1)).slice(-2);var day=('0'+d.getDate()).slice(-2);return d.getFullYear()+'-'+m+'-'+day;}
+function loadMistakes(){try{var v=JSON.parse(localStorage.getItem(MKEY));return Array.isArray(v)?v:[];}catch(e){return[];}}
+function saveMistake(q){
+  var a=loadMistakes();var t=todayStr();var idx=-1;
+  for(var i=0;i<a.length;i++){if(a[i].page===MPAGE&&a[i].q===q){idx=i;break;}}
+  if(idx>=0){a[idx].count+=1;a[idx].last=t;}
+  else{a.push({page:MPAGE,title:MTITLE,q:q,count:1,first:t,last:t});}
+  try{localStorage.setItem(MKEY,JSON.stringify(a));}catch(e){}
+}
+function updateProgress(){
+  el('progressText').textContent = (pos+1) + '問目 / 全' + deck.length + '問　できた ' + roundOk + '問';
+  el('progressFill').style.width = (deck.length ? (pos/deck.length*100) : 0) + '%';
+}
+function showQuestion(){
+  revealed = false;
+  var c = CARDS[deck[pos]];
+  el('qText').textContent = c.q;
+  el('aText').textContent = c.a;
+  el('aNote').textContent = c.n || '';
+  el('answerArea').style.display = 'none';
+  el('btnShow').style.display = 'block';
+  el('judgeBtns').style.visibility = 'hidden';
+  updateProgress();
+}
+function startRound(indices, full){
+  deck = indices.slice(); pos = 0; roundOk = 0; missed = []; isFullRound = full;
+  el('doneArea').style.display = 'none';
+  el('playArea').style.display = 'block';
+  showQuestion();
+}
+function init(){
+  var all = CARDS.map(function(_, i){ return i; });
+  startRound(all, true);
+}
+function finish(){
+  if(isFullRound){ coinAward(10,'一問一答1周','ichimon:ichimon_chu3_shindan_science',1); }
+  el('playArea').style.display = 'none';
+  el('doneArea').style.display = 'block';
+  el('progressText').textContent = 'できた ' + roundOk + ' / ' + deck.length + ' 問';
+  el('progressFill').style.width = '100%';
+  if(missed.length === 0){
+    el('doneTitle').textContent = '🎉 全問できた！';
+    el('doneText').textContent = '全' + deck.length + '問、全部できました。おつかれさま！';
+    el('btnRetry').style.display = 'none';
+  } else {
+    el('doneTitle').textContent = 'おつかれさま！';
+    el('doneText').textContent = deck.length + '問中 ' + roundOk + '問できました。できなかった' + missed.length + '問は、まちがい復習ボックスに残しました。';
+    el('btnRetry').style.display = 'block';
+  }
+}
+function judge(ok){
+  if(!revealed) return;
+  var origIdx = deck[pos];
+  if(ok){ roundOk++; coinAward(1,'一問一答','ichimon-shindan-science',20); }
+  else { missed.push(origIdx); saveMistake(origIdx + 1); }
+  pos++;
+  if(pos >= deck.length){ finish(); return; }
+  showQuestion();
+}
+el('btnShow').addEventListener('click', function(){
+  if(revealed) return;
+  revealed = true;
+  el('answerArea').style.display = 'block';
+  el('btnShow').style.display = 'none';
+  el('judgeBtns').style.visibility = 'visible';
+});
+el('btnOk').addEventListener('click', function(){ judge(true); });
+el('btnNg').addEventListener('click', function(){ judge(false); });
+el('btnRetry').addEventListener('click', function(){ startRound(missed, false); });
+el('btnRestart').addEventListener('click', init);
+init();
+/* ==== ご褒美コイン ==== */
+var COIN_CHILD='iori';
+var COIN_KEY='stepup-coins-'+COIN_CHILD;
+var CLAIM_KEY='stepup-coinclaims-'+COIN_CHILD;
+function coinLoad(){try{var v=JSON.parse(localStorage.getItem(COIN_KEY));if(v&&typeof v.total==='number'&&Array.isArray(v.history))return v;}catch(e){}return{total:0,history:[]};}
+function coinClaimsLoad(){try{var v=JSON.parse(localStorage.getItem(CLAIM_KEY));if(v&&typeof v==='object'&&v!==null)return v;}catch(e){}return{};}
+function coinAward(amount,sourceLabel,claimId,dailyCap){
+  if(!amount||amount<=0)return 0;
+  if(dailyCap==null)dailyCap=1;
+  if(claimId){
+    var claims=coinClaimsLoad();
+    var ck=todayStr()+':'+claimId;
+    var n=claims[ck]||0;
+    if(n>=dailyCap)return 0;
+    claims[ck]=n+1;
+    try{localStorage.setItem(CLAIM_KEY,JSON.stringify(claims));}catch(e){}
+  }
+  var data=coinLoad();
+  data.total+=amount;
+  data.history.push({date:todayStr(),source:sourceLabel,amount:amount});
+  if(data.history.length>200)data.history=data.history.slice(data.history.length-200);
+  try{localStorage.setItem(COIN_KEY,JSON.stringify(data));}catch(e){}
+  coinToast(amount);
+  return amount;
+}
+function coinToast(amount){
+  var t=document.createElement('div');
+  t.textContent='🪙 +'+amount+'コイン！';
+  t.setAttribute('style','position:fixed;right:16px;bottom:16px;z-index:9999;background:#1a1a5e;color:#fff;font-weight:700;font-size:1.1rem;padding:12px 20px;border-radius:999px;box-shadow:0 4px 14px rgba(0,0,0,.25);opacity:0;transition:opacity .3s;pointer-events:none');
+  document.body.appendChild(t);
+  setTimeout(function(){t.style.opacity='1';},10);
+  setTimeout(function(){t.style.opacity='0';},1700);
+  setTimeout(function(){if(t.parentNode)t.parentNode.removeChild(t);},2200);
+}
+</script>
+</body>
+</html>
