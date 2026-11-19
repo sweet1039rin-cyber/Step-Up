@@ -2252,26 +2252,18 @@ function renderNotebookSection(){
  const info=NOTEBOOK_MATERIAL_BY_CHILD[current];
  if(!info){subEl.textContent='';buttonsEl.innerHTML='';return}
  subEl.textContent=`${info.materialLabel} AI復習`;
- buttonsEl.innerHTML=NOTEBOOK_SUBJECTS.map(s=>{
-  const url=notebookLinks?.[current]?.[info.materialId]?.[s.id]||'';
-  const inner=`
+ buttonsEl.innerHTML=NOTEBOOK_SUBJECTS.map(s=>
+  `<button type="button" class="notebook-subject-btn" data-notebook-child="${current}" data-notebook-material="${info.materialId}" data-notebook-subject="${s.id}">
     <span class="notebook-subject-icon">${s.icon}</span>
     <span class="notebook-subject-text"><span class="notebook-subject-name">${s.label}</span><small class="notebook-subject-caption">NotebookLMで開く</small></span>
-    <span class="notebook-subject-arrow">→</span>`;
-  // URL登録済みの教科は通常の<a>リンクにする（window.open方式はタブレットで開けないため）。
-  // 未登録の教科は従来どおりボタンにし、下のクリック処理で注意文を出す。
-  if(url){
-   return `<a class="notebook-subject-btn" href="${url}" target="_blank" rel="noopener noreferrer">${inner}
-   </a>`;
-  }
-  return `<button type="button" class="notebook-subject-btn" data-notebook-child="${current}" data-notebook-material="${info.materialId}" data-notebook-subject="${s.id}">${inner}
-   </button>`;
- }).join('');
+    <span class="notebook-subject-arrow">→</span>
+   </button>`
+ ).join('');
  buttonsEl.querySelectorAll('[data-notebook-subject]').forEach(b=>b.onclick=()=>{
   openNotebook(b.dataset.notebookChild,b.dataset.notebookMaterial,b.dataset.notebookSubject);
  });
 }
-function openMaterials(){materialsPerson.textContent=data[current].name+' / 学習ツール';renderNotebookSection();renderFinalsEntry();renderLinkShelf();show(materialsScreen)}
+function openMaterials(){materialsPerson.textContent=data[current].name+' / 学習ツール';renderNotebookSection();renderLinkShelf();show(materialsScreen)}
 materialsBack.onclick=()=>show(mission);
 
 // ============================================================
@@ -2290,10 +2282,10 @@ function defaultLinks(childId){
    {name:'NotebookLM 英語',url:nb.english},
    {name:'NotebookLM 数学',url:nb.math},
    {name:'NotebookLM 理科',url:nb.science},
-   {name:'📚 テスト対策',url:'study/sakuya.html'}
+   {name:'📚 期末テスト対策',url:'study/sakuya.html'}
   ];
  }
- return [{name:'📚 テスト対策',url:'study/iori.html'}];
+ return [{name:'📚 期末テスト対策',url:'study/iori.html'}];
 }
 function getLinks(childId){
  // キーが無い時だけ初期値を投入する（既存データは上書きしない）
@@ -2364,57 +2356,6 @@ function renderLinkShelf(){
   saveLinks(current,links);
   renderLinkShelf();
  });
-}
-// ============================================================
-// 期末テスト対策 入口カード（学習ツール画面の上部）
-// 一番よく使う入口なので、画面下部のリンク置き場とは別に、
-// ヒーロー直下・NotebookLMセクションの前にも大きな入口を出す。
-// index.htmlは変更しないため、カードはこのコードが生成して
-// #notebookSection の直前へ差し込む（無ければ #dokosutaCard の直前、
-// それも無ければ #materials .utility-wrap の末尾）。
-// リンク先は子ども別で、defaultLinks の「期末テスト対策」と同じURL。
-// カードは ensure 方式で再利用し、開くたびに href だけ現在の子ども用へ更新する。
-// ============================================================
-const FINALS_ENTRY_URL={sakuya:'study/sakuya.html',iori:'study/iori.html'};
-function ensureFinalsEntryStyles(){
- if(document.querySelector('#finalsEntryStyle'))return;
- const style=document.createElement('style');
- style.id='finalsEntryStyle';
- style.textContent='.finals-entry-card{margin-top:16px;padding:14px}'
-  +'.finals-entry-btn{display:flex;align-items:center;gap:12px;min-height:76px;padding:16px 18px;border-radius:14px;background:#d70725;color:#fff!important;text-decoration:none!important;box-shadow:0 8px 20px rgba(215,7,37,.32)}'
-  +'.finals-entry-btn:active{opacity:.88}'
-  +'.finals-entry-btn.is-sakuya{background:linear-gradient(135deg,#2563EB,#38B2F6);box-shadow:0 8px 20px rgba(37,99,235,.32)}'
-  +'.finals-entry-text{display:flex;flex-direction:column;gap:3px;flex:1 1 auto;min-width:0}'
-  +'.finals-entry-card .finals-entry-label{font-size:20px;font-weight:800;line-height:1.3;color:#fff}'
-  +'.finals-entry-card .finals-entry-caption{font-size:12.5px;font-weight:600;line-height:1.4;color:rgba(255,255,255,.92)}'
-  +'.finals-entry-arrow{flex:0 0 auto;font-size:22px;font-weight:800;color:#fff}';
- document.head.appendChild(style);
-}
-function ensureFinalsEntryCard(){
- ensureFinalsEntryStyles();
- let card=document.querySelector('#finalsEntryCard');
- if(card)return card;
- card=document.createElement('section');
- card.id='finalsEntryCard';
- card.className='card finals-entry-card';
- card.innerHTML=`
-  <a class="finals-entry-btn" href="${FINALS_ENTRY_URL[current]||FINALS_ENTRY_URL.sakuya}" target="_blank" rel="noopener noreferrer">
-   <span class="finals-entry-text"><span class="finals-entry-label">📚 テスト対策</span><span class="finals-entry-caption">暗記シート・予想問題・模擬テストはこちら</span></span>
-   <span class="finals-entry-arrow">→</span>
-  </a>`;
- const nb=document.querySelector('#notebookSection');
- if(nb&&nb.parentNode){nb.parentNode.insertBefore(card,nb)}
- else{
-  const doko=document.querySelector('#dokosutaCard');
-  if(doko&&doko.parentNode){doko.parentNode.insertBefore(card,doko)}
-  else{document.querySelector('#materials .utility-wrap')?.appendChild(card)}
- }
- return card;
-}
-function renderFinalsEntry(){
- const card=ensureFinalsEntryCard();
- const btn=card.querySelector('a.finals-entry-btn');
- if(btn){btn.href=FINALS_ENTRY_URL[current]||FINALS_ENTRY_URL.sakuya;btn.classList.toggle('is-sakuya',current==='sakuya')}
 }
 addMaterialBtn.onclick=()=>materialForm.classList.toggle('hidden');
 materialFilters.querySelectorAll('button').forEach(b=>b.onclick=()=>{materialFilter=b.dataset.filter;materialFilters.querySelectorAll('button').forEach(x=>x.classList.toggle('active',x===b));renderMaterials()});
@@ -3075,6 +3016,55 @@ function seedFinalsFormalIori(){
  }catch(e){console.error('中3期末の正式範囲への課題追加に失敗しました',e)}
 }
 seedFinalsFormalIori();
+// ============================================================
+// 学習の診断対策課題の自動登録（壱凰のみ）
+// 愛知県学習の診断（2026-12-11の実力テスト想定）に向けた第1弾教材
+// （数学ドリル・理科4分野・社会地理総合）の勉強タスク12件を、
+// 期末対策シードと同じ形のカスタム課題として登録する。
+// 期限は全て2026-12-11。既存の課題には一切手を付けない。
+// 実行済みかどうかは localStorage のフラグキーで管理し、
+// 同じタイトルの課題が既にある場合は、その項目は入れない。
+// ============================================================
+const SHINDAN_2026_SEED_FLAG_KEY='stepup-seeded-shindan-2026';
+const SHINDAN_2026_DEADLINE='2026-12-11';
+const SHINDAN_2026_SEED_ITEMS=[
+ {subject:'数学',title:'基本問題ドリル 前半（正・負の数〜平方根）',material:'アプリ教材（数学 基本問題ドリル）',progressType:'check'},
+ {subject:'数学',title:'基本問題ドリル 後半（二次方程式〜弧と円周角）',material:'アプリ教材（数学 基本問題ドリル）',progressType:'check'},
+ {subject:'数学',title:'基本問題ドリルのまちがい直し',material:'アプリ教材（数学 基本問題ドリル）',progressType:'check'},
+ {subject:'理科',title:'血液の循環（暗記シート＋一問一答）',material:'アプリ教材（理科 暗記シート・一問一答）',progressType:'check'},
+ {subject:'理科',title:'化学変化と物質の質量（暗記シート＋一問一答）',material:'アプリ教材（理科 暗記シート・一問一答）',progressType:'check'},
+ {subject:'理科',title:'化学変化と物質の質量の予想問題（計算）',material:'アプリ教材（理科 予想問題）',progressType:'check'},
+ {subject:'理科',title:'前線と天気の変化（暗記シート＋一問一答）',material:'アプリ教材（理科 暗記シート・一問一答）',progressType:'check'},
+ {subject:'理科',title:'地層のでき方（暗記シート＋一問一答）',material:'アプリ教材（理科 暗記シート・一問一答）',progressType:'check'},
+ {subject:'社会',title:'日本地理総合（暗記シート＋カード）',material:'アプリ教材（社会 暗記シート・暗記カード）',progressType:'check'},
+ {subject:'社会',title:'世界地理総合（暗記シート＋カード）',material:'アプリ教材（社会 暗記シート・暗記カード）',progressType:'check'},
+ {subject:'社会',title:'地理総合の一問一答・予想問題',material:'アプリ教材（社会 一問一答・予想問題）',progressType:'check'},
+ {subject:'社会',title:'地理総合の予想問題（資料読み取り型）',material:'アプリ教材（社会 予想問題・資料読み取り型）',progressType:'check'}
+];
+function seedShindan2026(){
+ try{
+  if(localStorage.getItem(SHINDAN_2026_SEED_FLAG_KEY))return;
+  const now=new Date().toISOString();
+  const childId='iori';
+  const existingTitles=new Set(ProgressEngine.getAll(childId).map(it=>it.title));
+  const customs=getCustomAssignments(childId);
+  SHINDAN_2026_SEED_ITEMS.forEach((def,index)=>{
+   if(existingTitles.has(def.title))return;
+   const entry={
+    id:`${childId}-custom-shindan2026-${index+1}`,subject:def.subject,title:def.title,scope:'',
+    deadline:SHINDAN_2026_DEADLINE,category:'',status:'not-started',done:false,
+    progress:'',remaining:'',note:'',progressType:def.progressType,source:'shindan2026-seed',
+    material:def.material,pageStart:null,pageEnd:null,problemRange:'',priority:'normal',
+    updatedAt:now,createdAt:now
+   };
+   customs.push(entry);
+   existingTitles.add(def.title);
+  });
+  saveCustomAssignments(childId,customs);
+  localStorage.setItem(SHINDAN_2026_SEED_FLAG_KEY,'true');
+ }catch(e){console.error('学習の診断対策課題の自動登録に失敗しました',e)}
+}
+seedShindan2026();
 function openAssignments(){assignmentForm.classList.add('hidden');materialForm.classList.add('hidden');renderAssignments();populateAssignmentMaterialList();renderMaterials();show(assignmentsScreen)}
 // 既存教材(教材ページのdefaultMaterials+保存済み教材)から候補一覧を作る。一覧にない場合は自由入力可。
 function populateAssignmentMaterialList(){
