@@ -3065,6 +3065,46 @@ function seedShindan2026(){
  }catch(e){console.error('学習の診断対策課題の自動登録に失敗しました',e)}
 }
 seedShindan2026();
+// ============================================================
+// 学習の診断対策課題の自動登録・第2弾（壱凰のみ）
+// 第1弾（seedShindan2026）とは別のフラグキーで管理する。
+// 英語の文法（暗記カード・一問一答）、数学ドリル（円・確率／箱ひげ図）、
+// 国語の漢文基礎（暗記シート・一問一答）の勉強タスク6件を登録する。
+// 期限は第1弾と同じ2026-12-11。既存の課題には一切手を付けない。
+// ============================================================
+const SHINDAN_2026_B2_SEED_FLAG_KEY='stepup-seeded-shindan-2026-b2';
+const SHINDAN_2026_B2_SEED_ITEMS=[
+ {subject:'英語',title:'文法の暗記カード（仮定法・make＋A＋B・動名詞など）',material:'アプリ教材（英語 暗記カード）',progressType:'check'},
+ {subject:'英語',title:'文法の一問一答（仮定法・make＋A＋B・動名詞など）',material:'アプリ教材（英語 一問一答）',progressType:'check'},
+ {subject:'数学',title:'円と確率のドリル（円周角・確率の応用）',material:'アプリ教材（数学 ドリル）',progressType:'check'},
+ {subject:'数学',title:'箱ひげ図のドリル',material:'アプリ教材（数学 ドリル）',progressType:'check'},
+ {subject:'国語',title:'漢文の暗記シート',material:'アプリ教材（国語 暗記シート）',progressType:'check'},
+ {subject:'国語',title:'漢文の一問一答',material:'アプリ教材（国語 一問一答）',progressType:'check'}
+];
+function seedShindan2026Batch2(){
+ try{
+  if(localStorage.getItem(SHINDAN_2026_B2_SEED_FLAG_KEY))return;
+  const now=new Date().toISOString();
+  const childId='iori';
+  const existingTitles=new Set(ProgressEngine.getAll(childId).map(it=>it.title));
+  const customs=getCustomAssignments(childId);
+  SHINDAN_2026_B2_SEED_ITEMS.forEach((def,index)=>{
+   if(existingTitles.has(def.title))return;
+   const entry={
+    id:`${childId}-custom-shindan2026b2-${index+1}`,subject:def.subject,title:def.title,scope:'',
+    deadline:SHINDAN_2026_DEADLINE,category:'',status:'not-started',done:false,
+    progress:'',remaining:'',note:'',progressType:def.progressType,source:'shindan2026-b2-seed',
+    material:def.material,pageStart:null,pageEnd:null,problemRange:'',priority:'normal',
+    updatedAt:now,createdAt:now
+   };
+   customs.push(entry);
+   existingTitles.add(def.title);
+  });
+  saveCustomAssignments(childId,customs);
+  localStorage.setItem(SHINDAN_2026_B2_SEED_FLAG_KEY,'true');
+ }catch(e){console.error('学習の診断対策課題（第2弾）の自動登録に失敗しました',e)}
+}
+seedShindan2026Batch2();
 function openAssignments(){assignmentForm.classList.add('hidden');materialForm.classList.add('hidden');renderAssignments();populateAssignmentMaterialList();renderMaterials();show(assignmentsScreen)}
 // 既存教材(教材ページのdefaultMaterials+保存済み教材)から候補一覧を作る。一覧にない場合は自由入力可。
 function populateAssignmentMaterialList(){
